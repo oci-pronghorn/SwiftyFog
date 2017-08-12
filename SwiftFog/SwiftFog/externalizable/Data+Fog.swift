@@ -15,7 +15,7 @@ public extension Data {
 	
 	public mutating func fogAppend(_ value: String) {
 		let view = value.utf8
-		self.fogAppend(Int16(view.count))
+		self.fogAppend(UInt16(view.count))
 		self.append(contentsOf: view)
 	}
 	
@@ -44,7 +44,7 @@ public extension Data {
 	}
 	
 	public func fogExtract(_ cursor: inout Int) -> String? {
-		let len: Int16 = fogExtract(&cursor)
+		let len: UInt16 = fogExtract(&cursor)
 		let subData = self.subdata(in: cursor..<(cursor+Int(len)))
 		cursor += Int(len)
 		return String(data: subData, encoding: .utf8)

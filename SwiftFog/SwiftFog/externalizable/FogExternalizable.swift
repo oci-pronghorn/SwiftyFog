@@ -8,7 +8,10 @@
 
 import Foundation
 
-public protocol FogExternalizable {
-	init(data: Data, cursor: inout Int)
+public protocol FogWritingExternalizable {
 	func writeTo(data: inout Data)
+}
+
+public protocol FogExternalizable: FogWritingExternalizable {
+	init(data: Data, cursor: inout Int)
 }
