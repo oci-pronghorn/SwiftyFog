@@ -15,7 +15,6 @@
 		555139391F3F5BF90028866D /* MQTTConnectPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5551392B1F3F5B040028866D /* MQTTConnectPacket.swift */; };
 		5551393A1F3F5BF90028866D /* MQTTDisconnectPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5551392C1F3F5B040028866D /* MQTTDisconnectPacket.swift */; };
 		5551393C1F3F5BF90028866D /* MQTTPingPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5551392E1F3F5B040028866D /* MQTTPingPacket.swift */; };
-		5551393D1F3F5BF90028866D /* MQTTPublishPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5551392F1F3F5B040028866D /* MQTTPublishPacket.swift */; };
 		5551393E1F3F5BF90028866D /* MQTTSubPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555139301F3F5B040028866D /* MQTTSubPacket.swift */; };
 		5551393F1F3F5BF90028866D /* MQTTUnsubPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555139311F3F5B040028866D /* MQTTUnsubPacket.swift */; };
 		555139401F3F5BFE0028866D /* MQTTMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555139191F3F59AC0028866D /* MQTTMessage.swift */; };
@@ -30,6 +29,12 @@
 		555139541F3F65BA0028866D /* Data+MQTT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555139511F3F65AB0028866D /* Data+MQTT.swift */; };
 		555139551F3F65BA0028866D /* MQTTStreamReadable.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555139521F3F65AB0028866D /* MQTTStreamReadable.swift.swift */; };
 		555139561F3F65BA0028866D /* MQTTStreamWritable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555139531F3F65AB0028866D /* MQTTStreamWritable.swift */; };
+		555139581F3F6B7E0028866D /* MQTTPublishPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555139571F3F6B7D0028866D /* MQTTPublishPacket.swift */; };
+		5551395A1F3F6C580028866D /* MQTTSessionStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555139591F3F6C580028866D /* MQTTSessionStream.swift */; };
+		5551395D1F3F6EB60028866D /* MQTTConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5551395C1F3F6EB60028866D /* MQTTConnection.swift */; };
+		5551395F1F3F6F8A0028866D /* MQTTSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5551395E1F3F6F8A0028866D /* MQTTSubscriber.swift */; };
+		555139611F3F6FA30028866D /* MQTTPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555139601F3F6FA30028866D /* MQTTPublisher.swift */; };
+		555139631F3F6FDD0028866D /* MQTTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555139621F3F6FDD0028866D /* MQTTClient.swift */; };
 		55A837D71F3F3D770063BA94 /* SwiftFog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A837CD1F3F3D770063BA94 /* SwiftFog.framework */; };
 		55A837DC1F3F3D770063BA94 /* SwiftFogExternalizableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A837DB1F3F3D770063BA94 /* SwiftFogExternalizableTests.swift */; };
 		55A837DE1F3F3D770063BA94 /* SwiftFog.h in Headers */ = {isa = PBXBuildFile; fileRef = 55A837D01F3F3D770063BA94 /* SwiftFog.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -63,7 +68,6 @@
 		5551392B1F3F5B040028866D /* MQTTConnectPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTConnectPacket.swift; sourceTree = "<group>"; };
 		5551392C1F3F5B040028866D /* MQTTDisconnectPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTDisconnectPacket.swift; sourceTree = "<group>"; };
 		5551392E1F3F5B040028866D /* MQTTPingPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTPingPacket.swift; sourceTree = "<group>"; };
-		5551392F1F3F5B040028866D /* MQTTPublishPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTPublishPacket.swift; sourceTree = "<group>"; };
 		555139301F3F5B040028866D /* MQTTSubPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTSubPacket.swift; sourceTree = "<group>"; };
 		555139311F3F5B040028866D /* MQTTUnsubPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTUnsubPacket.swift; sourceTree = "<group>"; };
 		555139331F3F5B040028866D /* MQTTConnAckPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTConnAckPacket.swift; sourceTree = "<group>"; };
@@ -76,6 +80,12 @@
 		555139511F3F65AB0028866D /* Data+MQTT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+MQTT.swift"; sourceTree = "<group>"; };
 		555139521F3F65AB0028866D /* MQTTStreamReadable.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTStreamReadable.swift.swift; sourceTree = "<group>"; };
 		555139531F3F65AB0028866D /* MQTTStreamWritable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTStreamWritable.swift; sourceTree = "<group>"; };
+		555139571F3F6B7D0028866D /* MQTTPublishPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTPublishPacket.swift; sourceTree = "<group>"; };
+		555139591F3F6C580028866D /* MQTTSessionStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTSessionStream.swift; sourceTree = "<group>"; };
+		5551395C1F3F6EB60028866D /* MQTTConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTConnection.swift; sourceTree = "<group>"; };
+		5551395E1F3F6F8A0028866D /* MQTTSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTSubscriber.swift; sourceTree = "<group>"; };
+		555139601F3F6FA30028866D /* MQTTPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTPublisher.swift; sourceTree = "<group>"; };
+		555139621F3F6FDD0028866D /* MQTTClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTClient.swift; sourceTree = "<group>"; };
 		55A837CD1F3F3D770063BA94 /* SwiftFog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftFog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A837D01F3F3D770063BA94 /* SwiftFog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftFog.h; sourceTree = "<group>"; };
 		55A837D11F3F3D770063BA94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -114,6 +124,7 @@
 		555138FA1F3F581C0028866D /* mqtt */ = {
 			isa = PBXGroup;
 			children = (
+				5551395B1F3F6E9C0028866D /* connection */,
 				555138FB1F3F581C0028866D /* model */,
 				555139181F3F59AC0028866D /* message */,
 				555139291F3F5B040028866D /* packets */,
@@ -159,7 +170,6 @@
 				5551392B1F3F5B040028866D /* MQTTConnectPacket.swift */,
 				5551392C1F3F5B040028866D /* MQTTDisconnectPacket.swift */,
 				5551392E1F3F5B040028866D /* MQTTPingPacket.swift */,
-				5551392F1F3F5B040028866D /* MQTTPublishPacket.swift */,
 				555139301F3F5B040028866D /* MQTTSubPacket.swift */,
 				555139311F3F5B040028866D /* MQTTUnsubPacket.swift */,
 			);
@@ -173,6 +183,7 @@
 				555139341F3F5B040028866D /* MQTTPacketFactory.swift */,
 				555139351F3F5B040028866D /* MQTTPingResp.swift */,
 				555139361F3F5B040028866D /* MQTTPubAck.swift */,
+				555139571F3F6B7D0028866D /* MQTTPublishPacket.swift */,
 				555139371F3F5B040028866D /* MQTTSubAckPacket.swift */,
 				555139381F3F5B040028866D /* MQTTUnSubAckPacket.swift */,
 			);
@@ -183,10 +194,22 @@
 			isa = PBXGroup;
 			children = (
 				555139511F3F65AB0028866D /* Data+MQTT.swift */,
+				555139591F3F6C580028866D /* MQTTSessionStream.swift */,
 				555139521F3F65AB0028866D /* MQTTStreamReadable.swift.swift */,
 				555139531F3F65AB0028866D /* MQTTStreamWritable.swift */,
 			);
 			path = stream;
+			sourceTree = "<group>";
+		};
+		5551395B1F3F6E9C0028866D /* connection */ = {
+			isa = PBXGroup;
+			children = (
+				555139621F3F6FDD0028866D /* MQTTClient.swift */,
+				5551395C1F3F6EB60028866D /* MQTTConnection.swift */,
+				5551395E1F3F6F8A0028866D /* MQTTSubscriber.swift */,
+				555139601F3F6FA30028866D /* MQTTPublisher.swift */,
+			);
+			path = connection;
 			sourceTree = "<group>";
 		};
 		55A837C31F3F3D770063BA94 = {
@@ -369,14 +392,16 @@
 				55A837F81F3F3E3D0063BA94 /* FogExternalizable.swift in Sources */,
 				5551393F1F3F5BF90028866D /* MQTTUnsubPacket.swift in Sources */,
 				55A837F71F3F3E3D0063BA94 /* Data+Fog.swift in Sources */,
+				555139581F3F6B7E0028866D /* MQTTPublishPacket.swift in Sources */,
+				5551395F1F3F6F8A0028866D /* MQTTSubscriber.swift in Sources */,
 				555139441F3F5D4E0028866D /* MQTTConnAckPacket.swift in Sources */,
+				5551395D1F3F6EB60028866D /* MQTTConnection.swift in Sources */,
 				55A837F21F3F3E390063BA94 /* FogBitMap.swift in Sources */,
 				555139541F3F65BA0028866D /* Data+MQTT.swift in Sources */,
 				55A837F41F3F3E390063BA94 /* FogColorspace.swift in Sources */,
 				555139171F3F58500028866D /* MQTTQoS.swift in Sources */,
 				555139401F3F5BFE0028866D /* MQTTMessage.swift in Sources */,
 				555139141F3F584F0028866D /* MQTTPacketType.swift in Sources */,
-				5551393D1F3F5BF90028866D /* MQTTPublishPacket.swift in Sources */,
 				55A837F61F3F3E390063BA94 /* UIImage+Fog.swift in Sources */,
 				555139461F3F5D4E0028866D /* MQTTPingResp.swift in Sources */,
 				555139491F3F5D4E0028866D /* MQTTUnSubAckPacket.swift in Sources */,
@@ -387,8 +412,11 @@
 				555139551F3F65BA0028866D /* MQTTStreamReadable.swift.swift in Sources */,
 				555139471F3F5D4E0028866D /* MQTTPubAck.swift in Sources */,
 				555139411F3F5BFE0028866D /* MQTTPayload.swift in Sources */,
+				5551395A1F3F6C580028866D /* MQTTSessionStream.swift in Sources */,
+				555139611F3F6FA30028866D /* MQTTPublisher.swift in Sources */,
 				5551393C1F3F5BF90028866D /* MQTTPingPacket.swift in Sources */,
 				555139111F3F584F0028866D /* MQTTConnAckResponse.swift in Sources */,
+				555139631F3F6FDD0028866D /* MQTTClient.swift in Sources */,
 				555139431F3F5C7E0028866D /* MQTTPacket.swift in Sources */,
 				5551393A1F3F5BF90028866D /* MQTTDisconnectPacket.swift in Sources */,
 				555139451F3F5D4E0028866D /* MQTTPacketFactory.swift in Sources */,
