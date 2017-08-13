@@ -8,23 +8,46 @@
 
 import Foundation
 
-public struct MQTTClientCredentials {
-    // username, password, useSSL, certs, lastWill
-}
-
-public struct MQTTClientConnectParams {
-    public init(clientID: String) {
-        self.clientID = clientID
-    }
-    public var clientID: String
-    public var host: String = "localhost"
-    public var port: UInt16 = 1883
-    public var cleanSession: Bool = true
-    public var keepAlive: UInt16 = 15
-    public var useSSL: Bool = false
-	
-    public var timeout: TimeInterval = 1.0
+public struct MQTTReconnect {
     public var retryCount: Int = 3
     public var retryTimeInterval: TimeInterval = 1.0
     public var resuscitateTimeInterval: TimeInterval = 5.0
+}
+
+public class MQTTClient {
+	private var mqtt: MQTTConnection?
+	
+	public init() {
+	}
+	
+	public func start() {
+		var host = MQTTHostParams()
+		host.host = "thejoveexpress.local"
+		let client = MQTTClientParams(clientID: "SwiftyFog")
+		mqtt = MQTTConnection(hostParams: host, clientPrams: client)
+		mqtt?.delegate = self
+	}
+	
+	public func stop() {
+		mqtt = nil
+	}
+}
+
+extension MQTTClient: MQTTConnectionDelegate {
+	public func mqttDiscconnected(_ connection: MQTTConnection, reason: MQTTConnectionDisconnect, error: Error?) {
+		print("\(Date.NowInSeconds()): MQTT Discconnected \(reason) \(error?.localizedDescription ?? "")")
+		mqtt = nil
+	}
+	
+	public func mqttConnected(_ connection: MQTTConnection) {
+		print("\(Date.NowInSeconds()): MQTT Connected")
+	}
+	
+	public func mqttPinged(_ connection: MQTTConnection, dropped: Bool) {
+		print("\(Date.NowInSeconds()): MQTT Pinged \(!dropped)")
+	}
+	
+	public func mqttPingAcknowledged(_ connection: MQTTConnection) {
+		print("\(Date.NowInSeconds()): MQTT Acknowledged")
+	}
 }

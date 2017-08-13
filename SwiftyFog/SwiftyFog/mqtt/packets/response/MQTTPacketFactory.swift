@@ -15,7 +15,7 @@ struct MQTTPacketFactory {
         .unSubAck : MQTTUnSubAckPacket.init,
         .pubAck : MQTTPubAck.init,
         .publish : MQTTPublishPacket.init,
-        .pingResp : { h, _ in MQTTPingResp.init(header: h) }
+        .pingResp : { h, _ in MQTTPingAckPacket.init(header: h) }
     ]
 
     func parse(_ read: StreamReader) -> MQTTPacket? {

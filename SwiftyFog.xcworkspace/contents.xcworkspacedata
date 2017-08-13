@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:SwiftFogMqttClient/SwiftFogMqttClient.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:SwiftyFog/SwiftyFog.xcodeproj">
    </FileRef>
 </Workspace>

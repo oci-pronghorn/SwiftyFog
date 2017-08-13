@@ -8,36 +8,44 @@
 
 import Foundation
 
-enum MQTTConnectionDisconnect {
+public struct MQTTClientParams {
+    public var clientID: String
+    public var cleanSession: Bool = true
+    public var keepAlive: UInt16 = 15
+	
+    public var username: String? = nil
+    public var password: String? = nil
+    //TODO: public var lastWill: String? = nil
+	
+    public init(clientID: String) {
+		self.clientID = clientID
+    }
+}
+
+public enum MQTTConnectionDisconnect: String {
+	case shutdown
 	case socket
 	case timeout
 	case handshake
-	case shutdown
+	case failedRead
+	case failedWrite
+	case brokerNotAlive
 }
 
-struct MQTTClientParams {
-    public var clientID: String
-    public var cleanSession: Bool = true
-    public var keepAlive: UInt16 = 10
-	
-    public var username: String?
-    public var password: String?
-    public var lastWill: String?
-}
-
-struct MQTTHostParams {
-    public var host: String
-    public var port: UInt16
-    public var ssl: Bool
-    public var timeout: TimeInterval
-}
-
-protocol MQTTConnectionDelegate: class {
+public protocol MQTTConnectionDelegate: class {
 	func mqttDiscconnected(_ connection: MQTTConnection, reason: MQTTConnectionDisconnect, error: Error?)
 	func mqttConnected(_ connection: MQTTConnection)
+	func mqttPinged(_ connection: MQTTConnection, dropped: Bool)
+	func mqttPingAcknowledged(_ connection: MQTTConnection)
 }
 
-class MQTTConnection {
+public extension Date {
+	static func NowInSeconds() -> Int64 {
+		return Int64(Date().timeIntervalSince1970.rounded())
+	}
+}
+
+public class MQTTConnection {
 	private let clientPrams: MQTTClientParams
     private let factory: MQTTPacketFactory
     private var stream: MQTTSessionStream? = nil
@@ -45,17 +53,20 @@ class MQTTConnection {
 	
     public weak var delegate: MQTTConnectionDelegate?
 	
-	// TODO: threadsafe?
+	// TODO: threadsafety
     private var isConnected: Bool = false
-    private var lastControlPacketSent: TimeInterval = 0.0
+    private var lastControlPacketSent: Int64 = 0
+    private var lastPingSent: Int64 = 0
+    private var lastPingAck: Int64 = 0
 	
-    init(clientPrams: MQTTClientParams, host: MQTTHostParams) {
+    public init(hostParams: MQTTHostParams, clientPrams: MQTTClientParams) {
 		self.clientPrams = clientPrams
 		self.factory = MQTTPacketFactory()
-		self.stream = MQTTSessionStream(host: host.host, port: host.port, ssl: host.ssl, timeout: host.timeout, delegate: self)
-		if host.timeout > 0 {
-			DispatchQueue.global().asyncAfter(deadline: .now() +  host.timeout) { [weak self] in
-				self?.handshakeTimeout()
+		self.stream = MQTTSessionStream(hostParams: hostParams, delegate: self)
+		
+		if hostParams.timeout > 0 {
+			DispatchQueue.global().asyncAfter(deadline: .now() +  hostParams.timeout) { [weak self] in
+				self?.fullConnectionTimeout()
 			}
 		}
     }
@@ -63,7 +74,7 @@ class MQTTConnection {
     deinit {
 		if isConnected {
 			send(packet: MQTTDisconnectPacket())
-			// TODO: Do we have to wait?
+			// TODO: Do we have to wait to verify packet has left the building?
 			didDisconnect(reason: .shutdown, error: nil)
 		}
 	}
@@ -71,18 +82,28 @@ class MQTTConnection {
     private func didDisconnect(reason: MQTTConnectionDisconnect, error: Error?) {
         keepAliveTimer?.cancel()
 		delegate?.mqttDiscconnected(self, reason: reason, error: error)
+		isConnected = false
+		self.stream = nil
     }
 	
-    private func streamConnected() {
-		let keepAliveTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
-		keepAliveTimer.schedule(deadline: .now() + .seconds(Int(clientPrams.keepAlive)), repeating: .seconds(Int(clientPrams.keepAlive)), leeway: .milliseconds(500))
-		keepAliveTimer.setEventHandler { [weak self] in
-			self?.keepAliveTimerFired()
-		}
-		self.keepAliveTimer = keepAliveTimer
-		keepAliveTimer.resume()
+	@discardableResult
+    private func send(packet: MQTTPacket) -> Bool {
+		if let writer = stream?.writer {
+			var data = Data(capacity: 1024)
+			packet.writeTo(data: &data)
+			if data.write(to: writer) {
+				lastControlPacketSent = Date.NowInSeconds()
+				return true
+			}
+			else {
+				didDisconnect(reason: .failedWrite, error: nil)
+			}
+        }
+        return false
     }
-	
+}
+
+extension MQTTConnection {
     private func startConnectionHandshake() -> Bool {
 		let packet = MQTTConnectPacket(
 			clientID: clientPrams.clientID,
@@ -90,8 +111,7 @@ class MQTTConnection {
 			keepAlive: clientPrams.keepAlive)
 		packet.username = clientPrams.username
 		packet.password = clientPrams.password
-		//connectPacket.lastWillMessage = clientPrams.lastWill
-		
+		//TODO: connectPacket.lastWillMessage = clientPrams.lastWill
 		return self.send(packet: packet)
     }
 	
@@ -100,34 +120,71 @@ class MQTTConnection {
 		if success {
 			isConnected = true
 			delegate?.mqttConnected(self)
+			startPing()
 		}
 		else {
 			self.didDisconnect(reason: .handshake, error: packet.response)
 		}
     }
 	
-	private func handshakeTimeout() {
+	private func fullConnectionTimeout() {
 		if isConnected == false {
 			self.didDisconnect(reason: .timeout, error: nil)
 		}
 	}
+}
+
+extension MQTTConnection {
+    private func startPing() {
+		if clientPrams.keepAlive > 0 {
+			let keepAliveTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
+			keepAliveTimer.schedule(deadline: .now() + .seconds(Int(clientPrams.keepAlive)), repeating: .seconds(Int(clientPrams.keepAlive)), leeway: .milliseconds(250))
+			keepAliveTimer.setEventHandler { [weak self] in
+				self?.pingFired()
+			}
+			self.keepAliveTimer = keepAliveTimer
+			keepAliveTimer.resume()
+		}
+	}
 	
-	@discardableResult
-    private func send(packet: MQTTPacket) -> Bool {
-		if let writer = stream?.writer {
-			var data = Data(capacity: 1024)
-			packet.writeTo(data: &data)
-			lastControlPacketSent = Date().timeIntervalSince1970
-			return data.write(to: writer)
-        }
-        return false
+    private func pingFired() {
+		if isConnected == true {
+			let now = Date.NowInSeconds()
+			if lastPingAck == 0 {
+				lastPingAck = now
+			}
+			if serverAliveTest() {
+				if (now - lastControlPacketSent >= UInt64(clientPrams.keepAlive)) {
+					if send(packet: MQTTPingPacket()) {
+						lastPingSent = Date.NowInSeconds()
+						delegate?.mqttPinged(self, dropped: false)
+					}
+				}
+				else {
+					delegate?.mqttPinged(self, dropped: true)
+				}
+			}
+		}
     }
 	
-    fileprivate func keepAliveTimerFired() {
-		let now = Date().timeIntervalSince1970
-		if isConnected == true && (now - lastControlPacketSent >= TimeInterval(clientPrams.keepAlive)) {
-			send(packet: MQTTPingPacket())
+    private func serverAliveTest() -> Bool {
+		return true
+		// TODO: The spec says we should receive a a ping ack after a "reasonable amount of time"
+		// The mosquitto logs states that it is sending immediately and every time.
+		// Reception is ony once and after keep alive period
+		let timePassed = Date.NowInSeconds() - lastPingAck
+		// The keep alive range on server is 1.5 * keepAlive
+		let limit = UInt64(clientPrams.keepAlive + (clientPrams.keepAlive / 2))
+		if timePassed > limit {
+			self.didDisconnect(reason: .brokerNotAlive, error: nil)
+			return false
 		}
+		return true
+    }
+	
+    private func pingResponseReceived(packet: MQTTPingAckPacket) {
+		lastPingAck = Date.NowInSeconds()
+		delegate?.mqttPingAcknowledged(self)
     }
 }
 
@@ -150,14 +207,18 @@ extension MQTTConnection: MQTTSessionStreamDelegate {
 	func mqttStreamReceived(in stream: MQTTSessionStream, _ read: (UnsafeMutablePointer<UInt8>, Int) -> Int) {
         if let packet = factory.parse(read) {
 			switch packet {
-				case let connAckPacket as MQTTConnAckPacket:
-					self.handshakeFinished(packet: connAckPacket)
+				case let packet as MQTTConnAckPacket:
+					self.handshakeFinished(packet: packet)
 					break
-				case _ as MQTTPingResp:
+				case let packet as MQTTPingAckPacket:
+					self.pingResponseReceived(packet: packet)
 					break
 				default:
 					break
 			}
+        }
+        else {
+			self.didDisconnect(reason: .failedRead, error: nil)
         }
 	}
 }

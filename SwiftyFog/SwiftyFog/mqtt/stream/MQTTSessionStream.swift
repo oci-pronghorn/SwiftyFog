@@ -8,6 +8,16 @@
 
 import Foundation
 
+public struct MQTTHostParams {
+    public var host: String = "localhost"
+    public var port: UInt16 = 1883
+    public var ssl: Bool = false
+    public var timeout: TimeInterval = 100000
+	
+    public init() {
+    }
+}
+
 protocol MQTTSessionStreamDelegate: class {
     func mqttStreamConnected(_ ready: Bool, in stream: MQTTSessionStream)
     func mqttStreamErrorOccurred(in stream: MQTTSessionStream, error: Error?)
@@ -23,13 +33,13 @@ class MQTTSessionStream: NSObject {
 	private var inputReady = false
 	private var outputReady = false
     
-    init(host: String, port: UInt16, ssl: Bool, timeout: TimeInterval, delegate: MQTTSessionStreamDelegate?) {
+    init(hostParams: MQTTHostParams, delegate: MQTTSessionStreamDelegate?) {
         var inputStream: InputStream?
         var outputStream: OutputStream?
-        Stream.getStreamsToHost(withName: host, port: Int(port), inputStream: &inputStream, outputStream: &outputStream)
+        Stream.getStreamsToHost(withName: hostParams.host, port: Int(hostParams.port), inputStream: &inputStream, outputStream: &outputStream)
         
-        var parts = host.components(separatedBy: ".")
-        parts.insert("stream\(port)", at: 0)
+        var parts = hostParams.host.components(separatedBy: ".")
+        parts.insert("stream\(hostParams.port)", at: 0)
         let label = parts.reversed().joined(separator: ".")
         
         self.sessionQueue = DispatchQueue(label: label, qos: .background, target: nil)
@@ -47,13 +57,13 @@ class MQTTSessionStream: NSObject {
             outputStream?.schedule(in: currentRunLoop, forMode: .defaultRunLoopMode)
             inputStream?.open()
             outputStream?.open()
-            if ssl {
+            if hostParams.ssl {
                 let securityLevel = StreamSocketSecurityLevel.negotiatedSSL.rawValue
                 inputStream?.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
                 outputStream?.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
             }
-			if timeout > 0 {
-				DispatchQueue.global().asyncAfter(deadline: .now() +  timeout) {
+			if hostParams.timeout > 0 {
+				DispatchQueue.global().asyncAfter(deadline: .now() +  hostParams.timeout) {
 					self?.connectTimeout()
 				}
 			}

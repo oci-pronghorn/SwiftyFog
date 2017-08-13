@@ -24,7 +24,7 @@
 		559679F41F3FDDC20068DEC5 /* MQTTUnsubPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679D01F3FDDA80068DEC5 /* MQTTUnsubPacket.swift */; };
 		559679F51F3FDDC60068DEC5 /* MQTTConnAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679D21F3FDDA80068DEC5 /* MQTTConnAckPacket.swift */; };
 		559679F61F3FDDC60068DEC5 /* MQTTPacketFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679D31F3FDDA80068DEC5 /* MQTTPacketFactory.swift */; };
-		559679F71F3FDDC60068DEC5 /* MQTTPingResp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679D41F3FDDA80068DEC5 /* MQTTPingResp.swift */; };
+		559679F71F3FDDC60068DEC5 /* MQTTPingAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679D41F3FDDA80068DEC5 /* MQTTPingAckPacket.swift */; };
 		559679F81F3FDDC60068DEC5 /* MQTTPubAck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679D51F3FDDA80068DEC5 /* MQTTPubAck.swift */; };
 		559679F91F3FDDC60068DEC5 /* MQTTPublishPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679D61F3FDDA80068DEC5 /* MQTTPublishPacket.swift */; };
 		559679FA1F3FDDC60068DEC5 /* MQTTSubAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679D71F3FDDA80068DEC5 /* MQTTSubAckPacket.swift */; };
@@ -84,7 +84,7 @@
 		559679D01F3FDDA80068DEC5 /* MQTTUnsubPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTUnsubPacket.swift; sourceTree = "<group>"; };
 		559679D21F3FDDA80068DEC5 /* MQTTConnAckPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTConnAckPacket.swift; sourceTree = "<group>"; };
 		559679D31F3FDDA80068DEC5 /* MQTTPacketFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTPacketFactory.swift; sourceTree = "<group>"; };
-		559679D41F3FDDA80068DEC5 /* MQTTPingResp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTPingResp.swift; sourceTree = "<group>"; };
+		559679D41F3FDDA80068DEC5 /* MQTTPingAckPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTPingAckPacket.swift; sourceTree = "<group>"; };
 		559679D51F3FDDA80068DEC5 /* MQTTPubAck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTPubAck.swift; sourceTree = "<group>"; };
 		559679D61F3FDDA80068DEC5 /* MQTTPublishPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTPublishPacket.swift; sourceTree = "<group>"; };
 		559679D71F3FDDA80068DEC5 /* MQTTSubAckPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTSubAckPacket.swift; sourceTree = "<group>"; };
@@ -233,7 +233,7 @@
 			children = (
 				559679D21F3FDDA80068DEC5 /* MQTTConnAckPacket.swift */,
 				559679D31F3FDDA80068DEC5 /* MQTTPacketFactory.swift */,
-				559679D41F3FDDA80068DEC5 /* MQTTPingResp.swift */,
+				559679D41F3FDDA80068DEC5 /* MQTTPingAckPacket.swift */,
 				559679D51F3FDDA80068DEC5 /* MQTTPubAck.swift */,
 				559679D61F3FDDA80068DEC5 /* MQTTPublishPacket.swift */,
 				559679D71F3FDDA80068DEC5 /* MQTTSubAckPacket.swift */,
@@ -425,7 +425,7 @@
 				559679FA1F3FDDC60068DEC5 /* MQTTSubAckPacket.swift in Sources */,
 				559679FD1F3FDDCA0068DEC5 /* MQTTSessionStream.swift in Sources */,
 				559679FF1F3FDDCA0068DEC5 /* MQTTStreamWritable.swift in Sources */,
-				559679F71F3FDDC60068DEC5 /* MQTTPingResp.swift in Sources */,
+				559679F71F3FDDC60068DEC5 /* MQTTPingAckPacket.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,10 +22,11 @@ class MQTTPacket {
 	}
 	
 	func writeTo(data: inout Data) {
-		self.appendVariableHeader(&data)
-		data.fogAppend(header.networkByte)
 		var payload = Data(capacity: 1024)
+		self.appendVariableHeader(&payload)
 		self.appendPayload(&payload)
+		
+		data.fogAppend(header.networkByte)
 		data.mqttAppendRemaining(length: payload.count)
 		data.append(payload)
 	}
