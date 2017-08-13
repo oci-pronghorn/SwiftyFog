@@ -15,35 +15,45 @@ public struct MQTTReconnect {
 }
 
 public class MQTTClient {
-	private var mqtt: MQTTConnection?
+	private var publisher: MQTTPublisher
+	private var connection: MQTTConnection?
 	
 	public init() {
+		let idSource = MQTTMessageIdSource()
+		self.publisher = MQTTPublisher(idSource: idSource)
+		publisher.delegate = self
 	}
 	
 	public func start() {
 		var host = MQTTHostParams()
 		host.host = "thejoveexpress.local"
 		let client = MQTTClientParams(clientID: "SwiftyFog")
-		mqtt = MQTTConnection(hostParams: host, clientPrams: client)
-		mqtt?.delegate = self
+		connection = MQTTConnection(hostParams: host, clientPrams: client)
+		connection?.delegate = self
 	}
 	
 	public func stop() {
-		mqtt = nil
+		connection = nil
+	}
+	
+	public func publish(topic: String, payload: Data, retain: Bool = false, qos: MQTTQoS = .atMostOnce, completion: ((Bool)->())?) {
+		publisher.publish(topic: topic, payload: payload, retain: retain, qos: qos, completion: completion)
 	}
 }
 
 extension MQTTClient: MQTTConnectionDelegate {
 	public func mqttDiscconnected(_ connection: MQTTConnection, reason: MQTTConnectionDisconnect, error: Error?) {
 		print("\(Date.NowInSeconds()): MQTT Discconnected \(reason) \(error?.localizedDescription ?? "")")
+		publisher.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
 		// TODO: New language rules. I need to rethink delegate calls from deinit - as I should :-)
 		if reason != .shutdown {
-			mqtt = nil
+			self.connection = nil
 		}
 	}
 	
 	public func mqttConnected(_ connection: MQTTConnection) {
 		print("\(Date.NowInSeconds()): MQTT Connected")
+		publisher.connected(cleanSession: connection.cleanSession)
 	}
 	
 	public func mqttPinged(_ connection: MQTTConnection, dropped: Bool) {
@@ -55,5 +65,12 @@ extension MQTTClient: MQTTConnectionDelegate {
 	}
 	
 	public func mqttReceived(_ connection: MQTTConnection, packet: MQTTPacket) {
+		let _ = publisher.receive(packet: packet)
+	}
+}
+
+extension MQTTClient: MQTTPublisherDelegate {
+	public func send(packet: MQTTPacket) -> Bool {
+		return connection?.send(packet: packet) ?? false
 	}
 }

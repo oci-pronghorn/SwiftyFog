@@ -11,7 +11,7 @@ import Foundation
 public struct MQTTClientParams {
     public var clientID: String
     public var cleanSession: Bool = true
-    public var keepAlive: UInt16 = 15
+    public var keepAlive: UInt16 = 60
 	
     public var username: String? = nil
     public var password: String? = nil
@@ -30,6 +30,7 @@ public enum MQTTConnectionDisconnect: String {
 	case failedRead
 	case failedWrite
 	case brokerNotAlive
+	case serverDisconnected
 }
 
 public protocol MQTTConnectionDelegate: class {
@@ -72,10 +73,13 @@ public class MQTTConnection {
 		}
     }
 	
+    public var cleanSession: Bool {
+		return clientPrams.cleanSession
+    }
+	
     deinit {
 		if isFullConnected {
 			send(packet: MQTTDisconnectPacket())
-			// TODO: Do we have to wait to verify packet has left the building?
 			didDisconnect(reason: .shutdown, error: nil)
 		}
 	}
@@ -88,11 +92,9 @@ public class MQTTConnection {
     }
 	
 	@discardableResult
-    private func send(packet: MQTTPacket) -> Bool {
+    public func send(packet: MQTTPacket) -> Bool {
 		if let writer = stream?.writer {
-			var data = Data(capacity: 1024)
-			packet.writeTo(data: &data)
-			if data.write(to: writer) {
+			if factory.send(packet, writer) {
 				lastControlPacketSent = Date.NowInSeconds()
 				return true
 			}
@@ -207,7 +209,12 @@ extension MQTTConnection: MQTTSessionStreamDelegate {
 	}
 	
 	func mqttStreamReceived(in stream: MQTTSessionStream, _ read: (UnsafeMutablePointer<UInt8>, Int) -> Int) {
-        if let packet = factory.parse(read) {
+		let parsed = factory.parse(read)
+		if parsed.0 {
+			self.didDisconnect(reason: .serverDisconnected, error: nil)
+			return
+		}
+        if let packet = parsed.1 {
 			switch packet {
 				case let packet as MQTTConnAckPacket:
 					self.handshakeFinished(packet: packet)

@@ -9,6 +9,10 @@
 import Foundation
 
 public extension Data {
+    public var hexDescription: String {
+        return reduce("") {$0 + String(format: "%02x", $1)}
+    }
+	
 	public mutating func fogAppend(_ value: [UInt8]) {
 		self.append(contentsOf: value)
 	}

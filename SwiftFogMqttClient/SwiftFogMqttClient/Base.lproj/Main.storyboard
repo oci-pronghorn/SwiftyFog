@@ -24,11 +24,38 @@
                                     <action selector="cleanDisconnect" destination="dkx-z0-nzr" eventType="touchUpInside" id="MAU-u2-pzg"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R3A-HI-aAt">
+                                <rect key="frame" x="165.5" y="151" width="43" height="30"/>
+                                <state key="normal" title="QOS 1"/>
+                                <connections>
+                                    <action selector="publishQos1" destination="dkx-z0-nzr" eventType="touchUpInside" id="OrO-uO-Dmh"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dvP-CT-hUD">
+                                <rect key="frame" x="164.5" y="199" width="45" height="30"/>
+                                <state key="normal" title="QOS 2"/>
+                                <connections>
+                                    <action selector="publishQos2" destination="dkx-z0-nzr" eventType="touchUpInside" id="iMN-9i-GaB"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G5r-cD-Lmz">
+                                <rect key="frame" x="164" y="247" width="46" height="30"/>
+                                <state key="normal" title="QOS 3"/>
+                                <connections>
+                                    <action selector="publishQos3" destination="dkx-z0-nzr" eventType="touchUpInside" id="qLB-Ny-rZi"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="wkm-Vy-ue0" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="53" id="7Lz-4g-aEY"/>
+                            <constraint firstItem="R3A-HI-aAt" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="PCW-lp-TMz"/>
+                            <constraint firstItem="dvP-CT-hUD" firstAttribute="top" secondItem="R3A-HI-aAt" secondAttribute="bottom" constant="18" id="SSo-wh-CHl"/>
+                            <constraint firstItem="G5r-cD-Lmz" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="cc2-2d-iha"/>
                             <constraint firstItem="wkm-Vy-ue0" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="eE7-X6-Ekf"/>
+                            <constraint firstItem="dvP-CT-hUD" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="h17-PO-Hbp"/>
+                            <constraint firstItem="G5r-cD-Lmz" firstAttribute="top" secondItem="dvP-CT-hUD" secondAttribute="bottom" constant="18" id="kXu-en-sLp"/>
+                            <constraint firstItem="R3A-HI-aAt" firstAttribute="top" secondItem="wkm-Vy-ue0" secondAttribute="bottom" constant="48" id="t8b-Tt-yRR"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

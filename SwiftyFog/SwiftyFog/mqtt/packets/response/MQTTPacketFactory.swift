@@ -19,19 +19,27 @@ struct MQTTPacketFactory {
         .subAck : MQTTSubAckPacket.init,
         .unSubAck : MQTTUnSubAckPacket.init,
     ]
+	
+    func send(_ packet: MQTTPacket, _ writer: StreamWriter) -> Bool {
+		var data = Data(capacity: 1024)
+		packet.writeTo(data: &data)
+		print("Sent Bytes: \(type(of:packet)) \(data.count) \(data.hexDescription)")
+		return data.write(to: writer)
+    }
 
-    func parse(_ read: StreamReader) -> MQTTPacket? {
+    func parse(_ read: StreamReader) -> (Bool, MQTTPacket?) {
         var headerByte: UInt8 = 0
         let headerReadLen = read(&headerByte, 1)
-		guard headerReadLen > 0 else { return nil }
+		guard headerReadLen > 0 else { return (true, nil) }
         if let header = MQTTPacketFixedHeader(networkByte: headerByte) {
 			if let len = MQTTPacketFactory.readMqttPackedLength(from: read) {
 				if let data = Data(len: len, from: read) {
-					return constructors[header.packetType]?(header, data)
+					print("Received Bytes: \(header.packetType) \(data.count) \(data.hexDescription)")
+					return (false, constructors[header.packetType]?(header, data))
 				}
 			}
 		}
-        return nil
+        return (false, nil)
 	}
 
 	private static func readMqttPackedLength(from read: StreamReader) -> Int? {

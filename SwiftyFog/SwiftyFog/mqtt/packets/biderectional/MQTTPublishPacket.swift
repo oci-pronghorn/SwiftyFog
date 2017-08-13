@@ -12,7 +12,7 @@ class MQTTPublishPacket: MQTTPacket {
     let messageID: UInt16
     let message: MQTTPubMsg
     
-    init?(messageID: UInt16, message: MQTTPubMsg, isRedelivery: Bool = false) {
+    init(messageID: UInt16, message: MQTTPubMsg, isRedelivery: Bool = false) {
         self.messageID = messageID
         self.message = message
         super.init(header: MQTTPacketFixedHeader(packetType: .publish, flags: MQTTPublishPacket.fixedHeaderFlags(for: message, isRedelivery: isRedelivery)))

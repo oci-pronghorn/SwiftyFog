@@ -12,7 +12,7 @@ import Foundation
 class MQTTPublishCompPacket: MQTTPacket {
     let messageID: UInt16
 	
-    init?(messageID: UInt16) {
+    init(messageID: UInt16) {
         self.messageID = messageID
         super.init(header: MQTTPacketFixedHeader(packetType: MQTTPacketType.pubComp, flags: 0))
     }

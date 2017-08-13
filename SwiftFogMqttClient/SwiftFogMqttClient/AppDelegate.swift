@@ -25,6 +25,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	@IBAction func cleanDisconnect() {
 		mqtt?.stop()
 	}
+	
+	@IBAction func publishQos1() {
+		mqtt?.publish(topic: "Bobs/Store/1", payload: Data(), retain: false, qos: .atMostOnce, completion: { (success) in
+			print(success)
+		})
+	}
+	
+	@IBAction func publishQos2() {
+		mqtt?.publish(topic: "Bobs/Store/2", payload: Data(), retain: false, qos: .atLeastOnce, completion: { (success) in
+			print(success)
+		})
+	}
+	
+	@IBAction func publishQos3() {
+		mqtt?.publish(topic: "Bobs/Store/3", payload: Data(), retain: false, qos: .exactlyOnce, completion: { (success) in
+			print(success)
+		})
+	}
 
 	func applicationWillResignActive(_ application: UIApplication) {
 	}
