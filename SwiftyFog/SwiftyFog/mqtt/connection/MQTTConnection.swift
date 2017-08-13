@@ -45,6 +45,7 @@ class MQTTConnection {
 	
     public weak var delegate: MQTTConnectionDelegate?
 	
+	// TODO: threadsafe?
     private var isConnected: Bool = false
     private var lastControlPacketSent: TimeInterval = 0.0
 	
@@ -61,6 +62,8 @@ class MQTTConnection {
 	
     deinit {
 		if isConnected {
+			send(packet: MQTTDisconnectPacket())
+			// TODO: Do we have to wait?
 			didDisconnect(reason: .shutdown, error: nil)
 		}
 	}

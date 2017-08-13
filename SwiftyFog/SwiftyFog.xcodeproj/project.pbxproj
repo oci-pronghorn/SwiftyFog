@@ -169,6 +169,7 @@
 				559679C01F3FDDA80068DEC5 /* message */,
 				559679C31F3FDDA80068DEC5 /* model */,
 				559679C91F3FDDA80068DEC5 /* packets */,
+				559679D91F3FDDA80068DEC5 /* stream */,
 			);
 			path = mqtt;
 			sourceTree = "<group>";
@@ -211,7 +212,6 @@
 				559679CA1F3FDDA80068DEC5 /* MQTTPacket.swift */,
 				559679CB1F3FDDA80068DEC5 /* request */,
 				559679D11F3FDDA80068DEC5 /* response */,
-				559679D91F3FDDA80068DEC5 /* stream */,
 			);
 			path = packets;
 			sourceTree = "<group>";

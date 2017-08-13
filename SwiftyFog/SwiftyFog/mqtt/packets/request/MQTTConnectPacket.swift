@@ -25,7 +25,7 @@ class MQTTConnectPacket: MQTTPacket {
         self.cleanSession = cleanSession
         self.keepAlive = keepAlive
         self.clientID = clientID
-        super.init(header: MQTTPacketFixedHeader(packetType: .connect, flags: 0))!
+        super.init(header: MQTTPacketFixedHeader(packetType: .connect, flags: 0))
     }
     
     private var encodedConnectFlags: UInt8 {

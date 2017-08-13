@@ -9,7 +9,7 @@
 import Foundation
 
 class MQTTDisconnectPacket: MQTTPacket {
-    init?() {
+    init() {
         super.init(header: MQTTPacketFixedHeader(packetType: .disconnect, flags: 0))
     }
 }

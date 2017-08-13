@@ -11,7 +11,7 @@ import Foundation
 class MQTTPacket {
     let header: MQTTPacketFixedHeader
     
-    init?(header: MQTTPacketFixedHeader) {
+    init(header: MQTTPacketFixedHeader) {
         self.header = header
     }
 	
