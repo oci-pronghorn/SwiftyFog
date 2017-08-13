@@ -54,7 +54,7 @@ public class MQTTConnection {
     public weak var delegate: MQTTConnectionDelegate?
 	
 	// TODO: threadsafety
-    private var isConnected: Bool = false
+    private var isFullConnected: Bool = false
     private var lastControlPacketSent: Int64 = 0
     private var lastPingSent: Int64 = 0
     private var lastPingAck: Int64 = 0
@@ -72,7 +72,7 @@ public class MQTTConnection {
     }
 	
     deinit {
-		if isConnected {
+		if isFullConnected {
 			send(packet: MQTTDisconnectPacket())
 			// TODO: Do we have to wait to verify packet has left the building?
 			didDisconnect(reason: .shutdown, error: nil)
@@ -82,7 +82,7 @@ public class MQTTConnection {
     private func didDisconnect(reason: MQTTConnectionDisconnect, error: Error?) {
         keepAliveTimer?.cancel()
 		delegate?.mqttDiscconnected(self, reason: reason, error: error)
-		isConnected = false
+		isFullConnected = false
 		self.stream = nil
     }
 	
@@ -99,6 +99,7 @@ public class MQTTConnection {
 				didDisconnect(reason: .failedWrite, error: nil)
 			}
         }
+        // Not connected
         return false
     }
 }
@@ -118,7 +119,7 @@ extension MQTTConnection {
     private func handshakeFinished(packet: MQTTConnAckPacket) {
 		let success = (packet.response == .connectionAccepted)
 		if success {
-			isConnected = true
+			isFullConnected = true
 			delegate?.mqttConnected(self)
 			startPing()
 		}
@@ -128,7 +129,7 @@ extension MQTTConnection {
     }
 	
 	private func fullConnectionTimeout() {
-		if isConnected == false {
+		if isFullConnected == false {
 			self.didDisconnect(reason: .timeout, error: nil)
 		}
 	}
@@ -148,7 +149,7 @@ extension MQTTConnection {
 	}
 	
     private func pingFired() {
-		if isConnected == true {
+		if isFullConnected == true {
 			let now = Date.NowInSeconds()
 			if lastPingAck == 0 {
 				lastPingAck = now

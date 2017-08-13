@@ -21,6 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		mqtt?.start()
 		return true
 	}
+	
+	@IBAction func cleanDisconnect() {
+		mqtt?.stop()
+	}
 
 	func applicationWillResignActive(_ application: UIApplication) {
 	}

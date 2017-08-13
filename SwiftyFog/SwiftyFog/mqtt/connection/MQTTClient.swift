@@ -36,7 +36,10 @@ public class MQTTClient {
 extension MQTTClient: MQTTConnectionDelegate {
 	public func mqttDiscconnected(_ connection: MQTTConnection, reason: MQTTConnectionDisconnect, error: Error?) {
 		print("\(Date.NowInSeconds()): MQTT Discconnected \(reason) \(error?.localizedDescription ?? "")")
-		mqtt = nil
+		// TODO: New language rules. I need to rethink delegate calls from deinit - as I should :-)
+		if reason != .shutdown {
+			mqtt = nil
+		}
 	}
 	
 	public func mqttConnected(_ connection: MQTTConnection) {
