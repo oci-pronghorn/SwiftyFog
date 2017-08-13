@@ -72,7 +72,7 @@ It MUST send PUBREL packets in the order in which the corresponding PUBREC packe
 
 	public func publish(topic: String, payload: Data, retain: Bool = false, qos: MQTTQoS = .atMostOnce, completion: ((Bool)->())?) {
 		let model = MQTTPubMsg(topic: topic, payload: payload, retain: retain, QoS: qos)
-		let messageId = idSource.fetch()
+		let messageId = (qos == .atMostOnce) ? 0 : idSource.fetch()
 		let packet = MQTTPublishPacket(messageID: messageId, message: model, isRedelivery: false)
 		
 		if delegate?.send(packet: packet) ?? false == false {
