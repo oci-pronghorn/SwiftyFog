@@ -19,13 +19,13 @@ class MQTTConnectPacket: MQTTPacket {
     var password: String? = nil
     var lastWillMessage: MQTTPubMsg? = nil
     
-    init?(clientID: String, cleanSession: Bool, keepAlive: UInt16) {
+    init(clientID: String, cleanSession: Bool, keepAlive: UInt16) {
         self.protocolName = "MQTT"
         self.protocolLevel = 0x04
         self.cleanSession = cleanSession
         self.keepAlive = keepAlive
         self.clientID = clientID
-        super.init(header: MQTTPacketFixedHeader(packetType: .connect, flags: 0))
+        super.init(header: MQTTPacketFixedHeader(packetType: .connect, flags: 0))!
     }
     
     private var encodedConnectFlags: UInt8 {
