@@ -7,3 +7,15 @@
 //
 
 import Foundation
+
+class MQTTPublisher {
+
+	func publish() {
+		// if qos 0, expect no response from server
+		// if qos 1, expect pub ack
+		// if qos 2, expect pub rec, send pub rel, rec pub comp
+	}
+	
+	func receivePacket() {
+	}
+}

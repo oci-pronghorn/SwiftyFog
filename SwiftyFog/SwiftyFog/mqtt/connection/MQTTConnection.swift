@@ -37,6 +37,7 @@ public protocol MQTTConnectionDelegate: class {
 	func mqttConnected(_ connection: MQTTConnection)
 	func mqttPinged(_ connection: MQTTConnection, dropped: Bool)
 	func mqttPingAcknowledged(_ connection: MQTTConnection)
+	func mqttReceived(_ connection: MQTTConnection, packet: MQTTPacket)
 }
 
 public extension Date {
@@ -215,6 +216,7 @@ extension MQTTConnection: MQTTSessionStreamDelegate {
 					self.pingResponseReceived(packet: packet)
 					break
 				default:
+					delegate?.mqttReceived(self, packet: packet)
 					break
 			}
         }

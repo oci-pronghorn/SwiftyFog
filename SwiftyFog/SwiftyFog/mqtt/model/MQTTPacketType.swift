@@ -21,6 +21,6 @@ enum MQTTPacketType: UInt8 {
     case unSubscribe    = 0x0A
     case unSubAck       = 0x0B
     case pingReq        = 0x0C
-    case pingResp       = 0x0D
+    case pingAck        = 0x0D
     case disconnect     = 0x0E
 }

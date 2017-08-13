@@ -53,4 +53,7 @@ extension MQTTClient: MQTTConnectionDelegate {
 	public func mqttPingAcknowledged(_ connection: MQTTConnection) {
 		print("\(Date.NowInSeconds()): MQTT Acknowledged")
 	}
+	
+	public func mqttReceived(_ connection: MQTTConnection, packet: MQTTPacket) {
+	}
 }

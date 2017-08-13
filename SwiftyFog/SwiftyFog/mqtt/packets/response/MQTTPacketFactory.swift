@@ -11,11 +11,13 @@ import Foundation
 struct MQTTPacketFactory {
     let constructors: [MQTTPacketType : (MQTTPacketFixedHeader, Data)->MQTTPacket?] = [
         .connAck : MQTTConnAckPacket.init,
+        .pingAck : { h, _ in MQTTPingAckPacket.init(header: h) },
+        .publish : MQTTPublishPacket.init,
+        .pubAck : MQTTPublishAckPacket.init,
+        .pubRec : MQTTPublishRecPacket.init,
+        .pubComp : MQTTPublishCompPacket.init,
         .subAck : MQTTSubAckPacket.init,
         .unSubAck : MQTTUnSubAckPacket.init,
-        .pubAck : MQTTPubAck.init,
-        .publish : MQTTPublishPacket.init,
-        .pingResp : { h, _ in MQTTPingAckPacket.init(header: h) }
     ]
 
     func parse(_ read: StreamReader) -> MQTTPacket? {

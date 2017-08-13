@@ -12,10 +12,10 @@ class MQTTPublishPacket: MQTTPacket {
     let messageID: UInt16
     let message: MQTTPubMsg
     
-    init?(messageID: UInt16, message: MQTTPubMsg) {
+    init?(messageID: UInt16, message: MQTTPubMsg, isRedelivery: Bool = false) {
         self.messageID = messageID
         self.message = message
-        super.init(header: MQTTPacketFixedHeader(packetType: .publish, flags: MQTTPublishPacket.fixedHeaderFlags(for: message)))
+        super.init(header: MQTTPacketFixedHeader(packetType: .publish, flags: MQTTPublishPacket.fixedHeaderFlags(for: message, isRedelivery: isRedelivery)))
     }
 	
     init?(header: MQTTPacketFixedHeader, networkData: Data) {
@@ -42,12 +42,15 @@ class MQTTPublishPacket: MQTTPacket {
         super.init(header: header)
     }
     
-    private static func fixedHeaderFlags(for message: MQTTPubMsg) -> UInt8 {
+    private static func fixedHeaderFlags(for message: MQTTPubMsg, isRedelivery: Bool) -> UInt8 {
         var flags = UInt8(0)
         if message.retain {
-            flags |= 0x08
+            flags |= 0x01
         }
         flags |= message.QoS.rawValue << 1
+        if isRedelivery && message.QoS != .atMostOnce {
+			flags |= 0x08
+        }
         return flags
     }
 	
