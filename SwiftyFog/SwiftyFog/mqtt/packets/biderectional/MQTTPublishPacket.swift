@@ -62,6 +62,6 @@ class MQTTPublishPacket: MQTTPacket {
 	}
 	
     override func appendPayload(_ data: inout Data) {
-		data.append(data)
+		data.append(message.payload)
     }
 }
