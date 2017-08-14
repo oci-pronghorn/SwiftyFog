@@ -40,7 +40,7 @@ public class MQTTPublisher {
 	}
 	
 	public func connected(cleanSession: Bool) {
-	/*
+	/* TODO:
 	When a Client reconnects with CleanSession set to 0, both the Client and Server MUST re-send any unacknowledged PUBLISH Packets (where QoS > 0) and PUBREL Packets using their original Packet Identifiers [MQTT-4.4.0-1]. This is the only circumstance where a Client or Server is REQUIRED to redeliver messages.
 	*/
 	/*

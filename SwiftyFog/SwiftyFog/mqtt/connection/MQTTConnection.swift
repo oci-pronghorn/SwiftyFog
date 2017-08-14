@@ -22,6 +22,16 @@ public struct MQTTClientParams {
     }
 }
 
+// The following are the ping activities
+public enum PingStatus: String {
+	case notConnected
+	case sent
+	case skipped
+	case ack
+	case serverDied
+}
+
+// The following are reasons for disconnection from broker
 public enum MQTTConnectionDisconnect: String {
 	case shutdown
 	case socket
@@ -36,15 +46,8 @@ public enum MQTTConnectionDisconnect: String {
 public protocol MQTTConnectionDelegate: class {
 	func mqttDiscconnected(_ connection: MQTTConnection, reason: MQTTConnectionDisconnect, error: Error?)
 	func mqttConnected(_ connection: MQTTConnection)
-	func mqttPinged(_ connection: MQTTConnection, dropped: Bool)
-	func mqttPingAcknowledged(_ connection: MQTTConnection)
+	func mqttPinged(_ connection: MQTTConnection, status: PingStatus)
 	func mqttReceived(_ connection: MQTTConnection, packet: MQTTPacket)
-}
-
-public extension Date {
-	static func NowInSeconds() -> Int64 {
-		return Int64(Date().timeIntervalSince1970.rounded())
-	}
 }
 
 public class MQTTConnection {
@@ -79,7 +82,7 @@ public class MQTTConnection {
     }
 	
     deinit {
-		if isFullConnected {
+		if mutex.reading({isFullConnected}) {
 			send(packet: MQTTDisconnectPacket())
 			didDisconnect(reason: .shutdown, error: nil)
 		}
@@ -88,7 +91,9 @@ public class MQTTConnection {
     private func didDisconnect(reason: MQTTConnectionDisconnect, error: Error?) {
         keepAliveTimer?.cancel()
 		delegate?.mqttDiscconnected(self, reason: reason, error: error)
-		isFullConnected = false
+		mutex.writing {
+			isFullConnected = false
+		}
 		self.stream = nil
     }
 	
@@ -96,7 +101,9 @@ public class MQTTConnection {
     public func send(packet: MQTTPacket) -> Bool {
 		if let writer = stream?.writer {
 			if factory.send(packet, writer) {
-				lastControlPacketSent = Date.NowInSeconds()
+				mutex.writing {
+					lastControlPacketSent = Date.nowInSeconds()
+				}
 				return true
 			}
 			else {
@@ -123,7 +130,9 @@ extension MQTTConnection {
     private func handshakeFinished(packet: MQTTConnAckPacket) {
 		let success = (packet.response == .connectionAccepted)
 		if success {
-			isFullConnected = true
+			mutex.writing {
+				isFullConnected = true
+			}
 			delegate?.mqttConnected(self)
 			startPing()
 		}
@@ -133,7 +142,7 @@ extension MQTTConnection {
     }
 	
 	private func fullConnectionTimeout() {
-		if isFullConnected == false {
+		if mutex.reading({isFullConnected}) == false {
 			self.didDisconnect(reason: .timeout, error: nil)
 		}
 	}
@@ -153,43 +162,50 @@ extension MQTTConnection {
 	}
 	
     private func pingFired() {
-		if isFullConnected == true {
-			let now = Date.NowInSeconds()
-			if lastPingAck == 0 {
-				lastPingAck = now
+		var status: PingStatus = .skipped
+		mutex.writing {
+			if isFullConnected == false {
+				status = .notConnected
 			}
-			if serverAliveTest() {
-				if (now - lastControlPacketSent >= UInt64(clientPrams.keepAlive)) {
-					if send(packet: MQTTPingPacket()) {
-						delegate?.mqttPinged(self, dropped: false)
+			else {
+				let now = Date.nowInSeconds()
+				if lastPingAck == 0 {
+					lastPingAck = now
+				}
+				if supportsServerAliveCheck {
+					// TODO: The spec says we should receive a a ping ack after a "reasonable amount of time"
+					// The mosquitto logs states that it is sending immediately and every time.
+					// Reception is ony once and after keep alive period
+					let timePassed = now - lastPingAck
+					// The keep alive range on server is 1.5 * keepAlive
+					let limit = UInt64(clientPrams.keepAlive + (clientPrams.keepAlive / 2))
+					if timePassed > limit {
+						status = .serverDied
 					}
 				}
-				else {
-					delegate?.mqttPinged(self, dropped: true)
+				if status != .serverDied {
+					if (now - lastControlPacketSent >= UInt64(clientPrams.keepAlive)) {
+						status = .sent
+					}
 				}
 			}
 		}
-    }
-	
-    private func serverAliveTest() -> Bool {
-		if supportsServerAliveCheck {
-			// TODO: The spec says we should receive a a ping ack after a "reasonable amount of time"
-			// The mosquitto logs states that it is sending immediately and every time.
-			// Reception is ony once and after keep alive period
-			let timePassed = Date.NowInSeconds() - lastPingAck
-			// The keep alive range on server is 1.5 * keepAlive
-			let limit = UInt64(clientPrams.keepAlive + (clientPrams.keepAlive / 2))
-			if timePassed > limit {
-				self.didDisconnect(reason: .brokerNotAlive, error: nil)
-				return false
+		if status == .sent {
+			if send(packet: MQTTPingPacket()) == false {
+				status = .notConnected
 			}
 		}
-		return true
+		if status == .serverDied {
+			self.didDisconnect(reason: .brokerNotAlive, error: nil)
+		}
+		delegate?.mqttPinged(self, status: status)
     }
 	
     private func pingResponseReceived(packet: MQTTPingAckPacket) {
-		lastPingAck = Date.NowInSeconds()
-		delegate?.mqttPingAcknowledged(self)
+		mutex.writing {
+			lastPingAck = Date.nowInSeconds()
+		}
+		delegate?.mqttPinged(self, status: .ack)
     }
 }
 

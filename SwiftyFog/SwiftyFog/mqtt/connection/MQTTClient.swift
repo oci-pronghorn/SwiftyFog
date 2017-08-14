@@ -89,12 +89,8 @@ extension MQTTClient: MQTTConnectionDelegate {
 		distributer.connected(cleanSession: connection.cleanSession)
 	}
 	
-	public func mqttPinged(_ connection: MQTTConnection, dropped: Bool) {
-		print("\(Date.NowInSeconds()): MQTT Pinged \(!dropped)")
-	}
-	
-	public func mqttPingAcknowledged(_ connection: MQTTConnection) {
-		print("\(Date.NowInSeconds()): MQTT Acknowledged")
+	public func mqttPinged(_ connection: MQTTConnection, status: PingStatus) {
+		print("\(Date.NowInSeconds()): MQTT Ping \(status)")
 	}
 	
 	public func mqttReceived(_ connection: MQTTConnection, packet: MQTTPacket) {
