@@ -17,7 +17,7 @@ struct MQTTPacketFactory {
         .pubRec : MQTTPublishRecPacket.init,
         .pubComp : MQTTPublishCompPacket.init,
         .subAck : MQTTSubAckPacket.init,
-        .unSubAck : MQTTUnSubAckPacket.init,
+        .unSubAck : MQTTUnsubAckPacket.init,
     ]
 	
     func send(_ packet: MQTTPacket, _ writer: StreamWriter) -> Bool {

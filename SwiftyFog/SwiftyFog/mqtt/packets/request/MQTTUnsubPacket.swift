@@ -12,7 +12,7 @@ class MQTTUnsubPacket: MQTTPacket {
     let topics: [String]
     let messageID: UInt16
     
-    init?(topics: [String], messageID: UInt16) {
+    init(topics: [String], messageID: UInt16) {
         self.topics = topics
         self.messageID = messageID
         super.init(header: MQTTPacketFixedHeader(packetType: .unSubscribe, flags: 0x02))

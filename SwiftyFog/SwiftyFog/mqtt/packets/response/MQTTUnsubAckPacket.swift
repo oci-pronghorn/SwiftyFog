@@ -8,7 +8,7 @@
 
 import Foundation
 
-class MQTTUnSubAckPacket: MQTTPacket {
+class MQTTUnsubAckPacket: MQTTPacket {
     let messageID: UInt16
     
     init?(header: MQTTPacketFixedHeader, networkData: Data) {

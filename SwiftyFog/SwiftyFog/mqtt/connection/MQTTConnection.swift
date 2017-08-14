@@ -30,7 +30,7 @@ public enum MQTTConnectionDisconnect: String {
 	case failedRead
 	case failedWrite
 	case brokerNotAlive
-	case serverDisconnected
+	case serverDisconnectedUs // often cause by us sending bad data
 }
 
 public protocol MQTTConnectionDelegate: class {
@@ -211,7 +211,7 @@ extension MQTTConnection: MQTTSessionStreamDelegate {
 	func mqttStreamReceived(in stream: MQTTSessionStream, _ read: (UnsafeMutablePointer<UInt8>, Int) -> Int) {
 		let parsed = factory.parse(read)
 		if parsed.0 {
-			self.didDisconnect(reason: .serverDisconnected, error: nil)
+			self.didDisconnect(reason: .serverDisconnectedUs, error: nil)
 			return
 		}
         if let packet = parsed.1 {

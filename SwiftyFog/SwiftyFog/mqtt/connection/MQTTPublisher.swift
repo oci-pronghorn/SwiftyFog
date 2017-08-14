@@ -72,23 +72,26 @@ It MUST send PUBREL packets in the order in which the corresponding PUBREC packe
 
 	public func publish(topic: String, payload: Data, retain: Bool = false, qos: MQTTQoS = .atMostOnce, completion: ((Bool)->())?) {
 		let model = MQTTPubMsg(topic: topic, payload: payload, retain: retain, QoS: qos)
-		let messageId = (qos == .atMostOnce) ? 0 : idSource.fetch()
-		let packet = MQTTPublishPacket(messageID: messageId, message: model, isRedelivery: false)
-		
-		if delegate?.send(packet: packet) ?? false == false {
-			completion?(false)
+		var messageId = UInt16(0)
+		if qos != .atMostOnce {
+			messageId = idSource.fetch()
 		}
-		switch qos {
-			case .atMostOnce:
+		let packet = MQTTPublishPacket(messageID: messageId, message: model, isRedelivery: false)
+		if qos == .atLeastOnce {
+			unacknowledgedQos1Ack[messageId] = (packet, completion)
+		}
+		else if qos == .exactlyOnce {
+			unacknowledgedQos2Rec[messageId] = (packet, completion)
+		}
+		if delegate?.send(packet: packet) ?? false == false {
+			if messageId != 0 {
 				idSource.release(id: messageId)
-				completion?(true)
-				return
-			case .atLeastOnce:
-				unacknowledgedQos1Ack[messageId] = (packet, completion)
-				return
-			case .exactlyOnce:
-				unacknowledgedQos2Rec[messageId] = (packet, completion)
-				return
+			}
+			completion?(false)
+			return
+		}
+		if qos == .atMostOnce {
+			completion?(true)
 		}
 	}
 	

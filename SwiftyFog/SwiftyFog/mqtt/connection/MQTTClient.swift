@@ -12,21 +12,28 @@ public struct MQTTReconnect {
     public var retryCount: Int = 3
     public var retryTimeInterval: TimeInterval = 1.0
     public var resuscitateTimeInterval: TimeInterval = 5.0
+	
+    public init() {
+    }
 }
 
 public class MQTTClient {
+	private var reconnect: MQTTReconnect
 	private var publisher: MQTTPublisher
+	private var subscriber: MQTTSubscriber
 	private var connection: MQTTConnection?
 	
-	public init() {
+	public init(reconnect: MQTTReconnect = MQTTReconnect()) {
+		self.reconnect = reconnect
 		let idSource = MQTTMessageIdSource()
 		self.publisher = MQTTPublisher(idSource: idSource)
+		self.subscriber = MQTTSubscriber(idSource: idSource)
 		publisher.delegate = self
 	}
 	
 	public func start() {
 		var host = MQTTHostParams()
-		host.host = "thejoveexpress.local"
+		//host.host = "thejoveexpress.local"
 		let client = MQTTClientParams(clientID: "SwiftyFog")
 		connection = MQTTConnection(hostParams: host, clientPrams: client)
 		connection?.delegate = self
@@ -39,12 +46,20 @@ public class MQTTClient {
 	public func publish(topic: String, payload: Data, retain: Bool = false, qos: MQTTQoS = .atMostOnce, completion: ((Bool)->())?) {
 		publisher.publish(topic: topic, payload: payload, retain: retain, qos: qos, completion: completion)
 	}
+	
+	public func subscribe(topics: [String: MQTTQoS], completion: ((Bool)->())?) -> MQTTSubscription {
+		return subscriber.subscribe(topics: topics, completion: completion)
+	}
+	
+	private func unhandledPacket(packet: MQTTPacket) {
+	}
 }
 
 extension MQTTClient: MQTTConnectionDelegate {
 	public func mqttDiscconnected(_ connection: MQTTConnection, reason: MQTTConnectionDisconnect, error: Error?) {
 		print("\(Date.NowInSeconds()): MQTT Discconnected \(reason) \(error?.localizedDescription ?? "")")
 		publisher.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
+		subscriber.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
 		// TODO: New language rules. I need to rethink delegate calls from deinit - as I should :-)
 		if reason != .shutdown {
 			self.connection = nil
@@ -54,6 +69,7 @@ extension MQTTClient: MQTTConnectionDelegate {
 	public func mqttConnected(_ connection: MQTTConnection) {
 		print("\(Date.NowInSeconds()): MQTT Connected")
 		publisher.connected(cleanSession: connection.cleanSession)
+		subscriber.connected(cleanSession: connection.cleanSession)
 	}
 	
 	public func mqttPinged(_ connection: MQTTConnection, dropped: Bool) {
@@ -65,7 +81,13 @@ extension MQTTClient: MQTTConnectionDelegate {
 	}
 	
 	public func mqttReceived(_ connection: MQTTConnection, packet: MQTTPacket) {
-		let _ = publisher.receive(packet: packet)
+		var handled = publisher.receive(packet: packet)
+		if handled == false {
+			handled = subscriber.receive(packet: packet)
+			if handled == false {
+				unhandledPacket(packet: packet)
+			}
+		}
 	}
 }
 

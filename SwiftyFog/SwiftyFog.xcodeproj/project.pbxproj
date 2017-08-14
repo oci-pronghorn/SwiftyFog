@@ -32,7 +32,7 @@
 		559679F71F3FDDC60068DEC5 /* MQTTPingAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679D41F3FDDA80068DEC5 /* MQTTPingAckPacket.swift */; };
 		559679F81F3FDDC60068DEC5 /* MQTTPublishAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679D51F3FDDA80068DEC5 /* MQTTPublishAckPacket.swift */; };
 		559679FA1F3FDDC60068DEC5 /* MQTTSubAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679D71F3FDDA80068DEC5 /* MQTTSubAckPacket.swift */; };
-		559679FB1F3FDDC60068DEC5 /* MQTTUnSubAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679D81F3FDDA80068DEC5 /* MQTTUnSubAckPacket.swift */; };
+		559679FB1F3FDDC60068DEC5 /* MQTTUnsubAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679D81F3FDDA80068DEC5 /* MQTTUnsubAckPacket.swift */; };
 		559679FC1F3FDDCA0068DEC5 /* Data+MQTT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679DA1F3FDDA80068DEC5 /* Data+MQTT.swift */; };
 		559679FD1F3FDDCA0068DEC5 /* MQTTSessionStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679DB1F3FDDA80068DEC5 /* MQTTSessionStream.swift */; };
 		559679FE1F3FDDCA0068DEC5 /* MQTTStreamReadable.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679DC1F3FDDA80068DEC5 /* MQTTStreamReadable.swift.swift */; };
@@ -96,7 +96,7 @@
 		559679D41F3FDDA80068DEC5 /* MQTTPingAckPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTPingAckPacket.swift; sourceTree = "<group>"; };
 		559679D51F3FDDA80068DEC5 /* MQTTPublishAckPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTPublishAckPacket.swift; sourceTree = "<group>"; };
 		559679D71F3FDDA80068DEC5 /* MQTTSubAckPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTSubAckPacket.swift; sourceTree = "<group>"; };
-		559679D81F3FDDA80068DEC5 /* MQTTUnSubAckPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTUnSubAckPacket.swift; sourceTree = "<group>"; };
+		559679D81F3FDDA80068DEC5 /* MQTTUnsubAckPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTUnsubAckPacket.swift; sourceTree = "<group>"; };
 		559679DA1F3FDDA80068DEC5 /* Data+MQTT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+MQTT.swift"; sourceTree = "<group>"; };
 		559679DB1F3FDDA80068DEC5 /* MQTTSessionStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTSessionStream.swift; sourceTree = "<group>"; };
 		559679DC1F3FDDA80068DEC5 /* MQTTStreamReadable.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTStreamReadable.swift.swift; sourceTree = "<group>"; };
@@ -257,7 +257,7 @@
 				5522A1E41F40BF9F005D3802 /* MQTTPublishRecPacket.swift */,
 				5522A1E01F40BF51005D3802 /* MQTTPublishCompPacket.swift */,
 				559679D71F3FDDA80068DEC5 /* MQTTSubAckPacket.swift */,
-				559679D81F3FDDA80068DEC5 /* MQTTUnSubAckPacket.swift */,
+				559679D81F3FDDA80068DEC5 /* MQTTUnsubAckPacket.swift */,
 			);
 			path = response;
 			sourceTree = "<group>";
@@ -410,7 +410,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				559679FB1F3FDDC60068DEC5 /* MQTTUnSubAckPacket.swift in Sources */,
+				559679FB1F3FDDC60068DEC5 /* MQTTUnsubAckPacket.swift in Sources */,
 				559679FC1F3FDDCA0068DEC5 /* Data+MQTT.swift in Sources */,
 				55967A051F3FDDD40068DEC5 /* MQTTQoS.swift in Sources */,
 				559679EF1F3FDDB40068DEC5 /* UIImage+Fog.swift in Sources */,
