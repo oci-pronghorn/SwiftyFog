@@ -9,12 +9,18 @@
 import Foundation
 
 public class MQTTMessageIdSource {
-	private var id = UInt16(1)
+	//TODO: do not assume not-in use after overflow
+	private let mutex = ReadWriteMutex()
+	private var id = UInt16(0)
 	
-	// TODO: make real
 	public func fetch() -> UInt16 {
-		id += 1
-		return id
+		return mutex.writing {
+			if id == UInt16.max {
+				id = 0
+			}
+			id += 1
+			return id
+		}
 	}
 	
 	public func release(id: UInt16) {

@@ -30,7 +30,7 @@ public enum MQTTConnectionDisconnect: String {
 	case failedRead
 	case failedWrite
 	case brokerNotAlive
-	case serverDisconnectedUs // often cause by us sending bad data
+	case serverDisconnectedUs // cause by client sending bad data to server
 }
 
 public protocol MQTTConnectionDelegate: class {
@@ -49,6 +49,7 @@ public extension Date {
 
 public class MQTTConnection {
 	private let clientPrams: MQTTClientParams
+	private let supportsServerAliveCheck = false
     private let factory: MQTTPacketFactory
     private var stream: MQTTSessionStream? = nil
     private var keepAliveTimer: DispatchSourceTimer?
@@ -56,9 +57,9 @@ public class MQTTConnection {
     public weak var delegate: MQTTConnectionDelegate?
 	
 	// TODO: threadsafety
+	private let mutex = ReadWriteMutex()
     private var isFullConnected: Bool = false
     private var lastControlPacketSent: Int64 = 0
-    private var lastPingSent: Int64 = 0
     private var lastPingAck: Int64 = 0
 	
     public init(hostParams: MQTTHostParams, clientPrams: MQTTClientParams) {
@@ -160,7 +161,6 @@ extension MQTTConnection {
 			if serverAliveTest() {
 				if (now - lastControlPacketSent >= UInt64(clientPrams.keepAlive)) {
 					if send(packet: MQTTPingPacket()) {
-						lastPingSent = Date.NowInSeconds()
 						delegate?.mqttPinged(self, dropped: false)
 					}
 				}
@@ -172,16 +172,17 @@ extension MQTTConnection {
     }
 	
     private func serverAliveTest() -> Bool {
-		return true
-		// TODO: The spec says we should receive a a ping ack after a "reasonable amount of time"
-		// The mosquitto logs states that it is sending immediately and every time.
-		// Reception is ony once and after keep alive period
-		let timePassed = Date.NowInSeconds() - lastPingAck
-		// The keep alive range on server is 1.5 * keepAlive
-		let limit = UInt64(clientPrams.keepAlive + (clientPrams.keepAlive / 2))
-		if timePassed > limit {
-			self.didDisconnect(reason: .brokerNotAlive, error: nil)
-			return false
+		if supportsServerAliveCheck {
+			// TODO: The spec says we should receive a a ping ack after a "reasonable amount of time"
+			// The mosquitto logs states that it is sending immediately and every time.
+			// Reception is ony once and after keep alive period
+			let timePassed = Date.NowInSeconds() - lastPingAck
+			// The keep alive range on server is 1.5 * keepAlive
+			let limit = UInt64(clientPrams.keepAlive + (clientPrams.keepAlive / 2))
+			if timePassed > limit {
+				self.didDisconnect(reason: .brokerNotAlive, error: nil)
+				return false
+			}
 		}
 		return true
     }

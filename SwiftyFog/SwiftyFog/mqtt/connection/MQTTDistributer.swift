@@ -34,6 +34,7 @@ public class MQTTDistributor {
 	public weak var delegate: MQTTDistributorDelegate?
 	
 	// TODO: threadsafety with state
+	private let mutex = ReadWriteMutex()
 	
 	public init(idSource: MQTTMessageIdSource) {
 		self.idSource = idSource
@@ -70,7 +71,9 @@ public class MQTTDistributor {
 					case .exactlyOnce:
 						let ack = MQTTPublishRecPacket(messageID: packet.messageID)
 						unacknowledgedQos2Rel[packet.messageID] = packet
-						let _ = delegate?.send(packet: ack)
+						if delegate?.send(packet: ack) ?? false == false {
+							unacknowledgedQos2Rel.removeValue(forKey: packet.messageID)
+						}
 						break
 				}
 				return true

@@ -47,8 +47,14 @@ public class MQTTClient {
 		connection = nil
 	}
 	
-	public func publish(topic: String, payload: Data, retain: Bool = false, qos: MQTTQoS = .atMostOnce, completion: ((Bool)->())?) {
-		publisher.publish(topic: topic, payload: payload, retain: retain, qos: qos, completion: completion)
+	public func publish(
+			topic: String,
+			payload: Data,
+			retain: Bool = false,
+			qos: MQTTQoS = .atMostOnce,
+			retry: PublishRetry = PublishRetry(),
+			completion: ((Bool)->())?) {
+		publisher.publish(topic: topic, payload: payload, retain: retain, qos: qos, retry: retry, completion: completion)
 	}
 	
 	public func subscribe(topics: [String: MQTTQoS], completion: ((Bool)->())?) -> MQTTSubscription {
