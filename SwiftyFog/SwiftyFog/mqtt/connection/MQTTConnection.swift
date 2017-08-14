@@ -23,7 +23,7 @@ public struct MQTTClientParams {
 }
 
 // The following are the ping activities
-public enum PingStatus: String {
+public enum MQTTPingStatus: String {
 	case notConnected
 	case sent
 	case skipped
@@ -43,28 +43,28 @@ public enum MQTTConnectionDisconnect: String {
 	case serverDisconnectedUs // cause by client sending bad data to server
 }
 
-public protocol MQTTConnectionDelegate: class {
-	func mqttDiscconnected(_ connection: MQTTConnection, reason: MQTTConnectionDisconnect, error: Error?)
+protocol MQTTConnectionDelegate: class {
+	func mqttDisconnected(_ connection: MQTTConnection, reason: MQTTConnectionDisconnect, error: Error?)
 	func mqttConnected(_ connection: MQTTConnection)
-	func mqttPinged(_ connection: MQTTConnection, status: PingStatus)
+	func mqttPinged(_ connection: MQTTConnection, status: MQTTPingStatus)
 	func mqttReceived(_ connection: MQTTConnection, packet: MQTTPacket)
 }
 
-public class MQTTConnection {
+final class MQTTConnection {
 	private let clientPrams: MQTTClientParams
 	private let supportsServerAliveCheck = false
     private var factory: MQTTPacketFactory
     private var stream: MQTTSessionStream? = nil
     private var keepAliveTimer: DispatchSourceTimer?
 	
-    public weak var delegate: MQTTConnectionDelegate?
+    weak var delegate: MQTTConnectionDelegate?
 	
 	private let mutex = ReadWriteMutex()
     private var isFullConnected: Bool = false
     private var lastControlPacketSent: Int64 = 0
     private var lastPingAck: Int64 = 0
 	
-    public init(hostParams: MQTTHostParams, clientPrams: MQTTClientParams) {
+    init(hostParams: MQTTHostParams, clientPrams: MQTTClientParams) {
 		self.clientPrams = clientPrams
 		self.factory = MQTTPacketFactory()
 		self.stream = MQTTSessionStream(hostParams: hostParams, delegate: self)
@@ -78,7 +78,7 @@ public class MQTTConnection {
 		}
     }
 	
-    public var cleanSession: Bool {
+    var cleanSession: Bool {
 		return clientPrams.cleanSession
     }
 	
@@ -91,7 +91,7 @@ public class MQTTConnection {
 	
     private func didDisconnect(reason: MQTTConnectionDisconnect, error: Error?) {
         keepAliveTimer?.cancel()
-		delegate?.mqttDiscconnected(self, reason: reason, error: error)
+		delegate?.mqttDisconnected(self, reason: reason, error: error)
 		mutex.writing {
 			isFullConnected = false
 		}
@@ -99,7 +99,7 @@ public class MQTTConnection {
     }
 	
 	@discardableResult
-    public func send(packet: MQTTPacket) -> Bool {
+    func send(packet: MQTTPacket) -> Bool {
 		if let writer = stream?.writer {
 			if factory.send(packet, writer) {
 				mutex.writing {
@@ -164,7 +164,7 @@ extension MQTTConnection {
 	}
 	
     private func pingFired() {
-		var status: PingStatus = .skipped
+		var status: MQTTPingStatus = .skipped
 		mutex.writing {
 			if isFullConnected == false {
 				status = .notConnected

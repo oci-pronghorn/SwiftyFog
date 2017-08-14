@@ -10,6 +10,7 @@ import Foundation
 
 public enum MQTTPayload: CustomStringConvertible {
     case data(Data)
+    // TODO: do large payloads via file
     //case file(FileHandle)
 	
     public var stringRep: String? {

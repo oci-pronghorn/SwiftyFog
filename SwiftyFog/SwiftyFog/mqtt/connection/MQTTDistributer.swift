@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class MQTTRegistration {
+public final class MQTTRegistration {
 	fileprivate weak var distributor: MQTTDistributor? = nil
 	fileprivate let token: UInt64
 	public let path: String
@@ -23,25 +23,25 @@ public class MQTTRegistration {
 	}
 }
 
-public protocol MQTTDistributorDelegate: class {
+protocol MQTTDistributorDelegate: class {
 	func send(packet: MQTTPacket) -> Bool
 }
 
-public class MQTTDistributor {
+final class MQTTDistributor {
 	private let idSource: MQTTMessageIdSource
 	
-	public weak var delegate: MQTTDistributorDelegate?
+	weak var delegate: MQTTDistributorDelegate?
 	
 	private let mutex = ReadWriteMutex()
 	private var unacknowledgedQos2Rel = [UInt16:MQTTPublishPacket]()
 	// TODO: use patial path of registration to activate specific actions
 	private var singleAction: ((MQTTMessage)->())?
 	
-	public init(idSource: MQTTMessageIdSource) {
+	init(idSource: MQTTMessageIdSource) {
 		self.idSource = idSource
 	}
 	
-	public func connected(cleanSession: Bool) {
+	func connected(cleanSession: Bool) {
 		if cleanSession == false {
 			mutex.writing {
 				for messageId in unacknowledgedQos2Rel.keys.sorted() {
@@ -52,7 +52,7 @@ public class MQTTDistributor {
 		}
 	}
 	
-	public func disconnected(cleanSession: Bool, final: Bool) {
+	func disconnected(cleanSession: Bool, final: Bool) {
 		if cleanSession == true {
 			mutex.writing {
 				unacknowledgedQos2Rel.removeAll()
@@ -60,7 +60,7 @@ public class MQTTDistributor {
 		}
 	}
 	
-	public func registerTopic(path: String, action: @escaping (MQTTMessage)->()) -> MQTTRegistration {
+	func registerTopic(path: String, action: @escaping (MQTTMessage)->()) -> MQTTRegistration {
 		singleAction = action
 		return MQTTRegistration(token: 0, path: path)
 	}
@@ -74,7 +74,7 @@ public class MQTTDistributor {
 		singleAction?(MQTTMessage(publishPacket: packet))
 	}
 
-	public func receive(packet: MQTTPacket) -> Bool {
+	func receive(packet: MQTTPacket) -> Bool {
 		switch packet {
 			case let packet as MQTTPublishPacket:
 				switch packet.message.qos {

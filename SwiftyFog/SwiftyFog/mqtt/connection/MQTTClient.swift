@@ -17,7 +17,14 @@ public struct MQTTReconnect {
     }
 }
 
-public class MQTTClient {
+public protocol MQTTClientDelegate: class {
+	func mqttConnected(client: MQTTClient)
+	func mqttPinged(client: MQTTClient, status: MQTTPingStatus)
+	func mqttSubscriptionChanged(client: MQTTClient, subscription: MQTTSubscription, status: MQTTSubscriptionStatus)
+	func mqttDisconnected(client: MQTTClient, reason: MQTTConnectionDisconnect, error: Error?)
+}
+
+public final class MQTTClient {
 	private let client: MQTTClientParams
 	private let host: MQTTHostParams
 	private let reconnect: MQTTReconnect
@@ -26,6 +33,8 @@ public class MQTTClient {
 	private var subscriber: MQTTSubscriber
 	private var distributer: MQTTDistributor
 	private var connection: MQTTConnection?
+	
+    public weak var delegate: MQTTClientDelegate?
 	
 	public init(client: MQTTClientParams, host: MQTTHostParams = MQTTHostParams(), reconnect: MQTTReconnect = MQTTReconnect()) {
 		self.client = client
@@ -49,10 +58,7 @@ public class MQTTClient {
 		connection = nil
 	}
 	
-	public func publish(
-			pubMsg: MQTTPubMsg,
-			retry: MQTTPublishRetry = MQTTPublishRetry(),
-			completion: ((Bool)->())?) {
+	public func publish(pubMsg: MQTTPubMsg, retry: MQTTPublishRetry = MQTTPublishRetry(), completion: ((Bool)->())?) {
 		publisher.publish(pubMsg: pubMsg, retry: retry, completion: completion)
 	}
 	
@@ -66,8 +72,7 @@ public class MQTTClient {
 }
 
 extension MQTTClient: MQTTConnectionDelegate {
-	public func mqttDiscconnected(_ connection: MQTTConnection, reason: MQTTConnectionDisconnect, error: Error?) {
-		print("\(Date.nowInSeconds()): MQTT Discconnected \(reason) \(error?.localizedDescription ?? "")")
+	func mqttDisconnected(_ connection: MQTTConnection, reason: MQTTConnectionDisconnect, error: Error?) {
 		publisher.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
 		subscriber.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
 		distributer.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
@@ -75,20 +80,21 @@ extension MQTTClient: MQTTConnectionDelegate {
 		if reason != .shutdown {
 			self.connection = nil
 		}
+		delegate?.mqttDisconnected(client: self, reason: reason, error: error)
 	}
 	
-	public func mqttConnected(_ connection: MQTTConnection) {
-		print("\(Date.nowInSeconds()): MQTT Connected")
+	func mqttConnected(_ connection: MQTTConnection) {
 		publisher.connected(cleanSession: connection.cleanSession)
 		subscriber.connected(cleanSession: connection.cleanSession)
 		distributer.connected(cleanSession: connection.cleanSession)
+		delegate?.mqttConnected(client: self)
 	}
 	
-	public func mqttPinged(_ connection: MQTTConnection, status: PingStatus) {
-		print("\(Date.nowInSeconds()): MQTT Ping \(status)")
+	func mqttPinged(_ connection: MQTTConnection, status: MQTTPingStatus) {
+		delegate?.mqttPinged(client: self, status: status)
 	}
 	
-	public func mqttReceived(_ connection: MQTTConnection, packet: MQTTPacket) {
+	func mqttReceived(_ connection: MQTTConnection, packet: MQTTPacket) {
 		var handled = distributer.receive(packet: packet)
 		if handled == false {
 			handled = publisher.receive(packet: packet)
@@ -107,11 +113,11 @@ extension MQTTClient: MQTTConnectionDelegate {
 }
 
 extension MQTTClient: MQTTPublisherDelegate, MQTTSubscriptionDelegate, MQTTDistributorDelegate {
-	public func send(packet: MQTTPacket) -> Bool {
+	func send(packet: MQTTPacket) -> Bool {
 		return connection?.send(packet: packet) ?? false
 	}
 	
-	public func subscriptionChanged(subscription: MQTTSubscription, status: MQTTSubscriptionStatus) {
-		print("\(Date.nowInSeconds()): MQTT Subscription \(subscription) \(status)")
+	func subscriptionChanged(subscription: MQTTSubscription, status: MQTTSubscriptionStatus) {
+		delegate?.mqttSubscriptionChanged(client: self, subscription: subscription, status: status)
 	}
 }

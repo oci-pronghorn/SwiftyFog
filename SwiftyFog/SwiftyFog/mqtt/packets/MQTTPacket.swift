@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class MQTTPacket {
+class MQTTPacket {
     let header: MQTTPacketFixedHeader
     
     init(header: MQTTPacketFixedHeader) {

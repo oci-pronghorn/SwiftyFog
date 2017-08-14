@@ -16,11 +16,11 @@ public struct MQTTPublishRetry {
 	}
 }
 
-public protocol MQTTPublisherDelegate: class {
+protocol MQTTPublisherDelegate: class {
 	func send(packet: MQTTPacket) -> Bool
 }
 
-public class MQTTPublisher {
+final class MQTTPublisher {
 	private let idSource: MQTTMessageIdSource
 	
 	// TODO: publish retries -
@@ -33,13 +33,13 @@ public class MQTTPublisher {
 	private var unacknowledgedQos2Rec = PendingPublish()
 	private var unacknowledgedQos2Comp = PendingPublish()
 	
-	public weak var delegate: MQTTPublisherDelegate?
+	weak var delegate: MQTTPublisherDelegate?
 	
-	public init(idSource: MQTTMessageIdSource) {
+	init(idSource: MQTTMessageIdSource) {
 		self.idSource = idSource
 	}
 	
-	public func connected(cleanSession: Bool) {
+	func connected(cleanSession: Bool) {
 		if cleanSession == false {
 			for messageId in unacknowledgedQos1Ack.keys.sorted() {
 				if let element = unacknowledgedQos1Ack[messageId] {
@@ -58,7 +58,7 @@ public class MQTTPublisher {
 		}
 	}
 	
-	public func disconnected(cleanSession: Bool, final: Bool) {
+	func disconnected(cleanSession: Bool, final: Bool) {
 		var unacknowledgedQos1Ack = PendingPublish()
 		var unacknowledgedQos2Rec = PendingPublish()
 		var unacknowledgedQos2Comp = PendingPublish()
@@ -91,7 +91,7 @@ public class MQTTPublisher {
 		}
 	}
 
-	public func publish(
+	func publish(
 			pubMsg: MQTTPubMsg,
 			retry: MQTTPublishRetry = MQTTPublishRetry(),
 			completion: ((Bool)->())?) {
@@ -134,7 +134,7 @@ public class MQTTPublisher {
 		}
 	}
 	
-	public func receive(packet: MQTTPacket) -> Bool {
+	func receive(packet: MQTTPacket) -> Bool {
 		switch packet {
 			case let packet as MQTTPublishAckPacket: // received for Qos 1
 				if let element = mutex.writing({unacknowledgedQos1Ack.removeValue(forKey:packet.messageID)}) {

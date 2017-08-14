@@ -23,7 +23,7 @@ extension Data {
 		self.fogAppend(rhs)
 	}
 	
-	public mutating func mqttAppend(_ value: Data) {
+	mutating func mqttAppend(_ value: Data) {
 		self.fogAppend(UInt16(value.count))
 		self.append(value)
 	}

@@ -17,7 +17,7 @@ public enum MQTTSubscriptionStatus: String {
 	case unsubscribed
 }
 
-public protocol MQTTSubscriptionDelegate: class {
+protocol MQTTSubscriptionDelegate: class {
 	func send(packet: MQTTPacket) -> Bool
 	func subscriptionChanged(subscription: MQTTSubscription, status: MQTTSubscriptionStatus)
 }
@@ -41,7 +41,7 @@ public class MQTTSubscription: CustomStringConvertible {
 	}
 }
 
-public class MQTTSubscriber {
+final class MQTTSubscriber {
 	private let idSource: MQTTMessageIdSource
 	
 	private let mutex = ReadWriteMutex()
@@ -50,13 +50,13 @@ public class MQTTSubscriber {
 	private var unacknowledgedUnsubscriptions = [UInt16: (MQTTUnsubPacket,UInt64,((Bool)->())?)]()
 	private var knownSubscriptions = [UInt64: WeakHandle<MQTTSubscription>]()
 	
-	public weak var delegate: MQTTSubscriptionDelegate?
+	weak var delegate: MQTTSubscriptionDelegate?
 	
-	public init(idSource: MQTTMessageIdSource) {
+	init(idSource: MQTTMessageIdSource) {
 		self.idSource = idSource
 	}
 	
-	public func connected(cleanSession: Bool) {
+	func connected(cleanSession: Bool) {
 		mutex.writing {
 			for token in knownSubscriptions.keys.sorted() {
 				if let subscription = knownSubscriptions[token]?.value {
@@ -69,7 +69,7 @@ public class MQTTSubscriber {
 		}
 	}
 	
-	public func disconnected(cleanSession: Bool, final: Bool) {
+	func disconnected(cleanSession: Bool, final: Bool) {
 		mutex.writing {
 			unacknowledgedSubscriptions.removeAll()
 			unacknowledgedUnsubscriptions.removeAll()
@@ -84,7 +84,7 @@ public class MQTTSubscriber {
 		}
 	}
 
-	public func subscribe(topics: [String: MQTTQoS], completion: ((Bool)->())?) -> MQTTSubscription {
+	func subscribe(topics: [String: MQTTQoS], completion: ((Bool)->())?) -> MQTTSubscription {
 		return mutex.writing {
 			token += 1
 			let subscription = MQTTSubscription(token: token, topics: topics)
@@ -120,7 +120,7 @@ public class MQTTSubscriber {
 		}
 	}
 	
-	public func receive(packet: MQTTPacket) -> Bool {
+	func receive(packet: MQTTPacket) -> Bool {
 		switch packet {
 			case let packet as MQTTSubAckPacket:
 				idSource.release(id: packet.messageID)

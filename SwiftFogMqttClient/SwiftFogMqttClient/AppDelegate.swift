@@ -15,17 +15,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
 	var mqtt: MQTTClient!
 	var registration: MQTTRegistration?
+	var subscription: MQTTSubscription?
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
 		
-		var host = MQTTHostParams()
-		//host.host = "thejoveexpress.local"
-		mqtt = MQTTClient(client: MQTTClientParams(clientID: "SwiftyFog"), host: host)
+		mqtt = MQTTClient(client: MQTTClientParams(clientID: "SwiftyFog"))
+		mqtt.delegate = self
 		
-		registration = mqtt.registerTopic(path: "") { (message) in
-			print("App) \(message)")
-		}
+		registration = mqtt.registerTopic(path: "", action: receiveMessage)
 		
 		return true
 	}
@@ -40,44 +38,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	@IBAction func publishQos0() {
 		mqtt.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .atMostOnce), completion: { (success) in
-			print("App) publishQos0: \(success)")
+			print("\(Date.nowInSeconds()) publishQos0: \(success)")
 		})
 	}
 	
 	@IBAction func publishQos1() {
 		mqtt.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .atLeastOnce), completion: { (success) in
-			print("App) publishQos1: \(success)")
+			print("\(Date.nowInSeconds()) publishQos1: \(success)")
 		})
 	}
 	
 	@IBAction func publishQos2() {
 		mqtt.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .exactlyOnce), completion: { (success) in
-			print("App) publishQos2: \(success)")
+			print("\(Date.nowInSeconds()) publishQos2: \(success)")
 		})
 	}
 	
-	var sub: MQTTSubscription?
-	
 	@IBAction func subAll0() {
-		sub = mqtt.subscribe(topics: ["#": .atMostOnce], completion: { (success) in
-			print("App) subAll0: \(success)")
+		subscription = mqtt.subscribe(topics: ["#": .atMostOnce], completion: { (success) in
+			print("\(Date.nowInSeconds()) subAll0: \(success)")
 		})
 	}
 	
 	@IBAction func subAll1() {
-		sub = mqtt.subscribe(topics: ["#": .atLeastOnce], completion: { (success) in
-			print("App) subAll1: \(success)")
+		subscription = mqtt.subscribe(topics: ["#": .atLeastOnce], completion: { (success) in
+			print("\(Date.nowInSeconds()) subAll1: \(success)")
 		})
 	}
 	
 	@IBAction func subAll2() {
-		sub = mqtt.subscribe(topics: ["#": .exactlyOnce], completion: { (success) in
-			print("App) subAll2: \(success)")
+		subscription = mqtt.subscribe(topics: ["#": .exactlyOnce], completion: { (success) in
+			print("\(Date.nowInSeconds()) subAll2: \(success)")
 		})
 	}
 	
+	func receiveMessage(message: MQTTMessage) {
+		print("\(Date.nowInSeconds()) \(message)")
+	}
+	
 	@IBAction func unsubAll() {
-		sub = nil
+		subscription = nil
 	}
 
 	func applicationWillResignActive(_ application: UIApplication) {
@@ -93,6 +93,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 
 	func applicationWillTerminate(_ application: UIApplication) {
+	}
+}
+
+extension AppDelegate: MQTTClientDelegate {
+	func mqttConnected(client: MQTTClient) {
+		print("\(Date.nowInSeconds()) MQTT Connected")
+	}
+	
+	func mqttPinged(client: MQTTClient, status: MQTTPingStatus) {
+		print("\(Date.nowInSeconds()) MQTT Ping \(status)")
+	}
+	
+	func mqttSubscriptionChanged(client: MQTTClient, subscription: MQTTSubscription, status: MQTTSubscriptionStatus) {
+		print("\(Date.nowInSeconds()) MQTT Subscription \(subscription) \(status)")
+	}
+	
+	func mqttDisconnected(client: MQTTClient, reason: MQTTConnectionDisconnect, error: Error?) {
+		print("\(Date.nowInSeconds()) MQTT Discconnected \(reason) \(error?.localizedDescription ?? "")")
 	}
 }
 
