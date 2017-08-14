@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct PublishRetry {
+public struct MQTTPublishRetry {
 	public var retryCount: UInt = 0
 	public var retryIntervalSecs: UInt = 0
 
@@ -87,7 +87,7 @@ It MUST send PUBREL packets in the order in which the corresponding PUBREC packe
 
 	public func publish(
 			pubMsg: MQTTPubMsg,
-			retry: PublishRetry = PublishRetry(),
+			retry: MQTTPublishRetry = MQTTPublishRetry(),
 			completion: ((Bool)->())?) {
 		var messageId = UInt16(0)
 		if pubMsg.qos != .atMostOnce {

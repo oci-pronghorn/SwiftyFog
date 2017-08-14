@@ -26,12 +26,12 @@ public struct WeakHandle<T>: Hashable {
 	private weak var obj : AnyObject! // Currently in Swift we have to erase the type
 	private let identifier : ObjectIdentifier
 	
-	public init(object : Element) {
+	public init(object: Element) {
 		self.obj = object as AnyObject
 		self.identifier = ObjectIdentifier(self.obj)
 	}
 	
-	public init(key : Element) {
+	public init(key: Element) {
 		self.identifier = ObjectIdentifier(key as AnyObject)
 	}
 	

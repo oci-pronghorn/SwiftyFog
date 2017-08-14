@@ -13,33 +13,39 @@ import SwiftyFog
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	var window: UIWindow?
-	var mqtt: MQTTClient?
+	var mqtt: MQTTClient!
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
-		mqtt = MQTTClient()
-		mqtt?.start()
+		
+		var host = MQTTHostParams()
+		//host.host = "thejoveexpress.local"
+		mqtt = MQTTClient(client: MQTTClientParams(clientID: "SwiftyFog"), host: host)
 		return true
 	}
 	
+	@IBAction func connect() {
+		mqtt.start()
+	}
+	
 	@IBAction func cleanDisconnect() {
-		mqtt?.stop()
+		mqtt.stop()
 	}
 	
 	@IBAction func publishQos0() {
-		mqtt?.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .atMostOnce), completion: { (success) in
+		mqtt.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .atMostOnce), completion: { (success) in
 			print(success)
 		})
 	}
 	
 	@IBAction func publishQos1() {
-		mqtt?.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .atLeastOnce), completion: { (success) in
+		mqtt.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .atLeastOnce), completion: { (success) in
 			print(success)
 		})
 	}
 	
 	@IBAction func publishQos2() {
-		mqtt?.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .exactlyOnce), completion: { (success) in
+		mqtt.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .exactlyOnce), completion: { (success) in
 			print(success)
 		})
 	}
@@ -47,19 +53,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	var sub: MQTTSubscription?
 	
 	@IBAction func subAll0() {
-		sub = mqtt?.subscribe(topics: ["#": .atMostOnce], completion: { (success) in
+		sub = mqtt.subscribe(topics: ["#": .atMostOnce], completion: { (success) in
 			print(success)
 		})
 	}
 	
 	@IBAction func subAll1() {
-		sub = mqtt?.subscribe(topics: ["#": .atLeastOnce], completion: { (success) in
+		sub = mqtt.subscribe(topics: ["#": .atLeastOnce], completion: { (success) in
 			print(success)
 		})
 	}
 	
 	@IBAction func subAll2() {
-		sub = mqtt?.subscribe(topics: ["#": .exactlyOnce], completion: { (success) in
+		sub = mqtt.subscribe(topics: ["#": .exactlyOnce], completion: { (success) in
 			print(success)
 		})
 	}

@@ -18,13 +18,18 @@ public struct MQTTReconnect {
 }
 
 public class MQTTClient {
-	private var reconnect: MQTTReconnect
+	private let client: MQTTClientParams
+	private let host: MQTTHostParams
+	private let reconnect: MQTTReconnect
+	
 	private var publisher: MQTTPublisher
 	private var subscriber: MQTTSubscriber
 	private var distributer: MQTTDistributor
 	private var connection: MQTTConnection?
 	
-	public init(reconnect: MQTTReconnect = MQTTReconnect()) {
+	public init(client: MQTTClientParams, host: MQTTHostParams = MQTTHostParams(), reconnect: MQTTReconnect = MQTTReconnect()) {
+		self.client = client
+		self.host = host
 		self.reconnect = reconnect
 		let idSource = MQTTMessageIdSource()
 		self.publisher = MQTTPublisher(idSource: idSource)
@@ -36,9 +41,6 @@ public class MQTTClient {
 	}
 	
 	public func start() {
-		var host = MQTTHostParams()
-		//host.host = "thejoveexpress.local"
-		let client = MQTTClientParams(clientID: "SwiftyFog")
 		connection = MQTTConnection(hostParams: host, clientPrams: client)
 		connection?.delegate = self
 	}
@@ -49,7 +51,7 @@ public class MQTTClient {
 	
 	public func publish(
 			pubMsg: MQTTPubMsg,
-			retry: PublishRetry = PublishRetry(),
+			retry: MQTTPublishRetry = MQTTPublishRetry(),
 			completion: ((Bool)->())?) {
 		publisher.publish(pubMsg: pubMsg, retry: retry, completion: completion)
 	}
@@ -60,10 +62,6 @@ public class MQTTClient {
 	
 	public func registerTopic(path: String, action: ()->()) {
 		return distributer.registerTopic(path: path, action: action)
-	}
-	
-	private func unhandledPacket(packet: MQTTPacket) {
-		print("Unhandled")
 	}
 }
 
@@ -91,21 +89,29 @@ extension MQTTClient: MQTTConnectionDelegate {
 	}
 	
 	public func mqttReceived(_ connection: MQTTConnection, packet: MQTTPacket) {
-		var handled = publisher.receive(packet: packet)
+		var handled = distributer.receive(packet: packet)
 		if handled == false {
-			handled = subscriber.receive(packet: packet)
+			handled = publisher.receive(packet: packet)
 			if handled == false {
-				handled = distributer.receive(packet: packet)
+				handled = subscriber.receive(packet: packet)
 				if handled == false {
 					unhandledPacket(packet: packet)
 				}
 			}
 		}
 	}
+	
+	private func unhandledPacket(packet: MQTTPacket) {
+		print("MQTT Unhandled: \(type(of:packet))")
+	}
 }
 
 extension MQTTClient: MQTTPublisherDelegate, MQTTSubscriptionDelegate, MQTTDistributorDelegate {
 	public func send(packet: MQTTPacket) -> Bool {
 		return connection?.send(packet: packet) ?? false
+	}
+	
+	public func subscriptionChanged(topics: [String: MQTTQoS], status: MQTTSubscriptionStatus) {
+		print("\(Date.nowInSeconds()): MQTT Subscription \(status)")
 	}
 }

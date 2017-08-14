@@ -17,13 +17,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wkm-Vy-ue0">
-                                <rect key="frame" x="127" y="73" width="121" height="30"/>
-                                <state key="normal" title="Clean Disconnect"/>
-                                <connections>
-                                    <action selector="cleanDisconnect" destination="dkx-z0-nzr" eventType="touchUpInside" id="MAU-u2-pzg"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zWH-hw-BrK">
+                                <rect key="frame" x="119" y="69" width="137" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kvk-Va-PdK">
+                                        <rect key="frame" x="0.0" y="0.0" width="59" height="30"/>
+                                        <state key="normal" title="Connect"/>
+                                        <connections>
+                                            <action selector="connect" destination="dkx-z0-nzr" eventType="touchUpInside" id="4R4-yo-jje"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wkm-Vy-ue0">
+                                        <rect key="frame" x="59" y="0.0" width="78" height="30"/>
+                                        <state key="normal" title="Disconnect"/>
+                                        <connections>
+                                            <action selector="cleanDisconnect" destination="dkx-z0-nzr" eventType="touchUpInside" id="MAU-u2-pzg"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ChA-ki-aCK">
                                 <rect key="frame" x="108" y="161" width="158" height="60"/>
                                 <subviews>
@@ -96,12 +108,12 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="ChA-ki-aCK" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="6wb-zR-cza"/>
-                            <constraint firstItem="YgL-A0-Lcc" firstAttribute="top" secondItem="ChA-ki-aCK" secondAttribute="bottom" constant="39" id="BxO-3r-mW0"/>
-                            <constraint firstItem="wkm-Vy-ue0" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="OCM-yQ-RED"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="wkm-Vy-ue0" secondAttribute="bottom" constant="-83" id="Pda-4b-tLG"/>
-                            <constraint firstItem="YgL-A0-Lcc" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="f03-Ce-pD8"/>
-                            <constraint firstItem="ChA-ki-aCK" firstAttribute="top" secondItem="wkm-Vy-ue0" secondAttribute="bottom" constant="58" id="seR-YX-Kdz"/>
+                            <constraint firstItem="ChA-ki-aCK" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="2gS-Mc-Ua6"/>
+                            <constraint firstItem="ChA-ki-aCK" firstAttribute="top" secondItem="zWH-hw-BrK" secondAttribute="bottom" constant="62" id="5a6-S1-ovg"/>
+                            <constraint firstItem="YgL-A0-Lcc" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="96T-GH-yjZ"/>
+                            <constraint firstItem="zWH-hw-BrK" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="p6h-FT-MDQ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="zWH-hw-BrK" secondAttribute="bottom" constant="-79" id="ukm-wT-iDT"/>
+                            <constraint firstItem="YgL-A0-Lcc" firstAttribute="top" secondItem="ChA-ki-aCK" secondAttribute="bottom" constant="39" id="vxo-R3-aH5"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
