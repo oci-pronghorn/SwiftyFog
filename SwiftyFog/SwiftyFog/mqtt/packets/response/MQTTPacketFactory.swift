@@ -15,6 +15,7 @@ struct MQTTPacketFactory {
         .publish : MQTTPublishPacket.init,
         .pubAck : MQTTPublishAckPacket.init,
         .pubRec : MQTTPublishRecPacket.init,
+        .pubRel : MQTTPublishRelPacket.init,
         .pubComp : MQTTPublishCompPacket.init,
         .subAck : MQTTSubAckPacket.init,
         .unSubAck : MQTTUnsubAckPacket.init,
