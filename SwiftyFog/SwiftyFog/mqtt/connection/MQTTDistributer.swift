@@ -33,8 +33,9 @@ public class MQTTDistributor {
 	
 	public weak var delegate: MQTTDistributorDelegate?
 	
-	// TODO: threadsafety with state
 	private let mutex = ReadWriteMutex()
+	// TODO: use patial path of registration to activate specific actions
+	private var singleAction: ((MQTTMessage)->())?
 	
 	public init(idSource: MQTTMessageIdSource) {
 		self.idSource = idSource
@@ -46,14 +47,18 @@ public class MQTTDistributor {
 	public func disconnected(cleanSession: Bool, final: Bool) {
 	}
 	
-	public func registerTopic(path: String, action: ()->()) {
+	public func registerTopic(path: String, action: @escaping (MQTTMessage)->()) -> MQTTRegistration {
+		singleAction = action
+		return MQTTRegistration(token: 0, path: path)
 	}
 	
 	fileprivate func unregisterTopic(token: UInt64, path: String) {
+		singleAction = nil
 	}
 	
 	private func issue(packet: MQTTPublishPacket) {
 		// TODO: check for partial path registrations and execute actions
+		singleAction?(MQTTMessage(publishPacket: packet))
 	}
 
 	public func receive(packet: MQTTPacket) -> Bool {

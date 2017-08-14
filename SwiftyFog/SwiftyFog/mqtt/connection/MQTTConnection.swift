@@ -53,7 +53,7 @@ public protocol MQTTConnectionDelegate: class {
 public class MQTTConnection {
 	private let clientPrams: MQTTClientParams
 	private let supportsServerAliveCheck = false
-    private let factory: MQTTPacketFactory
+    private var factory: MQTTPacketFactory
     private var stream: MQTTSessionStream? = nil
     private var keepAliveTimer: DispatchSourceTimer?
 	
@@ -68,6 +68,8 @@ public class MQTTConnection {
 		self.clientPrams = clientPrams
 		self.factory = MQTTPacketFactory()
 		self.stream = MQTTSessionStream(hostParams: hostParams, delegate: self)
+		
+		//factory.debugOut = {print($0)}
 		
 		if hostParams.timeout > 0 {
 			DispatchQueue.global().asyncAfter(deadline: .now() +  hostParams.timeout) { [weak self] in

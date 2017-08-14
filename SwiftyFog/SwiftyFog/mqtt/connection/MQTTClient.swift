@@ -60,7 +60,7 @@ public class MQTTClient {
 		return subscriber.subscribe(topics: topics, completion: completion)
 	}
 	
-	public func registerTopic(path: String, action: ()->()) {
+	public func registerTopic(path: String, action: @escaping (MQTTMessage)->()) -> MQTTRegistration {
 		return distributer.registerTopic(path: path, action: action)
 	}
 }
@@ -111,7 +111,7 @@ extension MQTTClient: MQTTPublisherDelegate, MQTTSubscriptionDelegate, MQTTDistr
 		return connection?.send(packet: packet) ?? false
 	}
 	
-	public func subscriptionChanged(topics: [String: MQTTQoS], status: MQTTSubscriptionStatus) {
-		print("\(Date.nowInSeconds()): MQTT Subscription \(status)")
+	public func subscriptionChanged(subscription: MQTTSubscription, status: MQTTSubscriptionStatus) {
+		print("\(Date.nowInSeconds()): MQTT Subscription \(subscription) \(status)")
 	}
 }

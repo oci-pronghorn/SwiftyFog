@@ -24,7 +24,7 @@ public enum MQTTPayload: CustomStringConvertible {
             return "'\(str)'"
         }
         if case .data(let data) = self {
-            return "#\(data.count)"
+            return "#\(data.count) \(data.hexDescription)"
         }
         return "##"
     }

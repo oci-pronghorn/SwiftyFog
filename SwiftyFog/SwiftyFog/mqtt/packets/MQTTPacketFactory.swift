@@ -21,10 +21,14 @@ struct MQTTPacketFactory {
         .unSubAck : MQTTUnsubAckPacket.init,
     ]
 	
+    var debugOut: ((String)->())?
+	
     func send(_ packet: MQTTPacket, _ writer: StreamWriter) -> Bool {
 		var data = Data(capacity: 1024)
 		packet.writeTo(data: &data)
-		print("Sent Bytes: \(type(of:packet)) \(data.count) \(data.hexDescription)")
+		if let debugOut = debugOut {
+			debugOut("Sent Bytes: \(type(of:packet)) \(data.count) \(data.hexDescription)")
+		}
 		return data.write(to: writer)
     }
 
@@ -35,7 +39,9 @@ struct MQTTPacketFactory {
         if let header = MQTTPacketFixedHeader(networkByte: headerByte) {
 			if let len = MQTTPacketFactory.readMqttPackedLength(from: read) {
 				if let data = Data(len: len, from: read) {
-					print("Received Bytes: \(header.packetType) \(data.count) \(data.hexDescription)")
+					if let debugOut = debugOut {
+						debugOut("Received Bytes: \(header.packetType) \(data.count) \(data.hexDescription)")
+					}
 					return (false, constructors[header.packetType]?(header, data))
 				}
 			}

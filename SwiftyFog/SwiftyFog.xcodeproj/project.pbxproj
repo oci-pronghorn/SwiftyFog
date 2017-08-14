@@ -239,6 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				559679CA1F3FDDA80068DEC5 /* MQTTPacket.swift */,
+				559679D31F3FDDA80068DEC5 /* MQTTPacketFactory.swift */,
 				5522A1E61F40C2A7005D3802 /* biderectional */,
 				559679CB1F3FDDA80068DEC5 /* request */,
 				559679D11F3FDDA80068DEC5 /* response */,
@@ -261,7 +262,6 @@
 		559679D11F3FDDA80068DEC5 /* response */ = {
 			isa = PBXGroup;
 			children = (
-				559679D31F3FDDA80068DEC5 /* MQTTPacketFactory.swift */,
 				559679D21F3FDDA80068DEC5 /* MQTTConnAckPacket.swift */,
 				559679D41F3FDDA80068DEC5 /* MQTTPingAckPacket.swift */,
 				559679D71F3FDDA80068DEC5 /* MQTTSubAckPacket.swift */,

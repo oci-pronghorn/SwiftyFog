@@ -14,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	var window: UIWindow?
 	var mqtt: MQTTClient!
+	var registration: MQTTRegistration?
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
@@ -21,6 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		var host = MQTTHostParams()
 		//host.host = "thejoveexpress.local"
 		mqtt = MQTTClient(client: MQTTClientParams(clientID: "SwiftyFog"), host: host)
+		
+		registration = mqtt.registerTopic(path: "") { (message) in
+			print("App) \(message)")
+		}
+		
 		return true
 	}
 	
@@ -34,19 +40,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	@IBAction func publishQos0() {
 		mqtt.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .atMostOnce), completion: { (success) in
-			print(success)
+			print("App) publishQos0: \(success)")
 		})
 	}
 	
 	@IBAction func publishQos1() {
 		mqtt.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .atLeastOnce), completion: { (success) in
-			print(success)
+			print("App) publishQos1: \(success)")
 		})
 	}
 	
 	@IBAction func publishQos2() {
 		mqtt.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .exactlyOnce), completion: { (success) in
-			print(success)
+			print("App) publishQos2: \(success)")
 		})
 	}
 	
@@ -54,19 +60,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	@IBAction func subAll0() {
 		sub = mqtt.subscribe(topics: ["#": .atMostOnce], completion: { (success) in
-			print(success)
+			print("App) subAll0: \(success)")
 		})
 	}
 	
 	@IBAction func subAll1() {
 		sub = mqtt.subscribe(topics: ["#": .atLeastOnce], completion: { (success) in
-			print(success)
+			print("App) subAll1: \(success)")
 		})
 	}
 	
 	@IBAction func subAll2() {
 		sub = mqtt.subscribe(topics: ["#": .exactlyOnce], completion: { (success) in
-			print(success)
+			print("App) subAll2: \(success)")
 		})
 	}
 	
