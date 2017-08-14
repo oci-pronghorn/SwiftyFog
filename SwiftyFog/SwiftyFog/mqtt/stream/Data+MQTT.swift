@@ -8,12 +8,6 @@
 
 import Foundation
 
-extension Date {
-	public static func nowInSeconds() -> Int64 {
-		return Int64(Date().timeIntervalSince1970.rounded())
-	}
-}
-
 extension Data {
 	mutating func mqttAppend <T: FixedWidthInteger> (_ rhs: T) {
 		self.fogAppend(rhs)

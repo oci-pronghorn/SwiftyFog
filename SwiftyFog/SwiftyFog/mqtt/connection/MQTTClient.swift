@@ -36,6 +36,7 @@ public final class MQTTClient {
 	
     public weak var delegate: MQTTClientDelegate?
 	
+	// TODO: implement reconnect
 	public init(client: MQTTClientParams, host: MQTTHostParams = MQTTHostParams(), reconnect: MQTTReconnect = MQTTReconnect()) {
 		self.client = client
 		self.host = host

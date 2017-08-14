@@ -8,6 +8,12 @@
 
 import Foundation
 
+extension Date {
+	public static func nowInSeconds() -> Int64 {
+		return Int64(Date().timeIntervalSince1970.rounded())
+	}
+}
+
 public extension Data {
     public var hexDescription: String {
         return reduce("") {$0 + String(format: "%02x", $1)}

@@ -91,10 +91,8 @@ final class MQTTPublisher {
 		}
 	}
 
-	func publish(
-			pubMsg: MQTTPubMsg,
-			retry: MQTTPublishRetry = MQTTPublishRetry(),
-			completion: ((Bool)->())?) {
+	// TODO: implement retry
+	func publish(pubMsg: MQTTPubMsg, retry: MQTTPublishRetry = MQTTPublishRetry(), completion: ((Bool)->())?) {
 		var messageId = UInt16(0)
 		if pubMsg.qos != .atMostOnce {
 			messageId = idSource.fetch()
