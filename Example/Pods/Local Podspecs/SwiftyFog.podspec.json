@@ -1,0 +1,23 @@
+{
+  "name": "SwiftyFog",
+  "version": "0.1.0",
+  "summary": "Swift implementations of various FogLight entities for over the wire communications. Includes an MQTT client",
+  "description": "This library implements Swift structures to work with a FogLight client. A full performant MQTT client is built in.",
+  "homepage": "https://github.com/oci-pronghorn/SwiftyFog",
+  "license": {
+    "type": "BSD-3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "dsjove": "giovanninid@ociweb.com"
+  },
+  "source": {
+    "git": "https://github.com/oci-pronghorn/SwiftyFog.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "10.0"
+  },
+  "source_files": "SwiftyFog/Classes/**/*",
+  "frameworks": "UIKit"
+}

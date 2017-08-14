@@ -1,0 +1,16 @@
+PODS:
+  - SwiftyFog (0.1.0)
+
+DEPENDENCIES:
+  - SwiftyFog (from `../`)
+
+EXTERNAL SOURCES:
+  SwiftyFog:
+    :path: ../
+
+SPEC CHECKSUMS:
+  SwiftyFog: 4700485b7bab2013230e308300f35e5730685a6e
+
+PODFILE CHECKSUM: b74eadf6f8c40277c16753e1b182d85311017ba9
+
+COCOAPODS: 1.3.1

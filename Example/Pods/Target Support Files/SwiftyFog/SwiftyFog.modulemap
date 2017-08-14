@@ -1,0 +1,6 @@
+framework module SwiftyFog {
+  umbrella header "SwiftyFog-umbrella.h"
+
+  export *
+  module * { export * }
+}
