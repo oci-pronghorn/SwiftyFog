@@ -51,6 +51,8 @@
 		55967A0B1F3FDDDE0068DEC5 /* MQTTSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679BF1F3FDDA80068DEC5 /* MQTTSubscriber.swift */; };
 		55967A0C1F3FDDE70068DEC5 /* FogRational.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679E51F3FDDA80068DEC5 /* FogRational.swift */; };
 		55D06ABE1F413BAC00025ABA /* MQTTDistributer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D06ABD1F413BAC00025ABA /* MQTTDistributer.swift */; };
+		55D06AC21F414A8400025ABA /* ReadWriteMutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D06AC01F414A6D00025ABA /* ReadWriteMutex.swift */; };
+		55D06AC31F414A8400025ABA /* WeakHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D06AC11F414A6D00025ABA /* WeakHandle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +113,8 @@
 		559679E71F3FDDA80068DEC5 /* Data+Fog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Fog.swift"; sourceTree = "<group>"; };
 		559679E81F3FDDA80068DEC5 /* FogExternalizable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FogExternalizable.swift; sourceTree = "<group>"; };
 		55D06ABD1F413BAC00025ABA /* MQTTDistributer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTDistributer.swift; sourceTree = "<group>"; };
+		55D06AC01F414A6D00025ABA /* ReadWriteMutex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadWriteMutex.swift; sourceTree = "<group>"; };
+		55D06AC11F414A6D00025ABA /* WeakHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakHandle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +169,7 @@
 		557611BA1F3FDC51009DF3B8 /* SwiftyFog */ = {
 			isa = PBXGroup;
 			children = (
+				55D06ABF1F414A6D00025ABA /* thread */,
 				559679E61F3FDDA80068DEC5 /* externalizable */,
 				559679DE1F3FDDA80068DEC5 /* image */,
 				559679BA1F3FDDA80068DEC5 /* mqtt */,
@@ -305,6 +310,15 @@
 			path = externalizable;
 			sourceTree = "<group>";
 		};
+		55D06ABF1F414A6D00025ABA /* thread */ = {
+			isa = PBXGroup;
+			children = (
+				55D06AC01F414A6D00025ABA /* ReadWriteMutex.swift */,
+				55D06AC11F414A6D00025ABA /* WeakHandle.swift */,
+			);
+			path = thread;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -423,6 +437,7 @@
 				55967A071F3FDDD90068DEC5 /* MQTTPayload.swift in Sources */,
 				559679F01F3FDDC20068DEC5 /* MQTTConnectPacket.swift in Sources */,
 				55967A061F3FDDD90068DEC5 /* MQTTMessage.swift in Sources */,
+				55D06AC31F414A8400025ABA /* WeakHandle.swift in Sources */,
 				5522A1E51F40BF9F005D3802 /* MQTTPublishRecPacket.swift in Sources */,
 				559679EE1F3FDDB40068DEC5 /* FogPixel.swift in Sources */,
 				55967A041F3FDDD40068DEC5 /* MQTTPubMsg.swift in Sources */,
@@ -440,6 +455,7 @@
 				55967A031F3FDDD40068DEC5 /* MQTTPacketType.swift in Sources */,
 				559679F61F3FDDC60068DEC5 /* MQTTPacketFactory.swift in Sources */,
 				559679F21F3FDDC20068DEC5 /* MQTTPingPacket.swift in Sources */,
+				55D06AC21F414A8400025ABA /* ReadWriteMutex.swift in Sources */,
 				55967A0A1F3FDDDE0068DEC5 /* MQTTPublisher.swift in Sources */,
 				55967A0B1F3FDDDE0068DEC5 /* MQTTSubscriber.swift in Sources */,
 				55967A001F3FDDCE0068DEC5 /* MQTTPacket.swift in Sources */,
