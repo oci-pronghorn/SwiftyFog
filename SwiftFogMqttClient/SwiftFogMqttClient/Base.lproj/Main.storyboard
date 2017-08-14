@@ -45,12 +45,30 @@
                                     <action selector="publishQos3" destination="dkx-z0-nzr" eventType="touchUpInside" id="qLB-Ny-rZi"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d2O-3J-WOx">
+                                <rect key="frame" x="167.5" y="299" width="41" height="30"/>
+                                <state key="normal" title="Sub #"/>
+                                <connections>
+                                    <action selector="subAll" destination="dkx-z0-nzr" eventType="touchUpInside" id="QwK-QP-uXe"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YgL-A0-Lcc">
+                                <rect key="frame" x="159" y="354" width="58" height="30"/>
+                                <state key="normal" title="Unsub #"/>
+                                <connections>
+                                    <action selector="unsubAll" destination="dkx-z0-nzr" eventType="touchUpInside" id="A6g-kY-qg8"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="YgL-A0-Lcc" firstAttribute="top" secondItem="d2O-3J-WOx" secondAttribute="bottom" constant="25" id="0PE-Xu-eES"/>
                             <constraint firstItem="wkm-Vy-ue0" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="53" id="7Lz-4g-aEY"/>
+                            <constraint firstItem="d2O-3J-WOx" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="9Tc-R4-ClW"/>
                             <constraint firstItem="R3A-HI-aAt" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="PCW-lp-TMz"/>
                             <constraint firstItem="dvP-CT-hUD" firstAttribute="top" secondItem="R3A-HI-aAt" secondAttribute="bottom" constant="18" id="SSo-wh-CHl"/>
+                            <constraint firstItem="YgL-A0-Lcc" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="XGX-jc-Yid"/>
+                            <constraint firstItem="d2O-3J-WOx" firstAttribute="top" secondItem="G5r-cD-Lmz" secondAttribute="bottom" constant="22" id="Ymn-dD-QVx"/>
                             <constraint firstItem="G5r-cD-Lmz" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="cc2-2d-iha"/>
                             <constraint firstItem="wkm-Vy-ue0" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="eE7-X6-Ekf"/>
                             <constraint firstItem="dvP-CT-hUD" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="h17-PO-Hbp"/>

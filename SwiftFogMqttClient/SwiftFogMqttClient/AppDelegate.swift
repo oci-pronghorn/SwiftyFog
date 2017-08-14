@@ -43,6 +43,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			print(success)
 		})
 	}
+	
+	var sub: MQTTSubscription?
+	
+	@IBAction func subAll() {
+		sub = mqtt?.subscribe(topics: ["#": .atMostOnce], completion: { (success) in
+			print(success)
+		})
+	}
+	
+	@IBAction func unsubAll() {
+		sub = nil
+	}
 
 	func applicationWillResignActive(_ application: UIApplication) {
 	}

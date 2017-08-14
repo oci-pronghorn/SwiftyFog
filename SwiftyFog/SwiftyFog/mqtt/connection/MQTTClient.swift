@@ -29,6 +29,7 @@ public class MQTTClient {
 		self.publisher = MQTTPublisher(idSource: idSource)
 		self.subscriber = MQTTSubscriber(idSource: idSource)
 		publisher.delegate = self
+		subscriber.delegate = self
 	}
 	
 	public func start() {
@@ -52,6 +53,7 @@ public class MQTTClient {
 	}
 	
 	private func unhandledPacket(packet: MQTTPacket) {
+		print("Unhandled")
 	}
 }
 
@@ -91,7 +93,7 @@ extension MQTTClient: MQTTConnectionDelegate {
 	}
 }
 
-extension MQTTClient: MQTTPublisherDelegate {
+extension MQTTClient: MQTTPublisherDelegate, MQTTSubscriptionDelegate {
 	public func send(packet: MQTTPacket) -> Bool {
 		return connection?.send(packet: packet) ?? false
 	}
