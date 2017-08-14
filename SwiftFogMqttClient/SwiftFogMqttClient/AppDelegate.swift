@@ -27,19 +27,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 	
 	@IBAction func publishQos0() {
-		mqtt?.publish(topic: "Bobs/Store/1", payload: Data(), retain: false, qos: .atMostOnce, completion: { (success) in
+		mqtt?.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .atMostOnce), completion: { (success) in
 			print(success)
 		})
 	}
 	
 	@IBAction func publishQos1() {
-		mqtt?.publish(topic: "Bobs/Store/2", payload: Data(), retain: false, qos: .atLeastOnce, completion: { (success) in
+		mqtt?.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .atLeastOnce), completion: { (success) in
 			print(success)
 		})
 	}
 	
 	@IBAction func publishQos2() {
-		mqtt?.publish(topic: "Bobs/Store/3", payload: Data(), retain: false, qos: .exactlyOnce, completion: { (success) in
+		mqtt?.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .exactlyOnce), completion: { (success) in
 			print(success)
 		})
 	}

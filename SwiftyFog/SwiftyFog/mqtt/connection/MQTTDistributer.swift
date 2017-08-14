@@ -59,7 +59,7 @@ public class MQTTDistributor {
 	public func receive(packet: MQTTPacket) -> Bool {
 		switch packet {
 			case let packet as MQTTPublishPacket:
-				switch packet.message.QoS {
+				switch packet.message.qos {
 					case .atMostOnce:
 						issue(packet: packet)
 						break

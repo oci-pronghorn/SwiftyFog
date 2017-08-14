@@ -15,7 +15,7 @@ public struct MQTTClientParams {
 	
     public var username: String? = nil
     public var password: String? = nil
-    //TODO: public var lastWill: String? = nil
+    public var lastWill: MQTTPubMsg? = nil
 	
     public init(clientID: String) {
 		self.clientID = clientID
@@ -59,7 +59,6 @@ public class MQTTConnection {
 	
     public weak var delegate: MQTTConnectionDelegate?
 	
-	// TODO: threadsafety
 	private let mutex = ReadWriteMutex()
     private var isFullConnected: Bool = false
     private var lastControlPacketSent: Int64 = 0
@@ -110,7 +109,7 @@ public class MQTTConnection {
 				didDisconnect(reason: .failedWrite, error: nil)
 			}
         }
-        // Not connected
+        // else not connected
         return false
     }
 }
@@ -123,7 +122,7 @@ extension MQTTConnection {
 			keepAlive: clientPrams.keepAlive)
 		packet.username = clientPrams.username
 		packet.password = clientPrams.password
-		//TODO: connectPacket.lastWillMessage = clientPrams.lastWill
+		packet.lastWillMessage = clientPrams.lastWill
 		return self.send(packet: packet)
     }
 	
@@ -145,6 +144,7 @@ extension MQTTConnection {
 		if mutex.reading({isFullConnected}) == false {
 			self.didDisconnect(reason: .timeout, error: nil)
 		}
+		// else we are already connected!
 	}
 }
 
@@ -215,6 +215,7 @@ extension MQTTConnection: MQTTSessionStreamDelegate {
 			if startConnectionHandshake() == false {
 				self.didDisconnect(reason: .handshake, error: nil)
 			}
+			// else wait for ack
 		}
 		else {
 			self.didDisconnect(reason: .timeout, error: nil)

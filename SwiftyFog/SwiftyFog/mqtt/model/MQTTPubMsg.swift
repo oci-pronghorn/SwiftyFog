@@ -12,12 +12,12 @@ public struct MQTTPubMsg {
     public let topic: String
     public let payload: Data
     public let retain: Bool
-    public let QoS: MQTTQoS
+    public let qos: MQTTQoS
     
-    public init(topic: String, payload: Data, retain: Bool, QoS: MQTTQoS) {
+    public init(topic: String, payload: Data = Data(), retain: Bool = false, qos: MQTTQoS = .atMostOnce) {
         self.topic = topic
         self.payload = payload
         self.retain = retain
-        self.QoS = QoS
+        self.qos = qos
     }
 }

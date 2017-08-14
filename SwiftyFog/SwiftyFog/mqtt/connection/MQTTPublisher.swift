@@ -86,23 +86,19 @@ It MUST send PUBREL packets in the order in which the corresponding PUBREC packe
 	}
 
 	public func publish(
-			topic: String,
-			payload: Data,
-			retain: Bool = false,
-			qos: MQTTQoS = .atMostOnce,
+			pubMsg: MQTTPubMsg,
 			retry: PublishRetry = PublishRetry(),
 			completion: ((Bool)->())?) {
-		let model = MQTTPubMsg(topic: topic, payload: payload, retain: retain, QoS: qos)
 		var messageId = UInt16(0)
-		if qos != .atMostOnce {
+		if pubMsg.qos != .atMostOnce {
 			messageId = idSource.fetch()
 		}
-		let packet = MQTTPublishPacket(messageID: messageId, message: model, isRedelivery: false)
+		let packet = MQTTPublishPacket(messageID: messageId, message: pubMsg, isRedelivery: false)
 		mutex.writing {
-			if qos == .atLeastOnce {
+			if pubMsg.qos == .atLeastOnce {
 				unacknowledgedQos1Ack[messageId] = (packet, completion)
 			}
-			else if qos == .exactlyOnce {
+			else if pubMsg.qos == .exactlyOnce {
 				unacknowledgedQos2Rec[messageId] = (packet, completion)
 			}
 		}
@@ -111,17 +107,17 @@ It MUST send PUBREL packets in the order in which the corresponding PUBREC packe
 				idSource.release(id: messageId)
 			}
 			mutex.writing {
-				if qos == .atLeastOnce {
+				if pubMsg.qos == .atLeastOnce {
 					unacknowledgedQos1Ack.removeValue(forKey: messageId)
 				}
-				else if qos == .exactlyOnce {
+				else if pubMsg.qos == .exactlyOnce {
 					unacknowledgedQos2Rec.removeValue(forKey: messageId)
 				}
 			}
 			completion?(false)
 			return
 		}
-		if qos == .atMostOnce {
+		if pubMsg.qos == .atMostOnce {
 			completion?(true)
 		}
 	}

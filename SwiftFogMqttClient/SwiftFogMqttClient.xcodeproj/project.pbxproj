@@ -39,6 +39,7 @@
 		5512810E1F408540007FA603 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		551281101F408540007FA603 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5522A1DC1F408561005D3802 /* SwiftyFog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyFog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		55B354A51F41DCFA0040DB24 /* SwiftyFog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyFog.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/SwiftyFog-aqqsglplccscgwepwonmybnhatnk/Build/Products/Debug-iphoneos/SwiftyFog.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +80,7 @@
 				5512810B1F408540007FA603 /* Assets.xcassets */,
 				5512810D1F408540007FA603 /* LaunchScreen.storyboard */,
 				551281101F408540007FA603 /* Info.plist */,
+				55B354A51F41DCFA0040DB24 /* SwiftyFog.framework */,
 			);
 			path = SwiftFogMqttClient;
 			sourceTree = "<group>";

@@ -38,7 +38,7 @@ class MQTTConnectPacket: MQTTPacket {
             if message.retain {
                 flags |= 0x20
             }
-            let qos = message.QoS.rawValue
+            let qos = message.qos.rawValue
             flags |= qos << 3
         }
         if username != nil {

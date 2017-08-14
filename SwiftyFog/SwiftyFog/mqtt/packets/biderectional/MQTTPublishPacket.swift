@@ -38,7 +38,7 @@ class MQTTPublishPacket: MQTTPacket {
         }
 		
         let retain = (header.flags & 0x01) == 0x01
-        self.message = MQTTPubMsg(topic: topic, payload: payload, retain: retain, QoS: qos)
+		self.message = MQTTPubMsg(topic: topic, payload: payload, retain: retain, qos: qos)
 		
         super.init(header: header)
     }
@@ -48,8 +48,8 @@ class MQTTPublishPacket: MQTTPacket {
         if message.retain {
             flags |= 0x01
         }
-        flags |= message.QoS.rawValue << 1
-        if isRedelivery && message.QoS != .atMostOnce {
+        flags |= message.qos.rawValue << 1
+        if isRedelivery && message.qos != .atMostOnce {
 			flags |= 0x08
         }
         return flags
@@ -57,7 +57,7 @@ class MQTTPublishPacket: MQTTPacket {
 	
 	override func appendVariableHeader(_ data: inout Data) {
         data.mqttAppend(message.topic)
-        if message.QoS != .atMostOnce {
+        if message.qos != .atMostOnce {
             data.mqttAppend(messageID)
         }
 	}
