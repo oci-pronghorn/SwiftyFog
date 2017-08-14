@@ -30,6 +30,7 @@ public class MQTTSubscription {
 public class MQTTSubscriber {
 	private let idSource: MQTTMessageIdSource
 	private var token: UInt64 = 0
+	// TODO: threadsafety
 	// TODO: save for resubscriptions
 	//private var pendingSubscriptions = [UInt64: ([String: MQTTQoS],((Bool)->())?)]()
 	private var unacknowledgedSubscriptions = [UInt16: (MQTTSubPacket,((Bool)->())?)]()

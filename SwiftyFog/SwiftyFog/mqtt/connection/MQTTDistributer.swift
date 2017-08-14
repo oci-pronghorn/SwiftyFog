@@ -33,6 +33,8 @@ public class MQTTDistributor {
 	
 	public weak var delegate: MQTTDistributorDelegate?
 	
+	// TODO: threadsafety with state
+	
 	public init(idSource: MQTTMessageIdSource) {
 		self.idSource = idSource
 	}
@@ -43,19 +45,19 @@ public class MQTTDistributor {
 	public func disconnected(cleanSession: Bool, final: Bool) {
 	}
 	
-	public func registerTopic(path: String) {
+	public func registerTopic(path: String, action: ()->()) {
 	}
 	
 	fileprivate func unregisterTopic(token: UInt64, path: String) {
 	}
 	
 	private func issue(packet: MQTTPublishPacket) {
+		// TODO: check for partial path registrations and execute actions
 	}
 
 	public func receive(packet: MQTTPacket) -> Bool {
 		switch packet {
 			case let packet as MQTTPublishPacket:
-				// look for partial paths for distribution on packet handshake completion
 				switch packet.message.QoS {
 					case .atMostOnce:
 						issue(packet: packet)

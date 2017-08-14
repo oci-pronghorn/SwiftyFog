@@ -22,6 +22,7 @@ public class MQTTPacket {
 	}
 	
 	func writeTo(data: inout Data) {
+		// TODO: memory manage this payload data for recycling
 		var payload = Data(capacity: 1024)
 		self.appendVariableHeader(&payload)
 		self.appendPayload(&payload)

@@ -22,6 +22,7 @@ extension Data {
 		self.append(value)
 	}
 	
+	// TODO: make generic and faster
 	mutating func mqttAppendRemaining(length: Int) {
         var lengthOfRemainingData = length
         repeat {

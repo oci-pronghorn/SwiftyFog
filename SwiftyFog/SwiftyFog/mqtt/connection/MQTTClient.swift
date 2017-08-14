@@ -55,8 +55,8 @@ public class MQTTClient {
 		return subscriber.subscribe(topics: topics, completion: completion)
 	}
 	
-	public func registerTopic(path: String) {
-		return distributer.registerTopic(path: path)
+	public func registerTopic(path: String, action: ()->()) {
+		return distributer.registerTopic(path: path, action: action)
 	}
 	
 	private func unhandledPacket(packet: MQTTPacket) {
@@ -69,6 +69,7 @@ extension MQTTClient: MQTTConnectionDelegate {
 		print("\(Date.NowInSeconds()): MQTT Discconnected \(reason) \(error?.localizedDescription ?? "")")
 		publisher.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
 		subscriber.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
+		distributer.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
 		// TODO: New language rules. I need to rethink delegate calls from deinit - as I should :-)
 		if reason != .shutdown {
 			self.connection = nil
@@ -79,6 +80,7 @@ extension MQTTClient: MQTTConnectionDelegate {
 		print("\(Date.NowInSeconds()): MQTT Connected")
 		publisher.connected(cleanSession: connection.cleanSession)
 		subscriber.connected(cleanSession: connection.cleanSession)
+		distributer.connected(cleanSession: connection.cleanSession)
 	}
 	
 	public func mqttPinged(_ connection: MQTTConnection, dropped: Bool) {

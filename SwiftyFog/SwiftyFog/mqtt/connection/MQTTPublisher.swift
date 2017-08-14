@@ -105,6 +105,7 @@ It MUST send PUBREL packets in the order in which the corresponding PUBREC packe
 				return true
 			case let packet as MQTTPublishRecPacket: // received for Qos 2.a
 				if let element = unacknowledgedQos2Rec.removeValue(forKey:packet.messageID) {
+					// TODO: the broker kills connection when receiving this poison pill!
 					let rel = MQTTPublishRelPacket(messageID: packet.messageID)
 					if let success = delegate?.send(packet: rel), success == true {
 						unacknowledgedQos2Comp[packet.messageID] = element

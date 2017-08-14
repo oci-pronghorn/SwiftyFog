@@ -8,7 +8,7 @@
 
 import Foundation
 
-// Publish received (QoS 0 final)
+// Publish payload (QoS 0 final)
 class MQTTPublishPacket: MQTTPacket {
     let messageID: UInt16
     let message: MQTTPubMsg
