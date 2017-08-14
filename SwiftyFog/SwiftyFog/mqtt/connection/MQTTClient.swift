@@ -21,6 +21,7 @@ public class MQTTClient {
 	private var reconnect: MQTTReconnect
 	private var publisher: MQTTPublisher
 	private var subscriber: MQTTSubscriber
+	private var distributer: MQTTDistributor
 	private var connection: MQTTConnection?
 	
 	public init(reconnect: MQTTReconnect = MQTTReconnect()) {
@@ -28,8 +29,10 @@ public class MQTTClient {
 		let idSource = MQTTMessageIdSource()
 		self.publisher = MQTTPublisher(idSource: idSource)
 		self.subscriber = MQTTSubscriber(idSource: idSource)
+		self.distributer = MQTTDistributor(idSource: idSource)
 		publisher.delegate = self
 		subscriber.delegate = self
+		distributer.delegate = self
 	}
 	
 	public func start() {
@@ -50,6 +53,10 @@ public class MQTTClient {
 	
 	public func subscribe(topics: [String: MQTTQoS], completion: ((Bool)->())?) -> MQTTSubscription {
 		return subscriber.subscribe(topics: topics, completion: completion)
+	}
+	
+	public func registerTopic(path: String) {
+		return distributer.registerTopic(path: path)
 	}
 	
 	private func unhandledPacket(packet: MQTTPacket) {
@@ -87,13 +94,16 @@ extension MQTTClient: MQTTConnectionDelegate {
 		if handled == false {
 			handled = subscriber.receive(packet: packet)
 			if handled == false {
-				unhandledPacket(packet: packet)
+				handled = distributer.receive(packet: packet)
+				if handled == false {
+					unhandledPacket(packet: packet)
+				}
 			}
 		}
 	}
 }
 
-extension MQTTClient: MQTTPublisherDelegate, MQTTSubscriptionDelegate {
+extension MQTTClient: MQTTPublisherDelegate, MQTTSubscriptionDelegate, MQTTDistributorDelegate {
 	public func send(packet: MQTTPacket) -> Bool {
 		return connection?.send(packet: packet) ?? false
 	}

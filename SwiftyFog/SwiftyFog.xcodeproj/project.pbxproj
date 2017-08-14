@@ -50,6 +50,7 @@
 		55967A0A1F3FDDDE0068DEC5 /* MQTTPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679BE1F3FDDA80068DEC5 /* MQTTPublisher.swift */; };
 		55967A0B1F3FDDDE0068DEC5 /* MQTTSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679BF1F3FDDA80068DEC5 /* MQTTSubscriber.swift */; };
 		55967A0C1F3FDDE70068DEC5 /* FogRational.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559679E51F3FDDA80068DEC5 /* FogRational.swift */; };
+		55D06ABE1F413BAC00025ABA /* MQTTDistributer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D06ABD1F413BAC00025ABA /* MQTTDistributer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +110,7 @@
 		559679E51F3FDDA80068DEC5 /* FogRational.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FogRational.swift; sourceTree = "<group>"; };
 		559679E71F3FDDA80068DEC5 /* Data+Fog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Fog.swift"; sourceTree = "<group>"; };
 		559679E81F3FDDA80068DEC5 /* FogExternalizable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FogExternalizable.swift; sourceTree = "<group>"; };
+		55D06ABD1F413BAC00025ABA /* MQTTDistributer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTDistributer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +136,10 @@
 			isa = PBXGroup;
 			children = (
 				5522A1E71F40C2A7005D3802 /* MQTTPublishPacket.swift */,
+				559679D51F3FDDA80068DEC5 /* MQTTPublishAckPacket.swift */,
+				5522A1E41F40BF9F005D3802 /* MQTTPublishRecPacket.swift */,
+				5522A1E21F40BF7F005D3802 /* MQTTPublishRelPacket.swift */,
+				5522A1E01F40BF51005D3802 /* MQTTPublishCompPacket.swift */,
 			);
 			path = biderectional;
 			sourceTree = "<group>";
@@ -194,10 +200,11 @@
 			isa = PBXGroup;
 			children = (
 				559679BC1F3FDDA80068DEC5 /* MQTTClient.swift */,
+				5522A1E91F40CBB4005D3802 /* MQTTMessageIdSource.swift */,
 				559679BD1F3FDDA80068DEC5 /* MQTTConnection.swift */,
 				559679BE1F3FDDA80068DEC5 /* MQTTPublisher.swift */,
 				559679BF1F3FDDA80068DEC5 /* MQTTSubscriber.swift */,
-				5522A1E91F40CBB4005D3802 /* MQTTMessageIdSource.swift */,
+				55D06ABD1F413BAC00025ABA /* MQTTDistributer.swift */,
 			);
 			path = connection;
 			sourceTree = "<group>";
@@ -240,7 +247,6 @@
 				559679CC1F3FDDA80068DEC5 /* MQTTConnectPacket.swift */,
 				559679CD1F3FDDA80068DEC5 /* MQTTDisconnectPacket.swift */,
 				559679CE1F3FDDA80068DEC5 /* MQTTPingPacket.swift */,
-				5522A1E21F40BF7F005D3802 /* MQTTPublishRelPacket.swift */,
 				559679CF1F3FDDA80068DEC5 /* MQTTSubPacket.swift */,
 				559679D01F3FDDA80068DEC5 /* MQTTUnsubPacket.swift */,
 			);
@@ -253,9 +259,6 @@
 				559679D31F3FDDA80068DEC5 /* MQTTPacketFactory.swift */,
 				559679D21F3FDDA80068DEC5 /* MQTTConnAckPacket.swift */,
 				559679D41F3FDDA80068DEC5 /* MQTTPingAckPacket.swift */,
-				559679D51F3FDDA80068DEC5 /* MQTTPublishAckPacket.swift */,
-				5522A1E41F40BF9F005D3802 /* MQTTPublishRecPacket.swift */,
-				5522A1E01F40BF51005D3802 /* MQTTPublishCompPacket.swift */,
 				559679D71F3FDDA80068DEC5 /* MQTTSubAckPacket.swift */,
 				559679D81F3FDDA80068DEC5 /* MQTTUnsubAckPacket.swift */,
 			);
@@ -446,6 +449,7 @@
 				55967A0C1F3FDDE70068DEC5 /* FogRational.swift in Sources */,
 				55967A021F3FDDD40068DEC5 /* MQTTPacketFixedHeader.swift in Sources */,
 				559679FA1F3FDDC60068DEC5 /* MQTTSubAckPacket.swift in Sources */,
+				55D06ABE1F413BAC00025ABA /* MQTTDistributer.swift in Sources */,
 				5522A1E81F40C611005D3802 /* MQTTPublishPacket.swift in Sources */,
 				559679FD1F3FDDCA0068DEC5 /* MQTTSessionStream.swift in Sources */,
 				559679FF1F3FDDCA0068DEC5 /* MQTTStreamWritable.swift in Sources */,

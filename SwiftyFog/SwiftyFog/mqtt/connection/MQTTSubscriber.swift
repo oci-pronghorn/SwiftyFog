@@ -30,9 +30,11 @@ public class MQTTSubscription {
 public class MQTTSubscriber {
 	private let idSource: MQTTMessageIdSource
 	private var token: UInt64 = 0
-	//private var unsentSubscriptions = [UInt64: ([String: MQTTQoS],((Bool)->())?)]()
+	// TODO: save for resubscriptions
+	//private var pendingSubscriptions = [UInt64: ([String: MQTTQoS],((Bool)->())?)]()
 	private var unacknowledgedSubscriptions = [UInt16: (MQTTSubPacket,((Bool)->())?)]()
 	private var unacknowledgedUnsubscriptions = [UInt16: (MQTTUnsubPacket,((Bool)->())?)]()
+	// private acknowledgedSubscriptions
 	
 	public weak var delegate: MQTTSubscriptionDelegate?
 	
@@ -41,10 +43,11 @@ public class MQTTSubscriber {
 	}
 	
 	public func connected(cleanSession: Bool) {
-		// resubscribe
+		// TODO: resubscribe
 	}
 	
 	public func disconnected(cleanSession: Bool, final: Bool) {
+		// TODO: move everything to pending on not final
 	}
 
 	public func subscribe(topics: [String: MQTTQoS], completion: ((Bool)->())?) -> MQTTSubscription {
@@ -57,7 +60,7 @@ public class MQTTSubscriber {
 		
         if delegate?.send(packet: packet) ?? false == false {
 			unacknowledgedSubscriptions.removeValue(forKey: packet.messageID)
-			//unsentSubscriptions[token] = ((topics, completion))
+			// TODO: make pending
 			return subscription
         }
 		

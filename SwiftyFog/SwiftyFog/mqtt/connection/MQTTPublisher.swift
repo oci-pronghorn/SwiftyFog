@@ -17,7 +17,7 @@ public class MQTTPublisher {
 	
 	// TODO: threadsafety
 	// TODO: completion timeouts
-	// TODO: we are *permitted* to resend with new message ids until full handshake is done
+	// TODO: we are *permitted* to resend with new message ids until full handshake is done (not Qos0)
 	//	- make that configurable
 	private var unacknowledgedQos1Ack = [UInt16:(MQTTPublishPacket,((Bool)->())?)]()
 	private var unacknowledgedQos2Rec = [UInt16:(MQTTPublishPacket,((Bool)->())?)]()

@@ -24,36 +24,70 @@
                                     <action selector="cleanDisconnect" destination="dkx-z0-nzr" eventType="touchUpInside" id="MAU-u2-pzg"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R3A-HI-aAt">
-                                <rect key="frame" x="165.5" y="151" width="43" height="30"/>
-                                <state key="normal" title="QOS 1"/>
-                                <connections>
-                                    <action selector="publishQos1" destination="dkx-z0-nzr" eventType="touchUpInside" id="OrO-uO-Dmh"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dvP-CT-hUD">
-                                <rect key="frame" x="164.5" y="199" width="45" height="30"/>
-                                <state key="normal" title="QOS 2"/>
-                                <connections>
-                                    <action selector="publishQos2" destination="dkx-z0-nzr" eventType="touchUpInside" id="iMN-9i-GaB"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G5r-cD-Lmz">
-                                <rect key="frame" x="164" y="247" width="46" height="30"/>
-                                <state key="normal" title="QOS 3"/>
-                                <connections>
-                                    <action selector="publishQos3" destination="dkx-z0-nzr" eventType="touchUpInside" id="qLB-Ny-rZi"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d2O-3J-WOx">
-                                <rect key="frame" x="167.5" y="299" width="41" height="30"/>
-                                <state key="normal" title="Sub #"/>
-                                <connections>
-                                    <action selector="subAll" destination="dkx-z0-nzr" eventType="touchUpInside" id="QwK-QP-uXe"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ChA-ki-aCK">
+                                <rect key="frame" x="108" y="161" width="158" height="60"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="YvQ-5V-gLh">
+                                        <rect key="frame" x="0.0" y="0.0" width="54" height="60"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d2O-3J-WOx">
+                                                <rect key="frame" x="0.0" y="0.0" width="54" height="30"/>
+                                                <state key="normal" title="Sub # 0"/>
+                                                <connections>
+                                                    <action selector="subAll0" destination="dkx-z0-nzr" eventType="touchUpInside" id="68y-sr-DwN"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R3A-HI-aAt">
+                                                <rect key="frame" x="0.0" y="30" width="54" height="30"/>
+                                                <state key="normal" title="QOS 0"/>
+                                                <connections>
+                                                    <action selector="publishQos0" destination="dkx-z0-nzr" eventType="touchUpInside" id="seW-wO-1Ux"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qr0-Ew-jcl">
+                                        <rect key="frame" x="54" y="0.0" width="51" height="60"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iae-oP-C0s">
+                                                <rect key="frame" x="0.0" y="0.0" width="51" height="30"/>
+                                                <state key="normal" title="Sub # 1"/>
+                                                <connections>
+                                                    <action selector="subAll1" destination="dkx-z0-nzr" eventType="touchUpInside" id="D4r-3F-cBI"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dvP-CT-hUD">
+                                                <rect key="frame" x="0.0" y="30" width="51" height="30"/>
+                                                <state key="normal" title="QOS 1"/>
+                                                <connections>
+                                                    <action selector="publishQos1" destination="dkx-z0-nzr" eventType="touchUpInside" id="dVL-YM-J3k"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="MDL-KX-J6X">
+                                        <rect key="frame" x="105" y="0.0" width="53" height="60"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="my2-BU-x1D">
+                                                <rect key="frame" x="0.0" y="0.0" width="53" height="30"/>
+                                                <state key="normal" title="Sub # 2"/>
+                                                <connections>
+                                                    <action selector="subAll2" destination="dkx-z0-nzr" eventType="touchUpInside" id="Jyk-Cg-4C5"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G5r-cD-Lmz">
+                                                <rect key="frame" x="0.0" y="30" width="53" height="30"/>
+                                                <state key="normal" title="QOS 2"/>
+                                                <connections>
+                                                    <action selector="publishQos2" destination="dkx-z0-nzr" eventType="touchUpInside" id="euo-jo-lUD"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YgL-A0-Lcc">
-                                <rect key="frame" x="159" y="354" width="58" height="30"/>
+                                <rect key="frame" x="158" y="260" width="58" height="30"/>
                                 <state key="normal" title="Unsub #"/>
                                 <connections>
                                     <action selector="unsubAll" destination="dkx-z0-nzr" eventType="touchUpInside" id="A6g-kY-qg8"/>
@@ -62,18 +96,12 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="YgL-A0-Lcc" firstAttribute="top" secondItem="d2O-3J-WOx" secondAttribute="bottom" constant="25" id="0PE-Xu-eES"/>
-                            <constraint firstItem="wkm-Vy-ue0" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="53" id="7Lz-4g-aEY"/>
-                            <constraint firstItem="d2O-3J-WOx" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="9Tc-R4-ClW"/>
-                            <constraint firstItem="R3A-HI-aAt" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="PCW-lp-TMz"/>
-                            <constraint firstItem="dvP-CT-hUD" firstAttribute="top" secondItem="R3A-HI-aAt" secondAttribute="bottom" constant="18" id="SSo-wh-CHl"/>
-                            <constraint firstItem="YgL-A0-Lcc" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="XGX-jc-Yid"/>
-                            <constraint firstItem="d2O-3J-WOx" firstAttribute="top" secondItem="G5r-cD-Lmz" secondAttribute="bottom" constant="22" id="Ymn-dD-QVx"/>
-                            <constraint firstItem="G5r-cD-Lmz" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="cc2-2d-iha"/>
-                            <constraint firstItem="wkm-Vy-ue0" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="eE7-X6-Ekf"/>
-                            <constraint firstItem="dvP-CT-hUD" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="h17-PO-Hbp"/>
-                            <constraint firstItem="G5r-cD-Lmz" firstAttribute="top" secondItem="dvP-CT-hUD" secondAttribute="bottom" constant="18" id="kXu-en-sLp"/>
-                            <constraint firstItem="R3A-HI-aAt" firstAttribute="top" secondItem="wkm-Vy-ue0" secondAttribute="bottom" constant="48" id="t8b-Tt-yRR"/>
+                            <constraint firstItem="ChA-ki-aCK" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="6wb-zR-cza"/>
+                            <constraint firstItem="YgL-A0-Lcc" firstAttribute="top" secondItem="ChA-ki-aCK" secondAttribute="bottom" constant="39" id="BxO-3r-mW0"/>
+                            <constraint firstItem="wkm-Vy-ue0" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="OCM-yQ-RED"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="wkm-Vy-ue0" secondAttribute="bottom" constant="-83" id="Pda-4b-tLG"/>
+                            <constraint firstItem="YgL-A0-Lcc" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="f03-Ce-pD8"/>
+                            <constraint firstItem="ChA-ki-aCK" firstAttribute="top" secondItem="wkm-Vy-ue0" secondAttribute="bottom" constant="58" id="seR-YX-Kdz"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

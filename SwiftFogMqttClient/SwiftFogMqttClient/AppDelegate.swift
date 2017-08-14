@@ -26,19 +26,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		mqtt?.stop()
 	}
 	
-	@IBAction func publishQos1() {
+	@IBAction func publishQos0() {
 		mqtt?.publish(topic: "Bobs/Store/1", payload: Data(), retain: false, qos: .atMostOnce, completion: { (success) in
 			print(success)
 		})
 	}
 	
-	@IBAction func publishQos2() {
+	@IBAction func publishQos1() {
 		mqtt?.publish(topic: "Bobs/Store/2", payload: Data(), retain: false, qos: .atLeastOnce, completion: { (success) in
 			print(success)
 		})
 	}
 	
-	@IBAction func publishQos3() {
+	@IBAction func publishQos2() {
 		mqtt?.publish(topic: "Bobs/Store/3", payload: Data(), retain: false, qos: .exactlyOnce, completion: { (success) in
 			print(success)
 		})
@@ -46,8 +46,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	var sub: MQTTSubscription?
 	
-	@IBAction func subAll() {
+	@IBAction func subAll0() {
 		sub = mqtt?.subscribe(topics: ["#": .atMostOnce], completion: { (success) in
+			print(success)
+		})
+	}
+	
+	@IBAction func subAll1() {
+		sub = mqtt?.subscribe(topics: ["#": .atLeastOnce], completion: { (success) in
+			print(success)
+		})
+	}
+	
+	@IBAction func subAll2() {
+		sub = mqtt?.subscribe(topics: ["#": .exactlyOnce], completion: { (success) in
 			print(success)
 		})
 	}
