@@ -72,7 +72,7 @@ public class MQTTClient {
 
 extension MQTTClient: MQTTConnectionDelegate {
 	public func mqttDiscconnected(_ connection: MQTTConnection, reason: MQTTConnectionDisconnect, error: Error?) {
-		print("\(Date.NowInSeconds()): MQTT Discconnected \(reason) \(error?.localizedDescription ?? "")")
+		print("\(Date.nowInSeconds()): MQTT Discconnected \(reason) \(error?.localizedDescription ?? "")")
 		publisher.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
 		subscriber.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
 		distributer.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
@@ -83,14 +83,14 @@ extension MQTTClient: MQTTConnectionDelegate {
 	}
 	
 	public func mqttConnected(_ connection: MQTTConnection) {
-		print("\(Date.NowInSeconds()): MQTT Connected")
+		print("\(Date.nowInSeconds()): MQTT Connected")
 		publisher.connected(cleanSession: connection.cleanSession)
 		subscriber.connected(cleanSession: connection.cleanSession)
 		distributer.connected(cleanSession: connection.cleanSession)
 	}
 	
 	public func mqttPinged(_ connection: MQTTConnection, status: PingStatus) {
-		print("\(Date.NowInSeconds()): MQTT Ping \(status)")
+		print("\(Date.nowInSeconds()): MQTT Ping \(status)")
 	}
 	
 	public func mqttReceived(_ connection: MQTTConnection, packet: MQTTPacket) {
