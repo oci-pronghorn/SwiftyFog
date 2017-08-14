@@ -29,11 +29,11 @@ public protocol MQTTDistributorDelegate: class {
 
 public class MQTTDistributor {
 	private let idSource: MQTTMessageIdSource
-	private var unacknowledgedQos2Rel = [UInt16:MQTTPublishPacket]()
 	
 	public weak var delegate: MQTTDistributorDelegate?
 	
 	private let mutex = ReadWriteMutex()
+	private var unacknowledgedQos2Rel = [UInt16:MQTTPublishPacket]()
 	// TODO: use patial path of registration to activate specific actions
 	private var singleAction: ((MQTTMessage)->())?
 	
@@ -42,9 +42,22 @@ public class MQTTDistributor {
 	}
 	
 	public func connected(cleanSession: Bool) {
+		if cleanSession == false {
+			mutex.writing {
+				for messageId in unacknowledgedQos2Rel.keys.sorted() {
+					let packet = MQTTPublishRecPacket(messageID: messageId)
+					let _ = delegate?.send(packet: packet)
+				}
+			}
+		}
 	}
 	
 	public func disconnected(cleanSession: Bool, final: Bool) {
+		if cleanSession == true {
+			mutex.writing {
+				unacknowledgedQos2Rel.removeAll()
+			}
+		}
 	}
 	
 	public func registerTopic(path: String, action: @escaping (MQTTMessage)->()) -> MQTTRegistration {
@@ -75,15 +88,19 @@ public class MQTTDistributor {
 						break
 					case .exactlyOnce:
 						let ack = MQTTPublishRecPacket(messageID: packet.messageID)
-						unacknowledgedQos2Rel[packet.messageID] = packet
+						mutex.writing {
+							unacknowledgedQos2Rel[packet.messageID] = packet
+						}
 						if delegate?.send(packet: ack) ?? false == false {
-							unacknowledgedQos2Rel.removeValue(forKey: packet.messageID)
+							mutex.writing {
+								unacknowledgedQos2Rel.removeValue(forKey: packet.messageID)
+							}
 						}
 						break
 				}
 				return true
 			case let packet as MQTTPublishRelPacket:
-				if let element = unacknowledgedQos2Rel.removeValue(forKey:packet.messageID) {
+				if let element = mutex.writing({unacknowledgedQos2Rel.removeValue(forKey:packet.messageID)}) {
 					let comp = MQTTPublishCompPacket(messageID: packet.messageID)
 					let _ = delegate?.send(packet: comp)
 					issue(packet: element)

@@ -40,16 +40,22 @@ public class MQTTPublisher {
 	}
 	
 	public func connected(cleanSession: Bool) {
-	/* TODO:
-	When a Client reconnects with CleanSession set to 0, both the Client and Server MUST re-send any unacknowledged PUBLISH Packets (where QoS > 0) and PUBREL Packets using their original Packet Identifiers [MQTT-4.4.0-1]. This is the only circumstance where a Client or Server is REQUIRED to redeliver messages.
-	*/
-	/*
-	A Client MUST follow these rules when implementing the protocol flows defined elsewhere in this chapter:
-When it re-sends any PUBLISH packets, it MUST re-send them in the order in which the original PUBLISH packets were sent (this applies to QoS 1 and QoS 2 messages) [MQTT-4.6.0-1]
-It MUST send PUBACK packets in the order in which the corresponding PUBLISH packets were received (QoS 1 messages) [MQTT-4.6.0-2]
-It MUST send PUBREC packets in the order in which the corresponding PUBLISH packets were received (QoS 2 messages) [MQTT-4.6.0-3]
-It MUST send PUBREL packets in the order in which the corresponding PUBREC packets were received (QoS 2 messages)
-*/
+		if cleanSession == false {
+			for messageId in unacknowledgedQos1Ack.keys.sorted() {
+				if let element = unacknowledgedQos1Ack[messageId] {
+					let _ = delegate?.send(packet: element.0)
+				}
+			}
+			for messageId in unacknowledgedQos2Rec.keys.sorted() {
+				if let element = unacknowledgedQos2Rec[messageId] {
+					let _ = delegate?.send(packet: element.0)
+				}
+			}
+			for messageId in unacknowledgedQos2Comp.keys.sorted() {
+				let packet = MQTTPublishRecPacket(messageID: messageId)
+				let _ = delegate?.send(packet: packet)
+			}
+		}
 	}
 	
 	public func disconnected(cleanSession: Bool, final: Bool) {
@@ -94,11 +100,17 @@ It MUST send PUBREL packets in the order in which the corresponding PUBREC packe
 			messageId = idSource.fetch()
 		}
 		let packet = MQTTPublishPacket(messageID: messageId, message: pubMsg, isRedelivery: false)
+		performPublish(packet: packet, completion: completion)
+	}
+	
+	private func performPublish(packet: MQTTPublishPacket, completion: ((Bool)->())?) {
+		let qos = packet.message.qos
+		let messageId = packet.messageID
 		mutex.writing {
-			if pubMsg.qos == .atLeastOnce {
+			if qos == .atLeastOnce {
 				unacknowledgedQos1Ack[messageId] = (packet, completion)
 			}
-			else if pubMsg.qos == .exactlyOnce {
+			else if qos == .exactlyOnce {
 				unacknowledgedQos2Rec[messageId] = (packet, completion)
 			}
 		}
@@ -107,17 +119,17 @@ It MUST send PUBREL packets in the order in which the corresponding PUBREC packe
 				idSource.release(id: messageId)
 			}
 			mutex.writing {
-				if pubMsg.qos == .atLeastOnce {
+				if qos == .atLeastOnce {
 					unacknowledgedQos1Ack.removeValue(forKey: messageId)
 				}
-				else if pubMsg.qos == .exactlyOnce {
+				else if qos == .exactlyOnce {
 					unacknowledgedQos2Rec.removeValue(forKey: messageId)
 				}
 			}
 			completion?(false)
 			return
 		}
-		if pubMsg.qos == .atMostOnce {
+		if qos == .atMostOnce {
 			completion?(true)
 		}
 	}

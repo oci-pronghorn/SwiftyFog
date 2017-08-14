@@ -13,15 +13,17 @@ public struct MQTTMessage: CustomStringConvertible {
 	public let payload: MQTTPayload
 	public let id: UInt16
 	public let retain: Bool
+	public let qos: MQTTQoS
 	
 	init(publishPacket: MQTTPublishPacket) {
 		self.topic = publishPacket.message.topic
 		self.payload = .data(publishPacket.message.payload)
 		self.id = publishPacket.messageID
 		self.retain = publishPacket.message.retain
+		self.qos = publishPacket.message.qos
 	}
     
     public var description: String {
-        return "\(id)) \(topic)\(retain ? "*" : "") = \(payload)"
+        return "\(id)) \(topic) \(qos)\(retain ? "*" : "") = \(payload)"
     }
 }
