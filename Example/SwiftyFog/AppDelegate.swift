@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 		mqtt = MQTTClient(
 			client: MQTTClientParams(clientID: "SwiftyFogExample"),
-			host: MQTTHostParams(host: "thejoveexpress.local"),
+			//host: MQTTHostParams(host: "thejoveexpress.local"),
 			reconnect: MQTTReconnectParams())
 		mqtt.delegate = self
 		mqtt?.debugPackageBytes = {print($0)}
@@ -63,19 +63,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 	
 	@IBAction func subAll0() {
-		subscription = mqtt.subscribe(topics: ["#": .atMostOnce]) { (success) in
+		subscription = mqtt.subscribe(topics: ["Bobs/#": .atMostOnce]) { (success) in
 			print("\(Date.nowInSeconds()) subAll0: \(success)")
 		}
 	}
 	
 	@IBAction func subAll1() {
-		subscription = mqtt.subscribe(topics: ["#": .atLeastOnce]) { (success) in
+		subscription = mqtt.subscribe(topics: ["Bobs/#": .atLeastOnce]) { (success) in
 			print("\(Date.nowInSeconds()) subAll1: \(success)")
 		}
 	}
 	
 	@IBAction func subAll2() {
-		subscription = mqtt.subscribe(topics: ["#": .exactlyOnce]) { (success) in
+		subscription = mqtt.subscribe(topics: ["Bobs/#": .exactlyOnce]) { (success) in
 			print("\(Date.nowInSeconds()) subAll2: \(success)")
 		}
 	}

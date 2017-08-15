@@ -41,6 +41,7 @@ final class MQTTDistributor {
 		self.idSource = idSource
 	}
 	
+	// todo: replay from file if reboot
 	func connected(cleanSession: Bool) {
 		if cleanSession == false {
 			mutex.writing {
@@ -88,21 +89,18 @@ final class MQTTDistributor {
 						break
 					case .exactlyOnce:
 						let ack = MQTTPublishRecPacket(messageID: packet.messageID)
-						mutex.writing {
-							unacknowledgedQos2Rel[packet.messageID] = packet
-						}
+						mutex.writing {unacknowledgedQos2Rel[packet.messageID] = packet}
 						if delegate?.send(packet: ack) ?? false == false {
-							mutex.writing {
-								unacknowledgedQos2Rel.removeValue(forKey: packet.messageID)
-							}
+							mutex.writing {unacknowledgedQos2Rel.removeValue(forKey: packet.messageID)}
 						}
+						// else do not issue
 						break
 				}
 				return true
 			case let packet as MQTTPublishRelPacket:
+				let ack = MQTTPublishCompPacket(messageID: packet.messageID)
+				let _ = delegate?.send(packet: ack)
 				if let element = mutex.writing({unacknowledgedQos2Rel.removeValue(forKey:packet.messageID)}) {
-					let comp = MQTTPublishCompPacket(messageID: packet.messageID)
-					let _ = delegate?.send(packet: comp)
 					issue(packet: element)
 				}
 				return true
