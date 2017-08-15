@@ -59,25 +59,27 @@ class MQTTSessionStream: NSObject {
         self.outputStream.delegate = self
         
         sessionQueue.async { [weak self] in
-			if let me = self {
-				let currentRunLoop = RunLoop.current
-				me.inputStream.schedule(in: currentRunLoop, forMode: .defaultRunLoopMode)
-				me.outputStream.schedule(in: currentRunLoop, forMode: .defaultRunLoopMode)
-				me.inputStream.open()
-				me.outputStream.open()
-				if hostParams.ssl {
-					let securityLevel = StreamSocketSecurityLevel.negotiatedSSL.rawValue
-					me.inputStream.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
-					me.outputStream.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
-				}
-				if hostParams.timeout > 0 {
-					DispatchQueue.global().asyncAfter(deadline: .now() +  hostParams.timeout) {
-						self?.connectTimeout()
-					}
-				}
-				currentRunLoop.run()
-			}
+			self?.run(hostParams: hostParams)
         }
+    }
+	
+    private func run(hostParams: MQTTHostParams) {
+		let currentRunLoop = RunLoop.current
+		inputStream.schedule(in: currentRunLoop, forMode: .defaultRunLoopMode)
+		outputStream.schedule(in: currentRunLoop, forMode: .defaultRunLoopMode)
+		inputStream.open()
+		outputStream.open()
+		if hostParams.ssl {
+			let securityLevel = StreamSocketSecurityLevel.negotiatedSSL.rawValue
+			inputStream.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
+			outputStream.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
+		}
+		if hostParams.timeout > 0 {
+			DispatchQueue.global().asyncAfter(deadline: .now() +  hostParams.timeout) { [weak self] in
+				self?.connectTimeout()
+			}
+		}
+		currentRunLoop.run()
     }
     
     deinit {
