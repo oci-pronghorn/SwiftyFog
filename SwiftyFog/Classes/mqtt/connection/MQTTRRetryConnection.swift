@@ -23,8 +23,7 @@ class MQTTRetryConnection {
 	var connected: Bool = false {
 		didSet {
 			if oldValue == true && connected == false {
-				// TODO: start at 1 after retryTimeInterval
-				self.startConnect(attempt: 0)
+				self.retryConnect(attempt: 0)
 			}
 		}
 	}
@@ -35,32 +34,29 @@ class MQTTRetryConnection {
 	}
 	
 	func start() {
-		startConnect(attempt: 0)
+		self.attemptConnect()
+		retryConnect(attempt: 0)
 	}
 
-	func startConnect(attempt: Int) {
-		self.attemptConnect()
-		if attempt == spec.retryCount {
-			startResuscitation()
-		}
-		else {
+	private func retryConnect(attempt: Int) {
+		if attempt < spec.retryCount {
 			DispatchQueue.main.asyncAfter(deadline: .now() +  spec.retryTimeInterval) { [weak self] in
 				self?.nextAttempt(attempt: attempt)
 			}
 		}
-	}
-	
-	func nextAttempt(attempt: Int) {
-		if connected == false {
-			startConnect(attempt: attempt + 1)
+		else {
+			if spec.resuscitateTimeInterval > 0.0 {
+				DispatchQueue.main.asyncAfter(deadline: .now() +  spec.resuscitateTimeInterval) { [weak self] in
+					self?.nextAttempt(attempt: 0)
+				}
+			}
 		}
 	}
 	
-	func startResuscitation() {
-		if spec.resuscitateTimeInterval > 0.0 {
-			DispatchQueue.main.asyncAfter(deadline: .now() +  spec.resuscitateTimeInterval) { [weak self] in
-				self?.startConnect(attempt: 0)
-			}
+	private func nextAttempt(attempt: Int) {
+		if connected == false {
+			self.attemptConnect()
+			self.retryConnect(attempt: attempt + 1)
 		}
 	}
 }

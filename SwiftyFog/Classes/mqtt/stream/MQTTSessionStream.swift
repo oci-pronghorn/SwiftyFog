@@ -61,7 +61,7 @@ class MQTTSessionStream {
 			MQTTSessionStream.run(hostParams, hasInput, hasOutput)
         }
 		if hostParams.timeout > 0 {
-			DispatchQueue.global().asyncAfter(deadline: .now() +  hostParams.timeout) { [weak handler] in
+			sessionQueue.asyncAfter(deadline: .now() +  hostParams.timeout) { [weak handler] in
 				handler?.connectTimeout()
 			}
 		}
