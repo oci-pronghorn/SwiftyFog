@@ -27,6 +27,10 @@ class Engine {
 		timer.resume()
 	}
 	
+	func stop() {
+		timer.suspend()
+	}
+	
 	deinit {
 		timer.cancel()
 	}

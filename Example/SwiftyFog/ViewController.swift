@@ -33,6 +33,12 @@ class ViewController: UIViewController {
 		billboard.start();
 	}
 	
+	func disconnected() {
+		engine.stop()
+		lights.stop()
+		billboard.stop();
+	}
+	
 	@IBAction
 	func onPicture(sender: UIButton?) {
 		let photos = PhotosAccess(title: nil, root: self);

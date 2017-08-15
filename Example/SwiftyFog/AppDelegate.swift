@@ -22,8 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Override point for customization after application launch.
 
 		mqtt = MQTTClient(
-			client: MQTTClientParams(clientID: "SwiftyFog"),
-			host: MQTTHostParams(host: "thejoveexpress.loca"),
+			client: MQTTClientParams(clientID: "SwiftyFogExample"),
+			host: MQTTHostParams(host: "thejoveexpress.local"),
 			reconnect: MQTTReconnectParams())
 		mqtt.delegate = self
 		mqtt?.debugPackageBytes = {print($0)}
@@ -111,7 +111,9 @@ extension AppDelegate: MQTTClientDelegate {
 	
 	func mqttConnected(client: MQTTClient) {
 		print("\(Date.nowInSeconds()) MQTT Connected")
-		(self.window!.rootViewController as! ViewController).connected()
+		DispatchQueue.main.async {
+			(self.window!.rootViewController as! ViewController).connected()
+		}
 	}
 	
 	func mqttPinged(client: MQTTClient, status: MQTTPingStatus) {
@@ -124,6 +126,9 @@ extension AppDelegate: MQTTClientDelegate {
 	
 	func mqttDisconnected(client: MQTTClient, reason: MQTTConnectionDisconnect, error: Error?) {
 		print("\(Date.nowInSeconds()) MQTT Discconnected \(reason) \(error?.localizedDescription ?? "")")
+		DispatchQueue.main.async {
+			(self.window!.rootViewController as! ViewController).disconnected()
+		}
 	}
 }
 

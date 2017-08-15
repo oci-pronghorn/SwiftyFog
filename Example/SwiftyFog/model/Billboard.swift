@@ -25,6 +25,9 @@ class Billboard {
 		//mqtt.subscribe(to: ["thejoveexpress/billboard/spec" : MQTTQoS.exactlyOnce])
 	}
 	
+	func stop() {
+	}
+	
 	func display(image: UIImage) {
 		bitmap?.imbue(image: image)
 		var data  = Data(capacity: bitmap!.fogSize)

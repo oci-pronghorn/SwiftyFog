@@ -24,6 +24,9 @@ class Lights {
 	func start() {
 	}
 	
+	func stop() {
+	}
+	
 	func calibrate() {
 		let data  = Data(capacity: 0)
 		mqtt.publish(MQTTPubMsg(topic: "thejoveexpress/lights/calibrate", payload: data))
