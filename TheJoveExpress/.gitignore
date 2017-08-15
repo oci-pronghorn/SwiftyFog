@@ -1,0 +1,12 @@
+####
+# IntelliJ
+target/
+/.settings
+/.classpath
+/.project
+/.attach_pid25440
+.idea/
+
+#####
+# DotEnv files
+.env
