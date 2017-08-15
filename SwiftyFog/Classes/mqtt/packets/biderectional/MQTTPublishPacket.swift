@@ -25,7 +25,7 @@ class MQTTPublishPacket: MQTTPacket {
 		guard networkData.count >= 2 + topicLength else { return nil }
         let topicData = networkData.subdata(in: 2..<topicLength+2)
 		
-		guard let qos = MQTTQoS(rawValue: header.flags & 0x06) else { return nil }
+		guard let qos = MQTTQoS(rawValue: (header.flags & 0x06) >> 1) else { return nil }
 		guard let topic = String(data: topicData, encoding: .utf8) else { return nil }
 		
         var payload = networkData.subdata(in: 2+topicLength..<networkData.endIndex)

@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			//host: MQTTHostParams(host: "thejoveexpress.local"),
 			reconnect: MQTTReconnectParams())
 		mqtt.delegate = self
-		mqtt?.debugPackageBytes = {print($0)}
+		//mqtt?.debugPackageBytes = {print($0)}
 		
 		(self.window!.rootViewController as! ViewController).mqtt = mqtt
 		
@@ -122,6 +122,9 @@ extension AppDelegate: MQTTClientDelegate {
 	
 	func mqttSubscriptionChanged(client: MQTTClient, subscription: MQTTSubscription, status: MQTTSubscriptionStatus) {
 		print("\(Date.nowInSeconds()) MQTT Subscription \(subscription) \(status)")
+		if status == .subscribed {
+			print("    \(subscription.topics)")
+		}
 	}
 	
 	func mqttDisconnected(client: MQTTClient, reason: MQTTConnectionDisconnect, error: Error?) {
