@@ -59,6 +59,12 @@ final class MQTTConnection {
 	
     weak var delegate: MQTTConnectionDelegate?
 	
+    public var debugPackageBytes : ((String)->())? = nil {
+		didSet {
+			factory.debugOut = debugPackageBytes
+		}
+    }
+	
 	private let mutex = ReadWriteMutex()
     private var isFullConnected: Bool = false
     private var lastControlPacketSent: Int64 = 0
@@ -68,8 +74,6 @@ final class MQTTConnection {
 		self.clientPrams = clientPrams
 		self.factory = MQTTPacketFactory()
 		self.stream = MQTTSessionStream(hostParams: hostParams, delegate: self)
-		
-		//factory.debugOut = {print($0)}
 		
 		if hostParams.timeout > 0 {
 			DispatchQueue.global().asyncAfter(deadline: .now() +  hostParams.timeout) { [weak self] in

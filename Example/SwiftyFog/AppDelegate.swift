@@ -24,6 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		//host.host = "hello"
 		mqtt = MQTTClient(client: MQTTClientParams(clientID: "SwiftyFog"), host: host)
 		mqtt.delegate = self
+		//mqtt?.debugPackageBytes = {print($0)}
 		
 		registration = mqtt.registerTopic(path: "", action: receiveMessage)
 		

@@ -86,6 +86,12 @@ public final class MQTTClient {
 	
     public weak var delegate: MQTTClientDelegate?
 	
+    public var debugPackageBytes : ((String)->())? {
+		didSet {
+			connection?.debugPackageBytes = debugPackageBytes
+		}
+    }
+	
 	public init(client: MQTTClientParams, host: MQTTHostParams = MQTTHostParams(), reconnect: MQTTReconnect = MQTTReconnect()) {
 		self.client = client
 		self.host = host
@@ -109,6 +115,7 @@ public final class MQTTClient {
 	private func makeConnection() {
 		delegate?.mqttConnectAttempted(client: self)
 		connection = MQTTConnection(hostParams: host, clientPrams: client)
+		connection?.debugPackageBytes = debugPackageBytes
 		connection?.delegate = self
 	}
 	
@@ -145,10 +152,10 @@ extension MQTTClient: MQTTConnectionDelegate {
 	
 	func mqttConnected(_ connection: MQTTConnection) {
 		retry?.connected = true
+		delegate?.mqttConnected(client: self)
 		publisher.connected(cleanSession: connection.cleanSession)
 		subscriber.connected(cleanSession: connection.cleanSession)
 		distributer.connected(cleanSession: connection.cleanSession)
-		delegate?.mqttConnected(client: self)
 	}
 	
 	func mqttPinged(_ connection: MQTTConnection, status: MQTTPingStatus) {
@@ -169,7 +176,7 @@ extension MQTTClient: MQTTConnectionDelegate {
 	}
 	
 	private func unhandledPacket(packet: MQTTPacket) {
-		print("MQTT Unhandled: \(type(of:packet))")
+		connection?.debugPackageBytes?("MQTT Unhandled: \(type(of:packet))")
 	}
 }
 
