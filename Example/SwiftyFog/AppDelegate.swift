@@ -20,7 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
 		
-		mqtt = MQTTClient(client: MQTTClientParams(clientID: "SwiftyFog"))
+		var host = MQTTHostParams()
+		//host.host = "hello"
+		mqtt = MQTTClient(client: MQTTClientParams(clientID: "SwiftyFog"), host: host)
 		mqtt.delegate = self
 		
 		registration = mqtt.registerTopic(path: "", action: receiveMessage)
@@ -97,6 +99,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate: MQTTClientDelegate {
+	func mqttConnectAttempted(client: MQTTClient) {
+		print("\(Date.nowInSeconds()) MQTT Connection Attempt")
+	}
+	
 	func mqttConnected(client: MQTTClient) {
 		print("\(Date.nowInSeconds()) MQTT Connected")
 	}
