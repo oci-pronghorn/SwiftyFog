@@ -19,7 +19,7 @@ public protocol MQTTClientDelegate: class {
 public final class MQTTClient {
 	public let client: MQTTClientParams
 	public let host: MQTTHostParams
-	public let reconnect: MQTTReconnect
+	public let reconnect: MQTTReconnectParams
 	
 	private var publisher: MQTTPublisher
 	private var subscriber: MQTTSubscriber
@@ -35,7 +35,7 @@ public final class MQTTClient {
 		}
     }
 	
-	public init(client: MQTTClientParams, host: MQTTHostParams = MQTTHostParams(), reconnect: MQTTReconnect = MQTTReconnect()) {
+	public init(client: MQTTClientParams, host: MQTTHostParams = MQTTHostParams(), reconnect: MQTTReconnectParams = MQTTReconnectParams()) {
 		self.client = client
 		self.host = host
 		self.reconnect = reconnect
@@ -55,6 +55,11 @@ public final class MQTTClient {
 		retry?.start()
 	}
 	
+	public func stop() {
+		retry = nil
+		connection = nil
+	}
+	
 	private func makeConnection() {
 		delegate?.mqttConnectAttempted(client: self)
 		connection = MQTTConnection(hostParams: host, clientPrams: client)
@@ -62,12 +67,13 @@ public final class MQTTClient {
 		connection?.delegate = self
 	}
 	
-	public func stop() {
-		retry = nil
-		connection = nil
+	private func unhandledPacket(packet: MQTTPacket) {
+		connection?.debugPackageBytes?("MQTT Unhandled: \(type(of:packet))")
 	}
-	
-	public func publish(pubMsg: MQTTPubMsg, retry: MQTTPublishRetry = MQTTPublishRetry(), completion: ((Bool)->())?) {
+}
+
+extension MQTTClient: MQTTBridge {
+	public func publish(_ pubMsg: MQTTPubMsg, retry: MQTTPublishRetry, completion: ((Bool)->())?) {
 		publisher.publish(pubMsg: pubMsg, retry: retry, completion: completion)
 	}
 	
@@ -116,10 +122,6 @@ extension MQTTClient: MQTTConnectionDelegate {
 				}
 			}
 		}
-	}
-	
-	private func unhandledPacket(packet: MQTTPacket) {
-		connection?.debugPackageBytes?("MQTT Unhandled: \(type(of:packet))")
 	}
 }
 

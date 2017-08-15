@@ -37,6 +37,6 @@ This library implements Swift structures to work with a FogLight client. A full 
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  s.frameworks = 'UIKit'
+  s.frameworks = 'UIKit', MobileCoreServices, Photos
   # s.dependency 'AFNetworking', '~> 2.3'
 end

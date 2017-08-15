@@ -7,17 +7,20 @@
 
 import Foundation
 
-public struct MQTTReconnect {
+public struct MQTTReconnectParams {
     public var retryCount: Int = 3
     public var retryTimeInterval: TimeInterval = 1.0
     public var resuscitateTimeInterval: TimeInterval = 5.0
 	
-    public init() {
+    public init(retryCount: Int = 3, retryTimeInterval: TimeInterval = 1.0, resuscitateTimeInterval: TimeInterval = 30.0) {
+		self.retryCount = retryCount
+		self.retryTimeInterval = retryTimeInterval
+		self.resuscitateTimeInterval = resuscitateTimeInterval
     }
 }
 
 class MQTTRetryConnection {
-	private let spec: MQTTReconnect
+	private let spec: MQTTReconnectParams
 	private let attemptConnect: ()->()
 	
 	var connected: Bool = false {
@@ -28,7 +31,7 @@ class MQTTRetryConnection {
 		}
 	}
 	
-	init(spec: MQTTReconnect, attemptConnect: @escaping ()->()) {
+	init(spec: MQTTReconnectParams, attemptConnect: @escaping ()->()) {
 		self.spec = spec
 		self.attemptConnect = attemptConnect
 	}

@@ -25,6 +25,9 @@
 		4CB12E890D3E1E8B85C02FFE5761D634 /* MQTTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6B054F8CEEA7C2AD61F6D5730CB7B2 /* MQTTClient.swift */; };
 		514E8AF956B61B3346212FF03751B01A /* Pods-SwiftyFog_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 585B2B78D1B842245A377C694EB120CE /* Pods-SwiftyFog_Example-dummy.m */; };
 		5314AC768155FDF87A7F71D4C05B3C72 /* MQTTSessionStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCC26AB0B0D53FC3333C6986FFB5181 /* MQTTSessionStream.swift */; };
+		553F97311F434CCC00CBF725 /* PhotosAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F972F1F434CCB00CBF725 /* PhotosAccess.swift */; };
+		553F97321F434CCC00CBF725 /* UIImagePickerController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F97301F434CCC00CBF725 /* UIImagePickerController+.swift */; };
+		553F97381F434F4100CBF725 /* MQTTBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F97361F434F2100CBF725 /* MQTTBridge.swift */; };
 		55FB961B1F4322FC00D3FD10 /* MQTTRRetryConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55FB96191F4322A100D3FD10 /* MQTTRRetryConnection.swift */; };
 		57506592AB10ACD40E3F1E2DA8A7687F /* MQTTPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EFC4EE20DA3700E963DF7021A77AD33 /* MQTTPublisher.swift */; };
 		5868A720539772791EA35C9A6677F49D /* MQTTPingAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF43861A76EFC2EBD98C1F3919A8080 /* MQTTPingAckPacket.swift */; };
@@ -105,6 +108,9 @@
 		4DEBB5B1A77819AEB12FEA013D181632 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4EB15C790867FD8BFDADDDAB65953FD7 /* Pods-SwiftyFog_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SwiftyFog_Tests-frameworks.sh"; sourceTree = "<group>"; };
 		53DFE961D4071CC3DC50F47383EDA560 /* FogColorspace.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FogColorspace.swift; sourceTree = "<group>"; };
+		553F972F1F434CCB00CBF725 /* PhotosAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosAccess.swift; sourceTree = "<group>"; };
+		553F97301F434CCC00CBF725 /* UIImagePickerController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImagePickerController+.swift"; sourceTree = "<group>"; };
+		553F97361F434F2100CBF725 /* MQTTBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTBridge.swift; sourceTree = "<group>"; };
 		55FB96191F4322A100D3FD10 /* MQTTRRetryConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTRRetryConnection.swift; sourceTree = "<group>"; };
 		5655B0CD2F1948341889F4D79B32B6CB /* Data+MQTT.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Data+MQTT.swift"; sourceTree = "<group>"; };
 		585B2B78D1B842245A377C694EB120CE /* Pods-SwiftyFog_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SwiftyFog_Example-dummy.m"; sourceTree = "<group>"; };
@@ -344,6 +350,7 @@
 		BE8FCA866C31B38501C47EAF2912FC93 /* connection */ = {
 			isa = PBXGroup;
 			children = (
+				553F97361F434F2100CBF725 /* MQTTBridge.swift */,
 				5E6B054F8CEEA7C2AD61F6D5730CB7B2 /* MQTTClient.swift */,
 				55FB96191F4322A100D3FD10 /* MQTTRRetryConnection.swift */,
 				384BC4A8C99CF192856050369BBE68F4 /* MQTTConnection.swift */,
@@ -432,7 +439,9 @@
 				264B41E5921CA7C5E7DAF6A303FEA262 /* FogBitmapLayout.swift */,
 				53DFE961D4071CC3DC50F47383EDA560 /* FogColorspace.swift */,
 				2476FA2258561CCA47AE763D971925CD /* FogPixel.swift */,
+				553F972F1F434CCB00CBF725 /* PhotosAccess.swift */,
 				04BD1F7729987C723A9E6E4C24F05E4A /* UIImage+Fog.swift */,
+				553F97301F434CCC00CBF725 /* UIImagePickerController+.swift */,
 			);
 			name = image;
 			path = SwiftyFog/Classes/image;
@@ -537,7 +546,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0900;
 				TargetAttributes = {
 					2080007478F4399822BFBED936071906 = {
 						LastSwiftMigration = 0900;
@@ -579,6 +588,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				553F97311F434CCC00CBF725 /* PhotosAccess.swift in Sources */,
 				140327EA1542CB4BA843BBFC316A1512 /* Data+Fog.swift in Sources */,
 				860867278CC46E53FD050394C7A168AE /* Data+MQTT.swift in Sources */,
 				73BD9CE2A694EF68A5189646BD9AADD9 /* FogBitMap.swift in Sources */,
@@ -592,6 +602,7 @@
 				F6A88C27A66E4B89782979571645397F /* MQTTConnAckResponse.swift in Sources */,
 				8396520A7DCBA847C0F8A0A34EE093BD /* MQTTConnection.swift in Sources */,
 				6456810731613702E0E5FA7C35D8566F /* MQTTConnectPacket.swift in Sources */,
+				553F97381F434F4100CBF725 /* MQTTBridge.swift in Sources */,
 				FF24963F1E684B6B4EE7C8D8FFD3B561 /* MQTTDisconnectPacket.swift in Sources */,
 				55FB961B1F4322FC00D3FD10 /* MQTTRRetryConnection.swift in Sources */,
 				DA3982EE909A75AF624F008F219323A0 /* MQTTDistributer.swift in Sources */,
@@ -613,6 +624,7 @@
 				28999741193B7FA42235A98080BF0E9E /* MQTTPubMsg.swift in Sources */,
 				C96C7A9A49FCE06354940843C2D82090 /* MQTTQoS.swift in Sources */,
 				5314AC768155FDF87A7F71D4C05B3C72 /* MQTTSessionStream.swift in Sources */,
+				553F97321F434CCC00CBF725 /* UIImagePickerController+.swift in Sources */,
 				8F652E2EF310EF8EADB0D9A6E90A97CE /* MQTTStreamReadable.swift.swift in Sources */,
 				E010FFB05A08FD5D47A29D06980ECBC5 /* MQTTStreamWritable.swift in Sources */,
 				244ACDA0D7EBDA49B0AAC332680A64D5 /* MQTTSubAckPacket.swift in Sources */,
@@ -727,7 +739,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -735,15 +749,21 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"POD_CONFIGURATION_DEBUG=1",
@@ -811,7 +831,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -819,14 +841,20 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"POD_CONFIGURATION_RELEASE=1",
 					"$(inherited)",
@@ -840,6 +868,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
 				SYMROOT = "${SRCROOT}/../build";
 				VALIDATE_PRODUCT = YES;

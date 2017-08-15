@@ -13,16 +13,24 @@ import SwiftyFog
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
 	var mqtt: MQTTClient!
+	var jovepressSubscription: MQTTSubscription?
+	
 	var registration: MQTTRegistration?
 	var subscription: MQTTSubscription?
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
 
-		mqtt = MQTTClient(client: MQTTClientParams(clientID: "SwiftyFog"), host: MQTTHostParams())
+		mqtt = MQTTClient(
+			client: MQTTClientParams(clientID: "SwiftyFog"),
+			host: MQTTHostParams(host: "thejoveexpress.loca"),
+			reconnect: MQTTReconnectParams())
 		mqtt.delegate = self
-		//mqtt?.debugPackageBytes = {print($0)}
+		mqtt?.debugPackageBytes = {print($0)}
 		
+		(self.window!.rootViewController as! ViewController).mqtt = mqtt
+		
+		jovepressSubscription = mqtt.subscribe(topics: ["thejoveexpress/#" : .atMostOnce])
 		registration = mqtt.registerTopic(path: "", action: receiveMessage)
 		
 		return true
@@ -37,39 +45,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 	
 	@IBAction func publishQos0() {
-		mqtt.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .atMostOnce), completion: { (success) in
+		mqtt.publish(MQTTPubMsg(topic: "Bobs/Store/1", qos: .atMostOnce)) { (success) in
 			print("\(Date.nowInSeconds()) publishQos0: \(success)")
-		})
+		}
 	}
 	
 	@IBAction func publishQos1() {
-		mqtt.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .atLeastOnce), completion: { (success) in
+		mqtt.publish(MQTTPubMsg(topic: "Bobs/Store/1", qos: .atLeastOnce)) { (success) in
 			print("\(Date.nowInSeconds()) publishQos1: \(success)")
-		})
+		}
 	}
 	
 	@IBAction func publishQos2() {
-		mqtt.publish(pubMsg: MQTTPubMsg(topic: "Bobs/Store/1", qos: .exactlyOnce), completion: { (success) in
+		mqtt.publish(MQTTPubMsg(topic: "Bobs/Store/1", qos: .exactlyOnce)) { (success) in
 			print("\(Date.nowInSeconds()) publishQos2: \(success)")
-		})
+		}
 	}
 	
 	@IBAction func subAll0() {
-		subscription = mqtt.subscribe(topics: ["#": .atMostOnce], completion: { (success) in
+		subscription = mqtt.subscribe(topics: ["#": .atMostOnce]) { (success) in
 			print("\(Date.nowInSeconds()) subAll0: \(success)")
-		})
+		}
 	}
 	
 	@IBAction func subAll1() {
-		subscription = mqtt.subscribe(topics: ["#": .atLeastOnce], completion: { (success) in
+		subscription = mqtt.subscribe(topics: ["#": .atLeastOnce]) { (success) in
 			print("\(Date.nowInSeconds()) subAll1: \(success)")
-		})
+		}
 	}
 	
 	@IBAction func subAll2() {
-		subscription = mqtt.subscribe(topics: ["#": .exactlyOnce], completion: { (success) in
+		subscription = mqtt.subscribe(topics: ["#": .exactlyOnce]) { (success) in
 			print("\(Date.nowInSeconds()) subAll2: \(success)")
-		})
+		}
 	}
 	
 	func receiveMessage(message: MQTTMessage) {
@@ -103,6 +111,7 @@ extension AppDelegate: MQTTClientDelegate {
 	
 	func mqttConnected(client: MQTTClient) {
 		print("\(Date.nowInSeconds()) MQTT Connected")
+		(self.window!.rootViewController as! ViewController).connected()
 	}
 	
 	func mqttPinged(client: MQTTClient, status: MQTTPingStatus) {

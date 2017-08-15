@@ -8,31 +8,31 @@
 
 import Foundation
 
-struct FogRational<T: FixedWidthInteger> : Equatable, FogExternalizable {
-	var num: T = 0
-	var den: T = 1
+public struct FogRational<T: FixedWidthInteger> : Equatable, FogExternalizable {
+	public var num: T = 0
+	public var den: T = 1
 	
-	init() {
+	public init() {
 		self.num = 0
 		self.den = 1
 	}
 	
-	init(num: T, den: T) {
+	public init(num: T, den: T) {
 		self.num = num
 		self.den = den
 	}
 	
-	init(data: Data, cursor: inout Int) {
+	public init(data: Data, cursor: inout Int) {
 		self.num = data.fogExtract(&cursor)
 		self.den = data.fogExtract(&cursor)
 	}
 	
-	func writeTo(data: inout Data) {
+	public func writeTo(data: inout Data) {
 		data.fogAppend(num)
 		data.fogAppend(den)
 	}
 	
-	static func ==(lhs: FogRational<T>, rhs: FogRational<T>) -> Bool {
+	public static func ==(lhs: FogRational<T>, rhs: FogRational<T>) -> Bool {
 		return lhs.num == rhs.num && lhs.den == rhs.den
 	}
 }
