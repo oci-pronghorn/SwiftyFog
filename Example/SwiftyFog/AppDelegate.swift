@@ -11,7 +11,6 @@ import SwiftyFog
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
 	var window: UIWindow?
 	var mqtt: MQTTClient!
 	var registration: MQTTRegistration?
@@ -19,10 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
-		
-		var host = MQTTHostParams()
-		//host.host = "hello"
-		mqtt = MQTTClient(client: MQTTClientParams(clientID: "SwiftyFog"), host: host)
+
+		mqtt = MQTTClient(client: MQTTClientParams(clientID: "SwiftyFog"), host: MQTTHostParams())
 		mqtt.delegate = self
 		//mqtt?.debugPackageBytes = {print($0)}
 		

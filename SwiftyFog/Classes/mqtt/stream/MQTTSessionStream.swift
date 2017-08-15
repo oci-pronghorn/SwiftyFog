@@ -9,12 +9,16 @@
 import Foundation
 
 public struct MQTTHostParams {
-    public var host: String = "localhost"
-    public var port: UInt16 = 1883
-    public var ssl: Bool = false
-    public var timeout: TimeInterval = 100000
+    public var host: String
+    public var port: UInt16
+    public var ssl: Bool
+    public var timeout: TimeInterval
 	
-    public init() {
+    public init(host: String = "localhost", port: UInt16 = 1883, ssl: Bool = false, timeout: TimeInterval = 10.0) {
+		self.host = host
+		self.port = port
+		self.ssl = ssl
+		self.timeout = timeout
     }
 }
 
