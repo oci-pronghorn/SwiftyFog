@@ -8,6 +8,7 @@
 
 import Foundation
 
+// todo: read from file if reboot
 final class MQTTMessageIdSource {
 	private let mutex = ReadWriteMutex()
 	private var chart = [UInt8](repeating: 0xFF, count: Int(UInt16.max / 8))
@@ -36,9 +37,6 @@ final class MQTTMessageIdSource {
 	func free(id: UInt16) {
 		mutex.writing {
 			release(id)
-			if hint > id {
-				hint = id
-			}
 		}
 	}
 	
@@ -49,7 +47,7 @@ final class MQTTMessageIdSource {
 				return
 			}
 		}
-		for i in 0...hint {
+		for i in 0..<hint {
 			if isAvailable(i) {
 				hint = i
 				return

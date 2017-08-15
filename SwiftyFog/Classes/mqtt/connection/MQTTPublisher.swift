@@ -133,8 +133,8 @@ final class MQTTPublisher {
 	func receive(packet: MQTTPacket) -> Bool {
 		switch packet {
 			case let packet as MQTTPublishAckPacket: // received for Qos 1
+				idSource.free(id: packet.messageID)
 				if let element = mutex.writing({unacknowledgedQos1Ack.removeValue(forKey:packet.messageID)}) {
-					idSource.free(id: element.0.messageID)
 					element.2?(true)
 				}
 				return true
@@ -148,8 +148,8 @@ final class MQTTPublisher {
 				}
 				return true
 			case let packet as MQTTPublishCompPacket: // received for Qos 2.b
+				idSource.free(id: packet.messageID)
 				if let element = mutex.writing({unacknowledgedQos2Comp.removeValue(forKey:packet.messageID)}) {
-					idSource.free(id: element.0.messageID)
 					element.2?(true)
 				}
 				return true
