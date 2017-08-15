@@ -91,6 +91,7 @@ final class MQTTConnection {
     deinit {
 		if mutex.reading({isFullConnected}) {
 			send(packet: MQTTDisconnectPacket())
+			self.delegate = nil // do not expose self in deinit
 			didDisconnect(reason: .shutdown, error: nil)
 		}
 	}

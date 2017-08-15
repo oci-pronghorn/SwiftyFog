@@ -58,6 +58,8 @@ public final class MQTTClient {
 	public func stop() {
 		retry = nil
 		connection = nil
+		// connection does not call delegate in deinit
+		delegate?.mqttDisconnected(client: self, reason: .shutdown, error: nil)
 	}
 	
 	private func makeConnection() {
@@ -91,10 +93,7 @@ extension MQTTClient: MQTTConnectionDelegate {
 		publisher.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
 		subscriber.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
 		distributer.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
-		// TODO: New language rules. I need to rethink delegate calls from deinit - as I should :-)
-		if reason != .shutdown {
-			self.connection = nil
-		}
+		self.connection = nil
 		delegate?.mqttDisconnected(client: self, reason: reason, error: error)
 		retry?.connected = false
 	}
