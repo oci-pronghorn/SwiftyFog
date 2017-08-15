@@ -123,7 +123,7 @@ final class MQTTSubscriber {
 	func receive(packet: MQTTPacket) -> Bool {
 		switch packet {
 			case let packet as MQTTSubAckPacket:
-				idSource.release(id: packet.messageID)
+				idSource.free(id: packet.messageID)
 				if let element = mutex.writing({unacknowledgedSubscriptions.removeValue(forKey:packet.messageID)}) {
 					if let subscription = knownSubscriptions[element.1]?.value {
 						delegate?.subscriptionChanged(subscription: subscription, status: .subscribed)
@@ -132,7 +132,7 @@ final class MQTTSubscriber {
 				}
 				return true
 			case let packet as MQTTUnsubAckPacket:
-				idSource.release(id: packet.messageID)
+				idSource.free(id: packet.messageID)
 				if let element = mutex.writing({unacknowledgedUnsubscriptions.removeValue(forKey:packet.messageID)}) {
 					if let subscription = knownSubscriptions[element.1]?.value {
 						delegate?.subscriptionChanged(subscription: subscription, status: .unsubscribed)

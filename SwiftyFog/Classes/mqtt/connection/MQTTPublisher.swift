@@ -67,25 +67,25 @@ final class MQTTPublisher {
 			unacknowledgedQos2Rec = self.unacknowledgedQos2Rec
 			unacknowledgedQos2Comp = self.unacknowledgedQos2Comp
 			if cleanSession {
-				self.unacknowledgedQos1Ack.keys.forEach(idSource.release)
+				self.unacknowledgedQos1Ack.keys.forEach(idSource.free)
 				self.unacknowledgedQos1Ack.removeAll()
-				self.unacknowledgedQos2Rec.keys.forEach(idSource.release)
+				self.unacknowledgedQos2Rec.keys.forEach(idSource.free)
 				self.unacknowledgedQos2Rec.removeAll()
-				self.unacknowledgedQos2Comp.keys.forEach(idSource.release)
+				self.unacknowledgedQos2Comp.keys.forEach(idSource.free)
 				self.unacknowledgedQos2Comp.removeAll()
 			}
 		}
 		if cleanSession || final {
 			for element in unacknowledgedQos1Ack {
-				idSource.release(id: element.0)
+				idSource.free(id: element.0)
 				element.1.1?(false)
 			}
 			for element in unacknowledgedQos2Rec {
-				idSource.release(id: element.0)
+				idSource.free(id: element.0)
 				element.1.1?(false)
 			}
 			for element in unacknowledgedQos2Comp {
-				idSource.release(id: element.0)
+				idSource.free(id: element.0)
 				element.1.1?(false)
 			}
 		}
@@ -114,7 +114,7 @@ final class MQTTPublisher {
 		}
 		if delegate?.send(packet: packet) ?? false == false {
 			if messageId != 0 {
-				idSource.release(id: messageId)
+				idSource.free(id: messageId)
 			}
 			mutex.writing {
 				if qos == .atLeastOnce {
@@ -136,7 +136,7 @@ final class MQTTPublisher {
 		switch packet {
 			case let packet as MQTTPublishAckPacket: // received for Qos 1
 				if let element = mutex.writing({unacknowledgedQos1Ack.removeValue(forKey:packet.messageID)}) {
-					idSource.release(id: element.0.messageID)
+					idSource.free(id: element.0.messageID)
 					element.1?(true)
 				}
 				return true
@@ -151,7 +151,7 @@ final class MQTTPublisher {
 				return true
 			case let packet as MQTTPublishCompPacket: // received for Qos 2.b
 				if let element = mutex.writing({unacknowledgedQos2Comp.removeValue(forKey:packet.messageID)}) {
-					idSource.release(id: element.0.messageID)
+					idSource.free(id: element.0.messageID)
 					element.1?(true)
 				}
 				return true
