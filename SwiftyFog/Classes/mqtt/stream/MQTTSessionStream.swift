@@ -28,15 +28,14 @@ protocol MQTTSessionStreamDelegate: class {
 	func mqttStreamReceived(in stream: MQTTSessionStream, _ read: StreamReader)
 }
 
-class MQTTSessionStream: NSObject {
-    private let inputStream: InputStream
-    private let outputStream: OutputStream
-    private weak var delegate: MQTTSessionStreamDelegate?
+class MQTTSessionStream {
 	private var sessionQueue: DispatchQueue
+	private var handler: MQTTStreamHandler!
 	
-	private var inputReady = false
-	private var outputReady = false
-    
+    fileprivate let inputStream: InputStream
+    fileprivate let outputStream: OutputStream
+    fileprivate weak var delegate: MQTTSessionStreamDelegate?
+	
     init?(hostParams: MQTTHostParams, delegate: MQTTSessionStreamDelegate?) {
         var inputStreamHandle: InputStream?
         var outputStreamHandle: OutputStream?
@@ -53,17 +52,22 @@ class MQTTSessionStream: NSObject {
         self.outputStream = hasOutput
         self.delegate = delegate
 		
-        super.init()
+		self.handler = MQTTStreamHandler(session: self)
         
-        self.inputStream.delegate = self
-        self.outputStream.delegate = self
+        self.inputStream.delegate = handler
+        self.outputStream.delegate = handler
         
-        sessionQueue.async { [weak self] in
-			self?.run(hostParams: hostParams)
+        sessionQueue.async {
+			MQTTSessionStream.run(hostParams, hasInput, hasOutput)
         }
+		if hostParams.timeout > 0 {
+			DispatchQueue.global().asyncAfter(deadline: .now() +  hostParams.timeout) { [weak handler] in
+				handler?.connectTimeout()
+			}
+		}
     }
 	
-    private func run(hostParams: MQTTHostParams) {
+    private static func run(_ hostParams: MQTTHostParams, _ inputStream: InputStream, _ outputStream: OutputStream) {
 		let currentRunLoop = RunLoop.current
 		inputStream.schedule(in: currentRunLoop, forMode: .defaultRunLoopMode)
 		outputStream.schedule(in: currentRunLoop, forMode: .defaultRunLoopMode)
@@ -74,75 +78,83 @@ class MQTTSessionStream: NSObject {
 			inputStream.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
 			outputStream.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
 		}
-		if hostParams.timeout > 0 {
-			DispatchQueue.global().asyncAfter(deadline: .now() +  hostParams.timeout) { [weak self] in
-				self?.connectTimeout()
-			}
-		}
 		currentRunLoop.run()
-    }
-	
-	// TODO: a strong reference to self is kept in the streams
-    func close() {
-        inputStream.close()
-        inputStream.remove(from: .current, forMode: .defaultRunLoopMode)
-        inputStream.delegate = nil
-        outputStream.close()
-        outputStream.remove(from: .current, forMode: .defaultRunLoopMode)
-        outputStream.delegate = nil
     }
     
     deinit {
-		close()
+        inputStream.close()
+        inputStream.delegate = nil
+        outputStream.close()
+        outputStream.delegate = nil
     }
     
     var writer: StreamWriter {
 		return outputStream.write
     }
-	
-	internal func connectTimeout() {
-		if inputReady == false || outputReady == false {
-			delegate?.mqttStreamConnected(false, in: self)
-		}
-	}
 }
 
-extension MQTTSessionStream: StreamDelegate {
+private class MQTTStreamHandler: NSObject, StreamDelegate {
+	private var inputReady = false
+	private var outputReady = false
+	private weak var session: MQTTSessionStream?
+	
+	fileprivate init(session: MQTTSessionStream) {
+		self.session = session
+	}
+	
+	fileprivate func connectTimeout() {
+		if inputReady == false || outputReady == false {
+			if let session = session {
+				session.delegate?.mqttStreamConnected(false, in: session)
+			}
+		}
+	}
+	
     @objc
-    internal func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
+    func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
         switch eventCode {
 			case Stream.Event.openCompleted:
 				let wasReady = inputReady && outputReady
-				if aStream == inputStream {
+				if aStream == session?.inputStream {
 					inputReady = true
 				}
-				else if aStream == outputStream {
+				else if aStream == session?.outputStream {
 					// output almost ready
 				}
 				if !wasReady && inputReady && outputReady {
-					delegate?.mqttStreamConnected(true, in: self)
+					if let session = session {
+						session.delegate?.mqttStreamConnected(true, in: session)
+					}
 				}
 				break
 			case Stream.Event.hasBytesAvailable:
-				if aStream == inputStream {
-					delegate?.mqttStreamReceived(in: self, inputStream.read)
+				if aStream == session?.inputStream {
+					if let session = session {
+						session.delegate?.mqttStreamReceived(in: session, session.inputStream.read)
+					}
 				}
 				break
 			case Stream.Event.errorOccurred:
-				delegate?.mqttStreamErrorOccurred(in: self, error: aStream.streamError)
+				if let session = session {
+					session.delegate?.mqttStreamErrorOccurred(in: session, error: aStream.streamError)
+				}
 				break
 			case Stream.Event.endEncountered:
 				if aStream.streamError != nil {
-					delegate?.mqttStreamErrorOccurred(in: self, error: aStream.streamError)
+					if let session = session {
+						session.delegate?.mqttStreamErrorOccurred(in: session, error: aStream.streamError)
+					}
 				}
 				break
 			case Stream.Event.hasSpaceAvailable:
 				let wasReady = inputReady && outputReady
-				if aStream == outputStream {
+				if aStream == session?.outputStream {
 					outputReady = true
 				}
 				if !wasReady && inputReady && outputReady {
-					delegate?.mqttStreamConnected(true, in: self)
+					if let session = session {
+						session.delegate?.mqttStreamConnected(true, in: session)
+					}
 				}
 				break
 			default:

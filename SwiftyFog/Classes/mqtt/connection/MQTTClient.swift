@@ -17,9 +17,9 @@ public protocol MQTTClientDelegate: class {
 }
 
 public final class MQTTClient {
-	private let client: MQTTClientParams
-	private let host: MQTTHostParams
-	private let reconnect: MQTTReconnect
+	public let client: MQTTClientParams
+	public let host: MQTTHostParams
+	public let reconnect: MQTTReconnect
 	
 	private var publisher: MQTTPublisher
 	private var subscriber: MQTTSubscriber
