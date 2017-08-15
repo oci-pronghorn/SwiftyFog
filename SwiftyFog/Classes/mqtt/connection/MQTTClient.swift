@@ -59,7 +59,7 @@ public final class MQTTClient {
 		retry = nil
 		connection = nil
 		// connection does not call delegate in deinit
-		delegate?.mqttDisconnected(client: self, reason: .shutdown, error: nil)
+		doDisconnect(reason: .manual, error: nil)
 	}
 	
 	private func makeConnection() {
@@ -90,9 +90,13 @@ extension MQTTClient: MQTTBridge {
 
 extension MQTTClient: MQTTConnectionDelegate {
 	func mqttDisconnected(_ connection: MQTTConnection, reason: MQTTConnectionDisconnect, error: Error?) {
-		publisher.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
-		subscriber.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
-		distributer.disconnected(cleanSession: connection.cleanSession, final: reason == .shutdown)
+		doDisconnect(reason: reason, error: error)
+	}
+	
+	private func doDisconnect(reason: MQTTConnectionDisconnect, error: Error?) {
+		publisher.disconnected(cleanSession: client.cleanSession, final: reason == .manual)
+		subscriber.disconnected(cleanSession: client.cleanSession, final: reason == .manual)
+		distributer.disconnected(cleanSession: client.cleanSession, final: reason == .manual)
 		self.connection = nil
 		delegate?.mqttDisconnected(client: self, reason: reason, error: error)
 		retry?.connected = false

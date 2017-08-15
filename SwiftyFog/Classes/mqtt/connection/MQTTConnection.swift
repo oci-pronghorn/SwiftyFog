@@ -33,7 +33,7 @@ public enum MQTTPingStatus: String {
 
 // The following are reasons for disconnection from broker
 public enum MQTTConnectionDisconnect: String {
-	case shutdown
+	case manual
 	case socket
 	case timeout
 	case handshake
@@ -92,7 +92,7 @@ final class MQTTConnection {
 		if mutex.reading({isFullConnected}) {
 			send(packet: MQTTDisconnectPacket())
 			self.delegate = nil // do not expose self in deinit
-			didDisconnect(reason: .shutdown, error: nil)
+			didDisconnect(reason: .manual, error: nil)
 		}
 	}
 	

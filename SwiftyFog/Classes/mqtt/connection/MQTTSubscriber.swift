@@ -15,6 +15,7 @@ public enum MQTTSubscriptionStatus: String {
 	case unsubPending
 	case unsubFailed
 	case unsubscribed
+	case suspended
 }
 
 protocol MQTTSubscriptionDelegate: class {
@@ -57,6 +58,7 @@ final class MQTTSubscriber {
 	}
 	
 	func connected(cleanSession: Bool) {
+		// TODO: is this necessary when clean is false
 		mutex.writing {
 			for token in knownSubscriptions.keys.sorted() {
 				if let subscription = knownSubscriptions[token]?.value {
@@ -75,7 +77,7 @@ final class MQTTSubscriber {
 			unacknowledgedUnsubscriptions.removeAll()
 			for token in knownSubscriptions.keys.sorted().reversed() {
 				if let subscription = knownSubscriptions[token]?.value {
-					delegate?.subscriptionChanged(subscription: subscription, status: .unsubscribed)
+					delegate?.subscriptionChanged(subscription: subscription, status: final ? .unsubscribed : .suspended)
 				}
 				else {
 					knownSubscriptions.removeValue(forKey: token)
