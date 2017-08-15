@@ -29,64 +29,66 @@ protocol MQTTSessionStreamDelegate: class {
 }
 
 class MQTTSessionStream: NSObject {
-    private let inputStream: InputStream?
-    private let outputStream: OutputStream?
+    private let inputStream: InputStream
+    private let outputStream: OutputStream
     private weak var delegate: MQTTSessionStreamDelegate?
 	private var sessionQueue: DispatchQueue
 	
 	private var inputReady = false
 	private var outputReady = false
     
-    init(hostParams: MQTTHostParams, delegate: MQTTSessionStreamDelegate?) {
-        var inputStream: InputStream?
-        var outputStream: OutputStream?
-        Stream.getStreamsToHost(withName: hostParams.host, port: Int(hostParams.port), inputStream: &inputStream, outputStream: &outputStream)
+    init?(hostParams: MQTTHostParams, delegate: MQTTSessionStreamDelegate?) {
+        var inputStreamHandle: InputStream?
+        var outputStreamHandle: OutputStream?
+        Stream.getStreamsToHost(withName: hostParams.host, port: Int(hostParams.port), inputStream: &inputStreamHandle, outputStream: &outputStreamHandle)
+		
+        guard let hasInput = inputStreamHandle, let hasOutput = outputStreamHandle else { return nil }
         
         var parts = hostParams.host.components(separatedBy: ".")
         parts.insert("stream\(hostParams.port)", at: 0)
         let label = parts.reversed().joined(separator: ".")
         
         self.sessionQueue = DispatchQueue(label: label, qos: .background, target: nil)
+        self.inputStream = hasInput
+        self.outputStream = hasOutput
         self.delegate = delegate
-        self.inputStream = inputStream
-        self.outputStream = outputStream
+		
         super.init()
         
-        inputStream?.delegate = self
-        outputStream?.delegate = self
+        self.inputStream.delegate = self
+        self.outputStream.delegate = self
         
         sessionQueue.async { [weak self] in
-            let currentRunLoop = RunLoop.current
-            inputStream?.schedule(in: currentRunLoop, forMode: .defaultRunLoopMode)
-            outputStream?.schedule(in: currentRunLoop, forMode: .defaultRunLoopMode)
-            inputStream?.open()
-            outputStream?.open()
-            if hostParams.ssl {
-                let securityLevel = StreamSocketSecurityLevel.negotiatedSSL.rawValue
-                inputStream?.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
-                outputStream?.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
-            }
-			if hostParams.timeout > 0 {
-				DispatchQueue.global().asyncAfter(deadline: .now() +  hostParams.timeout) {
-					self?.connectTimeout()
+			if let me = self {
+				let currentRunLoop = RunLoop.current
+				me.inputStream.schedule(in: currentRunLoop, forMode: .defaultRunLoopMode)
+				me.outputStream.schedule(in: currentRunLoop, forMode: .defaultRunLoopMode)
+				me.inputStream.open()
+				me.outputStream.open()
+				if hostParams.ssl {
+					let securityLevel = StreamSocketSecurityLevel.negotiatedSSL.rawValue
+					me.inputStream.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
+					me.outputStream.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
 				}
+				if hostParams.timeout > 0 {
+					DispatchQueue.global().asyncAfter(deadline: .now() +  hostParams.timeout) {
+						self?.connectTimeout()
+					}
+				}
+				currentRunLoop.run()
 			}
-            currentRunLoop.run()
         }
     }
     
     deinit {
-        inputStream?.close()
-        inputStream?.remove(from: .current, forMode: .defaultRunLoopMode)
-        outputStream?.close()
-        outputStream?.remove(from: .current, forMode: .defaultRunLoopMode)
+        inputStream.close()
+        inputStream.remove(from: .current, forMode: .defaultRunLoopMode)
+        outputStream.close()
+        outputStream.remove(from: .current, forMode: .defaultRunLoopMode)
     }
     
-    var writer: StreamWriter? {
-		if let outputStream = outputStream, outputReady {
-			return outputStream.write
-		}
-        return nil
+    var writer: StreamWriter {
+		return outputStream.write
     }
 	
 	internal func connectTimeout() {
@@ -114,7 +116,7 @@ extension MQTTSessionStream: StreamDelegate {
 				break
 			case Stream.Event.hasBytesAvailable:
 				if aStream == inputStream {
-					delegate?.mqttStreamReceived(in: self, inputStream!.read)
+					delegate?.mqttStreamReceived(in: self, inputStream.read)
 				}
 				break
 			case Stream.Event.errorOccurred:

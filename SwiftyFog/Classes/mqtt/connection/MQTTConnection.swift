@@ -73,6 +73,8 @@ final class MQTTConnection {
     init(hostParams: MQTTHostParams, clientPrams: MQTTClientParams) {
 		self.clientPrams = clientPrams
 		self.factory = MQTTPacketFactory()
+		
+		// May return nil if streams cannot be open
 		self.stream = MQTTSessionStream(hostParams: hostParams, delegate: self)
 		
 		if hostParams.timeout > 0 {
