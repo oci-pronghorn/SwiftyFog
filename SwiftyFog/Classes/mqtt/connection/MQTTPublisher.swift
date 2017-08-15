@@ -139,12 +139,11 @@ final class MQTTPublisher {
 				}
 				return true
 			case let packet as MQTTPublishRecPacket: // received for Qos 2.a
-				if let element = mutex.writing({unacknowledgedQos2Rec.removeValue(forKey:packet.messageID)}) {
-					// TODO: the broker kills connection when receiving this poison pill!
-					let rel = MQTTPublishRelPacket(messageID: packet.messageID)
-					if let success = delegate?.send(packet: rel), success == true {
-						mutex.writing { unacknowledgedQos2Comp[packet.messageID] = element }
-					}
+				let rel = MQTTPublishRelPacket(messageID: packet.messageID)
+				let element = mutex.writing({unacknowledgedQos2Rec.removeValue(forKey:packet.messageID)})
+				let success = delegate?.send(packet: rel) ?? false
+				if let element = element, success == true {
+					mutex.writing { unacknowledgedQos2Comp[packet.messageID] = element }
 				}
 				return true
 			case let packet as MQTTPublishCompPacket: // received for Qos 2.b
