@@ -39,12 +39,14 @@ final class MQTTPublisher {
 		if cleanSession == false {
 			for messageId in unacknowledgedQos1Ack.keys.sorted() {
 				if let element = unacknowledgedQos1Ack[messageId] {
-					let _ = delegate?.send(packet: element.0)
+					let packet = MQTTPublishPacket(messageID: element.0.messageID, message: element.0.message, isRedelivery: true)
+					let _ = delegate?.send(packet: packet)
 				}
 			}
 			for messageId in unacknowledgedQos2Rec.keys.sorted() {
 				if let element = unacknowledgedQos2Rec[messageId] {
-					let _ = delegate?.send(packet: element.0)
+					let packet = MQTTPublishPacket(messageID: element.0.messageID, message: element.0.message, isRedelivery: true)
+					let _ = delegate?.send(packet: packet)
 				}
 			}
 			for messageId in unacknowledgedQos2Comp.keys.sorted() {
