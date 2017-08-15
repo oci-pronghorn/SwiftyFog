@@ -81,12 +81,19 @@ class MQTTSessionStream: NSObject {
 		}
 		currentRunLoop.run()
     }
-    
-    deinit {
+	
+	// TODO: a strong reference to self is kept in the streams
+    func close() {
         inputStream.close()
         inputStream.remove(from: .current, forMode: .defaultRunLoopMode)
+        inputStream.delegate = nil
         outputStream.close()
         outputStream.remove(from: .current, forMode: .defaultRunLoopMode)
+        outputStream.delegate = nil
+    }
+    
+    deinit {
+		close()
     }
     
     var writer: StreamWriter {

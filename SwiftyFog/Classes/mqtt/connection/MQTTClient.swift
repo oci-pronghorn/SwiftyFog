@@ -8,69 +8,12 @@
 
 import Foundation
 
-public struct MQTTReconnect {
-    public var retryCount: Int = 3
-    public var retryTimeInterval: TimeInterval = 1.0
-    public var resuscitateTimeInterval: TimeInterval = 5.0
-	
-    public init() {
-    }
-}
-
 public protocol MQTTClientDelegate: class {
 	func mqttConnectAttempted(client: MQTTClient)
 	func mqttConnected(client: MQTTClient)
 	func mqttPinged(client: MQTTClient, status: MQTTPingStatus)
 	func mqttSubscriptionChanged(client: MQTTClient, subscription: MQTTSubscription, status: MQTTSubscriptionStatus)
 	func mqttDisconnected(client: MQTTClient, reason: MQTTConnectionDisconnect, error: Error?)
-}
-
-private class RetryConnection {
-	private let spec: MQTTReconnect
-	private let attemptConnect: ()->()
-	
-	var connected: Bool = false {
-		didSet {
-			if oldValue == true && connected == false {
-				self.startConnect(attempt: 0)
-			}
-		}
-	}
-	
-	init(spec: MQTTReconnect, attemptConnect: @escaping ()->()) {
-		self.spec = spec
-		self.attemptConnect = attemptConnect
-	}
-	
-	func start() {
-		startConnect(attempt: 0)
-	}
-
-	func startConnect(attempt: Int) {
-		self.attemptConnect()
-		if attempt == spec.retryCount {
-			startResuscitation()
-		}
-		else {
-			DispatchQueue.main.asyncAfter(deadline: .now() +  spec.retryTimeInterval) { [weak self] in
-				self?.nextAttempt(attempt: attempt)
-			}
-		}
-	}
-	
-	func nextAttempt(attempt: Int) {
-		if connected == false {
-			startConnect(attempt: attempt + 1)
-		}
-	}
-	
-	func startResuscitation() {
-		if spec.resuscitateTimeInterval > 0.0 {
-			DispatchQueue.main.asyncAfter(deadline: .now() +  spec.resuscitateTimeInterval) { [weak self] in
-				self?.startConnect(attempt: 0)
-			}
-		}
-	}
 }
 
 public final class MQTTClient {
@@ -82,7 +25,7 @@ public final class MQTTClient {
 	private var subscriber: MQTTSubscriber
 	private var distributer: MQTTDistributor
 	private var connection: MQTTConnection?
-	private var retry: RetryConnection?
+	private var retry: MQTTRetryConnection?
 	
     public weak var delegate: MQTTClientDelegate?
 	
@@ -106,7 +49,7 @@ public final class MQTTClient {
 	}
 	
 	public func start() {
-		retry = RetryConnection(spec: reconnect, attemptConnect: { [weak self] in
+		retry = MQTTRetryConnection(spec: reconnect, attemptConnect: { [weak self] in
 			self?.makeConnection()
 		})
 		retry?.start()

@@ -101,6 +101,7 @@ final class MQTTConnection {
 		mutex.writing {
 			isFullConnected = false
 		}
+		self.stream?.close()
 		self.stream = nil
     }
 	
