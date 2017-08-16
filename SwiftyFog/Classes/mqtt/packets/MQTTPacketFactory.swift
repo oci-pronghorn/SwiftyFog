@@ -47,7 +47,7 @@ struct MQTTPacketFactory {
 		let lengthSize = MQTTPackedLength.bytesRquired(for: variableSize)
 		MQTTPackedLength.replace(in: &data, at: fcl - lengthSize, length: variableSize)
 		let remainder = fsl - lengthSize
-		data[remainder] = packet.header.networkByte
+		data[remainder] = packet.header.memento
 		data = data.subdata(in: remainder..<data.count)
 		return data
     }
@@ -56,7 +56,7 @@ struct MQTTPacketFactory {
         var headerByte: UInt8 = 0
         let headerReadLen = read(&headerByte, 1)
 		guard headerReadLen > 0 else { return (true, nil) }
-        if let header = MQTTPacketFixedHeader(networkByte: headerByte) {
+        if let header = MQTTPacketFixedHeader(memento: headerByte) {
 			if let len = MQTTPackedLength.read(from: read) {
 				if let data = Data(len: len, from: read) {
 					if let debugOut = debugOut {

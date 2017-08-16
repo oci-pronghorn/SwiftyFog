@@ -32,11 +32,11 @@ public enum MQTTPingStatus: String {
 }
 
 // The following are reasons for disconnection from broker
-public enum MQTTConnectionDisconnect: String {
+public enum MQTTConnectionDisconnect {
 	case manual
 	case socket
 	case timeout
-	case handshake
+	case handshake(MQTTConnAckResponse)
 	case failedRead
 	case failedWrite
 	case brokerNotAlive
@@ -45,7 +45,7 @@ public enum MQTTConnectionDisconnect: String {
 
 protocol MQTTConnectionDelegate: class {
 	func mqttDisconnected(_ connection: MQTTConnection, reason: MQTTConnectionDisconnect, error: Error?)
-	func mqttConnected(_ connection: MQTTConnection)
+	func mqttConnected(_ connection: MQTTConnection, present: Bool)
 	func mqttPinged(_ connection: MQTTConnection, status: MQTTPingStatus)
 	func mqttReceived(_ connection: MQTTConnection, packet: MQTTPacket)
 }
@@ -141,11 +141,11 @@ extension MQTTConnection {
 			mutex.writing {
 				isFullConnected = true
 			}
-			delegate?.mqttConnected(self)
+			delegate?.mqttConnected(self, present: packet.sessionPresent)
 			startPing()
 		}
 		else {
-			self.didDisconnect(reason: .handshake, error: packet.response)
+			self.didDisconnect(reason: .handshake(packet.response), error: packet.response)
 		}
     }
 	
@@ -222,7 +222,7 @@ extension MQTTConnection: MQTTSessionStreamDelegate {
 	func mqttStreamConnected(_ ready: Bool, in stream: MQTTSessionStream) {
 		if ready {
 			if startConnectionHandshake() == false {
-				self.didDisconnect(reason: .handshake, error: nil)
+				self.didDisconnect(reason: .socket, error: nil)
 			}
 			// else wait for ack
 		}

@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum MQTTConnAckResponse: UInt8, Error {
+public enum MQTTConnAckResponse: UInt8, Error {
     case connectionAccepted     = 0x00
     case badProtocol            = 0x01
     case clientIDRejected       = 0x02

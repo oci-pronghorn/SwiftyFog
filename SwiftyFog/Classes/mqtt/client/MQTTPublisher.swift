@@ -35,7 +35,7 @@ final class MQTTPublisher {
 		self.idSource = idSource
 	}
 	
-	func connected(cleanSession: Bool) {
+	func connected(cleanSession: Bool, present: Bool) {
 		if cleanSession == false {
 			for messageId in unacknowledgedQos1Ack.keys.sorted() {
 				if let element = unacknowledgedQos1Ack[messageId] {

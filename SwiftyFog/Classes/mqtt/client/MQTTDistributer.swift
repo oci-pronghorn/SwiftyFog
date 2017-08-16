@@ -42,7 +42,7 @@ final class MQTTDistributor {
 	}
 	
 	// todo: replay from file if reboot
-	func connected(cleanSession: Bool) {
+	func connected(cleanSession: Bool, present: Bool) {
 		if cleanSession == false {
 			mutex.writing {
 				for messageId in unacknowledgedQos2Rel.keys.sorted() {

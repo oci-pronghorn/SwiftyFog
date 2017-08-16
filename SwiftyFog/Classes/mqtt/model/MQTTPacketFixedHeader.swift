@@ -17,13 +17,13 @@ struct MQTTPacketFixedHeader {
         self.flags = flags
     }
     
-    init?(networkByte: UInt8) {
-		guard let packetType = MQTTPacketType(rawValue: networkByte >> 4) else { return nil }
+    init?(memento: UInt8) {
+		guard let packetType = MQTTPacketType(rawValue: memento >> 4) else { return nil }
         self.packetType = packetType
-        self.flags = networkByte & 0x0F
+        self.flags = memento & 0x0F
     }
     
-    var networkByte : UInt8 {
+    var memento : UInt8 {
         return (0x0F & flags) | (packetType.rawValue << 4)
     }
 }

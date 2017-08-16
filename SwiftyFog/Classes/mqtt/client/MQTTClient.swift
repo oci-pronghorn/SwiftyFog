@@ -94,20 +94,24 @@ extension MQTTClient: MQTTConnectionDelegate {
 	}
 	
 	private func doDisconnect(reason: MQTTConnectionDisconnect, error: Error?) {
-		publisher.disconnected(cleanSession: client.cleanSession, final: reason == .manual)
-		subscriber.disconnected(cleanSession: client.cleanSession, final: reason == .manual)
-		distributer.disconnected(cleanSession: client.cleanSession, final: reason == .manual)
+		var final = false
+		if case .manual = reason {
+			final = true
+		}
+		publisher.disconnected(cleanSession: client.cleanSession, final: final)
+		subscriber.disconnected(cleanSession: client.cleanSession, final: final)
+		distributer.disconnected(cleanSession: client.cleanSession, final: final)
 		self.connection = nil
 		delegate?.mqttDisconnected(client: self, reason: reason, error: error)
 		retry?.connected = false
 	}
 	
-	func mqttConnected(_ connection: MQTTConnection) {
+	func mqttConnected(_ connection: MQTTConnection, present: Bool) {
 		retry?.connected = true
 		delegate?.mqttConnected(client: self)
-		publisher.connected(cleanSession: connection.cleanSession)
-		subscriber.connected(cleanSession: connection.cleanSession)
-		distributer.connected(cleanSession: connection.cleanSession)
+		publisher.connected(cleanSession: connection.cleanSession, present: present)
+		subscriber.connected(cleanSession: connection.cleanSession, present: present)
+		distributer.connected(cleanSession: connection.cleanSession, present: present)
 	}
 	
 	func mqttPinged(_ connection: MQTTConnection, status: MQTTPingStatus) {

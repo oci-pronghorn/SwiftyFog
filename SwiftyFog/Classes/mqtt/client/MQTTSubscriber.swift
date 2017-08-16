@@ -57,7 +57,7 @@ final class MQTTSubscriber {
 		self.idSource = idSource
 	}
 	
-	func connected(cleanSession: Bool) {
+	func connected(cleanSession: Bool, present: Bool) {
 		// TODO: is this necessary when clean is false
 		mutex.writing {
 			for token in knownSubscriptions.keys.sorted() {
