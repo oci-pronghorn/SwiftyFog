@@ -25,6 +25,7 @@ public final class MQTTRegistration {
 
 protocol MQTTDistributorDelegate: class {
 	func send(packet: MQTTPacket) -> Bool
+	func unhandledMessage(message: MQTTMessage)
 }
 
 final class MQTTDistributor {
@@ -33,9 +34,9 @@ final class MQTTDistributor {
 	weak var delegate: MQTTDistributorDelegate?
 	
 	private let mutex = ReadWriteMutex()
+	private var token: UInt64 = 0
+	private var registeredPaths : [String: [(UInt64,(MQTTMessage)->())]] = [:]
 	private var unacknowledgedQos2Rel = [UInt16:MQTTPublishPacket]()
-	// TODO: use patial path of registration to activate specific actions
-	private var singleAction: ((MQTTMessage)->())?
 	
 	init(idSource: MQTTMessageIdSource) {
 		self.idSource = idSource
@@ -62,17 +63,40 @@ final class MQTTDistributor {
 	}
 	
 	func registerTopic(path: String, action: @escaping (MQTTMessage)->()) -> MQTTRegistration {
-		singleAction = action
-		return MQTTRegistration(token: 0, path: path)
+		return mutex.writing {
+			token += 1
+			let entity = (token, action)
+			registeredPaths.computeIfAbsent(path, {_ in [entity]}, { $1.append(entity) })
+			return MQTTRegistration(token: token, path: path)
+		}
 	}
 	
 	fileprivate func unregisterTopic(token: UInt64, path: String) {
-		singleAction = nil
+		return mutex.writing {
+			if let tokens = registeredPaths[path] {
+				for i in 0..<tokens.count {
+					if tokens[i].0 == token {
+						registeredPaths[path]!.remove(at: i)
+					}
+				}
+			}
+		}
 	}
 	
 	private func issue(packet: MQTTPublishPacket) {
-		// TODO: check for partial path registrations and execute actions
-		singleAction?(MQTTMessage(publishPacket: packet))
+		var actions = [(MQTTMessage)->()]()
+		mutex.reading {
+			if let distribute = registeredPaths[String(packet.message.topic)] {
+				for action in distribute {
+					actions.append(action.1)
+				}
+			}
+		}
+		let msg = MQTTMessage(publishPacket: packet)
+		actions.forEach { $0(msg) }
+		if actions.count == 0 {
+			delegate?.unhandledMessage(message: msg)
+		}
 	}
 
 	func receive(packet: MQTTPacket) -> Bool {

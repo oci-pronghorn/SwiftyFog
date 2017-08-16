@@ -14,6 +14,18 @@ extension Date {
 	}
 }
 
+extension Dictionary {
+	public mutating func computeIfAbsent(_ key: Key, _ compute: (Key)->(Value), _ update: (Key, inout Value)->()) {
+		if self[key] != nil {
+			update(key, &(self[key]!))
+		}
+		else {
+			let value = compute(key)
+			self[key] = value
+		}
+	}
+}
+
 public extension Data {
     public var hexDescription: String {
         return reduce("") {$0 + String(format: "%02x", $1)}

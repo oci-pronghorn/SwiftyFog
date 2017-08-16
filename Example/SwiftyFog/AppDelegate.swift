@@ -27,12 +27,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			reconnect: MQTTReconnectParams())
 		mqtt.delegate = self
 		
-		mqtt?.debugPackageBytes = {print($0)}
+		//mqtt?.debugPackageBytes = {print($0)}
 		
 		(self.window!.rootViewController as! ViewController).mqtt = mqtt
 		
 		jovepressSubscription = mqtt.subscribe(topics: [("thejoveexpress/#", .atMostOnce)])
-		registration = mqtt.registerTopic(path: "", action: receiveMessage)
+		registration = mqtt.registerTopic(path: "thejoveexpress/engine/calibrate", action: receiveMessage)
 		
 		return true
 	}
@@ -79,10 +79,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		subscription = mqtt.subscribe(topics: [("Bobs/#", .exactlyOnce)]) { (success) in
 			print("\(Date.nowInSeconds()) subAll2: \(success)")
 		}
-	}
-	
-	func receiveMessage(message: MQTTMessage) {
-		print("\(Date.nowInSeconds()) \(message)")
 	}
 	
 	@IBAction func unsubAll() {
@@ -133,6 +129,14 @@ extension AppDelegate: MQTTClientDelegate {
 		DispatchQueue.main.async {
 			(self.window!.rootViewController as! ViewController).disconnected()
 		}
+	}
+	
+	func mqttUnhandledMessage(message: MQTTMessage) {
+		print("\(Date.nowInSeconds()) unhandled \(message)")
+	}
+	
+	func receiveMessage(message: MQTTMessage) {
+		print("\(Date.nowInSeconds()) distrubuted \(message)")
 	}
 }
 

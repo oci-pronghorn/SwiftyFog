@@ -14,6 +14,7 @@ public protocol MQTTClientDelegate: class {
 	func mqttPinged(client: MQTTClient, status: MQTTPingStatus)
 	func mqttSubscriptionChanged(client: MQTTClient, subscription: MQTTSubscription, status: MQTTSubscriptionStatus)
 	func mqttDisconnected(client: MQTTClient, reason: MQTTConnectionDisconnect, error: Error?)
+	func mqttUnhandledMessage(message: MQTTMessage)
 }
 
 public final class MQTTClient {
@@ -165,6 +166,10 @@ extension MQTTClient: MQTTPublisherDelegate, MQTTSubscriptionDelegate, MQTTDistr
 		}
 	}
 	*/
+	
+	func unhandledMessage(message: MQTTMessage) {
+		delegate?.mqttUnhandledMessage(message: message)
+	}
 	
 	func subscriptionChanged(subscription: MQTTSubscription, status: MQTTSubscriptionStatus) {
 		delegate?.mqttSubscriptionChanged(client: self, subscription: subscription, status: status)
