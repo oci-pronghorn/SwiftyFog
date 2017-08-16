@@ -129,8 +129,8 @@ extension MQTTConnection {
 			clientID: clientPrams.clientID,
 			cleanSession: clientPrams.cleanSession,
 			keepAlive: clientPrams.keepAlive)
-		packet.username = clientPrams.username
-		packet.password = clientPrams.password
+		packet.username = clientPrams.username?.utf8
+		packet.password = clientPrams.password?.utf8
 		packet.lastWillMessage = clientPrams.lastWill
 		return self.send(packet: packet)
     }

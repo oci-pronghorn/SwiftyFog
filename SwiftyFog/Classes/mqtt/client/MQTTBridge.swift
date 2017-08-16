@@ -10,7 +10,7 @@ import Foundation
 public protocol MQTTBridge {
 	func publish(_ pubMsg: MQTTPubMsg, retry: MQTTPublishRetry, completion: ((Bool)->())?)
 	
-	func subscribe(topics: [String: MQTTQoS], completion: ((Bool)->())?) -> MQTTSubscription
+	func subscribe(topics: [(String, MQTTQoS)], completion: ((Bool)->())?) -> MQTTSubscription
 	
 	func registerTopic(path: String, action: @escaping (MQTTMessage)->()) -> MQTTRegistration
 }
@@ -24,7 +24,7 @@ public extension MQTTBridge {
 		return publish(pubMsg, retry: MQTTPublishRetry(), completion: completion)
 	}
 	
-	public func subscribe(topics: [String: MQTTQoS]) -> MQTTSubscription {
+	public func subscribe(topics: [(String, MQTTQoS)]) -> MQTTSubscription {
 		return subscribe(topics: topics, completion: nil)
 	}
 }

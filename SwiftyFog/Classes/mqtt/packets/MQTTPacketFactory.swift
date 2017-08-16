@@ -49,6 +49,16 @@ struct MQTTPacketFactory {
 		let remainder = fsl - lengthSize
 		data[remainder] = packet.header.memento
 		data = data.subdata(in: remainder..<data.count)
+
+		if let debugOut = debugOut {
+			let realCapacity = capacity - remainder
+			if realCapacity < data.count {
+				debugOut("Underallocated: \(type(of:packet)) \(data.count) > \(realCapacity)")
+			}
+			else if realCapacity > data.count {
+				debugOut("Overallocated: \(type(of:packet)) \(data.count) < \(realCapacity)")
+			}
+		}
 		return data
     }
 

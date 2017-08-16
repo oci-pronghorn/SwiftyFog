@@ -56,7 +56,11 @@ class MQTTPublishPacket: MQTTPacket {
     }
 	
     override var estimatedVariableHeaderLength: Int {
-		return 256
+		var s = message.topic.mqttLength
+        if message.qos != .atMostOnce {
+            s += messageID.mqttLength
+        }
+		return s
     }
 	
 	override func appendVariableHeader(_ data: inout Data) {

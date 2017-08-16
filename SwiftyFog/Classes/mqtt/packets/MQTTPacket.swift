@@ -17,16 +17,16 @@ class MQTTPacket {
 	
     static let fixedHeaderLength: Int = 1
 	
-    var estimatedVariableHeaderLength: Int {
-		return 0
-    }
-	
     var estimatedPayLoadLength: Int {
 		return 0
     }
 	
 	func appendVariableHeader(_ data: inout Data) {
 	}
+	
+    var estimatedVariableHeaderLength: Int {
+		return 0
+    }
 	
 	func appendPayload(_ data: inout Data) {
 	}

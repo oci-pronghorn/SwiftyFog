@@ -24,7 +24,7 @@ class MQTTPublishRelPacket: MQTTPacket {
     }
 	
     override var estimatedVariableHeaderLength: Int {
-		return 2
+		return messageID.mqttLength
     }
 	
 	override func appendVariableHeader(_ data: inout Data) {

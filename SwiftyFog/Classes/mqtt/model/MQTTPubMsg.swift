@@ -9,15 +9,19 @@
 import Foundation
 
 public struct MQTTPubMsg {
-    public let topic: String
+    public let topic: String.UTF8View
     public let payload: Data
     public let retain: Bool
     public let qos: MQTTQoS
     
     public init(topic: String, payload: Data = Data(), retain: Bool = false, qos: MQTTQoS = .atMostOnce) {
-        self.topic = topic
+        self.topic = topic.utf8
         self.payload = payload
         self.retain = retain
         self.qos = qos
+    }
+	
+    var estimatedLastWillPayLoadLength: Int {
+		return topic.mqttLength + payload.count
     }
 }

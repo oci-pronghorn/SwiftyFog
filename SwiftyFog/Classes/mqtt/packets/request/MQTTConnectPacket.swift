@@ -9,26 +9,26 @@
 import Foundation
 
 class MQTTConnectPacket: MQTTPacket {
-    let protocolName: String
+    let protocolName: String.UTF8View
     let protocolLevel: UInt8
     let cleanSession: Bool
     let keepAlive: UInt16
-    let clientID: String
+    let clientID: String.UTF8View
     
-    var username: String? = nil
-    var password: String? = nil
+    var username: String.UTF8View? = nil
+    var password: String.UTF8View? = nil
     var lastWillMessage: MQTTPubMsg? = nil
     
     init(clientID: String, cleanSession: Bool, keepAlive: UInt16) {
-        self.protocolName = "MQTT"
+        self.protocolName = "MQTT".utf8
         self.protocolLevel = 0x04
         self.cleanSession = cleanSession
         self.keepAlive = keepAlive
-        self.clientID = clientID
+        self.clientID = clientID.utf8
         super.init(header: MQTTPacketFixedHeader(packetType: .connect, flags: 0))
     }
     
-    private var encodedConnectFlags: UInt8 {
+    private lazy var encodedConnectFlags: UInt8 = {
         var flags = UInt8(0)
         if cleanSession {
             flags |= 0x02
@@ -48,10 +48,14 @@ class MQTTConnectPacket: MQTTPacket {
             flags |= 0x40
         }
         return flags
-    }
+    }()
 	
     override var estimatedVariableHeaderLength: Int {
-		return 10
+		return
+			protocolName.mqttLength +
+			MemoryLayout.size(ofValue: protocolLevel) +
+			MemoryLayout.size(ofValue: encodedConnectFlags) +
+			keepAlive.mqttLength
     }
 	
 	override func appendVariableHeader(_ data: inout Data) {
@@ -62,7 +66,11 @@ class MQTTConnectPacket: MQTTPacket {
 	}
 	
     override var estimatedPayLoadLength: Int {
-		return 256 + (lastWillMessage != nil ? 256 + lastWillMessage!.payload.count : 0) + (username != nil ? 256 : 0) + (password != nil ? 256 : 0)
+		let a = clientID.mqttLength
+		let b = lastWillMessage?.estimatedLastWillPayLoadLength ?? 0
+		let c = username?.mqttLength ?? 0
+		let d = password?.mqttLength ?? 0
+		return a + b + c + d
     }
 	
     override func appendPayload(_ data: inout Data) {

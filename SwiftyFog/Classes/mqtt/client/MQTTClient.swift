@@ -79,7 +79,7 @@ extension MQTTClient: MQTTBridge {
 		publisher.publish(pubMsg: pubMsg, retry: retry, completion: completion)
 	}
 	
-	public func subscribe(topics: [String: MQTTQoS], completion: ((Bool)->())?) -> MQTTSubscription {
+	public func subscribe(topics: [(String, MQTTQoS)], completion: ((Bool)->())?) -> MQTTSubscription {
 		return subscriber.subscribe(topics: topics, completion: completion)
 	}
 	

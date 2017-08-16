@@ -26,9 +26,9 @@ protocol MQTTSubscriptionDelegate: class {
 public class MQTTSubscription: CustomStringConvertible {
 	fileprivate weak var subscriber: MQTTSubscriber? = nil
 	public let token: UInt64
-	public let topics: [String: MQTTQoS]
+	public let topics: [(String, MQTTQoS)]
 	
-	fileprivate init(token: UInt64, topics: [String: MQTTQoS]) {
+	fileprivate init(token: UInt64, topics: [(String, MQTTQoS)]) {
 		self.token = token
 		self.topics = topics
 	}
@@ -86,7 +86,7 @@ final class MQTTSubscriber {
 		}
 	}
 
-	func subscribe(topics: [String: MQTTQoS], completion: ((Bool)->())?) -> MQTTSubscription {
+	func subscribe(topics: [(String, MQTTQoS)], completion: ((Bool)->())?) -> MQTTSubscription {
 		return mutex.writing {
 			token += 1
 			let subscription = MQTTSubscription(token: token, topics: topics)
@@ -108,10 +108,10 @@ final class MQTTSubscriber {
         }
 	}
 	
-	fileprivate func unsubscribe(token: UInt64, topics: [String: MQTTQoS]) {
+	fileprivate func unsubscribe(token: UInt64, topics: [(String, MQTTQoS)]) {
 		mutex.writing {
 			knownSubscriptions.removeValue(forKey: token)
-			let packet = MQTTUnsubPacket(topics: Array(topics.keys), messageID: idSource.fetch())
+			let packet = MQTTUnsubPacket(topics: topics.map({$0.0}), messageID: idSource.fetch())
 			unacknowledgedUnsubscriptions[packet.messageID] = (packet, token, nil)
 			let copy = MQTTSubscription(token: token, topics: topics)
 			delegate?.subscriptionChanged(subscription: copy, status: .unsubPending)

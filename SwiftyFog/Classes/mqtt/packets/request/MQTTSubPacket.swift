@@ -9,28 +9,33 @@
 import Foundation
 
 class MQTTSubPacket: MQTTPacket {
-    let topics: [String: MQTTQoS]
+    let topics: [(String.UTF8View, MQTTQoS)]
     let messageID: UInt16
     
-    init(topics: [String: MQTTQoS], messageID: UInt16) {
-        self.topics = topics
+    init(topics: [(String, MQTTQoS)], messageID: UInt16) {
+        self.topics = topics.map { ($0.0.utf8, $0.1) }
         self.messageID = messageID
         super.init(header: MQTTPacketFixedHeader(packetType: .subscribe, flags: 0x02))
     }
 	
     override var estimatedVariableHeaderLength: Int {
-		return 2
+		return MemoryLayout.size(ofValue: messageID)
     }
 	
 	override func appendVariableHeader(_ data: inout Data) {
 		data.mqttAppend(messageID)
     }
 	
+    override var estimatedPayLoadLength: Int {
+		return topics.reduce(0) { (last, element) in
+			return last + element.0.mqttLength + element.1.mqttLength
+		}
+    }
+	
     override func appendPayload(_ data: inout Data) {
-        for (key, value) in topics {
-			data.mqttAppend(key)
-            let qos: UInt8 = value.rawValue & 0x03
-			data.mqttAppend(qos)
+        for (topic, qos) in topics {
+			data.mqttAppend(topic)
+			data.mqttAppend(qos.rawValue)
 		}
     }
 }

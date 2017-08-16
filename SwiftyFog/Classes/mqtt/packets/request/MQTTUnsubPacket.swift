@@ -9,11 +9,11 @@
 import Foundation
 
 class MQTTUnsubPacket: MQTTPacket {
-    let topics: [String]
+    let topics: [String.UTF8View]
     let messageID: UInt16
     
     init(topics: [String], messageID: UInt16) {
-        self.topics = topics
+        self.topics = topics.map { $0.utf8 }
         self.messageID = messageID
         super.init(header: MQTTPacketFixedHeader(packetType: .unSubscribe, flags: 0x02))
     }
@@ -27,7 +27,9 @@ class MQTTUnsubPacket: MQTTPacket {
     }
 	
     override var estimatedPayLoadLength: Int {
-		return 256 * topics.count
+		return topics.reduce(0) { (last, element) in
+			return last + element.mqttLength
+		}
     }
 	
     override func appendPayload(_ data: inout Data) {

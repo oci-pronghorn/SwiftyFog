@@ -16,7 +16,7 @@ public struct MQTTMessage: CustomStringConvertible {
 	public let qos: MQTTQoS
 	
 	init(publishPacket: MQTTPublishPacket) {
-		self.topic = publishPacket.message.topic
+		self.topic = String(publishPacket.message.topic)
 		self.payload = .data(publishPacket.message.payload)
 		self.id = publishPacket.messageID
 		self.retain = publishPacket.message.retain

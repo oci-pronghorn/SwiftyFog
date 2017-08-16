@@ -12,4 +12,8 @@ public enum MQTTQoS: UInt8 {
     case atMostOnce     = 0x00
     case atLeastOnce    = 0x01
     case exactlyOnce    = 0x02
+	
+	var mqttLength: Int {
+		return MemoryLayout<MQTTQoS.RawValue>.size
+	}
 }

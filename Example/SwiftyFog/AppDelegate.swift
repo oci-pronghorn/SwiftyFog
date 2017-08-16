@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		(self.window!.rootViewController as! ViewController).mqtt = mqtt
 		
-		jovepressSubscription = mqtt.subscribe(topics: ["thejoveexpress/#" : .atMostOnce])
+		jovepressSubscription = mqtt.subscribe(topics: [("thejoveexpress/#", .atMostOnce)])
 		registration = mqtt.registerTopic(path: "", action: receiveMessage)
 		
 		return true
@@ -64,19 +64,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 	
 	@IBAction func subAll0() {
-		subscription = mqtt.subscribe(topics: ["Bobs/#": .atMostOnce]) { (success) in
+		subscription = mqtt.subscribe(topics: [("Bobs/#", .atMostOnce)]) { (success) in
 			print("\(Date.nowInSeconds()) subAll0: \(success)")
 		}
 	}
 	
 	@IBAction func subAll1() {
-		subscription = mqtt.subscribe(topics: ["Bobs/#": .atLeastOnce]) { (success) in
+		subscription = mqtt.subscribe(topics: [("Bobs/#", .atLeastOnce)]) { (success) in
 			print("\(Date.nowInSeconds()) subAll1: \(success)")
 		}
 	}
 	
 	@IBAction func subAll2() {
-		subscription = mqtt.subscribe(topics: ["Bobs/#": .exactlyOnce]) { (success) in
+		subscription = mqtt.subscribe(topics: [("Bobs/#", .exactlyOnce)]) { (success) in
 			print("\(Date.nowInSeconds()) subAll2: \(success)")
 		}
 	}

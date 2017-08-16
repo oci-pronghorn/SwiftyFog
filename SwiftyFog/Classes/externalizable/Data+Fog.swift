@@ -24,9 +24,12 @@ public extension Data {
 	}
 	
 	public mutating func fogAppend(_ value: String) {
-		let view = value.utf8
-		self.fogAppend(UInt16(view.count))
-		self.append(contentsOf: view)
+		self.fogAppend(value.utf8)
+	}
+	
+	public mutating func fogAppend(_ value: String.UTF8View) {
+		self.fogAppend(UInt16(value.count))
+		self.append(contentsOf: value)
 	}
 	
 	public mutating func fogAppend <T: FixedWidthInteger> (_ rhs: T) {
