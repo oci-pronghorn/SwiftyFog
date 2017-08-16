@@ -347,7 +347,7 @@
 			path = packets;
 			sourceTree = "<group>";
 		};
-		BE8FCA866C31B38501C47EAF2912FC93 /* connection */ = {
+		BE8FCA866C31B38501C47EAF2912FC93 /* client */ = {
 			isa = PBXGroup;
 			children = (
 				553F97361F434F2100CBF725 /* MQTTBridge.swift */,
@@ -359,7 +359,7 @@
 				9EFC4EE20DA3700E963DF7021A77AD33 /* MQTTPublisher.swift */,
 				CDE9E7CAD6B237C6D1854162525715DD /* MQTTSubscriber.swift */,
 			);
-			path = connection;
+			path = client;
 			sourceTree = "<group>";
 		};
 		C78AFE71226CAB72FFC9B81DA48173E5 /* thread */ = {
@@ -422,7 +422,7 @@
 		D35F9653E1AC5498060524B3764031C7 /* mqtt */ = {
 			isa = PBXGroup;
 			children = (
-				BE8FCA866C31B38501C47EAF2912FC93 /* connection */,
+				BE8FCA866C31B38501C47EAF2912FC93 /* client */,
 				92E4D78777413C38A8E7FABBF795FAEC /* message */,
 				804D5392C18F0B009CE1E4E6D9E8BFE7 /* model */,
 				9A6E7FB071845A457119F3D8F91638A8 /* packets */,

@@ -26,7 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			//host: MQTTHostParams(host: "thejoveexpress.local"),
 			reconnect: MQTTReconnectParams())
 		mqtt.delegate = self
-		//mqtt?.debugPackageBytes = {print($0)}
+		
+		mqtt?.debugPackageBytes = {print($0)}
 		
 		(self.window!.rootViewController as! ViewController).mqtt = mqtt
 		

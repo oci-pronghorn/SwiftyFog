@@ -15,20 +15,21 @@ class MQTTPacket {
         self.header = header
     }
 	
+    var fixedHeaderLength: Int {
+		return 1
+    }
+	
+    var estimatedVariableHeaderLength: Int {
+		return 0
+    }
+	
+    var estimatedPayLoadLength: Int {
+		return 0
+    }
+	
 	func appendVariableHeader(_ data: inout Data) {
 	}
 	
 	func appendPayload(_ data: inout Data) {
-	}
-	
-	func writeTo(data: inout Data) {
-		// TODO: memory manage this payload data for recycling
-		var payload = Data(capacity: 1024)
-		self.appendVariableHeader(&payload)
-		self.appendPayload(&payload)
-		
-		data.fogAppend(header.networkByte)
-		data.mqttAppendRemaining(length: payload.count)
-		data.append(payload)
 	}
 }

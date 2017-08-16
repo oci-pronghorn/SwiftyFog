@@ -55,12 +55,20 @@ class MQTTPublishPacket: MQTTPacket {
         return flags
     }
 	
+    override var estimatedVariableHeaderLength: Int {
+		return 256
+    }
+	
 	override func appendVariableHeader(_ data: inout Data) {
         data.mqttAppend(message.topic)
         if message.qos != .atMostOnce {
             data.mqttAppend(messageID)
         }
 	}
+	
+    override var estimatedPayLoadLength: Int {
+		return message.payload.count
+    }
 	
     override func appendPayload(_ data: inout Data) {
 		data.append(message.payload)

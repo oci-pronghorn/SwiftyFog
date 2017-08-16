@@ -18,6 +18,10 @@ class MQTTSubPacket: MQTTPacket {
         super.init(header: MQTTPacketFixedHeader(packetType: .subscribe, flags: 0x02))
     }
 	
+    override var estimatedVariableHeaderLength: Int {
+		return 2
+    }
+	
 	override func appendVariableHeader(_ data: inout Data) {
 		data.mqttAppend(messageID)
     }

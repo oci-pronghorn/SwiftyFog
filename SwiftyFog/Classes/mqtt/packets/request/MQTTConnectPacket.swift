@@ -50,12 +50,20 @@ class MQTTConnectPacket: MQTTPacket {
         return flags
     }
 	
+    override var estimatedVariableHeaderLength: Int {
+		return 10
+    }
+	
 	override func appendVariableHeader(_ data: inout Data) {
         data.mqttAppend(protocolName)
         data.mqttAppend(protocolLevel)
         data.mqttAppend(encodedConnectFlags)
         data.mqttAppend(keepAlive)
 	}
+	
+    override var estimatedPayLoadLength: Int {
+		return 256 + (lastWillMessage != nil ? 256 + lastWillMessage!.payload.count : 0) + (username != nil ? 256 : 0) + (password != nil ? 256 : 0)
+    }
 	
     override func appendPayload(_ data: inout Data) {
         data.mqttAppend(clientID)

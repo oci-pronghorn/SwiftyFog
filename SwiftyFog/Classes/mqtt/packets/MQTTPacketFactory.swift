@@ -9,7 +9,7 @@
 import Foundation
 
 struct MQTTPacketFactory {
-    let constructors: [MQTTPacketType : (MQTTPacketFixedHeader, Data)->MQTTPacket?] = [
+    private let constructors: [MQTTPacketType : (MQTTPacketFixedHeader, Data)->MQTTPacket?] = [
         .connAck : MQTTConnAckPacket.init,
         .pingAck : { h, _ in MQTTPingAckPacket.init(header: h) },
         .publish : MQTTPublishPacket.init,
@@ -21,23 +21,45 @@ struct MQTTPacketFactory {
         .unSubAck : MQTTUnsubAckPacket.init,
     ]
 	
-    var debugOut: ((String)->())?
+	var debugOut: ((String)->())?
 	
-    func send(_ packet: MQTTPacket, _ writer: StreamWriter) -> Bool {
-		var data = Data(capacity: 1024)
-		packet.writeTo(data: &data)
+	func send(_ packet: MQTTPacket, _ writer: StreamWriter) -> Bool {
+		let data = write(packet)
 		if let debugOut = debugOut {
 			debugOut("Sent Bytes: \(type(of:packet)) \(data.count) \(data.hexDescription)")
 		}
 		return data.write(to: writer)
     }
+	
+    private func write(_ packet: MQTTPacket) -> Data {
+		let fhl = packet.fixedHeaderLength
+		let fsl = 4
+		let capacity: Int = fhl + fsl + packet.estimatedVariableHeaderLength + packet.estimatedPayLoadLength
+		var data = Data(capacity: capacity)
+		data.fogAppend(packet.header.networkByte)
+		data.fogAppend(UInt32(0)) // placeholder
+		packet.appendVariableHeader(&data)
+		packet.appendPayload(&data)
+		let payloadLize = data.count - (fhl + fsl)
+		let sizeInBytes = data.mqttInsertRemaining(at: fhl, length: payloadLize)
+		let offset = 4 - sizeInBytes
+		if offset > 0 {
+			if payloadLize > 0 {
+				data.replaceSubrange(
+					(fhl+sizeInBytes)..<(data.count-offset),
+					with: data.subdata(in: (fhl+fsl)..<data.count))
+			}
+			data = data.subdata(in: 0..<(data.count-offset))
+		}
+		return data
+	}
 
     func parse(_ read: StreamReader) -> (Bool, MQTTPacket?) {
         var headerByte: UInt8 = 0
         let headerReadLen = read(&headerByte, 1)
 		guard headerReadLen > 0 else { return (true, nil) }
         if let header = MQTTPacketFixedHeader(networkByte: headerByte) {
-			if let len = MQTTPacketFactory.readMqttPackedLength(from: read) {
+			if let len = Data.readMqttPackedLength(from: read) {
 				if let data = Data(len: len, from: read) {
 					if let debugOut = debugOut {
 						debugOut("Received Bytes: \(header.packetType) \(data.count) \(data.hexDescription)")
@@ -47,20 +69,5 @@ struct MQTTPacketFactory {
 			}
 		}
         return (false, nil)
-	}
-
-	private static func readMqttPackedLength(from read: StreamReader) -> Int? {
-		var multiplier = 1
-		var value = 0
-		var encodedByte: UInt8 = 0
-		repeat {
-			let bytesRead = read(&encodedByte, 1)
-			if bytesRead < 0 {
-				return nil
-			}
-			value += (Int(encodedByte) & 127) * multiplier
-			multiplier *= 128
-		} while ((Int(encodedByte) & 128) != 0)
-		return value <= 128*128*128 ? value : nil
 	}
 }

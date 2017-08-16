@@ -18,8 +18,16 @@ class MQTTUnsubPacket: MQTTPacket {
         super.init(header: MQTTPacketFixedHeader(packetType: .unSubscribe, flags: 0x02))
     }
 	
+    override var estimatedVariableHeaderLength: Int {
+		return 2
+    }
+	
 	override func appendVariableHeader(_ data: inout Data) {
 		data.mqttAppend(messageID)
+    }
+	
+    override var estimatedPayLoadLength: Int {
+		return 256 * topics.count
     }
 	
     override func appendPayload(_ data: inout Data) {

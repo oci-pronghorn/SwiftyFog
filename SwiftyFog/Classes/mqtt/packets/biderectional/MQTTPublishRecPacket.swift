@@ -23,6 +23,10 @@ class MQTTPublishRecPacket: MQTTPacket {
         super.init(header: header)
     }
 	
+    override var estimatedVariableHeaderLength: Int {
+		return 2
+    }
+	
 	override func appendVariableHeader(_ data: inout Data) {
 		data.mqttAppend(messageID)
     }
