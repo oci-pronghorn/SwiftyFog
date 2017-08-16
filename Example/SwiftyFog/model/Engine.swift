@@ -10,7 +10,15 @@ import Foundation
 import SwiftyFog
 
 class Engine {
-    var mqtt: MQTTBridge!
+	var registrations = [MQTTRegistration]()
+    var mqtt: MQTTBridge! {
+		didSet {
+			registrations = mqtt.registerTopics([
+				("thejoveexpress/engine/powered", powered),
+				("thejoveexpress/engine/calibrated", calibrated)
+			])
+		}
+    }
 	var oldPower = FogRational(num: Int64(0), den: 0)
 	var newPower = FogRational(num: Int64(0), den: 1)
 	
@@ -33,6 +41,14 @@ class Engine {
 	
 	deinit {
 		timer.cancel()
+	}
+	
+	func calibrated(msg: MQTTMessage) {
+		//let calibration: FogRational = msg.payload.fogExtract()
+	}
+	
+	func powered(msg: MQTTMessage) {
+		//let power: FogRational = msg.payload.fogExtract()
 	}
 	
 	var calibration = FogRational(num: Int64(15), den: 100) {

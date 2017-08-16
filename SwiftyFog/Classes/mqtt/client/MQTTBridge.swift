@@ -27,4 +27,8 @@ public extension MQTTBridge {
 	public func subscribe(topics: [(String, MQTTQoS)]) -> MQTTSubscription {
 		return subscribe(topics: topics, completion: nil)
 	}
+	
+	public func registerTopics(_ topicActions: [(String, (MQTTMessage)->())]) -> [MQTTRegistration] {
+		return topicActions.map { registerTopic(path: $0.0, action: $0.1) }
+	}
 }

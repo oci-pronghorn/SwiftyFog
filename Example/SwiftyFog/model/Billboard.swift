@@ -10,22 +10,26 @@ import UIKit
 import SwiftyFog
 
 class Billboard {
-    var mqtt: MQTTBridge!
 	var bitmap: FogBitMap?
+	var registrations = [MQTTRegistration]()
 	
-	init() {
-		var layout = FogBitmapLayout(colorSpace: .gray)
-		layout.width = 96
-		layout.height = 96
-		layout.componentDepth = 4
-		bitmap = FogBitMap(layout: layout)
-	}
+    var mqtt: MQTTBridge! {
+		didSet {
+			registrations = mqtt.registerTopics([
+				("thejoveexpress/billboard/spec", receiveSpec)
+			])
+		}
+    }
 	
 	func start() {
-		//mqtt.subscribe(to: ["thejoveexpress/billboard/spec" : MQTTQoS.exactlyOnce])
 	}
 	
 	func stop() {
+	}
+	
+	func receiveSpec(msg: MQTTMessage) {
+		let layout: FogBitmapLayout = msg.payload.fogExtract()
+		bitmap = FogBitMap(layout: layout)
 	}
 	
 	func display(image: UIImage) {

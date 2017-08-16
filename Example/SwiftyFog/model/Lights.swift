@@ -16,7 +16,17 @@ enum LightCommand: Int32 {
 }
 
 class Lights {
-    var mqtt: MQTTBridge!
+	var registrations = [MQTTRegistration]()
+	
+    var mqtt: MQTTBridge! {
+		didSet {
+			registrations = mqtt.registerTopics([
+				("thejoveexpress/lights/powered", powered),
+				("thejoveexpress/lights/ambient", ambient)
+			])
+			
+		}
+    }
 	
 	init() {
 	}
@@ -25,6 +35,14 @@ class Lights {
 	}
 	
 	func stop() {
+	}
+	
+	func powered(msg: MQTTMessage) {
+		//let power: FogRational = msg.payload.fogExtract()
+	}
+	
+	func ambient(msg: MQTTMessage) {
+		//let power: FogRational = msg.payload.fogExtract()
 	}
 	
 	func calibrate() {

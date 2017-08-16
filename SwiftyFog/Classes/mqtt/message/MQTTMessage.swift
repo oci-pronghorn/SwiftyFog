@@ -10,14 +10,14 @@ import Foundation
 
 public struct MQTTMessage: CustomStringConvertible {
 	public let topic: String
-	public let payload: MQTTPayload
+	public let payload: Data //MQTTPayload
 	public let id: UInt16
 	public let retain: Bool
 	public let qos: MQTTQoS
 	
 	init(publishPacket: MQTTPublishPacket) {
 		self.topic = String(publishPacket.message.topic)
-		self.payload = .data(publishPacket.message.payload)
+		self.payload = publishPacket.message.payload
 		self.id = publishPacket.messageID
 		self.retain = publishPacket.message.retain
 		self.qos = publishPacket.message.qos
