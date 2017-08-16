@@ -21,9 +21,6 @@ public enum MQTTPayload: CustomStringConvertible {
     }
 	
     public var description: String {
-        if let str = stringRep {
-            return "'\(str)'"
-        }
         if case .data(let data) = self {
             return "#\(data.count) \(data.hexDescription)"
         }

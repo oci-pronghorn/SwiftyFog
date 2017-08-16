@@ -115,6 +115,12 @@ extension MQTTClient: MQTTConnectionDelegate {
 	}
 	
 	func mqttReceived(_ connection: MQTTConnection, packet: MQTTPacket) {
+		DispatchQueue.global().async { [weak self] in
+			self?.dispatch(packet: packet)
+		}
+	}
+	
+	private func dispatch(packet: MQTTPacket) {
 		var handled = distributer.receive(packet: packet)
 		if handled == false {
 			handled = publisher.receive(packet: packet)
