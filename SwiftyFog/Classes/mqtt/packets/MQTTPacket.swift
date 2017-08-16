@@ -15,9 +15,7 @@ class MQTTPacket {
         self.header = header
     }
 	
-    var fixedHeaderLength: Int {
-		return 1
-    }
+    static let fixedHeaderLength: Int = 1
 	
     var estimatedVariableHeaderLength: Int {
 		return 0

@@ -31,11 +31,11 @@ struct MQTTPacketFactory {
 		return data.write(to: writer)
     }
 	
-    static let filler = [UInt8](repeating: 0, count: 5)
+    static let filler = [UInt8](repeating: 0, count: MQTTPacket.fixedHeaderLength + MQTTPackedLength.maxLen)
 	
     private func write(_ packet: MQTTPacket) -> Data {
 		let fcl = MQTTPacketFactory.filler.count
-		let fhl = packet.fixedHeaderLength
+		let fhl = MQTTPacket.fixedHeaderLength
 		let fsl = fcl - fhl
 		let fbl = fhl + fsl
 		let capacity = fbl + packet.estimatedVariableHeaderLength + packet.estimatedPayLoadLength
@@ -54,7 +54,7 @@ struct MQTTPacketFactory {
 
     func parse(_ read: StreamReader) -> (Bool, MQTTPacket?) {
         var headerByte: UInt8 = 0
-        let headerReadLen = read(&headerByte, 1)
+        let headerReadLen = read(&headerByte, MQTTPacket.fixedHeaderLength)
 		guard headerReadLen > 0 else { return (true, nil) }
         if let header = MQTTPacketFixedHeader(memento: headerByte) {
 			if let len = MQTTPackedLength.read(from: read) {

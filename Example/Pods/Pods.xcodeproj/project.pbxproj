@@ -196,7 +196,6 @@
 				1FCC26AB0B0D53FC3333C6986FFB5181 /* MQTTSessionStream.swift */,
 				66B623FE9554C619E14BD80430265774 /* MQTTStreamReadable.swift.swift */,
 				1C0DD67059C51F257788DBDD20BA167A /* MQTTStreamWritable.swift */,
-				55C3EE1F1F43F78A005222C9 /* MQTTPackedLength.swift */,
 			);
 			path = stream;
 			sourceTree = "<group>";
@@ -342,6 +341,7 @@
 			isa = PBXGroup;
 			children = (
 				E209F7C34ECB8E504C6336FB51199C48 /* MQTTPacket.swift */,
+				55C3EE1F1F43F78A005222C9 /* MQTTPackedLength.swift */,
 				6E31B493A87C8F208971B3CB69987328 /* MQTTPacketFactory.swift */,
 				64A072D6AB37EEED72E428AE834553A3 /* biderectional */,
 				87CDB100D67222A30039F994F98CD7D0 /* request */,

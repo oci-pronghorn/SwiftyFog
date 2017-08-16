@@ -1,6 +1,6 @@
 //
 //  MQTTPackedLength.swift
-//  Pods-SwiftyFog_Example
+//  SwiftyFog
 //
 //  Created by David Giovannini on 8/15/17.
 //
@@ -10,6 +10,7 @@ import Foundation
 struct MQTTPackedLength {
 	static let min: Int = 0
 	static let max: Int = 268435455
+	static let maxLen = MemoryLayout<UInt32>.size
 
     static func bytesRquired(for length: Int) -> Int {
 		if length <= 127 {
@@ -25,6 +26,7 @@ struct MQTTPackedLength {
 		return 4
     }
 	
+	// TODO: make native endian aware
 	static func replace(in data: inout Data, at: Int, length: Int) {
         var lengthOfRemainingData = length
         repeat {
@@ -37,6 +39,7 @@ struct MQTTPackedLength {
         } while lengthOfRemainingData > 0
     }
 	
+	// TODO: make native endian aware
 	static func read(from read: StreamReader) -> Int? {
 		var multiplier = 1
 		var value = 0
