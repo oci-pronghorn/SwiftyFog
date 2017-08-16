@@ -20,11 +20,18 @@ protocol MQTTPublisherDelegate: class {
 	func send(packet: MQTTPacket) -> Bool
 }
 
+private struct PublishAttempt {
+	var packet: MQTTPublishPacket
+	var retry: MQTTPublishRetry
+	var attempts: Int
+	var completion: ((Bool)->())?
+}
+
 final class MQTTPublisher {
 	private let idSource: MQTTMessageIdSource
 
 	private let mutex = ReadWriteMutex()
-	private typealias PendingPublish = [UInt16:(MQTTPublishPacket,MQTTPublishRetry,((Bool)->())?)]
+	private typealias PendingPublish = [UInt16:PublishAttempt]
 	private var unacknowledgedQos1Ack = PendingPublish()
 	private var unacknowledgedQos2Rec = PendingPublish()
 	private var unacknowledgedQos2Comp = PendingPublish()
@@ -39,13 +46,13 @@ final class MQTTPublisher {
 		if cleanSession == false {
 			for messageId in unacknowledgedQos1Ack.keys.sorted() {
 				if let element = unacknowledgedQos1Ack[messageId] {
-					let packet = MQTTPublishPacket(messageID: element.0.messageID, message: element.0.message, isRedelivery: true)
+					let packet = MQTTPublishPacket(messageID: element.packet.messageID, message: element.packet.message, isRedelivery: true)
 					let _ = delegate?.send(packet: packet)
 				}
 			}
 			for messageId in unacknowledgedQos2Rec.keys.sorted() {
 				if let element = unacknowledgedQos2Rec[messageId] {
-					let packet = MQTTPublishPacket(messageID: element.0.messageID, message: element.0.message, isRedelivery: true)
+					let packet = MQTTPublishPacket(messageID: element.packet.messageID, message: element.packet.message, isRedelivery: true)
 					let _ = delegate?.send(packet: packet)
 				}
 			}
@@ -76,15 +83,15 @@ final class MQTTPublisher {
 		if cleanSession || final {
 			for element in unacknowledgedQos1Ack {
 				idSource.free(id: element.0)
-				element.1.2?(false)
+				element.1.completion?(false)
 			}
 			for element in unacknowledgedQos2Rec {
 				idSource.free(id: element.0)
-				element.1.2?(false)
+				element.1.completion?(false)
 			}
 			for element in unacknowledgedQos2Comp {
 				idSource.free(id: element.0)
-				element.1.2?(false)
+				element.1.completion?(false)
 			}
 		}
 	}
@@ -104,10 +111,10 @@ final class MQTTPublisher {
 		let messageId = packet.messageID
 		mutex.writing {
 			if qos == .atLeastOnce {
-				unacknowledgedQos1Ack[messageId] = (packet, retry, completion)
+				unacknowledgedQos1Ack[messageId] = PublishAttempt(packet: packet, retry: retry, attempts: 0, completion: completion)
 			}
 			else if qos == .exactlyOnce {
-				unacknowledgedQos2Rec[messageId] = (packet, retry, completion)
+				unacknowledgedQos2Rec[messageId] = PublishAttempt(packet: packet, retry: retry, attempts: 0, completion: completion)
 			}
 		}
 		if delegate?.send(packet: packet) ?? false == false {
@@ -135,7 +142,7 @@ final class MQTTPublisher {
 			case let packet as MQTTPublishAckPacket: // received for Qos 1
 				idSource.free(id: packet.messageID)
 				if let element = mutex.writing({unacknowledgedQos1Ack.removeValue(forKey:packet.messageID)}) {
-					element.2?(true)
+					element.completion?(true)
 				}
 				return true
 			case let packet as MQTTPublishRecPacket: // received for Qos 2.a
@@ -149,7 +156,7 @@ final class MQTTPublisher {
 			case let packet as MQTTPublishCompPacket: // received for Qos 2.b
 				idSource.free(id: packet.messageID)
 				if let element = mutex.writing({unacknowledgedQos2Comp.removeValue(forKey:packet.messageID)}) {
-					element.2?(true)
+					element.completion?(true)
 				}
 				return true
 			default:

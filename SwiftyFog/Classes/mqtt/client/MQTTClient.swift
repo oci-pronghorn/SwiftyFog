@@ -153,6 +153,19 @@ extension MQTTClient: MQTTPublisherDelegate, MQTTSubscriptionDelegate, MQTTDistr
 		return connection?.send(packet: packet) ?? false
 	}
 	
+	// TODO: get Packet creation and marshalling in background thread
+	// call completion(false) if no "delegate"
+	/*
+	func doIt<T: MQTTPacket>(factory: @escaping ()->T, writer: @escaping (Data)->Bool, completion: ((T, Bool)->())?) {
+		DispatchQueue.global().async {
+			let packet = factory()
+			let data = MQTTPacketFactory().write(packet)
+			let success = writer(data)
+			completion?(packet, success)
+		}
+	}
+	*/
+	
 	func subscriptionChanged(subscription: MQTTSubscription, status: MQTTSubscriptionStatus) {
 		delegate?.mqttSubscriptionChanged(client: self, subscription: subscription, status: status)
 	}

@@ -9,11 +9,9 @@
 import Foundation
 
 typealias StreamReader = (_ buffer: UnsafeMutablePointer<UInt8>, _ len: Int) -> Int
-//typealias StreamWriter = (_ buffer: UnsafePointer<UInt8>, _ len: Int) -> Int
 
 protocol MQTTStreamReadable {
     init?(len: Int, from read: StreamReader)
-    //func write(to write: StreamWriter) -> Bool
 }
 
 extension Data: MQTTStreamReadable {
