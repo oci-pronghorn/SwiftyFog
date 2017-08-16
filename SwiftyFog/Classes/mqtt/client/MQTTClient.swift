@@ -103,7 +103,17 @@ extension MQTTClient: MQTTConnectionDelegate {
 		distributer.disconnected(cleanSession: client.cleanSession, final: final)
 		self.connection = nil
 		delegate?.mqttDisconnected(client: self, reason: reason, error: error)
-		retry?.connected = false
+		if case let .handshake(ack) = reason {
+			if ack.retries {
+				retry?.connected = false
+			}
+			else {
+				retry = nil
+			}
+		}
+		else {
+			retry?.connected = false
+		}
 	}
 	
 	func mqttConnected(_ connection: MQTTConnection, present: Bool) {

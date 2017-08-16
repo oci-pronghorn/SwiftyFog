@@ -15,4 +15,13 @@ public enum MQTTConnAckResponse: UInt8, Error {
     case serverUnavailable      = 0x03
     case badUsernameOrPassword  = 0x04
     case notAuthorized          = 0x05
+	
+    public var retries: Bool {
+		switch self {
+			case .serverUnavailable:
+				return true
+			default:
+				return false
+		}
+    }
 }
