@@ -19,7 +19,7 @@ class MQTTSubPacket: MQTTPacket {
     }
 	
     override var estimatedVariableHeaderLength: Int {
-		return MemoryLayout.size(ofValue: messageID)
+		return messageID.mqttLength
     }
 	
 	override func appendVariableHeader(_ data: inout Data) {

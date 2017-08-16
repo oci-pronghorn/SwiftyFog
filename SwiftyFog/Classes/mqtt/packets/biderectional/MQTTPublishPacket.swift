@@ -20,9 +20,9 @@ class MQTTPublishPacket: MQTTPacket {
     }
 	
     init?(header: MQTTPacketFixedHeader, networkData: Data) {
-		guard networkData.count >= 2 else { return nil }
+		guard networkData.count >= UInt16.mqttLength else { return nil }
         let topicLength = 256 * Int(networkData[0]) + Int(networkData[1])
-		guard networkData.count >= 2 + topicLength else { return nil }
+		guard networkData.count >= UInt16.mqttLength + topicLength else { return nil }
         let topicData = networkData.subdata(in: 2..<topicLength+2)
 		
 		guard let qos = MQTTQoS(rawValue: (header.flags & 0x06) >> 1) else { return nil }

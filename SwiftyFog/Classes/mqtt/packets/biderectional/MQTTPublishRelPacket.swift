@@ -18,7 +18,7 @@ class MQTTPublishRelPacket: MQTTPacket {
     }
 	
     init?(header: MQTTPacketFixedHeader, networkData: Data) {
-		guard networkData.count >= 2 else { return nil }
+		guard networkData.count >= UInt16.mqttLength else { return nil }
 		self.messageID = networkData.fogExtract()
         super.init(header: header)
     }

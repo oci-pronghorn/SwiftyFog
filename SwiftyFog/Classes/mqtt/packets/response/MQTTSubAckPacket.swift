@@ -12,7 +12,7 @@ class MQTTSubAckPacket: MQTTPacket {
     let messageID: UInt16
     
     init?(header: MQTTPacketFixedHeader, networkData: Data) {
-		guard networkData.count >= 2 else { return nil }
+		guard networkData.count >= UInt16.mqttLength else { return nil }
         self.messageID = networkData.fogExtract()
         super.init(header: header)
     }
