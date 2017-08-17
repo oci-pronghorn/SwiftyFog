@@ -46,6 +46,7 @@ final class MQTTDistributor {
 	}
 	
 	func connected(cleanSession: Bool, present: Bool) {
+		// TODO: if clean session == false we need to prepopulated unsentAcks and unacknowledgedQos2Rel from file if first connection
 	}
 	
 	func resendPulse() {
@@ -57,10 +58,11 @@ final class MQTTDistributor {
 					unsentAcks.removeValue(forKey: messageId)
 				}
 			}
-			// Resend packets that have failed to get an 
+			// Resend packets that have failed to get an ack
+			// Do nothing on failure to send - timer will retry
 			for messageId in unacknowledgedQos2Rel.keys.sorted() {
 				let packet = MQTTPublishRecPacket(messageID: messageId)
-				let _ = delegate?.send(packet: packet) // ignore failure will resnd on next timer
+				let _ = delegate?.send(packet: packet)
 			}
 		}
 	}

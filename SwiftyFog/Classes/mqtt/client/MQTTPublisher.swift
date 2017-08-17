@@ -31,6 +31,7 @@ final class MQTTPublisher {
 	private var unacknowledgedQos1Ack = PendingPublish()
 	private var unacknowledgedQos2Rec = PendingPublish()
 	private var unacknowledgedQos2Comp = PendingPublish()
+	private var unsentAcks = [UInt16:MQTTPacket]()
 	
 	weak var delegate: MQTTPublisherDelegate?
 	
@@ -40,7 +41,20 @@ final class MQTTPublisher {
 	}
 	
 	func connected(cleanSession: Bool, present: Bool) {
-		if cleanSession == false {
+		// TODO: prepoluate from file if first connection
+	}
+	
+	func resendPulse() {
+		mutex.writing {
+			// Resend acks that failed to send
+			for messageId in unsentAcks.keys.sorted() {
+				let packet = unsentAcks[messageId]!
+				if delegate?.send(packet: packet) ?? false == true {
+					unsentAcks.removeValue(forKey: messageId)
+				}
+			}
+			// Resend packets that have failed to get an ack
+			// Do nothing on failure to send - timer will retry
 			for messageId in unacknowledgedQos1Ack.keys.sorted() {
 				if let element = unacknowledgedQos1Ack[messageId] {
 					let packet = MQTTPublishPacket(messageID: element.packet.messageID, message: element.packet.message, isRedelivery: true)
@@ -60,41 +74,22 @@ final class MQTTPublisher {
 		}
 	}
 	
-	func resendPulse() {
-		mutex.writing {
-			// TODO
-		}
-	}
-	
 	func disconnected(cleanSession: Bool, manual: Bool) {
-		var unacknowledgedQos1Ack = PendingPublish()
-		var unacknowledgedQos2Rec = PendingPublish()
-		var unacknowledgedQos2Comp = PendingPublish()
 		mutex.writing {
-			unacknowledgedQos1Ack = self.unacknowledgedQos1Ack
-			unacknowledgedQos2Rec = self.unacknowledgedQos2Rec
-			unacknowledgedQos2Comp = self.unacknowledgedQos2Comp
-			if cleanSession {
-				self.unacknowledgedQos1Ack.keys.forEach(idSource.free)
+			if cleanSession == true {
+				for element in unacknowledgedQos1Ack {
+					element.1.completion?(false)
+				}
 				self.unacknowledgedQos1Ack.removeAll()
-				self.unacknowledgedQos2Rec.keys.forEach(idSource.free)
+				for element in unacknowledgedQos2Rec {
+					element.1.completion?(false)
+				}
 				self.unacknowledgedQos2Rec.removeAll()
-				self.unacknowledgedQos2Comp.keys.forEach(idSource.free)
+				for element in unacknowledgedQos2Comp {
+					element.1.completion?(false)
+				}
 				self.unacknowledgedQos2Comp.removeAll()
-			}
-		}
-		if cleanSession || manual {
-			for element in unacknowledgedQos1Ack {
-				idSource.free(id: element.0)
-				element.1.completion?(false)
-			}
-			for element in unacknowledgedQos2Rec {
-				idSource.free(id: element.0)
-				element.1.completion?(false)
-			}
-			for element in unacknowledgedQos2Comp {
-				idSource.free(id: element.0)
-				element.1.completion?(false)
+				unsentAcks.removeAll()
 			}
 		}
 	}
@@ -148,24 +143,20 @@ final class MQTTPublisher {
 				}
 				return true
 			case let packet as MQTTPublishRecPacket: // received for Qos 2 step 1
-				let rel = MQTTPublishRelPacket(messageID: packet.messageID)
 				let element = mutex.writing({unacknowledgedQos2Rec.removeValue(forKey:packet.messageID)})
 				if qos2Mode == .lowLatency {
-					if let element = mutex.writing({unacknowledgedQos2Comp.removeValue(forKey:packet.messageID)}) {
-						element.completion?(true)
-					}
+					element?.completion?(true)
 				}
-				let success = delegate?.send(packet: rel) ?? false
-				if qos2Mode == .assured {
-					if let element = element, success == true {
-						mutex.writing { unacknowledgedQos2Comp[packet.messageID] = element }
-					}
+				mutex.writing { unacknowledgedQos2Comp[packet.messageID] = element }
+				let ack = MQTTPublishRelPacket(messageID: packet.messageID)
+				if delegate?.send(packet: ack) ?? false == false {
+					mutex.writing{unsentAcks[packet.messageID] = ack}
 				}
 				return true
 			case let packet as MQTTPublishCompPacket: // received for Qos 2 step 2
 				idSource.free(id: packet.messageID)
-				if qos2Mode == .assured {
-					if let element = mutex.writing({unacknowledgedQos2Comp.removeValue(forKey:packet.messageID)}) {
+				if let element = mutex.writing({unacknowledgedQos2Comp.removeValue(forKey:packet.messageID)}) {
+					if qos2Mode == .assured {
 						element.completion?(true)
 					}
 				}

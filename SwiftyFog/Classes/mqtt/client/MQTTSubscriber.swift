@@ -70,7 +70,7 @@ final class MQTTSubscriber {
 	}
 	
 	func connected(cleanSession: Bool, present: Bool) {
-		// If the application makes a subscription request before connection
+		// TODO: If the application makes a subscription request before connection
 		// we want to submit the pending subscriptions on connect.
 		// If clean session is false the subscriptions are made again by the broker
 		// with no communications.
@@ -102,7 +102,7 @@ final class MQTTSubscriber {
 	}
 	
 	func disconnected(cleanSession: Bool, manual: Bool) {
-		// What do we do if cleanSession == false
+		// TODO: What do we do if cleanSession == false
 		mutex.writing {
 			unacknowledgedSubscriptions.removeAll()
 			unacknowledgedUnsubscriptions.removeAll()
