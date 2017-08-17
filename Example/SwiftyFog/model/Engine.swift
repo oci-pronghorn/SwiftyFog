@@ -44,18 +44,20 @@ class Engine {
 	}
 	
 	func calibrated(msg: MQTTMessage) {
-		//let calibration: FogRational = msg.payload.fogExtract()
+		//let calibration: FogRational<Int64> = msg.payload.fogExtract()
 	}
 	
 	func powered(msg: MQTTMessage) {
-		//let power: FogRational = msg.payload.fogExtract()
+		//let power: FogRational<Int64> = msg.payload.fogExtract()
 	}
 	
 	var calibration = FogRational(num: Int64(15), den: 100) {
 		didSet {
-			var data  = Data(capacity: MemoryLayout.size(ofValue: newPower))
-			data.fogAppend(calibration)
-			mqtt.publish(MQTTPubMsg(topic: "thejoveexpress/engine/calibrate", payload: data))
+			if !(calibration == oldValue) {
+				var data  = Data(capacity: MemoryLayout.size(ofValue: newPower))
+				data.fogAppend(calibration)
+				mqtt.publish(MQTTPubMsg(topic: "thejoveexpress/engine/calibrate", payload: data))
+			}
 		}
 	}
 	

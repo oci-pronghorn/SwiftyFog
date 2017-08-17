@@ -22,17 +22,19 @@ public final class MQTTClient {
 	public let host: MQTTHostParams
 	public let reconnect: MQTTReconnectParams
 	
-	private var publisher: MQTTPublisher
-	private var subscriber: MQTTSubscriber
-	private var distributer: MQTTDistributor
+	private let idSource: MQTTMessageIdSource
+	private let publisher: MQTTPublisher
+	private let subscriber: MQTTSubscriber
+	private let distributer: MQTTDistributor
 	private var connection: MQTTConnection?
 	private var retry: MQTTRetryConnection?
 	
     public weak var delegate: MQTTClientDelegate?
 	
-    public var debugPackageBytes : ((String)->())? {
+    public var debugOut : ((String)->())? {
 		didSet {
-			connection?.debugPackageBytes = debugPackageBytes
+			idSource.debugOut = debugOut
+			connection?.debugOut = debugOut
 		}
     }
 	
@@ -40,7 +42,7 @@ public final class MQTTClient {
 		self.client = client
 		self.host = host
 		self.reconnect = reconnect
-		let idSource = MQTTMessageIdSource()
+		idSource = MQTTMessageIdSource()
 		self.publisher = MQTTPublisher(idSource: idSource)
 		self.subscriber = MQTTSubscriber(idSource: idSource)
 		self.distributer = MQTTDistributor(idSource: idSource)
@@ -66,12 +68,12 @@ public final class MQTTClient {
 	private func makeConnection() {
 		delegate?.mqttConnectAttempted(client: self)
 		connection = MQTTConnection(hostParams: host, clientPrams: client)
-		connection?.debugPackageBytes = debugPackageBytes
+		connection?.debugOut = debugOut
 		connection?.delegate = self
 	}
 	
 	private func unhandledPacket(packet: MQTTPacket) {
-		connection?.debugPackageBytes?("MQTT Unhandled: \(type(of:packet))")
+		debugOut?("* MQTT Unhandled: \(type(of:packet))")
 	}
 }
 

@@ -103,6 +103,7 @@ final class MQTTSubscriber {
 		unacknowledgedSubscriptions[packet.messageID] = (packet, subscription.token, completion)
 		delegate?.subscriptionChanged(subscription: subscription, status: .subPending)
         if delegate?.send(packet: packet) ?? false == false {
+			idSource.free(id: messageId)
 			delegate?.subscriptionChanged(subscription: subscription, status: .dropped)
 			unacknowledgedSubscriptions.removeValue(forKey: messageId)
         }

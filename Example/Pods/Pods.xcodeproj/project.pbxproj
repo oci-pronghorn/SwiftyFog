@@ -358,9 +358,9 @@
 				55FB96191F4322A100D3FD10 /* MQTTRRetryConnection.swift */,
 				384BC4A8C99CF192856050369BBE68F4 /* MQTTConnection.swift */,
 				79D16E79A276BBE897CA2F0A8D6305C6 /* MQTTDistributer.swift */,
-				2B3A339C70A56D5A9E6A7EB2D17AB3CF /* MQTTMessageIdSource.swift */,
 				9EFC4EE20DA3700E963DF7021A77AD33 /* MQTTPublisher.swift */,
 				CDE9E7CAD6B237C6D1854162525715DD /* MQTTSubscriber.swift */,
+				2B3A339C70A56D5A9E6A7EB2D17AB3CF /* MQTTMessageIdSource.swift */,
 			);
 			path = client;
 			sourceTree = "<group>";

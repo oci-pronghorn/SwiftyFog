@@ -28,7 +28,7 @@ public struct FogBitmapLayout: FogExternalizable, Equatable {
 	public init(data: Data, cursor: inout Int) {
 		width = data.fogExtract(&cursor)
 		height = data.fogExtract(&cursor)
-		colorSpace = data.fogExtract(&cursor)
+		colorSpace = data.fogExtract(&cursor) ?? .gray
 		componentDepth = data.fogExtract(&cursor)
 		minComponentWidth = data.fogExtract(&cursor)
 	}

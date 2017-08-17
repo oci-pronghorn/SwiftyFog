@@ -24,6 +24,6 @@ public struct MQTTMessage: CustomStringConvertible {
 	}
     
     public var description: String {
-        return "\(id)) \(topic) \(qos)\(retain ? "*" : "") = \(payload)"
+        return "\(id)) \(topic) \(qos)\(retain ? "*" : "") [\(payload.count)]"
     }
 }

@@ -27,8 +27,14 @@ private struct PublishAttempt {
 	var completion: ((Bool)->())?
 }
 
+enum Qos2Mode {
+	case lowLatency
+	case assured
+}
+
 final class MQTTPublisher {
 	private let idSource: MQTTMessageIdSource
+	private let qos2Mode: Qos2Mode
 
 	private let mutex = ReadWriteMutex()
 	private typealias PendingPublish = [UInt16:PublishAttempt]
@@ -38,7 +44,8 @@ final class MQTTPublisher {
 	
 	weak var delegate: MQTTPublisherDelegate?
 	
-	init(idSource: MQTTMessageIdSource) {
+	init(idSource: MQTTMessageIdSource, qos2Mode: Qos2Mode = .lowLatency) {
+		self.qos2Mode = qos2Mode
 		self.idSource = idSource
 	}
 	
@@ -145,18 +152,27 @@ final class MQTTPublisher {
 					element.completion?(true)
 				}
 				return true
-			case let packet as MQTTPublishRecPacket: // received for Qos 2.a
+			case let packet as MQTTPublishRecPacket: // received for Qos 2 step 1
 				let rel = MQTTPublishRelPacket(messageID: packet.messageID)
 				let element = mutex.writing({unacknowledgedQos2Rec.removeValue(forKey:packet.messageID)})
+				if qos2Mode == .lowLatency {
+					if let element = mutex.writing({unacknowledgedQos2Comp.removeValue(forKey:packet.messageID)}) {
+						element.completion?(true)
+					}
+				}
 				let success = delegate?.send(packet: rel) ?? false
-				if let element = element, success == true {
-					mutex.writing { unacknowledgedQos2Comp[packet.messageID] = element }
+				if qos2Mode == .assured {
+					if let element = element, success == true {
+						mutex.writing { unacknowledgedQos2Comp[packet.messageID] = element }
+					}
 				}
 				return true
-			case let packet as MQTTPublishCompPacket: // received for Qos 2.b
+			case let packet as MQTTPublishCompPacket: // received for Qos 2 step 2
 				idSource.free(id: packet.messageID)
-				if let element = mutex.writing({unacknowledgedQos2Comp.removeValue(forKey:packet.messageID)}) {
-					element.completion?(true)
+				if qos2Mode == .assured {
+					if let element = mutex.writing({unacknowledgedQos2Comp.removeValue(forKey:packet.messageID)}) {
+						element.completion?(true)
+					}
 				}
 				return true
 			default:

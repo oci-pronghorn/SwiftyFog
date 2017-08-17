@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			reconnect: MQTTReconnectParams())
 		mqtt.delegate = self
 		
-		//mqtt?.debugPackageBytes = {print($0)}
+		//mqtt?.debugOut = {print($0)}
 		
 		(self.window!.rootViewController as! ViewController).mqtt = mqtt
 		
@@ -132,11 +132,11 @@ extension AppDelegate: MQTTClientDelegate {
 	}
 	
 	func mqttUnhandledMessage(message: MQTTMessage) {
-		print("\(Date.nowInSeconds()) unhandled \(message)")
+		print("\(Date.nowInSeconds()) MQTT unhandled \(message)")
 	}
 	
 	func receiveMessage(message: MQTTMessage) {
-		print("\(Date.nowInSeconds()) distrubuted \(message)")
+		print("\(Date.nowInSeconds()) MQTT distrubuted \(message)")
 	}
 }
 

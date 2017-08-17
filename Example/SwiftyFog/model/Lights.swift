@@ -38,11 +38,11 @@ class Lights {
 	}
 	
 	func powered(msg: MQTTMessage) {
-		//let power: FogRational = msg.payload.fogExtract()
+		//let powered: LightCommand = msg.payload.fogExtract() ?? .off
 	}
 	
 	func ambient(msg: MQTTMessage) {
-		//let power: FogRational = msg.payload.fogExtract()
+		//let ambient: FogRational<Int64> = msg.payload.fogExtract()
 	}
 	
 	func calibrate() {

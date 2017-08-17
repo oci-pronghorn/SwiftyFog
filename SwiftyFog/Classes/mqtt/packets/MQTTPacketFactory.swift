@@ -25,9 +25,7 @@ struct MQTTPacketFactory {
 	
 	func send(_ packet: MQTTPacket, _ writer: StreamWriter) -> Bool {
 		let data = write(packet)
-		if let debugOut = debugOut {
-			debugOut("Sent Bytes: \(type(of:packet)) \(data.count) \(data.hexDescription)")
-		}
+		debugOut?("* Sent: \(type(of:packet)) [\(data.count)] \(data.fogHexDescription)")
 		return data.write(to: writer)
     }
 	
@@ -53,10 +51,10 @@ struct MQTTPacketFactory {
 		if let debugOut = debugOut {
 			let realCapacity = capacity - remainder
 			if realCapacity < data.count {
-				debugOut("Underallocated: \(type(of:packet)) \(data.count) > \(realCapacity)")
+				debugOut("* Underallocated: \(type(of:packet)) \(data.count) > \(realCapacity)")
 			}
 			else if realCapacity > data.count {
-				debugOut("Overallocated: \(type(of:packet)) \(data.count) < \(realCapacity)")
+				debugOut("* Overallocated: \(type(of:packet)) \(data.count) < \(realCapacity)")
 			}
 		}
 		return data
@@ -70,7 +68,11 @@ struct MQTTPacketFactory {
 			if let len = MQTTPackedLength.read(from: read) {
 				if let data = Data(len: len, from: read) {
 					if let debugOut = debugOut {
-						debugOut("Received Bytes: \(header.packetType) \(data.count) \(data.hexDescription)")
+						let lenSize = MQTTPackedLength.bytesRquired(for: len)
+						let len = data.count + MQTTPacket.fixedHeaderLength + lenSize
+						let headerStr = String(format: "%02x.", headerByte)
+						let lenStr = (0..<lenSize).reduce("", { r, _ in return r + "##." })
+						debugOut("* Received: \(header.packetType) [\(len)] \(headerStr)\(lenStr)\(data.fogHexDescription)")
 					}
 					return (false, constructors[header.packetType]?(header, data))
 				}

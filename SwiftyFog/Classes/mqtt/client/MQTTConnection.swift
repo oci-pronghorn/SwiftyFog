@@ -59,9 +59,9 @@ final class MQTTConnection {
 	
     weak var delegate: MQTTConnectionDelegate?
 	
-    public var debugPackageBytes : ((String)->())? = nil {
+    public var debugOut : ((String)->())? = nil {
 		didSet {
-			factory.debugOut = debugPackageBytes
+			factory.debugOut = debugOut
 		}
     }
 	
