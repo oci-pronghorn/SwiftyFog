@@ -46,7 +46,7 @@ public final class MQTTClient {
 		idSource = MQTTMessageIdSource()
 		self.publisher = MQTTPublisher(idSource: idSource, qos2Mode: client.qos2Mode)
 		self.subscriber = MQTTSubscriber(idSource: idSource)
-		self.distributer = MQTTDistributor(idSource: idSource)
+		self.distributer = MQTTDistributor(idSource: idSource, qos2Mode: client.qos2Mode)
 		
 		resendTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
 		resendTimer.schedule(deadline: .now() + client.resendPulseInterval, repeating: client.resendPulseInterval, leeway: .milliseconds(250))

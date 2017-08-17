@@ -30,6 +30,7 @@ protocol MQTTDistributorDelegate: class {
 
 final class MQTTDistributor {
 	private let idSource: MQTTMessageIdSource
+	private let qos2Mode: Qos2Mode
 	
 	weak var delegate: MQTTDistributorDelegate?
 	
@@ -38,8 +39,9 @@ final class MQTTDistributor {
 	private var registeredPaths : [String: [(UInt64,(MQTTMessage)->())]] = [:]
 	private var unacknowledgedQos2Rel = [UInt16:MQTTPublishPacket]()
 	
-	init(idSource: MQTTMessageIdSource) {
+	init(idSource: MQTTMessageIdSource, qos2Mode: Qos2Mode) {
 		self.idSource = idSource
+		self.qos2Mode = qos2Mode
 	}
 	
 	func connected(cleanSession: Bool, present: Bool) {
@@ -112,13 +114,16 @@ final class MQTTDistributor {
 						issue(packet: packet)
 						break
 					case .atLeastOnce:
+						issue(packet: packet)
 						let ack = MQTTPublishAckPacket(messageID: packet.messageID)
 						let _ = delegate?.send(packet: ack)
-						issue(packet: packet)
 						break
 					case .exactlyOnce:
 						let ack = MQTTPublishRecPacket(messageID: packet.messageID)
 						mutex.writing {unacknowledgedQos2Rel[packet.messageID] = packet}
+						if qos2Mode == .lowLatency {
+							issue(packet: packet)
+						}
 						if delegate?.send(packet: ack) ?? false == false {
 							mutex.writing {unacknowledgedQos2Rel.removeValue(forKey: packet.messageID)}
 						}
@@ -130,7 +135,9 @@ final class MQTTDistributor {
 				let ack = MQTTPublishCompPacket(messageID: packet.messageID)
 				let _ = delegate?.send(packet: ack)
 				if let element = mutex.writing({unacknowledgedQos2Rel.removeValue(forKey:packet.messageID)}) {
-					issue(packet: element)
+					if qos2Mode == .assured {
+						issue(packet: element)
+					}
 				}
 				return true
 			default:
