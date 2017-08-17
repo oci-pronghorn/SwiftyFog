@@ -119,6 +119,7 @@ extension MQTTClient: MQTTConnectionDelegate {
 		publisher.disconnected(cleanSession: client.cleanSession, manual: manual)
 		subscriber.disconnected(cleanSession: client.cleanSession, manual: manual)
 		distributer.disconnected(cleanSession: client.cleanSession, manual: manual)
+		idSource.disconnected(cleanSession: client.cleanSession, manual: manual)
 		self.connection = nil
 		delegate?.mqttDisconnected(client: self, reason: reason, error: error)
 		if case let .handshake(ack) = reason {
@@ -137,9 +138,10 @@ extension MQTTClient: MQTTConnectionDelegate {
 	func mqttConnected(_ connection: MQTTConnection, present: Bool) {
 		retry?.connected = true
 		delegate?.mqttConnected(client: self)
-		publisher.connected(cleanSession: connection.cleanSession, present: present)
-		subscriber.connected(cleanSession: connection.cleanSession, present: present)
-		distributer.connected(cleanSession: connection.cleanSession, present: present)
+		idSource.connected(cleanSession: client.cleanSession, present: present)
+		publisher.connected(cleanSession: client.cleanSession, present: present)
+		subscriber.connected(cleanSession: client.cleanSession, present: present)
+		distributer.connected(cleanSession: client.cleanSession, present: present)
 		resendTimer.resume()
 	}
 	

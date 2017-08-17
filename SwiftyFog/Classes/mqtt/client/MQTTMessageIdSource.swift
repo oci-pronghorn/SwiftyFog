@@ -17,6 +17,18 @@ final class MQTTMessageIdSource {
 	
 	var debugOut: ((String)->())?
 	
+	func connected(cleanSession: Bool, present: Bool) {
+	}
+	
+	func disconnected(cleanSession: Bool, manual: Bool) {
+		if cleanSession {
+			mutex.writing {
+				chart = [UInt8](repeating: 0xFF, count: Int(UInt16.max / 8))
+				hint = UInt16(0)
+			}
+		}
+	}
+	
 	func fetch() -> UInt16 {
 		return mutex.writing {
 			for i in hint...UInt16.max {

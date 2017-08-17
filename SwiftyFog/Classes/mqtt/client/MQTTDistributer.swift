@@ -36,8 +36,9 @@ final class MQTTDistributor {
 	
 	private let mutex = ReadWriteMutex()
 	private var token: UInt64 = 0
-	private var registeredPaths : [String: [(UInt64,(MQTTMessage)->())]] = [:]
+	private var registeredPaths = [String: [(UInt64,(MQTTMessage)->())]]()
 	private var unacknowledgedQos2Rel = [UInt16:MQTTPublishPacket]()
+	private var unsentAcks = [UInt16:MQTTPacket]()
 	
 	init(idSource: MQTTMessageIdSource, qos2Mode: Qos2Mode) {
 		self.idSource = idSource
@@ -45,19 +46,22 @@ final class MQTTDistributor {
 	}
 	
 	func connected(cleanSession: Bool, present: Bool) {
-		if cleanSession == false {
-			mutex.writing {
-				for messageId in unacknowledgedQos2Rel.keys.sorted() {
-					let packet = MQTTPublishRecPacket(messageID: messageId)
-					let _ = delegate?.send(packet: packet)
-				}
-			}
-		}
 	}
 	
 	func resendPulse() {
 		mutex.writing {
-			// TODO
+			// Resend acks that failed to send
+			for messageId in unsentAcks.keys.sorted() {
+				let packet = unsentAcks[messageId]!
+				if delegate?.send(packet: packet) ?? false == true {
+					unsentAcks.removeValue(forKey: messageId)
+				}
+			}
+			// Resend packets that have failed to get an 
+			for messageId in unacknowledgedQos2Rel.keys.sorted() {
+				let packet = MQTTPublishRecPacket(messageID: messageId)
+				let _ = delegate?.send(packet: packet) // ignore failure will resnd on next timer
+			}
 		}
 	}
 	
@@ -65,6 +69,7 @@ final class MQTTDistributor {
 		if cleanSession == true {
 			mutex.writing {
 				unacknowledgedQos2Rel.removeAll()
+				unsentAcks.removeAll()
 			}
 		}
 	}
@@ -116,7 +121,9 @@ final class MQTTDistributor {
 					case .atLeastOnce:
 						issue(packet: packet)
 						let ack = MQTTPublishAckPacket(messageID: packet.messageID)
-						let _ = delegate?.send(packet: ack)
+						if delegate?.send(packet: ack) ?? false  == false {
+							unsentAcks[packet.messageID] = ack
+						}
 						break
 					case .exactlyOnce:
 						let ack = MQTTPublishRecPacket(messageID: packet.messageID)
@@ -125,7 +132,7 @@ final class MQTTDistributor {
 							issue(packet: packet)
 						}
 						if delegate?.send(packet: ack) ?? false == false {
-							mutex.writing {unacknowledgedQos2Rel.removeValue(forKey: packet.messageID)}
+							mutex.writing{unsentAcks[packet.messageID] = ack}
 						}
 						// else do not issue
 						break
@@ -133,7 +140,9 @@ final class MQTTDistributor {
 				return true
 			case let packet as MQTTPublishRelPacket:
 				let ack = MQTTPublishCompPacket(messageID: packet.messageID)
-				let _ = delegate?.send(packet: ack)
+				if delegate?.send(packet: ack) ?? false == false {
+					mutex.writing{unsentAcks[packet.messageID] = ack}
+				}
 				if let element = mutex.writing({unacknowledgedQos2Rel.removeValue(forKey:packet.messageID)}) {
 					if qos2Mode == .assured {
 						issue(packet: element)

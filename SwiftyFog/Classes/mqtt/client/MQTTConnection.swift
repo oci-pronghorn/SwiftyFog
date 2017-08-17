@@ -89,10 +89,6 @@ final class MQTTConnection {
 		}
     }
 	
-    var cleanSession: Bool {
-		return clientPrams.cleanSession
-    }
-	
     deinit {
 		if mutex.reading({isFullConnected}) {
 			send(packet: MQTTDisconnectPacket())
