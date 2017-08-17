@@ -23,6 +23,7 @@ public final class MQTTClient {
 	public let reconnect: MQTTReconnectParams
 	
 	private let idSource: MQTTMessageIdSource
+    private let resendTimer: DispatchSourceTimer
 	private let publisher: MQTTPublisher
 	private let subscriber: MQTTSubscriber
 	private let distributer: MQTTDistributor
@@ -46,6 +47,13 @@ public final class MQTTClient {
 		self.publisher = MQTTPublisher(idSource: idSource)
 		self.subscriber = MQTTSubscriber(idSource: idSource)
 		self.distributer = MQTTDistributor(idSource: idSource)
+		
+		resendTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
+		resendTimer.schedule(deadline: .now() + 5, repeating: 5, leeway: .milliseconds(250))
+		resendTimer.setEventHandler { [weak self] in
+			self?.resendPulse()
+		}
+		
 		publisher.delegate = self
 		subscriber.delegate = self
 		distributer.delegate = self
@@ -72,14 +80,20 @@ public final class MQTTClient {
 		connection?.delegate = self
 	}
 	
+	private func resendPulse() {
+		publisher.resendPulse()
+		subscriber.resendPulse()
+		distributer.resendPulse()
+	}
+	
 	private func unhandledPacket(packet: MQTTPacket) {
 		debugOut?("* MQTT Unhandled: \(type(of:packet))")
 	}
 }
 
 extension MQTTClient: MQTTBridge {
-	public func publish(_ pubMsg: MQTTPubMsg, retry: MQTTPublishRetry, completion: ((Bool)->())?) {
-		publisher.publish(pubMsg: pubMsg, retry: retry, completion: completion)
+	public func publish(_ pubMsg: MQTTPubMsg, completion: ((Bool)->())?) {
+		publisher.publish(pubMsg: pubMsg, completion: completion)
 	}
 	
 	public func subscribe(topics: [(String, MQTTQoS)], completion: ((Bool)->())?) -> MQTTSubscription {
@@ -97,6 +111,7 @@ extension MQTTClient: MQTTConnectionDelegate {
 	}
 	
 	private func doDisconnect(reason: MQTTConnectionDisconnect, error: Error?) {
+		resendTimer.suspend()
 		var final = false
 		if case .manual = reason {
 			final = true
@@ -125,6 +140,7 @@ extension MQTTClient: MQTTConnectionDelegate {
 		publisher.connected(cleanSession: connection.cleanSession, present: present)
 		subscriber.connected(cleanSession: connection.cleanSession, present: present)
 		distributer.connected(cleanSession: connection.cleanSession, present: present)
+		resendTimer.resume()
 	}
 	
 	func mqttPinged(_ connection: MQTTConnection, status: MQTTPingStatus) {

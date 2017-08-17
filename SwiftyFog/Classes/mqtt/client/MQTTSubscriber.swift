@@ -71,6 +71,11 @@ final class MQTTSubscriber {
 		}
 	}
 	
+	func resendPulse() {
+		mutex.writing {
+		}
+	}
+	
 	func disconnected(cleanSession: Bool, final: Bool) {
 		mutex.writing {
 			unacknowledgedSubscriptions.removeAll()

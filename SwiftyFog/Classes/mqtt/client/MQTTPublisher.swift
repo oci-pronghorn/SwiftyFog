@@ -8,22 +8,12 @@
 
 import Foundation
 
-public struct MQTTPublishRetry {
-	public var retryCount: UInt = 0
-	public var retryIntervalSecs: UInt = 0
-
-	public init() {
-	}
-}
-
 protocol MQTTPublisherDelegate: class {
 	func send(packet: MQTTPacket) -> Bool
 }
 
 private struct PublishAttempt {
 	var packet: MQTTPublishPacket
-	var retry: MQTTPublishRetry
-	var attempts: Int
 	var completion: ((Bool)->())?
 }
 
@@ -45,8 +35,8 @@ final class MQTTPublisher {
 	weak var delegate: MQTTPublisherDelegate?
 	
 	init(idSource: MQTTMessageIdSource, qos2Mode: Qos2Mode = .lowLatency) {
-		self.qos2Mode = qos2Mode
 		self.idSource = idSource
+		self.qos2Mode = qos2Mode
 	}
 	
 	func connected(cleanSession: Bool, present: Bool) {
@@ -67,6 +57,11 @@ final class MQTTPublisher {
 				let packet = MQTTPublishRecPacket(messageID: messageId)
 				let _ = delegate?.send(packet: packet)
 			}
+		}
+	}
+	
+	func resendPulse() {
+		mutex.writing {
 		}
 	}
 	
@@ -103,25 +98,24 @@ final class MQTTPublisher {
 		}
 	}
 
-	// TODO: implement retry
-	func publish(pubMsg: MQTTPubMsg, retry: MQTTPublishRetry = MQTTPublishRetry(), completion: ((Bool)->())?) {
+	func publish(pubMsg: MQTTPubMsg, completion: ((Bool)->())?) {
 		var messageId = UInt16(0)
 		if pubMsg.qos != .atMostOnce {
 			messageId = idSource.fetch()
 		}
 		let packet = MQTTPublishPacket(messageID: messageId, message: pubMsg, isRedelivery: false)
-		performPublish(packet: packet, retry: retry, completion: completion)
+		performPublish(packet: packet, completion: completion)
 	}
 	
-	private func performPublish(packet: MQTTPublishPacket, retry: MQTTPublishRetry, completion: ((Bool)->())?) {
+	private func performPublish(packet: MQTTPublishPacket, completion: ((Bool)->())?) {
 		let qos = packet.message.qos
 		let messageId = packet.messageID
 		mutex.writing {
 			if qos == .atLeastOnce {
-				unacknowledgedQos1Ack[messageId] = PublishAttempt(packet: packet, retry: retry, attempts: 0, completion: completion)
+				unacknowledgedQos1Ack[messageId] = PublishAttempt(packet: packet, completion: completion)
 			}
 			else if qos == .exactlyOnce {
-				unacknowledgedQos2Rec[messageId] = PublishAttempt(packet: packet, retry: retry, attempts: 0, completion: completion)
+				unacknowledgedQos2Rec[messageId] = PublishAttempt(packet: packet, completion: completion)
 			}
 		}
 		if delegate?.send(packet: packet) ?? false == false {

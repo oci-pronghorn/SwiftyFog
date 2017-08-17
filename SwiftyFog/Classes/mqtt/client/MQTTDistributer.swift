@@ -54,6 +54,11 @@ final class MQTTDistributor {
 		}
 	}
 	
+	func resendPulse() {
+		mutex.writing {
+		}
+	}
+	
 	func disconnected(cleanSession: Bool, final: Bool) {
 		if cleanSession == true {
 			mutex.writing {

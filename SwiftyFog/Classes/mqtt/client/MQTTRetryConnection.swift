@@ -1,6 +1,6 @@
 //
-//  RetryConnection.swift
-//  Pods-SwiftyFog_Example
+//  MQTTRetryConnection.swift
+//  SwiftyFog
 //
 //  Created by David Giovannini on 8/15/17.
 //

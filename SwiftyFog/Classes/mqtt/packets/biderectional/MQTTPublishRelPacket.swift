@@ -14,7 +14,7 @@ class MQTTPublishRelPacket: MQTTPacket {
 	
     init(messageID: UInt16) {
         self.messageID = messageID
-        super.init(header: MQTTPacketFixedHeader(packetType: MQTTPacketType.pubRel, flags: 2))
+        super.init(header: MQTTPacketFixedHeader(packetType: MQTTPacketType.pubRel, flags: 0x02))
     }
 	
     init?(header: MQTTPacketFixedHeader, networkData: Data) {

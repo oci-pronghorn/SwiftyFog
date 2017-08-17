@@ -22,7 +22,7 @@ public enum MQTTPayload: CustomStringConvertible {
 	
     public var description: String {
         if case .data(let data) = self {
-			return "#\(data.count) \(data.fogHexDescription)"
+			return "[\(data.count)] \(data.fogHexDescription)"
         }
         return "##"
     }
