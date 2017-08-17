@@ -14,8 +14,8 @@ class Engine {
     var mqtt: MQTTBridge! {
 		didSet {
 			registrations = mqtt.registerTopics([
-				("thejoveexpress/engine/powered", powered),
-				("thejoveexpress/engine/calibrated", calibrated)
+				("engine/powered", powered),
+				("engine/calibrated", calibrated)
 			])
 		}
     }

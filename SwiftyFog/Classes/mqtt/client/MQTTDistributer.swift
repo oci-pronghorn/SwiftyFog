@@ -31,6 +31,7 @@ protocol MQTTDistributorDelegate: class {
 final class MQTTDistributor {
 	private let idSource: MQTTMessageIdSource
 	private let qos2Mode: Qos2Mode
+	private let root: String
 	
 	weak var delegate: MQTTDistributorDelegate?
 	
@@ -40,9 +41,10 @@ final class MQTTDistributor {
 	private var unacknowledgedQos2Rel = [UInt16:MQTTPublishPacket]()
 	private var unsentAcks = [UInt16:MQTTPacket]()
 	
-	init(idSource: MQTTMessageIdSource, qos2Mode: Qos2Mode) {
+	init(idSource: MQTTMessageIdSource, qos2Mode: Qos2Mode, root: String) {
 		self.idSource = idSource
 		self.qos2Mode = qos2Mode
+		self.root = root
 	}
 	
 	func connected(cleanSession: Bool, present: Bool) {
@@ -99,14 +101,17 @@ final class MQTTDistributor {
 	
 	private func issue(packet: MQTTPublishPacket) {
 		var actions = [(MQTTMessage)->()]()
-		mutex.reading {
-			if let distribute = registeredPaths[String(packet.message.topic)] {
-				for action in distribute {
-					actions.append(action.1)
+		let msg = MQTTMessage(publishPacket: packet)
+		if self.root.isEmpty || msg.topic.hasPrefix(self.root) {
+			let subTopic = self.root.isEmpty ? msg.topic : String(msg.topic.suffix(self.root.count+1))
+			mutex.reading {
+				if let distribute = registeredPaths[subTopic] {
+					for action in distribute {
+						actions.append(action.1)
+					}
 				}
 			}
 		}
-		let msg = MQTTMessage(publishPacket: packet)
 		actions.forEach { $0(msg) }
 		if actions.count == 0 {
 			delegate?.unhandledMessage(message: msg)

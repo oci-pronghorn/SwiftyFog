@@ -21,8 +21,8 @@ class Lights {
     var mqtt: MQTTBridge! {
 		didSet {
 			registrations = mqtt.registerTopics([
-				("thejoveexpress/lights/powered", powered),
-				("thejoveexpress/lights/ambient", ambient)
+				("lights/powered", powered),
+				("lights/ambient", ambient)
 			])
 			
 		}

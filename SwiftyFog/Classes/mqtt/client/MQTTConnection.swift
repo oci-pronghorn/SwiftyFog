@@ -19,6 +19,7 @@ public struct MQTTClientParams {
 	
     public var resendPulseInterval: TimeInterval = 5.0
     public var qos2Mode: Qos2Mode = .lowLatency
+    public var distributionRoot: String = ""
 	
     public init(clientID: String, cleanSession: Bool = true, keepAlive: UInt16 = 60) {
 		self.clientID = clientID

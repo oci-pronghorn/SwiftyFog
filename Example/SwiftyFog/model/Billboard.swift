@@ -16,7 +16,7 @@ class Billboard {
     var mqtt: MQTTBridge! {
 		didSet {
 			registrations = mqtt.registerTopics([
-				("thejoveexpress/billboard/spec", receiveSpec)
+				("billboard/spec", receiveSpec)
 			])
 		}
     }
