@@ -18,27 +18,39 @@ public enum MQTTSubscriptionStatus: String {
 	case suspended
 }
 
-protocol MQTTSubscriptionDelegate: class {
-	func send(packet: MQTTPacket) -> Bool
-	func subscriptionChanged(subscription: MQTTSubscription, status: MQTTSubscriptionStatus)
-}
-
-public class MQTTSubscription: CustomStringConvertible {
-	fileprivate weak var subscriber: MQTTSubscriber? = nil
+public struct MQTTSubscriptionDetail: CustomStringConvertible  {
 	public let token: UInt64
 	public let topics: [(String, MQTTQoS)]
 	
-	fileprivate init(token: UInt64, topics: [(String, MQTTQoS)]) {
+	fileprivate init(_ token: UInt64, _ topics: [(String, MQTTQoS)]) {
 		self.token = token
 		self.topics = topics
 	}
 	
+	public var description: String {
+		return "#\(token) \(topics)"
+	}
+}
+
+protocol MQTTSubscriptionDelegate: class {
+	func send(packet: MQTTPacket) -> Bool
+	func subscriptionChanged(subscription: MQTTSubscriptionDetail, status: MQTTSubscriptionStatus)
+}
+
+public class MQTTSubscription: CustomStringConvertible {
+	fileprivate weak var subscriber: MQTTSubscriber? = nil
+	public let detail: MQTTSubscriptionDetail
+	
+	fileprivate init(token: UInt64, topics: [(String, MQTTQoS)]) {
+		self.detail = MQTTSubscriptionDetail(token, topics)
+	}
+	
 	deinit {
-		subscriber?.unsubscribe(token: token, topics: topics)
+		subscriber?.unsubscribe(detail)
 	}
 	
 	public var description: String {
-		return "\(token)"
+		return detail.description
 	}
 }
 
@@ -47,9 +59,9 @@ final class MQTTSubscriber {
 	
 	private let mutex = ReadWriteMutex()
 	private var token: UInt64 = 0
-	private var unacknowledgedSubscriptions = [UInt16: (MQTTSubPacket,UInt64,((Bool)->())?)]()
-	private var unacknowledgedUnsubscriptions = [UInt16: (MQTTUnsubPacket,UInt64,((Bool)->())?)]()
-	private var knownSubscriptions = [UInt64: WeakHandle<MQTTSubscription>]()
+	private var unacknowledgedSubscriptions = [UInt16: (MQTTSubPacket,MQTTSubscriptionDetail,((Bool)->())?)]()
+	private var unacknowledgedUnsubscriptions = [UInt16: (MQTTUnsubPacket,MQTTSubscriptionDetail,((Bool)->())?)]()
+	private var knownSubscriptions = [UInt64: MQTTSubscriptionDetail]()
 	
 	weak var delegate: MQTTSubscriptionDelegate?
 	
@@ -58,11 +70,16 @@ final class MQTTSubscriber {
 	}
 	
 	func connected(cleanSession: Bool, present: Bool) {
-		// TODO: is this necessary when clean is false
+		// If the application makes a subscription request before connection
+		// we want to submit the pending subscriptions on connect.
+		// If clean session is false the subscriptions are made again by the broker
+		// with no communications.
+		// But the subscriptions at shutdown are not necessarely the subscriptions we
+		// want at startup.
 		mutex.writing {
 			for token in knownSubscriptions.keys.sorted() {
-				if let subscription = knownSubscriptions[token]?.value {
-					startSubscription(subscription: subscription, completion: nil)
+				if let subscription = knownSubscriptions[token] {
+					startSubscription(subscription, nil)
 				}
 				else {
 					knownSubscriptions.removeValue(forKey: token)
@@ -72,17 +89,26 @@ final class MQTTSubscriber {
 	}
 	
 	func resendPulse() {
-		mutex.writing {
+		mutex.reading {
+			for key in unacknowledgedSubscriptions.keys.sorted() {
+				let element = unacknowledgedSubscriptions[key]!
+				sendSubscription(element.1, element.0)
+			}
+			for key in unacknowledgedUnsubscriptions.keys.sorted() {
+				let element = unacknowledgedUnsubscriptions[key]!
+				sendUnsubscription(element.1, element.0)
+			}
 		}
 	}
 	
-	func disconnected(cleanSession: Bool, final: Bool) {
+	func disconnected(cleanSession: Bool, manual: Bool) {
+		// What do we do if cleanSession == false
 		mutex.writing {
 			unacknowledgedSubscriptions.removeAll()
 			unacknowledgedUnsubscriptions.removeAll()
 			for token in knownSubscriptions.keys.sorted().reversed() {
-				if let subscription = knownSubscriptions[token]?.value {
-					delegate?.subscriptionChanged(subscription: subscription, status: final ? .unsubscribed : .suspended)
+				if let subscription = knownSubscriptions[token] {
+					delegate?.subscriptionChanged(subscription: subscription, status: manual ? .unsubscribed : .suspended)
 				}
 				else {
 					knownSubscriptions.removeValue(forKey: token)
@@ -96,35 +122,47 @@ final class MQTTSubscriber {
 			token += 1
 			let subscription = MQTTSubscription(token: token, topics: topics)
 			subscription.subscriber = self
-			knownSubscriptions[token] = WeakHandle(object: subscription)
-			startSubscription(subscription: subscription, completion: completion)
+			knownSubscriptions[token] = subscription.detail
+			startSubscription(subscription.detail, completion)
 			return subscription
 		}
 	}
 	
-	private func startSubscription(subscription: MQTTSubscription, completion: ((Bool)->())?) {
+	private func startSubscription(_ subscription: MQTTSubscriptionDetail, _ completion: ((Bool)->())?) {
 		let messageId = idSource.fetch()
         let packet = MQTTSubPacket(topics: subscription.topics, messageID: messageId)
-		unacknowledgedSubscriptions[packet.messageID] = (packet, subscription.token, completion)
+		unacknowledgedSubscriptions[packet.messageID] = (packet, subscription, completion)
 		delegate?.subscriptionChanged(subscription: subscription, status: .subPending)
+		sendSubscription(subscription, packet)
+	}
+	
+	private func sendSubscription(_ subscription: MQTTSubscriptionDetail, _ packet: MQTTSubPacket) {
         if delegate?.send(packet: packet) ?? false == false {
-			idSource.free(id: messageId)
+			idSource.free(id: packet.messageID)
 			delegate?.subscriptionChanged(subscription: subscription, status: .dropped)
-			unacknowledgedSubscriptions.removeValue(forKey: messageId)
+			unacknowledgedSubscriptions.removeValue(forKey: packet.messageID)
         }
 	}
 	
-	fileprivate func unsubscribe(token: UInt64, topics: [(String, MQTTQoS)]) {
+	fileprivate func unsubscribe(_ subscription: MQTTSubscriptionDetail) {
 		mutex.writing {
-			knownSubscriptions.removeValue(forKey: token)
-			let packet = MQTTUnsubPacket(topics: topics.map({$0.0}), messageID: idSource.fetch())
-			unacknowledgedUnsubscriptions[packet.messageID] = (packet, token, nil)
-			let copy = MQTTSubscription(token: token, topics: topics)
-			delegate?.subscriptionChanged(subscription: copy, status: .unsubPending)
-			if delegate?.send(packet: packet) ?? false == false {
-				delegate?.subscriptionChanged(subscription: copy, status: .unsubFailed)
-				unacknowledgedUnsubscriptions.removeValue(forKey: packet.messageID)
-			}
+			knownSubscriptions[subscription.token] = nil
+			startUnsubscription(subscription)
+		}
+	}
+	
+	private func startUnsubscription(_ subscription: MQTTSubscriptionDetail) {
+		let packet = MQTTUnsubPacket(topics: subscription.topics.map({$0.0}), messageID: idSource.fetch())
+		unacknowledgedUnsubscriptions[packet.messageID] = (packet, subscription, nil)
+        delegate?.subscriptionChanged(subscription: subscription, status: .unsubPending)
+		sendUnsubscription(subscription, packet)
+	}
+	
+	private func sendUnsubscription(_ subscription: MQTTSubscriptionDetail, _ packet: MQTTUnsubPacket) {
+		if delegate?.send(packet: packet) ?? false == false {
+			idSource.free(id: packet.messageID)
+			delegate?.subscriptionChanged(subscription: subscription, status: .unsubFailed)
+			unacknowledgedUnsubscriptions.removeValue(forKey: packet.messageID)
 		}
 	}
 	
@@ -133,18 +171,14 @@ final class MQTTSubscriber {
 			case let packet as MQTTSubAckPacket:
 				idSource.free(id: packet.messageID)
 				if let element = mutex.writing({unacknowledgedSubscriptions.removeValue(forKey:packet.messageID)}) {
-					if let subscription = knownSubscriptions[element.1]?.value {
-						delegate?.subscriptionChanged(subscription: subscription, status: .subscribed)
-					}
+					delegate?.subscriptionChanged(subscription: element.1, status: .subscribed)
 					element.2?(true)
 				}
 				return true
 			case let packet as MQTTUnsubAckPacket:
 				idSource.free(id: packet.messageID)
 				if let element = mutex.writing({unacknowledgedUnsubscriptions.removeValue(forKey:packet.messageID)}) {
-					if let subscription = knownSubscriptions[element.1]?.value {
-						delegate?.subscriptionChanged(subscription: subscription, status: .unsubscribed)
-					}
+					delegate?.subscriptionChanged(subscription: element.1, status: .unsubscribed)
 					element.2?(true)
 				}
 				return true

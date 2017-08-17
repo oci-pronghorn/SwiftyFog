@@ -117,7 +117,7 @@ extension AppDelegate: MQTTClientDelegate {
 		print("\(Date.nowInSeconds()) MQTT Ping \(status)")
 	}
 	
-	func mqttSubscriptionChanged(client: MQTTClient, subscription: MQTTSubscription, status: MQTTSubscriptionStatus) {
+	func mqttSubscriptionChanged(client: MQTTClient, subscription: MQTTSubscriptionDetail, status: MQTTSubscriptionStatus) {
 		print("\(Date.nowInSeconds()) MQTT Subscription \(subscription) \(status)")
 		if status == .subscribed {
 			print("    \(subscription.topics)")

@@ -8,7 +8,6 @@
 
 import Foundation
 
-// todo: read from file if reboot
 final class MQTTMessageIdSource {
 	private let mutex = ReadWriteMutex()
 	private var chart = [UInt8](repeating: 0xFF, count: Int(UInt16.max / 8))

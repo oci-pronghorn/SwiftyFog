@@ -17,7 +17,7 @@ private struct PublishAttempt {
 	var completion: ((Bool)->())?
 }
 
-enum Qos2Mode {
+public enum Qos2Mode {
 	case lowLatency
 	case assured
 }
@@ -34,7 +34,7 @@ final class MQTTPublisher {
 	
 	weak var delegate: MQTTPublisherDelegate?
 	
-	init(idSource: MQTTMessageIdSource, qos2Mode: Qos2Mode = .lowLatency) {
+	init(idSource: MQTTMessageIdSource, qos2Mode: Qos2Mode) {
 		self.idSource = idSource
 		self.qos2Mode = qos2Mode
 	}
@@ -62,10 +62,11 @@ final class MQTTPublisher {
 	
 	func resendPulse() {
 		mutex.writing {
+			// TODO
 		}
 	}
 	
-	func disconnected(cleanSession: Bool, final: Bool) {
+	func disconnected(cleanSession: Bool, manual: Bool) {
 		var unacknowledgedQos1Ack = PendingPublish()
 		var unacknowledgedQos2Rec = PendingPublish()
 		var unacknowledgedQos2Comp = PendingPublish()
@@ -82,7 +83,7 @@ final class MQTTPublisher {
 				self.unacknowledgedQos2Comp.removeAll()
 			}
 		}
-		if cleanSession || final {
+		if cleanSession || manual {
 			for element in unacknowledgedQos1Ack {
 				idSource.free(id: element.0)
 				element.1.completion?(false)

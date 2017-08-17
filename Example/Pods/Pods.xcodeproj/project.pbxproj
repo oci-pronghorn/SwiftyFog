@@ -28,6 +28,7 @@
 		553F97311F434CCC00CBF725 /* PhotosAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F972F1F434CCB00CBF725 /* PhotosAccess.swift */; };
 		553F97321F434CCC00CBF725 /* UIImagePickerController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F97301F434CCC00CBF725 /* UIImagePickerController+.swift */; };
 		553F97381F434F4100CBF725 /* MQTTBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F97361F434F2100CBF725 /* MQTTBridge.swift */; };
+		55C377781F45BBBA0086BD19 /* MQTTPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C377771F45BBBA0086BD19 /* MQTTPersistence.swift */; };
 		55C3EE211F43F87A005222C9 /* MQTTPackedLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C3EE1F1F43F78A005222C9 /* MQTTPackedLength.swift */; };
 		55FB961B1F4322FC00D3FD10 /* MQTTRetryConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55FB96191F4322A100D3FD10 /* MQTTRetryConnection.swift */; };
 		57506592AB10ACD40E3F1E2DA8A7687F /* MQTTPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EFC4EE20DA3700E963DF7021A77AD33 /* MQTTPublisher.swift */; };
@@ -112,6 +113,7 @@
 		553F972F1F434CCB00CBF725 /* PhotosAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosAccess.swift; sourceTree = "<group>"; };
 		553F97301F434CCC00CBF725 /* UIImagePickerController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImagePickerController+.swift"; sourceTree = "<group>"; };
 		553F97361F434F2100CBF725 /* MQTTBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTBridge.swift; sourceTree = "<group>"; };
+		55C377771F45BBBA0086BD19 /* MQTTPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTPersistence.swift; sourceTree = "<group>"; };
 		55C3EE1F1F43F78A005222C9 /* MQTTPackedLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTPackedLength.swift; sourceTree = "<group>"; };
 		55FB96191F4322A100D3FD10 /* MQTTRetryConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTRetryConnection.swift; sourceTree = "<group>"; };
 		5655B0CD2F1948341889F4D79B32B6CB /* Data+MQTT.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Data+MQTT.swift"; sourceTree = "<group>"; };
@@ -361,6 +363,7 @@
 				9EFC4EE20DA3700E963DF7021A77AD33 /* MQTTPublisher.swift */,
 				CDE9E7CAD6B237C6D1854162525715DD /* MQTTSubscriber.swift */,
 				2B3A339C70A56D5A9E6A7EB2D17AB3CF /* MQTTMessageIdSource.swift */,
+				55C377771F45BBBA0086BD19 /* MQTTPersistence.swift */,
 			);
 			path = client;
 			sourceTree = "<group>";
@@ -648,6 +651,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				514E8AF956B61B3346212FF03751B01A /* Pods-SwiftyFog_Example-dummy.m in Sources */,
+				55C377781F45BBBA0086BD19 /* MQTTPersistence.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

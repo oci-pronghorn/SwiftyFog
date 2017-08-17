@@ -10,15 +10,20 @@ import Foundation
 
 public struct MQTTClientParams {
     public var clientID: String
-    public var cleanSession: Bool = true
-    public var keepAlive: UInt16 = 60
+    public var cleanSession: Bool
+    public var keepAlive: UInt16
 	
     public var username: String? = nil
     public var password: String? = nil
     public var lastWill: MQTTPubMsg? = nil
 	
-    public init(clientID: String) {
+    public var resendPulseInterval: TimeInterval = 5.0
+    public var qos2Mode: Qos2Mode = .lowLatency
+	
+    public init(clientID: String, cleanSession: Bool = true, keepAlive: UInt16 = 60) {
 		self.clientID = clientID
+		self.cleanSession = cleanSession
+		self.keepAlive = keepAlive
     }
 }
 

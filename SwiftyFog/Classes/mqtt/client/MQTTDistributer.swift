@@ -42,7 +42,6 @@ final class MQTTDistributor {
 		self.idSource = idSource
 	}
 	
-	// todo: replay from file if reboot
 	func connected(cleanSession: Bool, present: Bool) {
 		if cleanSession == false {
 			mutex.writing {
@@ -56,10 +55,11 @@ final class MQTTDistributor {
 	
 	func resendPulse() {
 		mutex.writing {
+			// TODO
 		}
 	}
 	
-	func disconnected(cleanSession: Bool, final: Bool) {
+	func disconnected(cleanSession: Bool, manual: Bool) {
 		if cleanSession == true {
 			mutex.writing {
 				unacknowledgedQos2Rel.removeAll()

@@ -12,7 +12,7 @@ public protocol MQTTClientDelegate: class {
 	func mqttConnectAttempted(client: MQTTClient)
 	func mqttConnected(client: MQTTClient)
 	func mqttPinged(client: MQTTClient, status: MQTTPingStatus)
-	func mqttSubscriptionChanged(client: MQTTClient, subscription: MQTTSubscription, status: MQTTSubscriptionStatus)
+	func mqttSubscriptionChanged(client: MQTTClient, subscription: MQTTSubscriptionDetail, status: MQTTSubscriptionStatus)
 	func mqttDisconnected(client: MQTTClient, reason: MQTTConnectionDisconnect, error: Error?)
 	func mqttUnhandledMessage(message: MQTTMessage)
 }
@@ -44,12 +44,12 @@ public final class MQTTClient {
 		self.host = host
 		self.reconnect = reconnect
 		idSource = MQTTMessageIdSource()
-		self.publisher = MQTTPublisher(idSource: idSource)
+		self.publisher = MQTTPublisher(idSource: idSource, qos2Mode: client.qos2Mode)
 		self.subscriber = MQTTSubscriber(idSource: idSource)
 		self.distributer = MQTTDistributor(idSource: idSource)
 		
 		resendTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
-		resendTimer.schedule(deadline: .now() + 5, repeating: 5, leeway: .milliseconds(250))
+		resendTimer.schedule(deadline: .now() + client.resendPulseInterval, repeating: client.resendPulseInterval, leeway: .milliseconds(250))
 		resendTimer.setEventHandler { [weak self] in
 			self?.resendPulse()
 		}
@@ -112,13 +112,13 @@ extension MQTTClient: MQTTConnectionDelegate {
 	
 	private func doDisconnect(reason: MQTTConnectionDisconnect, error: Error?) {
 		resendTimer.suspend()
-		var final = false
+		var manual = false
 		if case .manual = reason {
-			final = true
+			manual = true
 		}
-		publisher.disconnected(cleanSession: client.cleanSession, final: final)
-		subscriber.disconnected(cleanSession: client.cleanSession, final: final)
-		distributer.disconnected(cleanSession: client.cleanSession, final: final)
+		publisher.disconnected(cleanSession: client.cleanSession, manual: manual)
+		subscriber.disconnected(cleanSession: client.cleanSession, manual: manual)
+		distributer.disconnected(cleanSession: client.cleanSession, manual: manual)
 		self.connection = nil
 		delegate?.mqttDisconnected(client: self, reason: reason, error: error)
 		if case let .handshake(ack) = reason {
@@ -189,7 +189,7 @@ extension MQTTClient: MQTTPublisherDelegate, MQTTSubscriptionDelegate, MQTTDistr
 		delegate?.mqttUnhandledMessage(message: message)
 	}
 	
-	func subscriptionChanged(subscription: MQTTSubscription, status: MQTTSubscriptionStatus) {
+	func subscriptionChanged(subscription: MQTTSubscriptionDetail, status: MQTTSubscriptionStatus) {
 		delegate?.mqttSubscriptionChanged(client: self, subscription: subscription, status: status)
 	}
 }
