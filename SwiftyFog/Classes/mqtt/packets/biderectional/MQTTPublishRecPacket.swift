@@ -9,7 +9,7 @@
 import Foundation
 
 // Publish received (QoS 2 publish received, part 1)
-class MQTTPublishRecPacket: MQTTPacket {
+class MQTTPublishRecPacket: MQTTPacket, MQTTIdentifiedPacket {
     let messageID: UInt16
 	
     init(messageID: UInt16) {

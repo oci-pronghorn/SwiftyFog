@@ -8,7 +8,7 @@
 
 import Foundation
 
-class MQTTUnsubPacket: MQTTPacket {
+class MQTTUnsubPacket: MQTTPacket, MQTTIdentifiedPacket {
     let topics: [String.UTF8View]
     let messageID: UInt16
     

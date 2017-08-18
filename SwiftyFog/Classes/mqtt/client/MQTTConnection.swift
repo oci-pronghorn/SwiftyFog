@@ -8,6 +8,11 @@
 
 import Foundation
 
+public enum Qos2Mode {
+	case lowLatency
+	case assured
+}
+
 public struct MQTTClientParams {
     public var clientID: String
     public var cleanSession: Bool

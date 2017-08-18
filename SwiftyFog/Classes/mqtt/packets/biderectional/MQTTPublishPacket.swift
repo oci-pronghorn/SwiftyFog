@@ -9,7 +9,7 @@
 import Foundation
 
 // Publish payload (QoS 0 final)
-class MQTTPublishPacket: MQTTPacket {
+class MQTTPublishPacket: MQTTPacket, MQTTIdentifiedPacket {
     let messageID: UInt16
     let message: MQTTPubMsg
     
@@ -17,6 +17,10 @@ class MQTTPublishPacket: MQTTPacket {
         self.messageID = messageID
         self.message = message
         super.init(header: MQTTPacketFixedHeader(packetType: .publish, flags: MQTTPublishPacket.fixedHeaderFlags(for: message, isRedelivery: isRedelivery)))
+    }
+    
+    func dupForResend() -> MQTTPacket {
+		return MQTTPublishPacket(messageID: messageID, message: message, isRedelivery: true)
     }
 	
     init?(header: MQTTPacketFixedHeader, networkData: Data) {

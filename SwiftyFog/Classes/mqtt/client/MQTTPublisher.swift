@@ -9,157 +9,82 @@
 import Foundation
 
 protocol MQTTPublisherDelegate: class {
-	func send(packet: MQTTPacket) -> Bool
-}
-
-private struct PublishAttempt {
-	var packet: MQTTPublishPacket
-	var completion: ((Bool)->())?
-}
-
-public enum Qos2Mode {
-	case lowLatency
-	case assured
 }
 
 final class MQTTPublisher {
-	private let idSource: MQTTMessageIdSource
+	private let durability: MQTTPacketDurability
 	private let qos2Mode: Qos2Mode
 
 	private let mutex = ReadWriteMutex()
-	private typealias PendingPublish = [UInt16:PublishAttempt]
-	private var unacknowledgedQos1Ack = PendingPublish()
-	private var unacknowledgedQos2Rec = PendingPublish()
-	private var unacknowledgedQos2Comp = PendingPublish()
-	private var unsentAcks = [UInt16:MQTTPacket]()
+	private var deferredCompletion = [UInt16 : (Bool)->()]()
 	
 	weak var delegate: MQTTPublisherDelegate?
 	
-	init(idSource: MQTTMessageIdSource, qos2Mode: Qos2Mode) {
-		self.idSource = idSource
+	init(durability: MQTTPacketDurability, qos2Mode: Qos2Mode) {
+		self.durability = durability
 		self.qos2Mode = qos2Mode
 	}
 	
-	func connected(cleanSession: Bool, present: Bool) {
-		// TODO: prepoluate from file if first connection
-	}
-	
-	func resendPulse() {
-		mutex.writing {
-			// Resend acks that failed to send
-			for messageId in unsentAcks.keys.sorted() {
-				let packet = unsentAcks[messageId]!
-				if delegate?.send(packet: packet) ?? false == true {
-					unsentAcks.removeValue(forKey: messageId)
-				}
-			}
-			// Resend packets that have failed to get an ack
-			// Do nothing on failure to send - timer will retry
-			for messageId in unacknowledgedQos1Ack.keys.sorted() {
-				if let element = unacknowledgedQos1Ack[messageId] {
-					let packet = MQTTPublishPacket(messageID: element.packet.messageID, message: element.packet.message, isRedelivery: true)
-					let _ = delegate?.send(packet: packet)
-				}
-			}
-			for messageId in unacknowledgedQos2Rec.keys.sorted() {
-				if let element = unacknowledgedQos2Rec[messageId] {
-					let packet = MQTTPublishPacket(messageID: element.packet.messageID, message: element.packet.message, isRedelivery: true)
-					let _ = delegate?.send(packet: packet)
-				}
-			}
-			for messageId in unacknowledgedQos2Comp.keys.sorted() {
-				let packet = MQTTPublishRecPacket(messageID: messageId)
-				let _ = delegate?.send(packet: packet)
-			}
-		}
+	func connected(cleanSession: Bool, present: Bool, initial: Bool) {
 	}
 	
 	func disconnected(cleanSession: Bool, manual: Bool) {
-		mutex.writing {
-			if cleanSession == true {
-				for element in unacknowledgedQos1Ack {
-					element.1.completion?(false)
-				}
-				self.unacknowledgedQos1Ack.removeAll()
-				for element in unacknowledgedQos2Rec {
-					element.1.completion?(false)
-				}
-				self.unacknowledgedQos2Rec.removeAll()
-				for element in unacknowledgedQos2Comp {
-					element.1.completion?(false)
-				}
-				self.unacknowledgedQos2Comp.removeAll()
-				unsentAcks.removeAll()
-			}
-		}
+		// Do not remove completion blocks
 	}
 
 	func publish(pubMsg: MQTTPubMsg, completion: ((Bool)->())?) {
-		var messageId = UInt16(0)
-		if pubMsg.qos != .atMostOnce {
-			messageId = idSource.fetch()
+		let qos = pubMsg.qos
+		
+		let expecting: MQTTPacketType?
+		switch qos {
+			case .atMostOnce:
+				expecting = nil
+				break
+			case .atLeastOnce:
+				expecting = .pubAck
+				break
+			case .exactlyOnce:
+				expecting = .pubRec
 		}
-		let packet = MQTTPublishPacket(messageID: messageId, message: pubMsg, isRedelivery: false)
-		performPublish(packet: packet, completion: completion)
-	}
-	
-	private func performPublish(packet: MQTTPublishPacket, completion: ((Bool)->())?) {
-		let qos = packet.message.qos
-		let messageId = packet.messageID
-		mutex.writing {
-			if qos == .atLeastOnce {
-				unacknowledgedQos1Ack[messageId] = PublishAttempt(packet: packet, completion: completion)
-			}
-			else if qos == .exactlyOnce {
-				unacknowledgedQos2Rec[messageId] = PublishAttempt(packet: packet, completion: completion)
-			}
-		}
-		if delegate?.send(packet: packet) ?? false == false {
-			if messageId != 0 {
-				idSource.free(id: messageId)
-			}
-			mutex.writing {
-				if qos == .atLeastOnce {
-					unacknowledgedQos1Ack.removeValue(forKey: messageId)
-				}
-				else if qos == .exactlyOnce {
-					unacknowledgedQos2Rec.removeValue(forKey: messageId)
-				}
-			}
-			completion?(false)
-			return
-		}
+		
 		if qos == .atMostOnce {
-			completion?(true)
+			let packet = MQTTPublishPacket(messageID: 0, message: pubMsg, isRedelivery: false)
+			let success = durability.send(packet: packet)
+			completion?(success)
+		}
+		else {
+			let sent: ((MQTTPublishPacket, Bool)->())? = completion == nil ? nil : { [weak self] p, s in
+				if (s) { self?.deferredCompletion[p.messageID] = completion }
+			}
+			durability.send(packet: {MQTTPublishPacket(messageID: $0, message: pubMsg, isRedelivery: false)}, expecting: expecting, sent: sent)
 		}
 	}
 	
 	func receive(packet: MQTTPacket) -> Bool {
 		switch packet {
-			case let packet as MQTTPublishAckPacket: // received for Qos 1
-				idSource.free(id: packet.messageID)
-				if let element = mutex.writing({unacknowledgedQos1Ack.removeValue(forKey:packet.messageID)}) {
-					element.completion?(true)
+			case let ack as MQTTPublishAckPacket: // received for Qos 1
+				if let completion = mutex.writing({deferredCompletion.removeValue(forKey:ack.messageID)}) {
+					completion(true)
 				}
+				durability.received(acknolwedgment: ack, releaseId: true)
 				return true
-			case let packet as MQTTPublishRecPacket: // received for Qos 2 step 1
-				let element = mutex.writing({unacknowledgedQos2Rec.removeValue(forKey:packet.messageID)})
+			case let rec as MQTTPublishRecPacket: // received for Qos 2 step 1
 				if qos2Mode == .lowLatency {
-					element?.completion?(true)
-				}
-				mutex.writing { unacknowledgedQos2Comp[packet.messageID] = element }
-				let ack = MQTTPublishRelPacket(messageID: packet.messageID)
-				if delegate?.send(packet: ack) ?? false == false {
-					mutex.writing{unsentAcks[packet.messageID] = ack}
-				}
-				return true
-			case let packet as MQTTPublishCompPacket: // received for Qos 2 step 2
-				idSource.free(id: packet.messageID)
-				if let element = mutex.writing({unacknowledgedQos2Comp.removeValue(forKey:packet.messageID)}) {
-					if qos2Mode == .assured {
-						element.completion?(true)
+					if let completion = mutex.writing({deferredCompletion.removeValue(forKey:rec.messageID)}) {
+						completion(true)
 					}
 				}
+				let rel = MQTTPublishRelPacket(messageID: rec.messageID)
+				durability.received(acknolwedgment: rec, releaseId: false)
+				durability.send(packet: rel, expecting: .pubComp, sent: nil)
+				return true
+			case let comp as MQTTPublishCompPacket: // received for Qos 2 step 2
+				if qos2Mode == .assured {
+					if let completion = mutex.writing({deferredCompletion.removeValue(forKey:comp.messageID)}) {
+						completion(true)
+					}
+				}
+				durability.received(acknolwedgment: comp, releaseId: true)
 				return true
 			default:
 				return false

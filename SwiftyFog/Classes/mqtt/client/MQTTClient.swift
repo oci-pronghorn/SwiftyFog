@@ -23,13 +23,13 @@ public final class MQTTClient {
 	public let reconnect: MQTTReconnectParams
 	
 	private let idSource: MQTTMessageIdSource
-    private let resendTimer: DispatchSourceTimer
     private let durability: MQTTPacketDurability
 	private let publisher: MQTTPublisher
 	private let subscriber: MQTTSubscriber
 	private let distributer: MQTTDistributor
 	private var connection: MQTTConnection?
 	private var retry: MQTTRetryConnection?
+	private var connectedCount: Int
 	
     public weak var delegate: MQTTClientDelegate?
 	
@@ -44,18 +44,14 @@ public final class MQTTClient {
 		self.client = client
 		self.host = host
 		self.reconnect = reconnect
+		connectedCount = 0
 		idSource = MQTTMessageIdSource()
 		self.durability = MQTTPacketDurability(idSource: idSource, resendInterval: client.resendPulseInterval)
-		self.publisher = MQTTPublisher(idSource: idSource, qos2Mode: client.qos2Mode)
-		self.subscriber = MQTTSubscriber(idSource: idSource)
-		self.distributer = MQTTDistributor(idSource: idSource, qos2Mode: client.qos2Mode, root: client.distributionRoot)
+		self.publisher = MQTTPublisher(durability: durability, qos2Mode: client.qos2Mode)
+		self.subscriber = MQTTSubscriber(durability: durability)
+		self.distributer = MQTTDistributor(durability: durability, qos2Mode: client.qos2Mode, root: client.distributionRoot)
 		
-		resendTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
-		resendTimer.schedule(deadline: .now() + client.resendPulseInterval, repeating: client.resendPulseInterval, leeway: .milliseconds(250))
-		resendTimer.setEventHandler { [weak self] in
-			self?.resendPulse()
-		}
-		
+		durability.delegate = self
 		publisher.delegate = self
 		subscriber.delegate = self
 		distributer.delegate = self
@@ -85,12 +81,6 @@ public final class MQTTClient {
 		connection?.delegate = self
 	}
 	
-	private func resendPulse() {
-		publisher.resendPulse()
-		subscriber.resendPulse()
-		distributer.resendPulse()
-	}
-	
 	private func unhandledPacket(packet: MQTTPacket) {
 		debugOut?("* MQTT Unhandled: \(type(of:packet))")
 	}
@@ -116,7 +106,6 @@ extension MQTTClient: MQTTConnectionDelegate {
 	}
 	
 	private func doDisconnect(reason: MQTTConnectionDisconnect, error: Error?) {
-		resendTimer.suspend()
 		var manual = false
 		if case .manual = reason {
 			manual = true
@@ -124,6 +113,7 @@ extension MQTTClient: MQTTConnectionDelegate {
 		publisher.disconnected(cleanSession: client.cleanSession, manual: manual)
 		subscriber.disconnected(cleanSession: client.cleanSession, manual: manual)
 		distributer.disconnected(cleanSession: client.cleanSession, manual: manual)
+		durability.disconnected(cleanSession: client.cleanSession, manual: manual)
 		idSource.disconnected(cleanSession: client.cleanSession, manual: manual)
 		self.connection = nil
 		delegate?.mqttDisconnected(client: self, reason: reason, error: error)
@@ -141,13 +131,14 @@ extension MQTTClient: MQTTConnectionDelegate {
 	}
 	
 	func mqttConnected(_ connection: MQTTConnection, present: Bool) {
+		connectedCount += 1
 		retry?.connected = true
 		delegate?.mqttConnected(client: self)
 		idSource.connected(cleanSession: client.cleanSession, present: present)
-		publisher.connected(cleanSession: client.cleanSession, present: present)
-		subscriber.connected(cleanSession: client.cleanSession, present: present)
-		distributer.connected(cleanSession: client.cleanSession, present: present)
-		resendTimer.resume()
+		durability.connected(cleanSession: client.cleanSession, present: present, initial: connectedCount == 1)
+		publisher.connected(cleanSession: client.cleanSession, present: present, initial: connectedCount == 1)
+		subscriber.connected(cleanSession: client.cleanSession, present: present, initial: connectedCount == 1)
+		distributer.connected(cleanSession: client.cleanSession, present: present, initial: connectedCount == 1)
 	}
 	
 	func mqttPinged(_ connection: MQTTConnection, status: MQTTPingStatus) {
@@ -174,23 +165,15 @@ extension MQTTClient: MQTTConnectionDelegate {
 	}
 }
 
-extension MQTTClient: MQTTPublisherDelegate, MQTTSubscriptionDelegate, MQTTDistributorDelegate {
+extension MQTTClient:
+	MQTTPublisherDelegate,
+	MQTTSubscriptionDelegate,
+	MQTTDistributorDelegate,
+	MQTTPacketDurabilityDelegate {
+
 	func send(packet: MQTTPacket) -> Bool {
 		return connection?.send(packet: packet) ?? false
 	}
-	
-	// TODO: get Packet creation and marshalling in background thread
-	// call completion(false) if no "delegate"
-	/*
-	func doIt<T: MQTTPacket>(factory: @escaping ()->T, writer: @escaping (Data)->Bool, completion: ((T, Bool)->())?) {
-		DispatchQueue.global().async {
-			let packet = factory()
-			let data = MQTTPacketFactory().write(packet)
-			let success = writer(data)
-			completion?(packet, success)
-		}
-	}
-	*/
 	
 	func unhandledMessage(message: MQTTMessage) {
 		delegate?.mqttUnhandledMessage(message: message)

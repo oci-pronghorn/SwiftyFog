@@ -31,3 +31,14 @@ class MQTTPacket {
 	func appendPayload(_ data: inout Data) {
 	}
 }
+
+protocol MQTTIdentifiedPacket {
+    var messageID: UInt16 { get }
+    func dupForResend() -> MQTTPacket
+}
+
+extension MQTTIdentifiedPacket where Self: MQTTPacket {
+    func dupForResend() -> MQTTPacket {
+		return self
+    }
+}

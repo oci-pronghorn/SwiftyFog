@@ -33,7 +33,6 @@ public struct MQTTSubscriptionDetail: CustomStringConvertible  {
 }
 
 protocol MQTTSubscriptionDelegate: class {
-	func send(packet: MQTTPacket) -> Bool
 	func subscriptionChanged(subscription: MQTTSubscriptionDetail, status: MQTTSubscriptionStatus)
 }
 
@@ -55,57 +54,38 @@ public class MQTTSubscription: CustomStringConvertible {
 }
 
 final class MQTTSubscriber {
-	private let idSource: MQTTMessageIdSource
+	private let durability: MQTTPacketDurability
 	
 	private let mutex = ReadWriteMutex()
 	private var token: UInt64 = 0
-	private var unacknowledgedSubscriptions = [UInt16: (MQTTSubPacket,MQTTSubscriptionDetail,((Bool)->())?)]()
-	private var unacknowledgedUnsubscriptions = [UInt16: (MQTTUnsubPacket,MQTTSubscriptionDetail,((Bool)->())?)]()
-	private var knownSubscriptions = [UInt64: MQTTSubscriptionDetail]()
+	private var knownSubscriptions = [UInt64 : MQTTSubscriptionDetail]()
+	private var deferredSubscriptions = [UInt16 : (MQTTSubscriptionDetail, ((Bool)->())?)]()
+	private var deferredUnSubscriptions = [UInt16 : (MQTTSubscriptionDetail, ((Bool)->())?)]()
 	
 	weak var delegate: MQTTSubscriptionDelegate?
 	
-	init(idSource: MQTTMessageIdSource) {
-		self.idSource = idSource
+	init(durability: MQTTPacketDurability) {
+		self.durability = durability
 	}
 	
-	func connected(cleanSession: Bool, present: Bool) {
-		// TODO: If the application makes a subscription request before connection
-		// we want to submit the pending subscriptions on connect.
-		// If clean session is false the subscriptions are made again by the broker
-		// with no communications.
-		// But the subscriptions at shutdown are not necessarely the subscriptions we
-		// want at startup.
+	func connected(cleanSession: Bool, present: Bool, initial: Bool) {
 		mutex.writing {
-			for token in knownSubscriptions.keys.sorted() {
-				if let subscription = knownSubscriptions[token] {
-					startSubscription(subscription, nil)
+			if initial == false {
+				for token in knownSubscriptions.keys.sorted() {
+					if let subscription = knownSubscriptions[token] {
+						startSubscription(subscription, nil)
+					}
+					else {
+						knownSubscriptions.removeValue(forKey: token)
+					}
 				}
-				else {
-					knownSubscriptions.removeValue(forKey: token)
-				}
-			}
-		}
-	}
-	
-	func resendPulse() {
-		mutex.reading {
-			for key in unacknowledgedSubscriptions.keys.sorted() {
-				let element = unacknowledgedSubscriptions[key]!
-				sendSubscription(element.1, element.0)
-			}
-			for key in unacknowledgedUnsubscriptions.keys.sorted() {
-				let element = unacknowledgedUnsubscriptions[key]!
-				sendUnsubscription(element.1, element.0)
 			}
 		}
 	}
 	
 	func disconnected(cleanSession: Bool, manual: Bool) {
-		// TODO: What do we do if cleanSession == false
 		mutex.writing {
-			unacknowledgedSubscriptions.removeAll()
-			unacknowledgedUnsubscriptions.removeAll()
+			// Do not remove completion blocks
 			for token in knownSubscriptions.keys.sorted().reversed() {
 				if let subscription = knownSubscriptions[token] {
 					delegate?.subscriptionChanged(subscription: subscription, status: manual ? .unsubscribed : .suspended)
@@ -129,58 +109,38 @@ final class MQTTSubscriber {
 	}
 	
 	private func startSubscription(_ subscription: MQTTSubscriptionDetail, _ completion: ((Bool)->())?) {
-		let messageId = idSource.fetch()
-        let packet = MQTTSubPacket(topics: subscription.topics, messageID: messageId)
-		unacknowledgedSubscriptions[packet.messageID] = (packet, subscription, completion)
 		delegate?.subscriptionChanged(subscription: subscription, status: .subPending)
-		sendSubscription(subscription, packet)
-	}
-	
-	private func sendSubscription(_ subscription: MQTTSubscriptionDetail, _ packet: MQTTSubPacket) {
-        if delegate?.send(packet: packet) ?? false == false {
-			idSource.free(id: packet.messageID)
-			delegate?.subscriptionChanged(subscription: subscription, status: .dropped)
-			unacknowledgedSubscriptions.removeValue(forKey: packet.messageID)
-        }
+		durability.send(packet: {MQTTSubPacket(topics: subscription.topics, messageID: $0)}, expecting: .subAck)  { [weak self] p, s in
+			if (s) { self?.deferredSubscriptions[p.messageID] = (subscription, nil) }
+		}
 	}
 	
 	fileprivate func unsubscribe(_ subscription: MQTTSubscriptionDetail) {
 		mutex.writing {
 			knownSubscriptions[subscription.token] = nil
-			startUnsubscription(subscription)
-		}
-	}
-	
-	private func startUnsubscription(_ subscription: MQTTSubscriptionDetail) {
-		let packet = MQTTUnsubPacket(topics: subscription.topics.map({$0.0}), messageID: idSource.fetch())
-		unacknowledgedUnsubscriptions[packet.messageID] = (packet, subscription, nil)
-        delegate?.subscriptionChanged(subscription: subscription, status: .unsubPending)
-		sendUnsubscription(subscription, packet)
-	}
-	
-	private func sendUnsubscription(_ subscription: MQTTSubscriptionDetail, _ packet: MQTTUnsubPacket) {
-		if delegate?.send(packet: packet) ?? false == false {
-			idSource.free(id: packet.messageID)
-			delegate?.subscriptionChanged(subscription: subscription, status: .unsubFailed)
-			unacknowledgedUnsubscriptions.removeValue(forKey: packet.messageID)
+			let topicStrings = subscription.topics.map({$0.0})
+			delegate?.subscriptionChanged(subscription: subscription, status: .unsubPending)
+			durability.send(packet: {MQTTUnsubPacket(topics: topicStrings, messageID: $0)}, expecting: .subAck) { [weak self] p, s in
+				if (s) { self?.deferredUnSubscriptions[p.messageID] = (subscription, nil) }
+			}
 		}
 	}
 	
 	func receive(packet: MQTTPacket) -> Bool {
 		switch packet {
 			case let packet as MQTTSubAckPacket:
-				idSource.free(id: packet.messageID)
-				if let element = mutex.writing({unacknowledgedSubscriptions.removeValue(forKey:packet.messageID)}) {
-					delegate?.subscriptionChanged(subscription: element.1, status: .subscribed)
-					element.2?(true)
+				if let element = mutex.writing({deferredSubscriptions.removeValue(forKey:packet.messageID)}) {
+					delegate?.subscriptionChanged(subscription: element.0, status: .subscribed)
+					element.1?(true)
 				}
+				durability.received(acknolwedgment: packet, releaseId: true)
 				return true
 			case let packet as MQTTUnsubAckPacket:
-				idSource.free(id: packet.messageID)
-				if let element = mutex.writing({unacknowledgedUnsubscriptions.removeValue(forKey:packet.messageID)}) {
-					delegate?.subscriptionChanged(subscription: element.1, status: .unsubscribed)
-					element.2?(true)
+				if let element = mutex.writing({deferredUnSubscriptions.removeValue(forKey:packet.messageID)}) {
+					delegate?.subscriptionChanged(subscription: element.0, status: .unsubscribed)
+					element.1?(true)
 				}
+				durability.received(acknolwedgment: packet, releaseId: true)
 				return true
 			default:
 				return false
