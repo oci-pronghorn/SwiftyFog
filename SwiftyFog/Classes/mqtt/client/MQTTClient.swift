@@ -24,6 +24,7 @@ public final class MQTTClient {
 	
 	private let idSource: MQTTMessageIdSource
     private let resendTimer: DispatchSourceTimer
+    private let durability: MQTTPacketDurability
 	private let publisher: MQTTPublisher
 	private let subscriber: MQTTSubscriber
 	private let distributer: MQTTDistributor
@@ -44,6 +45,7 @@ public final class MQTTClient {
 		self.host = host
 		self.reconnect = reconnect
 		idSource = MQTTMessageIdSource()
+		self.durability = MQTTPacketDurability(idSource: idSource, resendInterval: client.resendPulseInterval)
 		self.publisher = MQTTPublisher(idSource: idSource, qos2Mode: client.qos2Mode)
 		self.subscriber = MQTTSubscriber(idSource: idSource)
 		self.distributer = MQTTDistributor(idSource: idSource, qos2Mode: client.qos2Mode, root: client.distributionRoot)
@@ -59,11 +61,14 @@ public final class MQTTClient {
 		distributer.delegate = self
 	}
 	
-	public func start() {
+	@discardableResult
+	public func start() -> [MQTTSubscription] {
 		retry = MQTTRetryConnection(spec: reconnect, attemptConnect: { [weak self] in
 			self?.makeConnection()
 		})
 		retry?.start()
+		// TODO on clean == false return recreated last known subscriptions
+		return []
 	}
 	
 	public func stop() {
