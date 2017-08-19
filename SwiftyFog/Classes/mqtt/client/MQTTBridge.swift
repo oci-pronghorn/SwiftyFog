@@ -8,11 +8,16 @@
 import Foundation
 
 public protocol MQTTBridge {
+	var root: String { get }
+
 	func publish(_ pubMsg: MQTTPubMsg, completion: ((Bool)->())?)
 	
 	func subscribe(topics: [(String, MQTTQoS)], completion: ((Bool)->())?) -> MQTTSubscription
 	
 	func registerTopic(path: String, action: @escaping (MQTTMessage)->()) -> MQTTRegistration
+	
+// Note" "/" is both a valid topic and a topic seperator
+	func createBridge(rooted: String) -> MQTTBridge
 }
 
 public extension MQTTBridge {

@@ -17,14 +17,14 @@ public struct MQTTClientParams {
     public var clientID: String
     public var cleanSession: Bool
     public var keepAlive: UInt16
+    public var detectServerDeath = false
+    public var resendPulseInterval: TimeInterval = 5.0
+	
+    public var qos2Mode: Qos2Mode = .lowLatency
+    public var lastWill: MQTTPubMsg? = nil
 	
     public var username: String? = nil
     public var password: String? = nil
-    public var lastWill: MQTTPubMsg? = nil
-	
-    public var resendPulseInterval: TimeInterval = 5.0
-    public var qos2Mode: Qos2Mode = .lowLatency
-    public var distributionRoot: String = ""
 	
     public init(clientID: String, cleanSession: Bool = true, keepAlive: UInt16 = 60) {
 		self.clientID = clientID
@@ -63,7 +63,6 @@ protocol MQTTConnectionDelegate: class {
 
 final class MQTTConnection {
 	private let clientPrams: MQTTClientParams
-	private let supportsServerAliveCheck = false
     private var factory: MQTTPacketFactory
     private var stream: MQTTSessionStream? = nil
     private var keepAliveTimer: DispatchSourceTimer?
@@ -188,10 +187,10 @@ extension MQTTConnection {
 				if lastPingAck == 0 {
 					lastPingAck = now
 				}
-				if supportsServerAliveCheck {
-					// TODO: The spec says we should receive a a ping ack after a "reasonable amount of time"
+				if clientPrams.detectServerDeath {
+					// The spec says we should receive a a ping ack after a "reasonable amount of time"
 					// The mosquitto logs states that it is sending immediately and every time.
-					// Reception is ony once and after keep alive period
+					// Actual send is usually ony once and after keep alive period
 					let timePassed = now - lastPingAck
 					// The keep alive range on server is 1.5 * keepAlive
 					let limit = UInt64(clientPrams.keepAlive + (clientPrams.keepAlive / 2))

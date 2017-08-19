@@ -18,7 +18,7 @@ protocol MQTTPacketDurabilityDelegate: class {
 	func send(packet: MQTTPacket) -> Bool
 }
 
-class MQTTPacketDurability {
+final class MQTTPacketDurability {
 	private let idSource: MQTTMessageIdSource
 	private let mutex = ReadWriteMutex()
     private let resendTimer: DispatchSourceTimer

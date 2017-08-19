@@ -47,9 +47,9 @@ public final class MQTTClient {
 		connectedCount = 0
 		idSource = MQTTMessageIdSource()
 		self.durability = MQTTPacketDurability(idSource: idSource, resendInterval: client.resendPulseInterval)
-		self.publisher = MQTTPublisher(durability: durability, qos2Mode: client.qos2Mode, root: client.distributionRoot)
+		self.publisher = MQTTPublisher(durability: durability, qos2Mode: client.qos2Mode)
 		self.subscriber = MQTTSubscriber(durability: durability)
-		self.distributer = MQTTDistributor(durability: durability, qos2Mode: client.qos2Mode, root: client.distributionRoot)
+		self.distributer = MQTTDistributor(durability: durability, qos2Mode: client.qos2Mode)
 		
 		durability.delegate = self
 		publisher.delegate = self
@@ -87,6 +87,12 @@ public final class MQTTClient {
 }
 
 extension MQTTClient: MQTTBridge {
+	public var root: String { return "" }
+	
+	public func createBridge(rooted: String) -> MQTTBridge {
+		return MQTTTopicScope(base: self, root: rooted)
+	}
+
 	public func publish(_ pubMsg: MQTTPubMsg, completion: ((Bool)->())?) {
 		publisher.publish(pubMsg: pubMsg, completion: completion)
 	}

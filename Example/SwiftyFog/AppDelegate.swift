@@ -21,20 +21,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
 
-		var client = MQTTClientParams(clientID: "SwiftyFogExample")
-		client.distributionRoot = "thejoveexpress/"
 		mqtt = MQTTClient(
-			client: client,
+			client: MQTTClientParams(clientID: "SwiftyFogExample"),
 			//host: MQTTHostParams(host: "thejoveexpress.local"),
 			reconnect: MQTTReconnectParams())
 		mqtt.delegate = self
 		
 		//mqtt?.debugOut = {print($0)}
 		
-		(self.window!.rootViewController as! ViewController).mqtt = mqtt
-		
-		jovepressSubscription = mqtt.subscribe(topics: [("thejoveexpress/#", .atMostOnce)])
-		registration = mqtt.registerTopic(path: "engine/calibrate", action: receiveMessage)
+		let scoped = mqtt.createBridge(rooted: "thejoveexpress")
+		(self.window!.rootViewController as! ViewController).mqtt = scoped
+		jovepressSubscription = scoped.subscribe(topics: [("#", .atMostOnce)])
+		registration = scoped.registerTopic(path: "engine/calibrate", action: receiveMessage)
 		
 		return true
 	}

@@ -30,7 +30,6 @@ protocol MQTTDistributorDelegate: class {
 final class MQTTDistributor {
 	private let durability: MQTTPacketDurability
 	private let qos2Mode: Qos2Mode
-	private let root: String
 	
 	weak var delegate: MQTTDistributorDelegate?
 	
@@ -39,10 +38,9 @@ final class MQTTDistributor {
 	private var registeredPaths = [String: [(UInt64,(MQTTMessage)->())]]()
 	private var deferredPacket = [UInt16:MQTTPublishPacket]()
 	
-	init(durability: MQTTPacketDurability, qos2Mode: Qos2Mode, root: String) {
+	init(durability: MQTTPacketDurability, qos2Mode: Qos2Mode) {
 		self.durability = durability
 		self.qos2Mode = qos2Mode
-		self.root = root
 	}
 	
 	func connected(cleanSession: Bool, present: Bool, initial: Bool) {
@@ -80,13 +78,11 @@ final class MQTTDistributor {
 	private func issue(packet: MQTTPublishPacket) {
 		var actions = [(MQTTMessage)->()]()
 		let msg = MQTTMessage(publishPacket: packet)
-		if self.root.isEmpty || msg.topic.hasPrefix(self.root) {
-			let subTopic = self.root.isEmpty ? msg.topic : String(msg.topic.suffix(self.root.count+1))
-			mutex.reading {
-				if let distribute = registeredPaths[subTopic] {
-					for action in distribute {
-						actions.append(action.1)
-					}
+		let topic = String(packet.message.topic)
+		mutex.reading {
+			if let distribute = registeredPaths[topic] {
+				for action in distribute {
+					actions.append(action.1)
 				}
 			}
 		}

@@ -36,7 +36,7 @@ protocol MQTTSubscriptionDelegate: class {
 	func subscriptionChanged(subscription: MQTTSubscriptionDetail, status: MQTTSubscriptionStatus)
 }
 
-public class MQTTSubscription: CustomStringConvertible {
+public final class MQTTSubscription: CustomStringConvertible {
 	fileprivate weak var subscriber: MQTTSubscriber? = nil
 	public let detail: MQTTSubscriptionDetail
 	

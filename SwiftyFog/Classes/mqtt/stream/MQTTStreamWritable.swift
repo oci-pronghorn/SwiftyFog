@@ -17,7 +17,6 @@ protocol MQTTStreamWritable {
 extension Data : MQTTStreamWritable {
     func write(to write: StreamWriter) -> Bool {
         let totalLength = self.count
-        guard totalLength <= 128*128*128 else { return false }
         var writeLength: Int = 0
         self.withUnsafeBytes { (buffer: UnsafePointer<UInt8>) in
             repeat {
