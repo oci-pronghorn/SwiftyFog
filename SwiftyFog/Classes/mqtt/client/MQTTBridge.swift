@@ -7,6 +7,13 @@
 
 import Foundation
 
+// MQTTSubscription and MQTTRegistration are RAII owners of the subscribe and
+// register requests. When all references goes to nil, the unsubscribe/unregister
+// happens.
+// If the referance is reassigned it is important to note the unaction of the old
+// value happens after the action of the new value. If the reference is reused
+// you may choose to set it to nil before the assignement.
+
 public protocol MQTTBridge {
 	// If pubMsg.topic begins with '$' it will be used as an absolute path
 	// Otherwise fullpath is built from the bridge chain

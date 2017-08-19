@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  TrainViewController.swift
 //  SwiftyFog
 //
 //  Created by David Giovannini on 7/26/17.
@@ -9,7 +9,10 @@
 import UIKit
 import SwiftyFog
 
-class ViewController: UIViewController {
+class TrainViewController: UIViewController {
+	var jovepressSubscription: MQTTSubscription?
+	var registration: MQTTRegistration?
+	
 	let engine = Engine()
 	let lights = Lights()
 	let billboard = Billboard()
@@ -19,7 +22,13 @@ class ViewController: UIViewController {
 			engine.mqtt = mqtt
 			lights.mqtt = mqtt
 			billboard.mqtt = mqtt
+			jovepressSubscription = mqtt.subscribe(topics: [("#", .atMostOnce)])
+			registration = mqtt.registerTopic(path: "engine/calibrate", action: receiveMessage)
 		}
+	}
+	
+	func receiveMessage(message: MQTTMessage) {
+		print("\(Date.nowInSeconds()) MQTT distrubuted \(message)")
 	}
 	
 	override func viewDidLoad() {

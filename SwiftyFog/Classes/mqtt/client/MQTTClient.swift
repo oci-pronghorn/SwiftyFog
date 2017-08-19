@@ -59,19 +59,23 @@ public final class MQTTClient {
 	
 	@discardableResult
 	public func start() -> [MQTTSubscription] {
-		retry = MQTTRetryConnection(spec: reconnect, attemptConnect: { [weak self] in
-			self?.makeConnection()
-		})
-		retry?.start()
+		if retry == nil {
+			retry = MQTTRetryConnection(spec: reconnect, attemptConnect: { [weak self] in
+				self?.makeConnection()
+			})
+			retry?.start()
+		}
 		// TODO on clean == false return recreated last known subscriptions
 		return []
 	}
 	
 	public func stop() {
-		retry = nil
-		connection = nil
-		// connection does not call delegate in deinit
-		doDisconnect(reason: .manual, error: nil)
+		if retry != nil {
+			retry = nil
+			connection = nil
+			// connection does not call delegate in deinit
+			doDisconnect(reason: .manual, error: nil)
+		}
 	}
 	
 	private func makeConnection() {
