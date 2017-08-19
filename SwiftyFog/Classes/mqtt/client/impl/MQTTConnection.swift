@@ -13,6 +13,8 @@ public enum Qos2Mode {
 	case assured
 }
 
+// TODO: authentication
+
 public struct MQTTClientParams {
     public var clientID: String
     public var cleanSession: Bool

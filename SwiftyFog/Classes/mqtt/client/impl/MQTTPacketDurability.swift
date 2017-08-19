@@ -7,13 +7,6 @@
 
 import Foundation
 
-// TODO
-// persist stuff when clean == false
-// restore state when clean == false
-// need to be aware of first-reconnect for file persistence
-// recreate subscriptions on first time startup if clean is false
-// svae/restore id source state
-
 protocol MQTTPacketDurabilityDelegate: class {
 	func send(packet: MQTTPacket) -> Bool
 }
