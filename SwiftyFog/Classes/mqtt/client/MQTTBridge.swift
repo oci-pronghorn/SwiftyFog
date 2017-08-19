@@ -8,16 +8,22 @@
 import Foundation
 
 public protocol MQTTBridge {
-	var root: String { get }
-
+	// If pubMsg.topic begins with '$' it will be used as an absolute path
+	// Otherwise fullpath is built from the bridge chain
 	func publish(_ pubMsg: MQTTPubMsg, completion: ((Bool)->())?)
 	
+	// If topic.0 begins with '$' it will be used as an absolute path
+	// Otherwise fullpath is built from the bridge chain
+	// All MQTT wildcards work according to specifications
 	func subscribe(topics: [(String, MQTTQoS)], completion: ((Bool)->())?) -> MQTTSubscription
 	
+	// If path begins with '$' it will be used as an absolute path
+	// Otherwise fullpath is built from the bridge chain
+	// The path does not support subscription type wild cards
 	func registerTopic(path: String, action: @escaping (MQTTMessage)->()) -> MQTTRegistration
 	
-// Note" "/" is both a valid topic and a topic seperator
-	func createBridge(rooted: String) -> MQTTBridge
+	// Create a new MQTTBridge relative to this
+	func createBridge(subPath: String) -> MQTTBridge
 }
 
 public extension MQTTBridge {

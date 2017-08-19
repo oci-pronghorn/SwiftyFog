@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		//mqtt?.debugOut = {print($0)}
 		
-		let scoped = mqtt.createBridge(rooted: "thejoveexpress")
+		let scoped = mqtt.createBridge(subPath: "thejoveexpress")
 		(self.window!.rootViewController as! ViewController).mqtt = scoped
 		jovepressSubscription = scoped.subscribe(topics: [("#", .atMostOnce)])
 		registration = scoped.registerTopic(path: "engine/calibrate", action: receiveMessage)

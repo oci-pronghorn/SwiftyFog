@@ -87,22 +87,28 @@ public final class MQTTClient {
 }
 
 extension MQTTClient: MQTTBridge {
-	public var root: String { return "" }
-	
-	public func createBridge(rooted: String) -> MQTTBridge {
-		return MQTTTopicScope(base: self, root: rooted)
+	public func createBridge(subPath: String) -> MQTTBridge {
+		return MQTTTopicScope(base: self, fullPath: subPath)
 	}
 
 	public func publish(_ pubMsg: MQTTPubMsg, completion: ((Bool)->())?) {
-		publisher.publish(pubMsg: pubMsg, completion: completion)
+		let path = String(pubMsg.topic)
+		let resolved = path.hasPrefix("$") ? String(path.dropFirst()) : path
+		let newMessage = MQTTPubMsg(topic: resolved, payload: pubMsg.payload, retain: pubMsg.retain, qos: pubMsg.qos)
+		publisher.publish(pubMsg: newMessage, completion: completion)
 	}
 	
 	public func subscribe(topics: [(String, MQTTQoS)], completion: ((Bool)->())?) -> MQTTSubscription {
-		return subscriber.subscribe(topics: topics, completion: completion)
+		let resolved = topics.map { (
+			$0.0.hasPrefix("$") ? String($0.0.dropFirst()) : $0.0,
+			$0.1
+		)}
+		return subscriber.subscribe(topics: resolved, completion: completion)
 	}
 	
 	public func registerTopic(path: String, action: @escaping (MQTTMessage)->()) -> MQTTRegistration {
-		return distributer.registerTopic(path: path, action: action)
+		let resolved = path.hasPrefix("$") ? String(path.dropFirst()) : path
+		return distributer.registerTopic(path: resolved, action: action)
 	}
 }
 
