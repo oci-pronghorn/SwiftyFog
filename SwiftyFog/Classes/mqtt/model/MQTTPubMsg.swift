@@ -21,6 +21,10 @@ public struct MQTTPubMsg {
         self.qos = qos
     }
 	
+    func prepend(root: String) -> MQTTPubMsg {
+		return MQTTPubMsg(topic: root + String(self.topic), payload: payload, retain: retain, qos: qos)
+    }
+	
     var estimatedLastWillPayLoadLength: Int {
 		return topic.mqttLength + payload.count
     }

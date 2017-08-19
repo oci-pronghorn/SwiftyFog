@@ -14,22 +14,23 @@ protocol MQTTPublisherDelegate: class {
 final class MQTTPublisher {
 	private let durability: MQTTPacketDurability
 	private let qos2Mode: Qos2Mode
+	private let root: String
 
 	private let mutex = ReadWriteMutex()
 	private var deferredCompletion = [UInt16 : (Bool)->()]()
 	
 	weak var delegate: MQTTPublisherDelegate?
 	
-	init(durability: MQTTPacketDurability, qos2Mode: Qos2Mode) {
+	init(durability: MQTTPacketDurability, qos2Mode: Qos2Mode, root: String) {
 		self.durability = durability
 		self.qos2Mode = qos2Mode
+		self.root = root
 	}
 	
 	func connected(cleanSession: Bool, present: Bool, initial: Bool) {
 	}
 	
 	func disconnected(cleanSession: Bool, manual: Bool) {
-		// Do not remove completion blocks
 	}
 
 	func publish(pubMsg: MQTTPubMsg, completion: ((Bool)->())?) {
@@ -47,8 +48,10 @@ final class MQTTPublisher {
 				expecting = .pubRec
 		}
 		
+		let scoped = pubMsg.prepend(root: root)
+		
 		if qos == .atMostOnce {
-			let packet = MQTTPublishPacket(messageID: 0, message: pubMsg, isRedelivery: false)
+			let packet = MQTTPublishPacket(messageID: 0, message: scoped, isRedelivery: false)
 			let success = durability.send(packet: packet)
 			completion?(success)
 		}
@@ -56,7 +59,7 @@ final class MQTTPublisher {
 			let sent: ((MQTTPublishPacket, Bool)->())? = completion == nil ? nil : { [weak self] p, s in
 				if (s) { self?.deferredCompletion[p.messageID] = completion }
 			}
-			durability.send(packet: {MQTTPublishPacket(messageID: $0, message: pubMsg, isRedelivery: false)}, expecting: expecting, sent: sent)
+			durability.send(packet: {MQTTPublishPacket(messageID: $0, message: scoped, isRedelivery: false)}, expecting: expecting, sent: sent)
 		}
 	}
 	

@@ -37,6 +37,6 @@ class Billboard {
 		var data  = Data(capacity: bitmap!.fogSize)
 		data.fogAppend(bitmap!)
 		
-		mqtt.publish(MQTTPubMsg(topic: "thejoveexpress/billboard/image", payload: data))
+		mqtt.publish(MQTTPubMsg(topic: "billboard/image", payload: data))
 	}
 }

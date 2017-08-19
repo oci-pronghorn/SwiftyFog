@@ -47,14 +47,14 @@ class Lights {
 	
 	func calibrate() {
 		let data  = Data(capacity: 0)
-		mqtt.publish(MQTTPubMsg(topic: "thejoveexpress/lights/calibrate", payload: data))
+		mqtt.publish(MQTTPubMsg(topic: "lights/calibrate", payload: data))
 	}
 	
 	var cmd: LightCommand = .auto {
 		didSet {
 			var data  = Data(capacity: MemoryLayout.size(ofValue: cmd.rawValue))
 			data.fogAppend(cmd.rawValue)
-			mqtt.publish(MQTTPubMsg(topic: "thejoveexpress/lights/override", payload: data))
+			mqtt.publish(MQTTPubMsg(topic: "lights/override", payload: data))
 		}
 	}
 }

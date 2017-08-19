@@ -56,7 +56,7 @@ class Engine {
 			if !(calibration == oldValue) {
 				var data  = Data(capacity: MemoryLayout.size(ofValue: newPower))
 				data.fogAppend(calibration)
-				mqtt.publish(MQTTPubMsg(topic: "thejoveexpress/engine/calibrate", payload: data))
+				mqtt.publish(MQTTPubMsg(topic: "engine/calibrate", payload: data))
 			}
 		}
 	}
@@ -66,7 +66,7 @@ class Engine {
 			oldPower = newPower
 			var data  = Data(capacity: MemoryLayout.size(ofValue: newPower))
 			data.fogAppend(newPower)
-			mqtt.publish(MQTTPubMsg(topic: "thejoveexpress/engine/power", payload: data))
+			mqtt.publish(MQTTPubMsg(topic: "engine/power", payload: data))
 		}
 	}
 }
