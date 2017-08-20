@@ -8,7 +8,7 @@
 
 import UIKit
 
-public struct FogBitMap: FogExternalizable {
+public struct FogBitMap: FogExternalizable, CustomStringConvertible {
 	private let layout: FogBitmapLayout
 	private var bmp: [UInt8]
 	
@@ -31,6 +31,21 @@ public struct FogBitMap: FogExternalizable {
 		data.fogAppend(bmp)
 	}
 	
+	public var description: String {
+		var str = layout.description + "\n"
+		for x in 0..<layout.width {
+			for y in 0..<layout.width {
+				for z in 0..<layout.componentWidth {
+					let address = layout.address(x: Int(x), y: Int(y), z: Int(z))
+					let c = layout.component(bmp: bmp, i: address)
+					str += "\(c) \(z==layout.componentWidth-1 ? " " : ".")"
+				}
+			}
+			str += "\n"
+		}
+		return str
+	}
+	
 	public mutating func imbue(image: UIImage) {
 		let resized  = image.fogResize(size: CGSize(width: CGFloat(layout.width), height: CGFloat(layout.height)))
 		if let img = resized {
@@ -43,6 +58,6 @@ public struct FogBitMap: FogExternalizable {
 	}
 	
 	public var image: UIImage? {
-		return nil
-	}
+        return nil
+    }
 }

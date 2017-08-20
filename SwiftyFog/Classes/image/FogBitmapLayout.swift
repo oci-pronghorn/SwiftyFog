@@ -8,7 +8,7 @@
 
 import UIKit
 
-public struct FogBitmapLayout: FogExternalizable, Equatable {
+public struct FogBitmapLayout: FogExternalizable, Equatable, CustomStringConvertible {
     public var width: UInt32 = 1
     public var height: UInt32 = 1
     public var colorSpace: FogColorSpace = .gray
@@ -50,6 +50,10 @@ public struct FogBitmapLayout: FogExternalizable, Equatable {
 			MemoryLayout.size(ofValue: minComponentWidth)
 	}
 	
+	public var description: String {
+		return "\(width)*\(height)*\(componentWidth)=\(bmpSize) \(colorSpace).\(componentDepth)"
+	}
+	
 	public static func ==(lhs: FogBitmapLayout, rhs: FogBitmapLayout) -> Bool {
 		return
 			lhs.width == lhs.width &&
@@ -63,7 +67,7 @@ public struct FogBitmapLayout: FogExternalizable, Equatable {
 		return Int(width * height * colorSpace.componentCount * componentWidth)
     }
 	
-    public func address(_ x: Int, y: Int, z: Int) -> Int {
+    public func address(x: Int, y: Int, z: Int) -> Int {
 		let pixel: Int = Int(colorSpace.componentCount) * Int(componentWidth)
 		let row: Int = Int(width) * pixel
 		return Int((x * row) + (y * pixel))
@@ -73,7 +77,7 @@ public struct FogBitmapLayout: FogExternalizable, Equatable {
 		var pixel = [CGFloat]()
 		pixel.reserveCapacity(Int(colorSpace.componentCount))
 		for z in 0..<Int(colorSpace.componentCount) {
-			let i = address(x, y: y, z: z)
+			let i = address(x: x, y: y, z: z)
 			let v = value(bmp: bmp, i: i)
 			pixel.append(v)
 		}
@@ -82,7 +86,7 @@ public struct FogBitmapLayout: FogExternalizable, Equatable {
 	
     public func setPixel(bmp: inout [UInt8], x: Int, y: Int, pixel: [CGFloat]) {
 		for z in 0..<Int(colorSpace.componentCount) {
-			let i = address(x, y: y, z: z)
+			let i = address(x: x, y: y, z: z)
 			setValue(bmp: &bmp, i: i, value: pixel[z])
 		}
 	}
