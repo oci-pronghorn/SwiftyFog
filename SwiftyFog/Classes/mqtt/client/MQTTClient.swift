@@ -40,7 +40,7 @@ public final class MQTTClient {
 		}
     }
 	
-	public init(client: MQTTClientParams, host: MQTTHostParams = MQTTHostParams(), reconnect: MQTTReconnectParams = MQTTReconnectParams()) {
+	public init(client: MQTTClientParams = MQTTClientParams(), host: MQTTHostParams = MQTTHostParams(), reconnect: MQTTReconnectParams = MQTTReconnectParams()) {
 		self.client = client
 		self.host = host
 		self.reconnect = reconnect

@@ -41,4 +41,8 @@ public struct FogBitMap: FogExternalizable {
 			})
 		}
 	}
+	
+	public var image: UIImage? {
+		return nil
+	}
 }

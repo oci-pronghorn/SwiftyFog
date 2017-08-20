@@ -33,10 +33,11 @@ class Billboard {
 	}
 	
 	func display(image: UIImage) {
-		bitmap?.imbue(image: image)
-		var data  = Data(capacity: bitmap!.fogSize)
-		data.fogAppend(bitmap!)
-		
-		mqtt.publish(MQTTPubMsg(topic: "billboard/image", payload: data))
+		if var bitmap = bitmap {
+			bitmap.imbue(image: image)
+			var data  = Data(capacity: bitmap.fogSize)
+			data.fogAppend(bitmap)
+			mqtt.publish(MQTTPubMsg(topic: "billboard/image", payload: data))
+		}
 	}
 }

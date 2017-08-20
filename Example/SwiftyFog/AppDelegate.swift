@@ -19,13 +19,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		
+		// Select the train
 		let trainName = "thejoveexpress"
 
 		// Create the concrete MQTTClient to connect to a specific broker
 		// MQTTClient is an MSTTBridge
 		mqtt = MQTTClient(
-			client: MQTTClientParams(clientID: "SwiftyFogExample"),
-			//host: MQTTHostParams(host: trainName + ".local"),
+			host: MQTTHostParams(host: trainName + ".local"),
 			reconnect: MQTTReconnectParams())
 		mqtt.delegate = self
 		

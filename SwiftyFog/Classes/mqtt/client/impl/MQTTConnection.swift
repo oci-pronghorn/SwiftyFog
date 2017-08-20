@@ -33,6 +33,20 @@ public struct MQTTClientParams {
 		self.cleanSession = cleanSession
 		self.keepAlive = keepAlive
     }
+	
+	public init(cleanSession: Bool = true, keepAlive: UInt16 = 60) {
+		// 1 and 23 UTF-8 encoded bytes
+		// Only "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		let deviceID = UIDevice.current.identifierForVendor!.uuidString
+		let appId = Bundle.main.bundleIdentifier!
+		let fullId = appId + "-" + deviceID
+		let hash = Int64(fullId.hash)
+		let uhash = UInt64(bitPattern: hash)
+		let asciied = String(format: "ios%20lu", uhash)
+		self.clientID = asciied
+		self.cleanSession = cleanSession
+		self.keepAlive = keepAlive
+	}
 }
 
 // The following are the ping activities

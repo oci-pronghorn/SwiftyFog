@@ -31,13 +31,15 @@ struct MQTTPackedLength {
 	// TODO: make native endian aware
 	static func replace(in data: inout Data, at: Int, length: Int) {
         var lengthOfRemainingData = length
+        var cursor = at
         repeat {
             var digit = UInt8(lengthOfRemainingData % 128)
             lengthOfRemainingData /= 128
             if lengthOfRemainingData > 0 {
                 digit |= 0x80
             }
-            data[at] = digit
+            data[cursor] = digit
+            cursor += 1
         } while lengthOfRemainingData > 0
     }
 	
