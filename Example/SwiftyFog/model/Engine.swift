@@ -57,7 +57,7 @@ class Engine {
 	var calibration = FogRational(num: Int64(15), den: 100) {
 		didSet {
 			if !(calibration == oldValue) {
-				var data  = Data(capacity: MemoryLayout.size(ofValue: newPower))
+				var data  = Data(capacity: calibration.fogSize)
 				data.fogAppend(calibration)
 				mqtt.publish(MQTTPubMsg(topic: "calibrate", payload: data))
 			}
@@ -67,7 +67,7 @@ class Engine {
 	func onTimer() {
 		if !(oldPower == newPower) {
 			oldPower = newPower
-			var data  = Data(capacity: MemoryLayout.size(ofValue: newPower))
+			var data  = Data(capacity: newPower.fogSize)
 			data.fogAppend(newPower)
 			mqtt.publish(MQTTPubMsg(topic: "power", payload: data))
 		}

@@ -4,6 +4,7 @@ import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.iot.maker.*;
 import com.ociweb.model.ActuatorDriverPayLoad;
 import com.ociweb.model.ActuatorDriverPort;
+import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.BlobReader;
 
 public class LightingBehavior implements PubSubMethodListener {
@@ -15,6 +16,7 @@ public class LightingBehavior implements PubSubMethodListener {
     private Integer threshold = null;
     private Double determinedPower = null;
     private Double overridePower = null;
+    private RationalPayload ambient = new RationalPayload();
 
     public LightingBehavior(FogRuntime runtime, String actuatorControlTopic, ActuatorDriverPort port, String publishTopic) {
         this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
@@ -53,12 +55,13 @@ public class LightingBehavior implements PubSubMethodListener {
     }
 
     public boolean onDetected(CharSequence charSequence, BlobReader messageReader) {
-        int value = messageReader.readInt();
+         messageReader.readInto(ambient);
+
         Double newPower;
         if (threshold == null) {
-            threshold = value / 2;
+            threshold = (int)ambient.num / 2;
             newPower = 0.0;
-        } else if (value >= threshold) {
+        } else if (ambient.num >= threshold) {
             newPower = 0.0;
         } else {
             newPower = 1.0;

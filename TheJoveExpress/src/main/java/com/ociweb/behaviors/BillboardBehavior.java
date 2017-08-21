@@ -48,12 +48,16 @@ public class BillboardBehavior implements PubSubMethodListener {
         blobReader.readInto(bmp);
         //display.display(new FogPixelProgressiveScanner(bmp));
 
+        //System.out.println(String.format("(%d*%d)", bmp.getWidth(), bmp.getHeight()));
+
         // TODO: have display use bitmap model
         int[][] c = new int[bmp.getWidth()][bmp.getHeight()];
         for (int x = 0; x < bmp.getWidth(); x++) {
             for (int y = 0; y < bmp.getHeight(); y++) {
                 c[x][y] = bmp.getComponent(x, y, 0);
+                //System.out.print(String.format("%02d.", c[x][y]));
             }
+            //System.out.println();
         }
 
         // TODO: Optimize/throttle display updates in transducer
