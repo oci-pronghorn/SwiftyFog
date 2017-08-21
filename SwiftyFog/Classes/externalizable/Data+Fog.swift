@@ -98,6 +98,22 @@ public extension Data {
 	}
 }
 
+
+public extension Data {
+	public mutating func fogAppend(_ rhs: Bool) {
+		fogAppend(UInt8(rhs ? 1 : 0))
+	}
+	
+	public func fogExtract(_ cursor: inout Int) -> Bool {
+		return (fogExtract(&cursor) as UInt8) == 0 ? false : true
+	}
+	
+	public func fogExtract() -> Bool {
+		var cursor = 0
+		return fogExtract(&cursor)
+	}
+}
+
 public extension Data {
 	public mutating func fogAppend<T: FixedWidthInteger>(_ rhs: T) {
 		var value = rhs.bigEndian

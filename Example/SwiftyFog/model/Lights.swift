@@ -37,7 +37,7 @@ class Lights {
 	}
 	
 	func powered(_ msg: MQTTMessage) {
-		let powered: LightCommand = msg.payload.fogExtract() ?? .off
+		let powered: Bool = msg.payload.fogExtract()
 		print("Lights Powered: \(powered)")
 	}
 	
@@ -48,14 +48,14 @@ class Lights {
 	
 	func calibrate() {
 		let data  = Data(capacity: 0)
-		mqtt.publish(MQTTPubMsg(topic: "lights/calibrate", payload: data))
+		mqtt.publish(MQTTPubMsg(topic: "calibrate", payload: data))
 	}
 	
 	var cmd: LightCommand = .auto {
 		didSet {
 			var data  = Data(capacity: MemoryLayout.size(ofValue: cmd.rawValue))
 			data.fogAppend(cmd.rawValue)
-			mqtt.publish(MQTTPubMsg(topic: "lights/override", payload: data))
+			mqtt.publish(MQTTPubMsg(topic: "override", payload: data))
 		}
 	}
 }
