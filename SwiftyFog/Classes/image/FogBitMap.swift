@@ -46,15 +46,17 @@ public struct FogBitMap: FogExternalizable, CustomStringConvertible {
 		return str
 	}
 	
-	public mutating func imbue(image: UIImage) {
-		let resized  = image.fogResize(size: CGSize(width: CGFloat(layout.width), height: CGFloat(layout.height)))
-		if let img = resized {
-			img.fogScanPixels(scan: { (x, y, p) -> Bool in
-				let dest = img.fogColorSpace.convert(pixel: p, to: self.layout.colorSpace)
+	public mutating func imbue(_ source: UIImage) -> UIImage? {
+		let corrected = source.fogFixedOrientation()
+		let resized = corrected.fogResize(layout.size)
+		if let toScan = resized {
+			toScan.fogScanPixels(scan: { (x, y, p) -> Bool in
+				let dest = toScan.fogColorSpace.convert(pixel: p, to: self.layout.colorSpace)
 				self.layout.setPixel(bmp: &bmp, x: x, y: y, pixel: dest)
 				return true
 			})
 		}
+		return resized
 	}
 	
 	public var image: UIImage? {

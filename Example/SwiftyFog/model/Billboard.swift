@@ -9,7 +9,12 @@
 import UIKit
 import SwiftyFog
 
+protocol BillboardDelegate: class {
+	func onPostImage(image: UIImage)
+}
+
 class Billboard {
+	weak var delegate: BillboardDelegate?
 	var bitmap: FogBitMap?
 	var broadcaster: MQTTBroadcaster?
 	
@@ -35,7 +40,8 @@ class Billboard {
 	
 	func display(image: UIImage) {
 		if var bitmap = bitmap {
-			bitmap.imbue(image: image)
+			let resized = bitmap.imbue(image)
+			delegate?.onPostImage(image: resized!)
 			var data  = Data(capacity: bitmap.fogSize)
 			data.fogAppend(bitmap)
 			mqtt.publish(MQTTPubMsg(topic: "image", payload: data))

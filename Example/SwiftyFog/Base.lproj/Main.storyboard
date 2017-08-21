@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13178.6" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13156.2"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -12,11 +16,11 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="TrainViewController" customModule="SwiftyFog_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zWH-hw-BrK" userLabel="Connection Stack">
-                                <rect key="frame" x="227.5" y="28" width="145" height="30"/>
+                                <rect key="frame" x="115" y="28" width="145" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kvk-Va-PdK">
                                         <rect key="frame" x="0.0" y="0.0" width="59" height="30"/>
@@ -35,7 +39,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ChA-ki-aCK" userLabel="Test Stack">
-                                <rect key="frame" x="213" y="66" width="174" height="68"/>
+                                <rect key="frame" x="100.5" y="66" width="174" height="68"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="YvQ-5V-gLh">
                                         <rect key="frame" x="0.0" y="0.0" width="54" height="68"/>
@@ -97,14 +101,14 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YgL-A0-Lcc">
-                                <rect key="frame" x="271" y="142" width="58" height="30"/>
+                                <rect key="frame" x="158.5" y="142" width="58" height="30"/>
                                 <state key="normal" title="Unsub #"/>
                                 <connections>
                                     <action selector="unsubAll" destination="dkx-z0-nzr" eventType="touchUpInside" id="A6g-kY-qg8"/>
                                 </connections>
                             </button>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-100" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Gnb-iR-Af0" userLabel="Engine Power">
-                                <rect key="frame" x="166.5" y="196" width="267" height="31"/>
+                                <rect key="frame" x="54" y="196" width="267" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="263" id="Xsa-gR-R2a"/>
                                 </constraints>
@@ -113,19 +117,19 @@
                                 </connections>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Calibrate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="162-qF-Wg4">
-                                <rect key="frame" x="168.5" y="238.5" width="69" height="20.5"/>
+                                <rect key="frame" x="56" y="238.5" width="69" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="15" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="5SJ-Xc-cNf" userLabel="Calibrate Power">
-                                <rect key="frame" x="297.5" y="234" width="135.5" height="31"/>
+                                <rect key="frame" x="185" y="234" width="135.5" height="31"/>
                                 <connections>
                                     <action selector="onDoEngineCalibrationWithSender:" destination="BYZ-38-t0r" eventType="valueChanged" id="Cad-lK-mpg"/>
                                 </connections>
                             </slider>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="2" translatesAutoresizingMaskIntoConstraints="NO" id="N5j-RN-YrA">
-                                <rect key="frame" x="300.5" y="288" width="131" height="29"/>
+                                <rect key="frame" x="188" y="288" width="131" height="29"/>
                                 <segments>
                                     <segment title="Off"/>
                                     <segment title="On"/>
@@ -136,24 +140,33 @@
                                 </connections>
                             </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sgm-5E-iqn">
-                                <rect key="frame" x="168.5" y="287" width="62" height="30"/>
+                                <rect key="frame" x="56" y="287" width="62" height="30"/>
                                 <state key="normal" title="Calibrate"/>
                                 <connections>
                                     <action selector="onLightCalibrationWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vur-rh-Kft"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="55w-Xf-kDc">
-                                <rect key="frame" x="269.5" y="336" width="61" height="30"/>
+                                <rect key="frame" x="157" y="372" width="61" height="30"/>
                                 <state key="normal" title="Billboard"/>
                                 <connections>
                                     <action selector="onPictureWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Zy9-gv-TOY"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yOF-aF-Ux5">
+                                <rect key="frame" x="223" y="339" width="96" height="96"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="96" id="Cs9-Bo-Pna"/>
+                                    <constraint firstAttribute="height" constant="96" id="EWM-f3-BYr"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="zWH-hw-BrK" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="2Li-Bq-mEZ"/>
+                            <constraint firstItem="yOF-aF-Ux5" firstAttribute="top" secondItem="N5j-RN-YrA" secondAttribute="bottom" constant="23" id="2sJ-ZQ-poD"/>
                             <constraint firstItem="sgm-5E-iqn" firstAttribute="centerY" secondItem="N5j-RN-YrA" secondAttribute="centerY" id="59v-ra-cZX"/>
+                            <constraint firstItem="yOF-aF-Ux5" firstAttribute="trailing" secondItem="N5j-RN-YrA" secondAttribute="trailing" id="5Kc-AO-nHU"/>
                             <constraint firstItem="5SJ-Xc-cNf" firstAttribute="top" secondItem="Gnb-iR-Af0" secondAttribute="bottom" constant="8" id="5l2-Ew-Yz7"/>
                             <constraint firstItem="N5j-RN-YrA" firstAttribute="trailing" secondItem="5SJ-Xc-cNf" secondAttribute="trailing" id="7aw-KF-wgC"/>
                             <constraint firstItem="55w-Xf-kDc" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="9ov-xv-P5O"/>
@@ -161,9 +174,9 @@
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="sgm-5E-iqn" secondAttribute="trailing" constant="20" symbolic="YES" id="EVs-NQ-4mR"/>
                             <constraint firstItem="162-qF-Wg4" firstAttribute="leading" secondItem="Gnb-iR-Af0" secondAttribute="leading" id="FQc-vz-pu0"/>
                             <constraint firstItem="ChA-ki-aCK" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="JBO-fy-QSq"/>
-                            <constraint firstItem="55w-Xf-kDc" firstAttribute="top" secondItem="N5j-RN-YrA" secondAttribute="bottom" constant="20" id="JUo-Sg-LD6"/>
                             <constraint firstItem="YgL-A0-Lcc" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="KQr-mu-HIX"/>
                             <constraint firstItem="5SJ-Xc-cNf" firstAttribute="trailing" secondItem="Gnb-iR-Af0" secondAttribute="trailing" id="O32-uA-bIK"/>
+                            <constraint firstItem="55w-Xf-kDc" firstAttribute="centerY" secondItem="yOF-aF-Ux5" secondAttribute="centerY" id="OyT-56-nRe"/>
                             <constraint firstItem="N5j-RN-YrA" firstAttribute="top" secondItem="5SJ-Xc-cNf" secondAttribute="bottom" constant="24" id="V2N-MH-F3V"/>
                             <constraint firstItem="YgL-A0-Lcc" firstAttribute="top" secondItem="ChA-ki-aCK" secondAttribute="bottom" constant="8" id="cSd-dB-T9k"/>
                             <constraint firstItem="Gnb-iR-Af0" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="cu1-fL-6sC"/>
@@ -177,6 +190,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="billboardImage" destination="yOF-aF-Ux5" id="Tt9-ML-npC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

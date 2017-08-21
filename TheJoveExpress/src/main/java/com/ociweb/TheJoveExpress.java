@@ -22,7 +22,7 @@ public class TheJoveExpress implements FogApp
         // TODO: calculating maxMessageLength anf maxinFlight given the private channel definitions and arbitrary bridging
         // is too difficult. And we are declaring this in connections where channel message lengths are in behavior
         if (config.mqttEnabled) {
-            this.mqttBridge = c.useMQTT(config.mqttBroker, config.mqttPort, config.mqttClientName)
+            this.mqttBridge = c.useMQTT(config.mqttBroker, config.mqttPort, config.mqttClientName, 20, 15000)
                     .cleanSession(true)
                     .keepAliveSeconds(10);
         }

@@ -21,6 +21,7 @@ public extension MQTTBridge {
 	func broadcast<T: AnyObject>(to l: T, topics: [(String, MQTTQoS, (T)->((MQTTMessage)->()))], completion: ((Bool)->())? = nil) -> MQTTBroadcaster {
 		return MQTTBroadcaster(
 			registration: register(topics: topics.map {e in (e.0, {[weak l] msg in if let l = l { e.2(l)(msg) }})}),
-			subscription: subscribe(topics: topics.map({($0.0, $0.1)}), completion: completion))
+			subscription: subscribe(topics: topics.map {e in (e.0, e.1)},
+			completion: completion))
 	}
 }

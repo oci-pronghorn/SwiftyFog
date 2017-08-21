@@ -14,8 +14,11 @@ class TrainViewController: UIViewController {
 	let lights = Lights()
 	let billboard = Billboard()
 	
+	@IBOutlet weak var billboardImage: UIImageView!
+	
     var mqtt: MQTTBridge! {
 		didSet {
+			billboard.delegate = self
 			engine.mqtt = mqtt.createBridge(subPath: "engine")
 			lights.mqtt = mqtt.createBridge(subPath: "lights")
 			billboard.mqtt = mqtt.createBridge(subPath: "billboard")
@@ -78,5 +81,11 @@ class TrainViewController: UIViewController {
 	@IBAction
 	func onLightCalibration(sender: UIButton?) {
 		lights.calibrate();
+	}
+}
+
+extension TrainViewController: BillboardDelegate {
+	func onPostImage(image: UIImage) {
+		billboardImage.image = image
 	}
 }
