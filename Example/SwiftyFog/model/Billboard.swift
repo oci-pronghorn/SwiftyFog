@@ -11,12 +11,12 @@ import SwiftyFog
 
 class Billboard {
 	var bitmap: FogBitMap?
-	var registrations = [MQTTRegistration]()
+	var broadcaster: MQTTBroadcaster?
 	
     var mqtt: MQTTBridge! {
 		didSet {
-			registrations = mqtt.registerTopics([
-				("billboard/spec", receiveSpec)
+			broadcaster = mqtt.broadcast(to: self, topics: [
+				("spec", .atMostOnce, Billboard.receiveSpec)
 			])
 		}
     }
@@ -29,6 +29,7 @@ class Billboard {
 	
 	func receiveSpec(msg: MQTTMessage) {
 		let layout: FogBitmapLayout = msg.payload.fogExtract()
+		print("Billboard Specified: \(layout)")
 		bitmap = FogBitMap(layout: layout)
 	}
 	
@@ -37,7 +38,7 @@ class Billboard {
 			bitmap.imbue(image: image)
 			var data  = Data(capacity: bitmap.fogSize)
 			data.fogAppend(bitmap)
-			mqtt.publish(MQTTPubMsg(topic: "billboard/image", payload: data))
+			mqtt.publish(MQTTPubMsg(topic: "image", payload: data))
 		}
 	}
 }

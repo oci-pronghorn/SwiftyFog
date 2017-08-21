@@ -110,8 +110,8 @@ extension MQTTClient: MQTTBridge {
 		return subscriber.subscribe(topics: resolved, completion: completion)
 	}
 	
-	public func registerTopic(path: String, action: @escaping (MQTTMessage)->()) -> MQTTRegistration {
-		let resolved = path.hasPrefix("$") ? String(path.dropFirst()) : path
+	public func register(topic: String, action: @escaping (MQTTMessage)->()) -> MQTTRegistration {
+		let resolved = topic.hasPrefix("$") ? String(topic.dropFirst()) : topic
 		return distributer.registerTopic(path: resolved, action: action)
 	}
 }

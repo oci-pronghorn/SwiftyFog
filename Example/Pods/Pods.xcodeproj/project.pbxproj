@@ -38,6 +38,7 @@
 		553F97321F434CCC00CBF725 /* UIImagePickerController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F97301F434CCC00CBF725 /* UIImagePickerController+.swift */; };
 		553F97381F434F4100CBF725 /* MQTTBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F97361F434F2100CBF725 /* MQTTBridge.swift */; };
 		55C3EE211F43F87A005222C9 /* MQTTPackedLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C3EE1F1F43F78A005222C9 /* MQTTPackedLength.swift */; };
+		55D9C8D51F4A6A4600428D7B /* MQTTBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9C8D31F4A6A1F00428D7B /* MQTTBroadcaster.swift */; };
 		5868A720539772791EA35C9A6677F49D /* MQTTPingAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF43861A76EFC2EBD98C1F3919A8080 /* MQTTPingAckPacket.swift */; };
 		613FFF50B84A147E39CA097BF05363AF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B63C6A64CF66340668996F78DA6BB482 /* UIKit.framework */; };
 		6456810731613702E0E5FA7C35D8566F /* MQTTConnectPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438407C4642C30B14322EEE359D7C034 /* MQTTConnectPacket.swift */; };
@@ -123,6 +124,7 @@
 		553F97301F434CCC00CBF725 /* UIImagePickerController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImagePickerController+.swift"; sourceTree = "<group>"; };
 		553F97361F434F2100CBF725 /* MQTTBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTBridge.swift; sourceTree = "<group>"; };
 		55C3EE1F1F43F78A005222C9 /* MQTTPackedLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTPackedLength.swift; sourceTree = "<group>"; };
+		55D9C8D31F4A6A1F00428D7B /* MQTTBroadcaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTBroadcaster.swift; sourceTree = "<group>"; };
 		5655B0CD2F1948341889F4D79B32B6CB /* Data+MQTT.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Data+MQTT.swift"; sourceTree = "<group>"; };
 		585B2B78D1B842245A377C694EB120CE /* Pods-SwiftyFog_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SwiftyFog_Example-dummy.m"; sourceTree = "<group>"; };
 		58BAE6E42EF04BBD0C48EC6596605892 /* SwiftyFog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyFog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -377,6 +379,7 @@
 			children = (
 				553F97361F434F2100CBF725 /* MQTTBridge.swift */,
 				5E6B054F8CEEA7C2AD61F6D5730CB7B2 /* MQTTClient.swift */,
+				55D9C8D31F4A6A1F00428D7B /* MQTTBroadcaster.swift */,
 				550147FA1F48D59A00AA77C4 /* impl */,
 			);
 			path = client;
@@ -614,6 +617,7 @@
 				55C3EE211F43F87A005222C9 /* MQTTPackedLength.swift in Sources */,
 				860867278CC46E53FD050394C7A168AE /* Data+MQTT.swift in Sources */,
 				73BD9CE2A694EF68A5189646BD9AADD9 /* FogBitMap.swift in Sources */,
+				55D9C8D51F4A6A4600428D7B /* MQTTBroadcaster.swift in Sources */,
 				B0728AAB13FBF1CA4A288036F2248890 /* FogBitmapLayout.swift in Sources */,
 				C58C590D2F4BD441155C55DD546A340C /* FogColorspace.swift in Sources */,
 				8A139FDD0BFE1FB99E96A49B1F2AEE32 /* FogExternalizable.swift in Sources */,

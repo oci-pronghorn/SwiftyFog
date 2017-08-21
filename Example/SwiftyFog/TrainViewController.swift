@@ -9,26 +9,17 @@
 import UIKit
 import SwiftyFog
 
-class TrainViewController: UIViewController {
-	var jovepressSubscription: MQTTSubscription?
-	var registration: MQTTRegistration?
-	
+class TrainViewController: UIViewController {	
 	let engine = Engine()
 	let lights = Lights()
 	let billboard = Billboard()
 	
     var mqtt: MQTTBridge! {
 		didSet {
-			engine.mqtt = mqtt
-			lights.mqtt = mqtt
-			billboard.mqtt = mqtt
-			jovepressSubscription = mqtt.subscribe(topics: [("#", .atMostOnce)])
-			registration = mqtt.registerTopic(path: "engine/calibrate", action: receiveMessage)
+			engine.mqtt = mqtt.createBridge(subPath: "engine")
+			lights.mqtt = mqtt.createBridge(subPath: "lights")
+			billboard.mqtt = mqtt.createBridge(subPath: "billboard")
 		}
-	}
-	
-	func receiveMessage(message: MQTTMessage) {
-		print("\(Date.nowInSeconds()) MQTT distrubuted \(message)")
 	}
 	
 	override func viewDidLoad() {
@@ -89,4 +80,3 @@ class TrainViewController: UIViewController {
 		lights.calibrate();
 	}
 }
-

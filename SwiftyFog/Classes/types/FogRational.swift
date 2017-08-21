@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct FogRational<T: FixedWidthInteger> : Equatable, FogExternalizable {
+public struct FogRational<T: FixedWidthInteger> : Equatable, FogExternalizable, CustomStringConvertible {
 	public var num: T = 0
 	public var den: T = 1
 	
@@ -25,6 +25,10 @@ public struct FogRational<T: FixedWidthInteger> : Equatable, FogExternalizable {
 	public init(data: Data, cursor: inout Int) {
 		self.num = data.fogExtract(&cursor)
 		self.den = data.fogExtract(&cursor)
+	}
+	
+	public var description: String {
+		return "\(num)/\(den)"
 	}
 	
 	public func writeTo(data: inout Data) {

@@ -10,12 +10,13 @@ import Foundation
 import SwiftyFog
 
 class Engine {
-	var registrations = [MQTTRegistration]()
+	var broadcaster: MQTTBroadcaster?
+	
     var mqtt: MQTTBridge! {
 		didSet {
-			registrations = mqtt.registerTopics([
-				("engine/powered", powered),
-				("engine/calibrated", calibrated)
+			broadcaster = mqtt.broadcast(to: self, topics: [
+				("powered", .atMostOnce, Engine.powered),
+				("calibrated", .atMostOnce, Engine.calibrated)
 			])
 		}
     }
@@ -44,11 +45,13 @@ class Engine {
 	}
 	
 	func calibrated(msg: MQTTMessage) {
-		//let calibration: FogRational<Int64> = msg.payload.fogExtract()
+		let calibration: FogRational<Int64> = msg.payload.fogExtract()
+		print("Engine Calibrartion: \(calibration)")
 	}
 	
 	func powered(msg: MQTTMessage) {
-		//let power: FogRational<Int64> = msg.payload.fogExtract()
+		let power: FogRational<Int64> = msg.payload.fogExtract()
+		print("Engine Power: \(power)")
 	}
 	
 	var calibration = FogRational(num: Int64(15), den: 100) {
@@ -56,7 +59,7 @@ class Engine {
 			if !(calibration == oldValue) {
 				var data  = Data(capacity: MemoryLayout.size(ofValue: newPower))
 				data.fogAppend(calibration)
-				mqtt.publish(MQTTPubMsg(topic: "engine/calibrate", payload: data))
+				mqtt.publish(MQTTPubMsg(topic: "calibrate", payload: data))
 			}
 		}
 	}
@@ -66,7 +69,7 @@ class Engine {
 			oldPower = newPower
 			var data  = Data(capacity: MemoryLayout.size(ofValue: newPower))
 			data.fogAppend(newPower)
-			mqtt.publish(MQTTPubMsg(topic: "engine/power", payload: data))
+			mqtt.publish(MQTTPubMsg(topic: "power", payload: data))
 		}
 	}
 }

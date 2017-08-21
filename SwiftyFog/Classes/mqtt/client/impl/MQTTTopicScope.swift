@@ -12,7 +12,7 @@ final class MQTTTopicScope: MQTTBridge {
 	private let fullPath: String
 	
 	func createBridge(subPath: String) -> MQTTBridge {
-		return MQTTTopicScope(base: self.base, fullPath: self.fullPath + "/" + subPath)
+		return MQTTTopicScope(base: self.base, fullPath: self.fullPath + subPath)
 	}
 	
 	init(base: MQTTBridge, fullPath: String) {
@@ -37,8 +37,8 @@ final class MQTTTopicScope: MQTTBridge {
 		base.publish(scoped)
 	}
 	
-	func registerTopic(path: String, action: @escaping (MQTTMessage)->()) -> MQTTRegistration {
-		let resolved = path.hasPrefix("$") ? String(path.dropFirst()) : self.fullPath + path
-		return base.registerTopic(path: resolved, action: action)
+	func register(topic: String, action: @escaping (MQTTMessage)->()) -> MQTTRegistration {
+		let resolved = topic.hasPrefix("$") ? String(topic.dropFirst()) : self.fullPath + topic
+		return base.register(topic: resolved, action: action)
 	}
 }
