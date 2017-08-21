@@ -18,9 +18,13 @@ class TrainViewController: UIViewController {
 	
     var mqtt: MQTTBridge! {
 		didSet {
-			billboard.delegate = self
+			engine.delegate = self
 			engine.mqtt = mqtt.createBridge(subPath: "engine")
+			
+			lights.delegate = self
 			lights.mqtt = mqtt.createBridge(subPath: "lights")
+			
+			billboard.delegate = self
 			billboard.mqtt = mqtt.createBridge(subPath: "billboard")
 		}
 	}
@@ -84,7 +88,27 @@ class TrainViewController: UIViewController {
 	}
 }
 
-extension TrainViewController: BillboardDelegate {
+extension TrainViewController: BillboardDelegate, LightsDelegate, EngineDelegate {
+	func onImageSpecConfirmed(layout: FogBitmapLayout) {
+		print("Billboard Specified: \(layout)")
+	}
+	
+	func onLightsPowered(powered: Bool) {
+		print("Lights Powered: \(powered)")
+	}
+	
+	func onLightsAmbient(power: FogRational<Int64>) {
+		print("Light Ambient: \(power)")
+	}
+	
+	func onPowerConfirm(power: FogRational<Int64>) {
+		print("Engine Powered: \(power)")
+	}
+	
+	func onPowerCalibrated(power: FogRational<Int64>) {
+		print("Engine Calibrartion: \(power)")
+	}
+	
 	func onPostImage(image: UIImage) {
 		billboardImage.image = image
 	}

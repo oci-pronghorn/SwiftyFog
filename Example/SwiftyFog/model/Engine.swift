@@ -9,8 +9,15 @@
 import Foundation
 import SwiftyFog
 
+protocol EngineDelegate: class {
+	func onPowerConfirm(power: FogRational<Int64>)
+	func onPowerCalibrated(power: FogRational<Int64>)
+}
+
 class Engine {
-	var broadcaster: MQTTBroadcaster?
+	private var broadcaster: MQTTBroadcaster?
+	
+	weak var delegate: EngineDelegate?
 	
     var mqtt: MQTTBridge! {
 		didSet {
@@ -20,10 +27,11 @@ class Engine {
 			])
 		}
     }
-	var oldPower = FogRational(num: Int64(0), den: 0)
+	private var oldPower = FogRational(num: Int64(0), den: 0)
+	
 	var newPower = FogRational(num: Int64(0), den: 1)
 	
-	let timer = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
+	private let timer = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
 	
 	init() {
 		timer.schedule(deadline: .now(), repeating: .milliseconds(250/*40*/), leeway: .milliseconds(10))
@@ -44,14 +52,14 @@ class Engine {
 		timer.cancel()
 	}
 	
-	func calibrated(msg: MQTTMessage) {
+	private func calibrated(msg: MQTTMessage) {
 		let calibration: FogRational<Int64> = msg.payload.fogExtract()
-		print("Engine Calibrartion: \(calibration)")
+		delegate?.onPowerCalibrated(power: calibration)
 	}
 	
-	func powered(msg: MQTTMessage) {
+	private func powered(msg: MQTTMessage) {
 		let power: FogRational<Int64> = msg.payload.fogExtract()
-		print("Engine Power: \(power)")
+		delegate?.onPowerConfirm(power: power)
 	}
 	
 	var calibration = FogRational(num: Int64(15), den: 100) {
@@ -64,7 +72,7 @@ class Engine {
 		}
 	}
 	
-	func onTimer() {
+	private func onTimer() {
 		if !(oldPower == newPower) {
 			oldPower = newPower
 			var data  = Data(capacity: newPower.fogSize)

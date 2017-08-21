@@ -10,13 +10,15 @@ import UIKit
 import SwiftyFog
 
 protocol BillboardDelegate: class {
+	func onImageSpecConfirmed(layout: FogBitmapLayout)
 	func onPostImage(image: UIImage)
 }
 
 class Billboard {
+	private var bitmap: FogBitMap?
+	private var broadcaster: MQTTBroadcaster?
+	
 	weak var delegate: BillboardDelegate?
-	var bitmap: FogBitMap?
-	var broadcaster: MQTTBroadcaster?
 	
     var mqtt: MQTTBridge! {
 		didSet {
@@ -32,9 +34,9 @@ class Billboard {
 	func stop() {
 	}
 	
-	func receiveSpec(msg: MQTTMessage) {
+	private func receiveSpec(msg: MQTTMessage) {
 		let layout: FogBitmapLayout = msg.payload.fogExtract()
-		print("Billboard Specified: \(layout)")
+		delegate?.onImageSpecConfirmed(layout: layout)
 		bitmap = FogBitMap(layout: layout)
 	}
 	

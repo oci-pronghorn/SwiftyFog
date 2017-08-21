@@ -9,6 +9,11 @@
 import Foundation
 import SwiftyFog
 
+protocol LightsDelegate: class {
+	func onLightsPowered(powered: Bool)
+	func onLightsAmbient(power: FogRational<Int64>)
+}
+
 enum LightCommand: Int32 {
 	case off
 	case on
@@ -17,6 +22,8 @@ enum LightCommand: Int32 {
 
 class Lights {
 	var broadcaster: MQTTBroadcaster?
+	
+	weak var delegate: LightsDelegate?
 	
     var mqtt: MQTTBridge! {
 		didSet {
@@ -36,14 +43,14 @@ class Lights {
 	func stop() {
 	}
 	
-	func powered(_ msg: MQTTMessage) {
+	private func powered(_ msg: MQTTMessage) {
 		let powered: Bool = msg.payload.fogExtract()
-		print("Lights Powered: \(powered)")
+		delegate?.onLightsPowered(powered: powered)
 	}
 	
-	func ambient(_ msg: MQTTMessage) {
+	private func ambient(_ msg: MQTTMessage) {
 		let ambient: FogRational<Int64> = msg.payload.fogExtract()
-		print("Light Ambient: \(ambient)")
+		delegate?.onLightsAmbient(power: ambient)
 	}
 	
 	func calibrate() {
