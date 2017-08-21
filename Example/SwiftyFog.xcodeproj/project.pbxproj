@@ -10,6 +10,7 @@
 		553F97331F434D2000CBF725 /* Billboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F972C1F434C6800CBF725 /* Billboard.swift */; };
 		553F97341F434D2000CBF725 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F972D1F434C6800CBF725 /* Engine.swift */; };
 		553F97351F434D2000CBF725 /* Lights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F972E1F434C6800CBF725 /* Lights.swift */; };
+		55D9C8D71F4B360500428D7B /* TrainSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9C8D61F4B360500428D7B /* TrainSelectViewController.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* TrainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* TrainViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -37,6 +38,7 @@
 		553F972C1F434C6800CBF725 /* Billboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Billboard.swift; sourceTree = "<group>"; };
 		553F972D1F434C6800CBF725 /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
 		553F972E1F434C6800CBF725 /* Lights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lights.swift; sourceTree = "<group>"; };
+		55D9C8D61F4B360500428D7B /* TrainSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainSelectViewController.swift; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* SwiftyFog_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftyFog_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				553F972B1F434C6800CBF725 /* model */,
 				607FACD71AFB9204008FA782 /* TrainViewController.swift */,
+				55D9C8D61F4B360500428D7B /* TrainSelectViewController.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -392,6 +395,7 @@
 				607FACD81AFB9204008FA782 /* TrainViewController.swift in Sources */,
 				553F97341F434D2000CBF725 /* Engine.swift in Sources */,
 				553F97351F434D2000CBF725 /* Lights.swift in Sources */,
+				55D9C8D71F4B360500428D7B /* TrainSelectViewController.swift in Sources */,
 				553F97331F434D2000CBF725 /* Billboard.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);

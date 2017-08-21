@@ -31,21 +31,10 @@ class TrainViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view, typically from a nib.
 	}
-	
-	func connected() {
-		engine.start()
-		lights.start()
-		billboard.start();
-	}
-	
-	func disconnected() {
-		engine.stop()
-		lights.stop()
-		billboard.stop();
-	}
-	
+}
+
+extension TrainViewController {
 	@IBAction
 	func onPicture(sender: UIButton?) {
 		let photos = PhotosAccess(title: nil, root: self);
@@ -89,6 +78,18 @@ class TrainViewController: UIViewController {
 }
 
 extension TrainViewController: BillboardDelegate, LightsDelegate, EngineDelegate {
+	func connected() {
+		engine.start()
+		lights.start()
+		billboard.start();
+	}
+	
+	func disconnected() {
+		engine.stop()
+		lights.stop()
+		billboard.stop();
+	}
+	
 	func onImageSpecConfirmed(layout: FogBitmapLayout) {
 		print("Billboard Specified: \(layout)")
 	}

@@ -13,12 +13,16 @@ import SwiftyFog
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
 	var mqtt: MQTTClient!
-	
 	var wantConnection: Bool = false
-	var subscription: MQTTSubscription?
+	
+	var trainSelect: TrainSelectViewController!
+	var trainControl: TrainViewController!
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		
+		trainSelect = (self.window!.rootViewController as! UITabBarController).viewControllers![0] as! TrainSelectViewController
+		trainControl = (self.window!.rootViewController as! UITabBarController).viewControllers![1] as! TrainViewController
+
 		// Select the train
 		let trainName = "thejoveexpress"
 
@@ -34,10 +38,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		// This view controller is specific to a train topic
 		// Create an MSTTBridge specific to the selected train
+		trainSelect.mqtt = mqtt
 		let scoped = mqtt.createBridge(subPath: trainName)
-		(self.window!.rootViewController as! TrainViewController).mqtt = scoped
+		trainControl.mqtt = scoped
 		
 		return true
+	}
+
+	@IBAction func connect() {
+		wantConnection = true
+		mqtt.start()
+	}
+
+	@IBAction func cleanDisconnect() {
+		wantConnection = false
+		mqtt.stop()
 	}
 
 	func applicationWillResignActive(_ application: UIApplication) {
@@ -64,64 +79,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 }
 
-extension AppDelegate {
-	@IBAction func connect() {
-		wantConnection = true
-		mqtt.start()
-	}
-
-	@IBAction func cleanDisconnect() {
-		wantConnection = false
-		mqtt.stop()
-	}
-
-	@IBAction func publishQos0() {
-		mqtt.publish(MQTTPubMsg(topic: "Bobs/Store/1", qos: .atMostOnce)) { (success) in
-			print("\(Date.nowInSeconds()) publishQos0: \(success)")
-		}
-	}
-
-	@IBAction func publishQos1() {
-		mqtt.publish(MQTTPubMsg(topic: "Bobs/Store/1", qos: .atLeastOnce)) { (success) in
-			print("\(Date.nowInSeconds()) publishQos1: \(success)")
-		}
-	}
-
-	@IBAction func publishQos2() {
-		mqtt.publish(MQTTPubMsg(topic: "Bobs/Store/1", qos: .exactlyOnce)) { (success) in
-			print("\(Date.nowInSeconds()) publishQos2: \(success)")
-		}
-	}
-
-	@IBAction func subAll0() {
-		// Since we are possibly resubscribing to the same topic we force the unsubscribe first.
-		// Otherwide we redundantly subscribe and then unsubscribe
-		subscription = nil
-		subscription = mqtt.subscribe(topics: [("Bobs/#", .atMostOnce)]) { (success) in
-			print("\(Date.nowInSeconds()) subAll0: \(success)")
-		}
-	}
-
-	@IBAction func subAll1() {
-		subscription = nil
-		subscription = mqtt.subscribe(topics: [("Bobs/#", .atLeastOnce)]) { (success) in
-			print("\(Date.nowInSeconds()) subAll1: \(success)")
-		}
-	}
-
-	@IBAction func subAll2() {
-		subscription = nil
-		subscription = mqtt.subscribe(topics: [("Bobs/#", .exactlyOnce)]) { (success) in
-			print("\(Date.nowInSeconds()) subAll2: \(success)")
-		}
-	}
-
-	@IBAction func unsubAll() {
-		// Setting scription (or registration) to nil (or reassign) will unsubscribe
-		subscription = nil
-	}
-}
-
 // The client will broadcast important events to the application
 // can react appropriately. The invoking thread is not known.
 extension AppDelegate: MQTTClientDelegate {
@@ -132,7 +89,7 @@ extension AppDelegate: MQTTClientDelegate {
 	func mqttConnected(client: MQTTClient) {
 		print("\(Date.nowInSeconds()) MQTT Connected")
 		DispatchQueue.main.async {
-			(self.window!.rootViewController as! TrainViewController).connected()
+			self.trainControl.connected()
 		}
 	}
 	
@@ -150,7 +107,7 @@ extension AppDelegate: MQTTClientDelegate {
 	func mqttDisconnected(client: MQTTClient, reason: MQTTConnectionDisconnect, error: Error?) {
 		print("\(Date.nowInSeconds()) MQTT Discconnected \(reason) \(error?.localizedDescription ?? "")")
 		DispatchQueue.main.async {
-			(self.window!.rootViewController as! TrainViewController).disconnected()
+			self.trainControl.disconnected()
 		}
 	}
 	
