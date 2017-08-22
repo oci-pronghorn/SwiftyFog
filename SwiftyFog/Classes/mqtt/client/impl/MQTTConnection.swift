@@ -92,7 +92,7 @@ final class MQTTConnection {
     }
 	
 	private let mutex = ReadWriteMutex()
-    private var isFullConnected: Bool = false
+    private(set) var isFullConnected: Bool = false
     private var lastControlPacketSent: Int64 = 0
     private var lastPingAck: Int64 = 0
 	

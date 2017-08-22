@@ -42,6 +42,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let scoped = mqtt.createBridge(subPath: trainName)
 		trainControl.mqtt = scoped
 		
+		connect()
+		
 		return true
 	}
 

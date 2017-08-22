@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13178.6" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Xjm-3A-yj3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13189.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Xjm-3A-yj3">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13156.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13165.3"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -79,6 +79,13 @@
                                     <constraint firstAttribute="width" constant="32" id="kVb-Wn-Mwc"/>
                                 </constraints>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4zZ-K8-b71">
+                                <rect key="frame" x="8" y="28" width="32" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="1TI-dP-sNy"/>
+                                    <constraint firstAttribute="width" constant="32" id="l3D-gt-wQO"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -93,6 +100,7 @@
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="sgm-5E-iqn" secondAttribute="trailing" constant="20" symbolic="YES" id="EVs-NQ-4mR"/>
                             <constraint firstItem="162-qF-Wg4" firstAttribute="leading" secondItem="Gnb-iR-Af0" secondAttribute="leading" id="FQc-vz-pu0"/>
                             <constraint firstItem="Gnb-iR-Af0" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="HDd-3a-vBx"/>
+                            <constraint firstItem="4zZ-K8-b71" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="Let-Zi-aoC"/>
                             <constraint firstItem="5SJ-Xc-cNf" firstAttribute="trailing" secondItem="Gnb-iR-Af0" secondAttribute="trailing" id="O32-uA-bIK"/>
                             <constraint firstItem="55w-Xf-kDc" firstAttribute="centerY" secondItem="yOF-aF-Ux5" secondAttribute="centerY" id="OyT-56-nRe"/>
                             <constraint firstItem="N5j-RN-YrA" firstAttribute="top" secondItem="5SJ-Xc-cNf" secondAttribute="bottom" constant="24" id="V2N-MH-F3V"/>
@@ -101,6 +109,7 @@
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="162-qF-Wg4" secondAttribute="trailing" constant="20" symbolic="YES" id="kac-JA-IRH"/>
                             <constraint firstItem="162-qF-Wg4" firstAttribute="centerY" secondItem="5SJ-Xc-cNf" secondAttribute="centerY" id="qZI-bX-91Y"/>
                             <constraint firstItem="N5j-RN-YrA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" symbolic="YES" id="rCJ-SK-m7y"/>
+                            <constraint firstItem="4zZ-K8-b71" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="rjS-VZ-zsj"/>
                             <constraint firstItem="sgm-5E-iqn" firstAttribute="leading" secondItem="162-qF-Wg4" secondAttribute="leading" id="tRl-fU-teK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -108,6 +117,7 @@
                     <tabBarItem key="tabBarItem" title="Train" id="iLc-kK-t0f"/>
                     <connections>
                         <outlet property="billboardImage" destination="yOF-aF-Ux5" id="Tt9-ML-npC"/>
+                        <outlet property="connectedImage" destination="4zZ-K8-b71" id="nCN-Sr-VCd"/>
                         <outlet property="engineCalibration" destination="5SJ-Xc-cNf" id="Aei-r8-lVK"/>
                         <outlet property="enginePower" destination="Gnb-iR-Af0" id="rft-rH-1we"/>
                         <outlet property="lightsImage" destination="8G9-Jd-tU1" id="aYi-tz-8Vk"/>

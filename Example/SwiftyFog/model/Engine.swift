@@ -32,13 +32,13 @@ public class Engine {
 	public weak var delegate: EngineDelegate?
 	
 	init() {
-		timer.schedule(deadline: .now(), repeating: .milliseconds(250/*40*/), leeway: .milliseconds(10))
 		timer.setEventHandler { [weak self] in
 			self?.onTimer()
 		}
 	}
 	
 	func start() {
+		timer.schedule(deadline: .now(), repeating: .milliseconds(250/*40*/), leeway: .milliseconds(10))
 		timer.resume()
 	}
 	
@@ -50,7 +50,7 @@ public class Engine {
 		timer.cancel()
 	}
 	
-	public var calibration = FogRational(num: Int64(15), den: 1)
+	public var calibration = FogRational(num: Int64(15), den: 100)
 	public var power = FogRational(num: Int64(0), den: 1)
 	
 	private func onTimer() {

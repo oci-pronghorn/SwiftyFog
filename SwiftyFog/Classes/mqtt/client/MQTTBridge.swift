@@ -15,6 +15,9 @@ import Foundation
 // you may choose to set it to nil before the assignement.
 
 public protocol MQTTBridge {
+
+	var connected: Bool { get }
+	
 	// If pubMsg.topic begins with '$' it will be used as an absolute path
 	// Otherwise fullpath is built from the bridge chain
 	func publish(_ pubMsg: MQTTPubMsg, completion: ((Bool)->())?)

@@ -57,6 +57,8 @@ public final class MQTTClient {
 		distributer.delegate = self
 	}
 	
+	public var connected: Bool { return connection?.isFullConnected ?? false }
+	
 	@discardableResult
 	public func start() -> [MQTTSubscription] {
 		if retry == nil {
@@ -188,7 +190,10 @@ extension MQTTClient:
 	MQTTPacketDurabilityDelegate {
 
 	func send(packet: MQTTPacket) -> Bool {
-		return connection?.send(packet: packet) ?? false
+		if connected {
+			return connection?.send(packet: packet) ?? false
+		}
+		return false
 	}
 	
 	func unhandledMessage(message: MQTTMessage) {

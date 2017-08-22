@@ -27,6 +27,7 @@ class TrainViewController: UIViewController {
 	let lights = Lights()
 	let billboard = Billboard()
 	
+	@IBOutlet weak var connectedImage: UIImageView!
 	@IBOutlet weak var billboardImage: UIImageView!
 	@IBOutlet weak var engineCalibration: UISlider!
 	@IBOutlet weak var enginePower: UISlider!
@@ -50,6 +51,7 @@ class TrainViewController: UIViewController {
 		self.engineCalibration.rational = engine.calibration
 		self.enginePower.rational = engine.power
 		self.lightsImage.image = lights.powered ?  #imageLiteral(resourceName: "TorchOn") : #imageLiteral(resourceName: "TorchOff")
+		self.connectedImage.image = mqtt.connected ?  #imageLiteral(resourceName: "TorchOn") : #imageLiteral(resourceName: "TorchOff")
 	}
 }
 
@@ -92,10 +94,12 @@ extension TrainViewController {
 
 extension TrainViewController: BillboardDelegate, LightsDelegate, EngineDelegate {
 	func connected() {
+		self.connectedImage?.image =  #imageLiteral(resourceName: "TorchOn")
 		engine.start()
 	}
 	
 	func disconnected() {
+		self.connectedImage?.image = #imageLiteral(resourceName: "TorchOff")
 		engine.stop()
 	}
 	
