@@ -32,7 +32,7 @@ public struct FogRational<T: FixedWidthInteger> : Equatable, FogExternalizable, 
 	}
 	
 	public var fogSize: Int {
-		return MemoryLayout.size(ofValue: num) + MemoryLayout.size(ofValue: den)
+		return num.fogSize + den.fogSize
 	}
 	
 	public func writeTo(data: inout Data) {

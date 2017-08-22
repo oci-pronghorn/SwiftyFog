@@ -52,10 +52,10 @@ class MQTTConnectPacket: MQTTPacket {
 	
     override var estimatedVariableHeaderLength: Int {
 		return
-			protocolName.mqttLength +
-			MemoryLayout.size(ofValue: protocolLevel) +
-			MemoryLayout.size(ofValue: encodedConnectFlags) +
-			keepAlive.mqttLength
+			protocolName.fogSize +
+			protocolLevel.fogSize +
+			encodedConnectFlags.fogSize +
+			keepAlive.fogSize
     }
 	
 	override func appendVariableHeader(_ data: inout Data) {
@@ -66,10 +66,10 @@ class MQTTConnectPacket: MQTTPacket {
 	}
 	
     override var estimatedPayLoadLength: Int {
-		let a = clientID.mqttLength
+		let a = clientID.fogSize
 		let b = lastWillMessage?.estimatedLastWillPayLoadLength ?? 0
-		let c = username?.mqttLength ?? 0
-		let d = password?.mqttLength ?? 0
+		let c = username?.fogSize ?? 0
+		let d = password?.fogSize ?? 0
 		return a + b + c + d
     }
 	

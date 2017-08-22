@@ -19,7 +19,7 @@ class MQTTSubPacket: MQTTPacket, MQTTIdentifiedPacket {
     }
 	
     override var estimatedVariableHeaderLength: Int {
-		return messageID.mqttLength
+		return messageID.fogSize
     }
 	
 	override func appendVariableHeader(_ data: inout Data) {
@@ -28,7 +28,7 @@ class MQTTSubPacket: MQTTPacket, MQTTIdentifiedPacket {
 	
     override var estimatedPayLoadLength: Int {
 		return topics.reduce(0) { (last, element) in
-			return last + element.0.mqttLength + element.1.mqttLength
+			return last + element.0.fogSize + element.1.fogSize
 		}
     }
 	

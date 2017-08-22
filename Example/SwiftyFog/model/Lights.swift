@@ -43,8 +43,8 @@ public class Lights {
 	
 	public var cmd: LightCommand = .auto {
 		didSet {
-			var data  = Data(capacity: MemoryLayout.size(ofValue: cmd.rawValue))
-			data.fogAppend(cmd.rawValue)
+			var data  = Data(capacity: cmd.fogSize)
+			data.fogAppend(cmd)
 			mqtt.publish(MQTTPubMsg(topic: "override", payload: data))
 		}
 	}

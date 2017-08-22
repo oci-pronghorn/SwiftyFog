@@ -22,6 +22,6 @@ public struct MQTTPubMsg {
     }
 	
     var estimatedLastWillPayLoadLength: Int {
-		return topic.mqttLength + payload.count
+		return topic.fogSize + payload.count
     }
 }

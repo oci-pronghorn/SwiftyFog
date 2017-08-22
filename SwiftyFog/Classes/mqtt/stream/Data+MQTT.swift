@@ -22,25 +22,3 @@ extension Data {
 		self.append(value)
 	}
 }
-
-extension UInt16 {
-	var mqttLength: Int {
-		return MemoryLayout<UInt16>.size
-	}
-	
-	static var mqttLength: Int {
-		return MemoryLayout<UInt16>.size
-	}
-}
-
-extension String.UTF8View {
-	var mqttLength: Int {
-		return MemoryLayout<UInt16>.size + self.count
-	}
-}
-
-extension Optional where Wrapped == String.UTF8View {
-	var mqttLength: Int {
-		return MemoryLayout<UInt16>.size + (self?.count ?? 0)
-	}
-}

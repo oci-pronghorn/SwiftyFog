@@ -24,8 +24,4 @@ public enum MQTTConnAckResponse: UInt8, Error {
 				return false
 		}
     }
-	
-	static var mqttLength: Int {
-		return MemoryLayout<MQTTConnAckResponse.RawValue>.size
-	}
 }

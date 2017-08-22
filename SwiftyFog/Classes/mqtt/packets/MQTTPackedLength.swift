@@ -10,6 +10,7 @@ import Foundation
 struct MQTTPackedLength {
 	static let min: Int = 0
 	static let max: Int = 268435455
+	static let minLen = 1
 	static let maxLen = MemoryLayout<UInt32>.size
 	
 	private init() {}

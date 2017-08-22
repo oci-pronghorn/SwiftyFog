@@ -24,9 +24,9 @@ class MQTTPublishPacket: MQTTPacket, MQTTIdentifiedPacket {
     }
 	
     init?(header: MQTTPacketFixedHeader, networkData: Data) {
-		guard networkData.count >= UInt16.mqttLength else { return nil }
+		guard networkData.count >= UInt16.fogSize else { return nil }
         let topicLength = 256 * Int(networkData[0]) + Int(networkData[1])
-		guard networkData.count >= UInt16.mqttLength + topicLength else { return nil }
+		guard networkData.count >= UInt16.fogSize + topicLength else { return nil }
         let topicData = networkData.subdata(in: 2..<topicLength+2)
 		
 		guard let qos = MQTTQoS(rawValue: (header.flags & 0x06) >> 1) else { return nil }
@@ -60,9 +60,9 @@ class MQTTPublishPacket: MQTTPacket, MQTTIdentifiedPacket {
     }
 	
     override var estimatedVariableHeaderLength: Int {
-		var s = message.topic.mqttLength
+		var s = message.topic.fogSize
         if message.qos != .atMostOnce {
-            s += messageID.mqttLength
+            s += messageID.fogSize
         }
 		return s
     }

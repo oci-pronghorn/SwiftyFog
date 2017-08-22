@@ -18,13 +18,13 @@ class MQTTPublishRelPacket: MQTTPacket, MQTTIdentifiedPacket {
     }
 	
     init?(header: MQTTPacketFixedHeader, networkData: Data) {
-		guard networkData.count >= UInt16.mqttLength else { return nil }
+		guard networkData.count >= UInt16.fogSize else { return nil }
 		self.messageID = networkData.fogExtract()
         super.init(header: header)
     }
 	
     override var estimatedVariableHeaderLength: Int {
-		return messageID.mqttLength
+		return messageID.fogSize
     }
 	
 	override func appendVariableHeader(_ data: inout Data) {

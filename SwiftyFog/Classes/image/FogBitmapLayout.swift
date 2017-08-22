@@ -43,11 +43,11 @@ public struct FogBitmapLayout: FogExternalizable, Equatable, CustomStringConvert
 	
 	var fogSize: Int {
 		return
-			MemoryLayout.size(ofValue: width) +
-			MemoryLayout.size(ofValue: height) +
-			MemoryLayout.size(ofValue: colorSpace.rawValue) +
-			MemoryLayout.size(ofValue: componentDepth) +
-			MemoryLayout.size(ofValue: minComponentWidth)
+			width.fogSize +
+			height.fogSize +
+			colorSpace.fogSize +
+			componentDepth.fogSize +
+			minComponentWidth.fogSize
 	}
 	
 	public var description: String {

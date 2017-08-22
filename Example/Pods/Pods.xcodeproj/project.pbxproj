@@ -34,6 +34,7 @@
 		550148131F48D62500AA77C4 /* MQTTRetryConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550148001F48D59A00AA77C4 /* MQTTRetryConnection.swift */; };
 		550148141F48D62500AA77C4 /* MQTTSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550148011F48D59A00AA77C4 /* MQTTSubscriber.swift */; };
 		550148151F48D62500AA77C4 /* MQTTTopicScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550148021F48D59A00AA77C4 /* MQTTTopicScope.swift */; };
+		550414901F4C6F6500226A1C /* fogSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5504148E1F4C6F0D00226A1C /* fogSize.swift */; };
 		553F97311F434CCC00CBF725 /* PhotosAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F972F1F434CCB00CBF725 /* PhotosAccess.swift */; };
 		553F97321F434CCC00CBF725 /* UIImagePickerController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F97301F434CCC00CBF725 /* UIImagePickerController+.swift */; };
 		553F97381F434F4100CBF725 /* MQTTBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F97361F434F2100CBF725 /* MQTTBridge.swift */; };
@@ -120,6 +121,7 @@
 		550148011F48D59A00AA77C4 /* MQTTSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTSubscriber.swift; sourceTree = "<group>"; };
 		550148021F48D59A00AA77C4 /* MQTTTopicScope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTTopicScope.swift; sourceTree = "<group>"; };
 		550148031F48D5CB00AA77C4 /* MQTTPersistance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTPersistance.swift; sourceTree = "<group>"; };
+		5504148E1F4C6F0D00226A1C /* fogSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fogSize.swift; sourceTree = "<group>"; };
 		553F972F1F434CCB00CBF725 /* PhotosAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosAccess.swift; sourceTree = "<group>"; };
 		553F97301F434CCC00CBF725 /* UIImagePickerController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImagePickerController+.swift"; sourceTree = "<group>"; };
 		553F97361F434F2100CBF725 /* MQTTBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTBridge.swift; sourceTree = "<group>"; };
@@ -354,6 +356,7 @@
 		9A4DFE5F2027AAE105DE3947F06EEDAF /* externalizable */ = {
 			isa = PBXGroup;
 			children = (
+				5504148E1F4C6F0D00226A1C /* fogSize.swift */,
 				D9670A79CE4902D5A7601C98E161E827 /* Data+Fog.swift */,
 				070FAC5B7575E3706E475497D31B90A5 /* FogExternalizable.swift */,
 			);
@@ -636,6 +639,7 @@
 				319515A52EA422805E80480E0A132E95 /* MQTTPacketFixedHeader.swift in Sources */,
 				5501480F1F48D62500AA77C4 /* MQTTMessageIdSource.swift in Sources */,
 				1E72AEF4DAD30C33A0559A9D3ED7C817 /* MQTTPacketType.swift in Sources */,
+				550414901F4C6F6500226A1C /* fogSize.swift in Sources */,
 				01C173ECA222656CE4F539677D9D4F1A /* MQTTPayload.swift in Sources */,
 				5868A720539772791EA35C9A6677F49D /* MQTTPingAckPacket.swift in Sources */,
 				CD6785433618B7E3CDC83E70442CCCF7 /* MQTTPingPacket.swift in Sources */,
