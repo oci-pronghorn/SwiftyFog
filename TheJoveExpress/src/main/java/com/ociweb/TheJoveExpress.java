@@ -69,7 +69,9 @@ public class TheJoveExpress implements FogApp
         runtime.registerListener(new MQttConnectedWorkAround(runtime, mqttConnectedTopic));
 
         // TODO: all inbound have the train name wildcard topic
-        // TODO: enum mqtt qos
+
+        // All transmissions should have retain so controlling UIs can always get the latest state
+        // Schema defining tramsmissions should have a qos of atLeastOnce
 
         if (config.appServerEnabled) {
             runtime.addFileServer("").includeAllRoutes(); // TODO: use resource folder
@@ -85,7 +87,7 @@ public class TheJoveExpress implements FogApp
             if (config.mqttEnabled) {
                 runtime.bridgeSubscription(enginePowerTopic, prefix + enginePowerTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
                 runtime.bridgeSubscription(engineCalibrateTopic, prefix + engineCalibrateTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(enginePoweredTopic, prefix + enginePoweredTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeTransmission(enginePoweredTopic, prefix + enginePoweredTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
                 runtime.bridgeTransmission(engineCalibratedTopic, prefix + engineCalibratedTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
             }
             final EngineBehavior engine = new EngineBehavior(runtime, actuatorPowerTopic, config.engineAccuatorPort, enginePoweredTopic, engineCalibratedTopic);
@@ -99,8 +101,8 @@ public class TheJoveExpress implements FogApp
             if (config.mqttEnabled) {
                 runtime.bridgeSubscription(lightsOverrideTopic, prefix + lightsOverrideTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
                 runtime.bridgeSubscription(lightCalibrateTopic, prefix + lightCalibrateTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(ambientLightPublishTopic, prefix + ambientLightPublishTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(lightsPoweredTopic, prefix + lightsPoweredTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeTransmission(ambientLightPublishTopic, prefix + ambientLightPublishTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+                runtime.bridgeTransmission(lightsPoweredTopic, prefix + lightsPoweredTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
             }
             final AmbientLightBroadcast ambientLight = new AmbientLightBroadcast(runtime, config.lightSensorPort, ambientLightPublishTopic);
             runtime.registerListener(ambientLight);
@@ -114,7 +116,7 @@ public class TheJoveExpress implements FogApp
 
         if (config.speedometerEnabled) {
             if (config.mqttEnabled) {
-                runtime.bridgeTransmission(accelerometerPublishTopic, prefix + accelerometerPublishTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeTransmission(accelerometerPublishTopic, prefix + accelerometerPublishTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
             }
             final AccelerometerBehavior accelerometer = new AccelerometerBehavior(runtime, accelerometerPublishTopic);
             runtime.registerListener(accelerometer);
@@ -124,7 +126,7 @@ public class TheJoveExpress implements FogApp
         if (config.billboardEnabled) {
             if (config.mqttEnabled) {
                 runtime.bridgeSubscription(billboardImageTopic, prefix + billboardImageTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(billboardSpecPublishTopic, prefix + billboardSpecPublishTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+                runtime.bridgeTransmission(billboardSpecPublishTopic, prefix + billboardSpecPublishTopic, mqttBridge).setQoS(MQTTQOS.atLeastOnce).setRetain(true);
             }
             final BillboardBehavior billboard = new BillboardBehavior(runtime, billboardSpecPublishTopic);
             runtime.registerListener(billboard)

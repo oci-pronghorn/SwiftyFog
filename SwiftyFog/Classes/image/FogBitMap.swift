@@ -9,7 +9,7 @@
 import UIKit
 
 public struct FogBitMap: FogExternalizable, CustomStringConvertible {
-	private let layout: FogBitmapLayout
+	public let layout: FogBitmapLayout
 	private var bmp: [UInt8]
 	
 	public init(layout: FogBitmapLayout) {

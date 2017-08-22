@@ -72,6 +72,13 @@
                                     <constraint firstAttribute="height" constant="96" id="EWM-f3-BYr"/>
                                 </constraints>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TorchOff" translatesAutoresizingMaskIntoConstraints="NO" id="8G9-Jd-tU1">
+                                <rect key="frame" x="148" y="126" width="32" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="Rmp-T9-2XJ"/>
+                                    <constraint firstAttribute="width" constant="32" id="kVb-Wn-Mwc"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -80,6 +87,7 @@
                             <constraint firstItem="yOF-aF-Ux5" firstAttribute="trailing" secondItem="N5j-RN-YrA" secondAttribute="trailing" id="5Kc-AO-nHU"/>
                             <constraint firstItem="5SJ-Xc-cNf" firstAttribute="top" secondItem="Gnb-iR-Af0" secondAttribute="bottom" constant="8" id="5l2-Ew-Yz7"/>
                             <constraint firstItem="N5j-RN-YrA" firstAttribute="trailing" secondItem="5SJ-Xc-cNf" secondAttribute="trailing" id="7aw-KF-wgC"/>
+                            <constraint firstItem="N5j-RN-YrA" firstAttribute="leading" secondItem="8G9-Jd-tU1" secondAttribute="trailing" constant="8" id="9G2-b4-piV"/>
                             <constraint firstItem="55w-Xf-kDc" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="9ov-xv-P5O"/>
                             <constraint firstItem="5SJ-Xc-cNf" firstAttribute="width" secondItem="Gnb-iR-Af0" secondAttribute="width" multiplier="0.5" id="D4k-pO-426"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="sgm-5E-iqn" secondAttribute="trailing" constant="20" symbolic="YES" id="EVs-NQ-4mR"/>
@@ -88,6 +96,7 @@
                             <constraint firstItem="5SJ-Xc-cNf" firstAttribute="trailing" secondItem="Gnb-iR-Af0" secondAttribute="trailing" id="O32-uA-bIK"/>
                             <constraint firstItem="55w-Xf-kDc" firstAttribute="centerY" secondItem="yOF-aF-Ux5" secondAttribute="centerY" id="OyT-56-nRe"/>
                             <constraint firstItem="N5j-RN-YrA" firstAttribute="top" secondItem="5SJ-Xc-cNf" secondAttribute="bottom" constant="24" id="V2N-MH-F3V"/>
+                            <constraint firstItem="8G9-Jd-tU1" firstAttribute="centerY" secondItem="N5j-RN-YrA" secondAttribute="centerY" id="bx8-Ky-iSX"/>
                             <constraint firstItem="Gnb-iR-Af0" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="cu1-fL-6sC"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="162-qF-Wg4" secondAttribute="trailing" constant="20" symbolic="YES" id="kac-JA-IRH"/>
                             <constraint firstItem="162-qF-Wg4" firstAttribute="centerY" secondItem="5SJ-Xc-cNf" secondAttribute="centerY" id="qZI-bX-91Y"/>
@@ -99,6 +108,9 @@
                     <tabBarItem key="tabBarItem" title="Train" id="iLc-kK-t0f"/>
                     <connections>
                         <outlet property="billboardImage" destination="yOF-aF-Ux5" id="Tt9-ML-npC"/>
+                        <outlet property="engineCalibration" destination="5SJ-Xc-cNf" id="Aei-r8-lVK"/>
+                        <outlet property="enginePower" destination="Gnb-iR-Af0" id="rft-rH-1we"/>
+                        <outlet property="lightsImage" destination="8G9-Jd-tU1" id="aYi-tz-8Vk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -239,4 +251,7 @@
             <point key="canvasLocation" x="-228" y="-47"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="TorchOff" width="32" height="32"/>
+    </resources>
 </document>

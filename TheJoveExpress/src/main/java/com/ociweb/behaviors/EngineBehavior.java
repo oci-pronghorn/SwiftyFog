@@ -28,6 +28,7 @@ public class EngineBehavior implements PubSubMethodListener {
 
     public boolean onMqttConnected(CharSequence charSequence, BlobReader messageReader) {
         this.channel.publishTopic(engineCalibratedTopic, writer -> writer.write(calibration));
+        this.channel.publishTopic(enginePoweredTopic, writer -> writer.write(power));
         return true;
     }
 

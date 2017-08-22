@@ -9,38 +9,31 @@
 import UIKit
 import SwiftyFog
 
-protocol BillboardDelegate: class {
+public protocol BillboardDelegate: class {
 	func onImageSpecConfirmed(layout: FogBitmapLayout)
 	func onPostImage(image: UIImage)
 }
 
-class Billboard {
-	private var bitmap: FogBitMap?
+public class Billboard {
 	private var broadcaster: MQTTBroadcaster?
 	
-	weak var delegate: BillboardDelegate?
-	
-    var mqtt: MQTTBridge! {
+    public var mqtt: MQTTBridge! {
 		didSet {
-			broadcaster = mqtt.broadcast(to: self, topics: [
+			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("spec", .atMostOnce, Billboard.receiveSpec)
 			])
 		}
     }
 	
-	func start() {
+	private var bitmap: FogBitMap?
+	
+	public var layout: FogBitmapLayout? {
+		return bitmap?.layout
 	}
 	
-	func stop() {
-	}
+	public weak var delegate: BillboardDelegate?
 	
-	private func receiveSpec(msg: MQTTMessage) {
-		let layout: FogBitmapLayout = msg.payload.fogExtract()
-		delegate?.onImageSpecConfirmed(layout: layout)
-		bitmap = FogBitMap(layout: layout)
-	}
-	
-	func display(image: UIImage) {
+	public func display(image: UIImage) {
 		if var bitmap = bitmap {
 			let resized = bitmap.imbue(image)
 			delegate?.onPostImage(image: resized!)
@@ -48,5 +41,11 @@ class Billboard {
 			data.fogAppend(bitmap)
 			mqtt.publish(MQTTPubMsg(topic: "image", payload: data))
 		}
+	}
+	
+	private func receiveSpec(msg: MQTTMessage) {
+		let layout: FogBitmapLayout = msg.payload.fogExtract()
+		delegate?.onImageSpecConfirmed(layout: layout)
+		bitmap = FogBitMap(layout: layout)
 	}
 }

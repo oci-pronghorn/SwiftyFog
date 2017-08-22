@@ -28,7 +28,6 @@ public class BillboardBehavior implements PubSubMethodListener {
     }
 
     public boolean onMqttConnected(CharSequence charSequence, BlobReader messageReader) {
-        // TODO: have swift read/read this structure and the bmp byte[]
         bufferChannel.publishTopic(publishTopic, writer->{writer.write(display.newBmpLayout());});
         sendTestImage();
         return true;
@@ -46,18 +45,14 @@ public class BillboardBehavior implements PubSubMethodListener {
 
     public boolean displayImage(CharSequence charSequence, BlobReader blobReader) {
         blobReader.readInto(bmp);
+        // TODO: have display use bitmap model
         //display.display(new FogPixelProgressiveScanner(bmp));
 
-        //System.out.println(String.format("(%d*%d)", bmp.getWidth(), bmp.getHeight()));
-
-        // TODO: have display use bitmap model
         int[][] c = new int[bmp.getWidth()][bmp.getHeight()];
         for (int x = 0; x < bmp.getWidth(); x++) {
             for (int y = 0; y < bmp.getHeight(); y++) {
                 c[x][y] = bmp.getComponent(x, y, 0);
-                //System.out.print(String.format("%02d.", c[x][y]));
             }
-            //System.out.println();
         }
 
         // TODO: Optimize/throttle display updates in transducer

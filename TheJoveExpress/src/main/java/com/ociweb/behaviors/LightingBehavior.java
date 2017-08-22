@@ -27,9 +27,10 @@ public class LightingBehavior implements PubSubMethodListener {
     }
 
     public boolean onMqttConnected(CharSequence charSequence, BlobReader messageReader) {
+        boolean isOn = this.payload.power != 0.0;
+        this.channel.publishTopic(publishTopic, writer -> writer.writeBoolean(isOn));
         return true;
     }
-
 
     public boolean onCalibrate(CharSequence charSequence, BlobReader messageReader) {
         this.threshold = null;

@@ -9,12 +9,28 @@
 import UIKit
 import SwiftyFog
 
+public extension UISlider {
+	public var rational: FogRational<Int64> {
+		get {
+			let numerator = Int64(self.value)
+			let denominator = Int64(self.maximumValue)
+			return FogRational(num: numerator, den: denominator)
+		}
+		set {
+			self.value = self.maximumValue * Float(newValue.num) / Float(newValue.den)
+		}
+	}
+}
+
 class TrainViewController: UIViewController {	
 	let engine = Engine()
 	let lights = Lights()
 	let billboard = Billboard()
 	
 	@IBOutlet weak var billboardImage: UIImageView!
+	@IBOutlet weak var engineCalibration: UISlider!
+	@IBOutlet weak var enginePower: UISlider!
+	@IBOutlet weak var lightsImage: UIImageView!
 	
     var mqtt: MQTTBridge! {
 		didSet {
@@ -31,6 +47,9 @@ class TrainViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		self.engineCalibration.rational = engine.calibration
+		self.enginePower.rational = engine.power
+		self.lightsImage.image = lights.powered ?  #imageLiteral(resourceName: "TorchOn") : #imageLiteral(resourceName: "TorchOff")
 	}
 }
 
@@ -51,18 +70,12 @@ extension TrainViewController {
 	
 	@IBAction
 	func onPower(sender: UISlider?) {
-		let numerator = Int64(sender!.value)
-		let denominator = Int64(sender!.maximumValue)
-		let rational = FogRational(num: numerator, den: denominator)
-		engine.newPower = rational
+		engine.power = sender!.rational
 	}
 	
 	@IBAction
 	func onDoEngineCalibration(sender: UISlider?) {
-		let numerator = Int64(sender!.value)
-		let denominator = Int64(sender!.maximumValue)
-		let rational = FogRational(num: numerator, den: denominator)
-		engine.calibration = rational
+		engine.calibration = sender!.rational
 	}
 	
 	@IBAction
@@ -80,14 +93,10 @@ extension TrainViewController {
 extension TrainViewController: BillboardDelegate, LightsDelegate, EngineDelegate {
 	func connected() {
 		engine.start()
-		lights.start()
-		billboard.start();
 	}
 	
 	func disconnected() {
 		engine.stop()
-		lights.stop()
-		billboard.stop();
 	}
 	
 	func onImageSpecConfirmed(layout: FogBitmapLayout) {
@@ -95,7 +104,7 @@ extension TrainViewController: BillboardDelegate, LightsDelegate, EngineDelegate
 	}
 	
 	func onLightsPowered(powered: Bool) {
-		print("Lights Powered: \(powered)")
+		lightsImage?.image = powered ?  #imageLiteral(resourceName: "TorchOn") : #imageLiteral(resourceName: "TorchOff")
 	}
 	
 	func onLightsAmbient(power: FogRational<Int64>) {
@@ -103,11 +112,15 @@ extension TrainViewController: BillboardDelegate, LightsDelegate, EngineDelegate
 	}
 	
 	func onPowerConfirm(power: FogRational<Int64>) {
-		print("Engine Powered: \(power)")
+		if self.enginePower?.isHighlighted ?? true == false {
+			self.enginePower?.rational = power
+		}
 	}
 	
 	func onPowerCalibrated(power: FogRational<Int64>) {
-		print("Engine Calibrartion: \(power)")
+		if self.engineCalibration?.isHighlighted ?? true == false {
+			self.engineCalibration?.rational = power
+		}
 	}
 	
 	func onPostImage(image: UIImage) {

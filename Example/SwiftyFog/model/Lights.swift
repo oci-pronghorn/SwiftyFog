@@ -9,60 +9,53 @@
 import Foundation
 import SwiftyFog
 
-protocol LightsDelegate: class {
+public protocol LightsDelegate: class {
 	func onLightsPowered(powered: Bool)
 	func onLightsAmbient(power: FogRational<Int64>)
 }
 
-enum LightCommand: Int32 {
+public enum LightCommand: Int32 {
 	case off
 	case on
 	case auto
 }
 
-class Lights {
-	var broadcaster: MQTTBroadcaster?
+public class Lights {
+	private var broadcaster: MQTTBroadcaster?
+	public private(set) var powered: Bool = false
+	public private(set) var ambient: FogRational<Int64> = FogRational()
 	
-	weak var delegate: LightsDelegate?
-	
-    var mqtt: MQTTBridge! {
+    public var mqtt: MQTTBridge! {
 		didSet {
-			broadcaster = mqtt.broadcast(to: self, topics: [
+			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("powered", .atMostOnce, Lights.powered),
 				("ambient", .atMostOnce, Lights.ambient)
 			])
 		}
     }
 	
-	init() {
-	}
+	public weak var delegate: LightsDelegate?
 	
-	func start() {
-	}
-	
-	func stop() {
-	}
-	
-	private func powered(_ msg: MQTTMessage) {
-		let powered: Bool = msg.payload.fogExtract()
-		delegate?.onLightsPowered(powered: powered)
-	}
-	
-	private func ambient(_ msg: MQTTMessage) {
-		let ambient: FogRational<Int64> = msg.payload.fogExtract()
-		delegate?.onLightsAmbient(power: ambient)
-	}
-	
-	func calibrate() {
+	public func calibrate() {
 		let data  = Data(capacity: 0)
 		mqtt.publish(MQTTPubMsg(topic: "calibrate", payload: data))
 	}
 	
-	var cmd: LightCommand = .auto {
+	public var cmd: LightCommand = .auto {
 		didSet {
 			var data  = Data(capacity: MemoryLayout.size(ofValue: cmd.rawValue))
 			data.fogAppend(cmd.rawValue)
 			mqtt.publish(MQTTPubMsg(topic: "override", payload: data))
 		}
+	}
+	
+	private func powered(_ msg: MQTTMessage) {
+		powered = msg.payload.fogExtract()
+		delegate?.onLightsPowered(powered: powered)
+	}
+	
+	private func ambient(_ msg: MQTTMessage) {
+		ambient = msg.payload.fogExtract()
+		delegate?.onLightsAmbient(power: ambient)
 	}
 }

@@ -43,14 +43,14 @@ public class PhotosAccess : NSObject, UIImagePickerControllerDelegate {
 		let alert = UIAlertController(title: title?.localized, message: nil, preferredStyle: .alert)
 		if UIImagePickerController.isSourceTypeAvailable( .photoLibrary) {
 			let photosAction = UIAlertAction(title: "Library".localized, style: .default) { (action) in
-				self.selectImage(sourceType: .photoLibrary, completion: completion);
+				self.selectImage(sourceType: .photoLibrary, completion: completion)
 			}
 			alert.addAction(photosAction)
 		}
 		if hasCamera {
 			if UIImagePickerController.isSourceTypeAvailable( .camera) {
 				let cameraAction = UIAlertAction(title: "Camera".localized, style: .default) { (action) in
-					self.selectImage(sourceType: .camera, completion: completion);
+					self.selectImage(sourceType: .camera, completion: completion)
 				}
 				alert.addAction(cameraAction)
 			}

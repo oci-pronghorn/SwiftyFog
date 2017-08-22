@@ -26,7 +26,7 @@ public struct FogRational<T: FixedWidthInteger> : Equatable, FogExternalizable, 
 		self.num = data.fogExtract(&cursor)
 		self.den = data.fogExtract(&cursor)
 	}
-	
+
 	public var description: String {
 		return "\(num)/\(den)"
 	}
@@ -42,5 +42,9 @@ public struct FogRational<T: FixedWidthInteger> : Equatable, FogExternalizable, 
 	
 	public static func ==(lhs: FogRational<T>, rhs: FogRational<T>) -> Bool {
 		return lhs.num == rhs.num && lhs.den == rhs.den
+	}
+	
+	public static func !=(lhs: FogRational<T>, rhs: FogRational<T>) -> Bool {
+		return lhs.num != rhs.num || lhs.den != rhs.den
 	}
 }

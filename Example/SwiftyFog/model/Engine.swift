@@ -9,29 +9,27 @@
 import Foundation
 import SwiftyFog
 
-protocol EngineDelegate: class {
+public protocol EngineDelegate: class {
 	func onPowerConfirm(power: FogRational<Int64>)
 	func onPowerCalibrated(power: FogRational<Int64>)
 }
 
-class Engine {
+public class Engine {
 	private var broadcaster: MQTTBroadcaster?
-	
-	weak var delegate: EngineDelegate?
+	private let timer = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
+	private var oldPower = FogRational(num: Int64(0), den: 0)
+	private var oldCalibration = FogRational(num: Int64(0), den: 0)
 	
     var mqtt: MQTTBridge! {
 		didSet {
-			broadcaster = mqtt.broadcast(to: self, topics: [
+			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("powered", .atMostOnce, Engine.powered),
 				("calibrated", .atMostOnce, Engine.calibrated)
 			])
 		}
     }
-	private var oldPower = FogRational(num: Int64(0), den: 0)
 	
-	var newPower = FogRational(num: Int64(0), den: 1)
-	
-	private let timer = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
+	public weak var delegate: EngineDelegate?
 	
 	init() {
 		timer.schedule(deadline: .now(), repeating: .milliseconds(250/*40*/), leeway: .milliseconds(10))
@@ -52,32 +50,37 @@ class Engine {
 		timer.cancel()
 	}
 	
-	private func calibrated(msg: MQTTMessage) {
-		let calibration: FogRational<Int64> = msg.payload.fogExtract()
-		delegate?.onPowerCalibrated(power: calibration)
-	}
+	public var calibration = FogRational(num: Int64(15), den: 1)
+	public var power = FogRational(num: Int64(0), den: 1)
 	
-	private func powered(msg: MQTTMessage) {
-		let power: FogRational<Int64> = msg.payload.fogExtract()
-		delegate?.onPowerConfirm(power: power)
-	}
-	
-	var calibration = FogRational(num: Int64(15), den: 100) {
-		didSet {
-			if !(calibration == oldValue) {
-				var data  = Data(capacity: calibration.fogSize)
-				data.fogAppend(calibration)
-				mqtt.publish(MQTTPubMsg(topic: "calibrate", payload: data))
-			}
+	private func onTimer() {
+		if oldCalibration != calibration {
+			oldCalibration = calibration
+			var data  = Data(capacity: calibration.fogSize)
+			data.fogAppend(calibration)
+			mqtt.publish(MQTTPubMsg(topic: "calibrate", payload: data))
+		}
+		if oldPower != power {
+			oldPower = power
+			var data  = Data(capacity: power.fogSize)
+			data.fogAppend(power)
+			mqtt.publish(MQTTPubMsg(topic: "power", payload: data))
 		}
 	}
 	
-	private func onTimer() {
-		if !(oldPower == newPower) {
-			oldPower = newPower
-			var data  = Data(capacity: newPower.fogSize)
-			data.fogAppend(newPower)
-			mqtt.publish(MQTTPubMsg(topic: "power", payload: data))
+	private func calibrated(msg: MQTTMessage) {
+		let newValue: FogRational<Int64> = msg.payload.fogExtract()
+		if calibration != newValue {
+			calibration = newValue
+			delegate?.onPowerCalibrated(power: calibration)
+		}
+	}
+	
+	private func powered(msg: MQTTMessage) {
+		let newValue: FogRational<Int64> = msg.payload.fogExtract()
+		if power != newValue {
+			power = newValue
+			delegate?.onPowerConfirm(power: power)
 		}
 	}
 }
