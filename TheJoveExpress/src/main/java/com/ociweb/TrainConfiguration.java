@@ -21,7 +21,7 @@ public class TrainConfiguration  {
     final boolean appServerEnabled = false;
     final boolean mqttEnabled = true;
     final int appServerPort = 8089;
-    final int lightDetectFreq = 500;
+    final int lightDetectFreq = 250;
 
     final Port lightSensorPort = A0;
     final ActuatorDriverPort engineAccuatorPort = ActuatorDriverPort.A;

@@ -15,6 +15,7 @@ final class MQTTPacketDurability {
 	private let idSource: MQTTMessageIdSource
 	private let mutex = ReadWriteMutex()
     private let resendTimer: DispatchSourceTimer
+    private let resendInterval: TimeInterval
 	
 	private var retryRequestPackets = [(Bool)->()]()
 	private var unacknowledgedPackets = [UInt16:(TimeInterval, MQTTPacket, MQTTPacketType)]()
@@ -23,14 +24,15 @@ final class MQTTPacketDurability {
 	
 	init(idSource: MQTTMessageIdSource, resendInterval: TimeInterval) {
 		self.idSource = idSource
+		self.resendInterval = resendInterval
 		resendTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
-		resendTimer.schedule(deadline: .now() + resendInterval, repeating: resendInterval, leeway: .milliseconds(250))
 		resendTimer.setEventHandler { [weak self] in
 			self?.resendPulse()
 		}
 	}
 
 	func connected(cleanSession: Bool, present: Bool, initial: Bool) {
+		resendTimer.schedule(deadline: .now() + resendInterval, repeating: resendInterval, leeway: .milliseconds(250))
 		resendTimer.resume()
 	}
 	

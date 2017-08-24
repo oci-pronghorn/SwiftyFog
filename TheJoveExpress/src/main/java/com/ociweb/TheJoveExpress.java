@@ -22,7 +22,7 @@ public class TheJoveExpress implements FogApp
         // TODO: calculating maxMessageLength anf maxinFlight given the private channel definitions and arbitrary bridging
         // is too difficult. And we are declaring this in connections where channel message lengths are in behavior
         if (config.mqttEnabled) {
-            this.mqttBridge = c.useMQTT(config.mqttBroker, config.mqttPort, config.mqttClientName, 20, 15000)
+            this.mqttBridge = c.useMQTT(config.mqttBroker, config.mqttPort, false, config.mqttClientName, 20, 15000)
                     .cleanSession(true)
                     .keepAliveSeconds(10);
         }
@@ -40,7 +40,7 @@ public class TheJoveExpress implements FogApp
         if (c.isTestHardware()) c.enableTelemetry();
 
         // TODO: only needed for MQTT connect workaround
-        c.setTimerPulseRate(1000);
+        c.setTimerPulseRate(500);
     }
 
     @Override
@@ -58,6 +58,7 @@ public class TheJoveExpress implements FogApp
         final String lightsOverrideTopic = "lights/override";
         final String lightCalibrateTopic = "lights/calibrate";
         final String ambientLightPublishTopic = "lights/ambient";
+        final String lightCalibratedTopic = "lights/calibrated";
 
         final String accelerometerPublishTopic = "accelerometer";
 
@@ -103,10 +104,11 @@ public class TheJoveExpress implements FogApp
                 runtime.bridgeSubscription(lightCalibrateTopic, prefix + lightCalibrateTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
                 runtime.bridgeTransmission(ambientLightPublishTopic, prefix + ambientLightPublishTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
                 runtime.bridgeTransmission(lightsPoweredTopic, prefix + lightsPoweredTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+                runtime.bridgeTransmission(lightCalibratedTopic, prefix + lightCalibratedTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
             }
             final AmbientLightBroadcast ambientLight = new AmbientLightBroadcast(runtime, config.lightSensorPort, ambientLightPublishTopic);
             runtime.registerListener(ambientLight);
-            final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerTopic, config.lightAccuatorPort, lightsPoweredTopic);
+            final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerTopic, config.lightAccuatorPort, lightsPoweredTopic, lightCalibratedTopic);
             runtime.registerListener(lights)
                     .addSubscription(mqttConnectedTopic, lights::onMqttConnected)
                     .addSubscription(lightsOverrideTopic, lights::onOverride)

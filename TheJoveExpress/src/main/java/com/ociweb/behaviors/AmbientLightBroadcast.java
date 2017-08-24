@@ -10,7 +10,8 @@ public class AmbientLightBroadcast implements AnalogListener {
     private final FogCommandChannel channel;
     private final Port lightSensorPort;
     private final String publishTopic;
-    private final RationalPayload oldValue = new RationalPayload(-1, 1024);
+    public static final long maxSensorReading = 255;
+    private final RationalPayload oldValue = new RationalPayload(-1, maxSensorReading);
 
     public AmbientLightBroadcast(FogRuntime runtime, Port lightSensorPort, String publishTopic) {
         this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);

@@ -21,7 +21,7 @@ public class MQttConnectedWorkAround implements TimeListener {
     @Override
     public void timeEvent(long now, int i) {
         if (!sent) {
-            if (now - start >= 5000) {
+            if (now - start >= 1000) {
                 channel.publishTopic(publishTopic, writer -> writer.writeInt(ConnectedState.connecting.ordinal()));
                 sent = true;
             }

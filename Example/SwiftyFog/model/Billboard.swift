@@ -41,6 +41,9 @@ public class Billboard {
 			data.fogAppend(bitmap)
 			mqtt.publish(MQTTPubMsg(topic: "image", payload: data))
 		}
+		else {
+			delegate?.onPostImage(image: image)
+		}
 	}
 	
 	private func receiveSpec(msg: MQTTMessage) {

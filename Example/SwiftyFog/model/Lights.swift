@@ -12,6 +12,7 @@ import SwiftyFog
 public protocol LightsDelegate: class {
 	func onLightsPowered(powered: Bool)
 	func onLightsAmbient(power: FogRational<Int64>)
+	func onLightsCalibrated(power: FogRational<Int64>)
 }
 
 public enum LightCommand: Int32 {
@@ -22,6 +23,7 @@ public enum LightCommand: Int32 {
 
 public class Lights {
 	private var broadcaster: MQTTBroadcaster?
+	public private(set) var calibration = FogRational(num: Int64(0), den: 1)
 	public private(set) var powered: Bool = false
 	public private(set) var ambient: FogRational<Int64> = FogRational()
 	
@@ -29,24 +31,31 @@ public class Lights {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("powered", .atMostOnce, Lights.powered),
-				("ambient", .atMostOnce, Lights.ambient)
+				("ambient", .atMostOnce, Lights.ambient),
+				("calibrated", .atMostOnce, Lights.calibrated),
 			])
 		}
     }
 	
 	public weak var delegate: LightsDelegate?
 	
-	public func calibrate() {
-		let data  = Data(capacity: 0)
+	public func calibrate(_ calibration: FogRational<Int64>) {
+		var data  = Data(capacity: calibration.fogSize)
+		data.fogAppend(calibration)
 		mqtt.publish(MQTTPubMsg(topic: "calibrate", payload: data))
 	}
 	
-	public var cmd: LightCommand = .auto {
+	public var powerOverride: LightCommand = .auto {
 		didSet {
-			var data  = Data(capacity: cmd.fogSize)
-			data.fogAppend(cmd)
+			var data  = Data(capacity: powerOverride.fogSize)
+			data.fogAppend(powerOverride)
 			mqtt.publish(MQTTPubMsg(topic: "override", payload: data))
 		}
+	}
+	
+	private func calibrated(msg: MQTTMessage) {
+		calibration = msg.payload.fogExtract()
+		delegate?.onLightsCalibrated(power: calibration)
 	}
 	
 	private func powered(_ msg: MQTTMessage) {

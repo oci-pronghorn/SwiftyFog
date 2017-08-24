@@ -7,20 +7,25 @@ import com.ociweb.model.ActuatorDriverPort;
 import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.BlobReader;
 
+import static com.ociweb.behaviors.AmbientLightBroadcast.maxSensorReading;
+
 public class LightingBehavior implements PubSubMethodListener {
     private final FogCommandChannel channel;
     private final ActuatorDriverPayLoad payload = new ActuatorDriverPayLoad();
     private final String publishTopic;
+    private final String lightCalibratedTopic;
     private final String actuatorControlTopic;
 
-    private Integer threshold = null;
+    private final RationalPayload calibration = new RationalPayload(-1, maxSensorReading);
+    private final RationalPayload ambient = new RationalPayload(-1, maxSensorReading);
+
     private Double determinedPower = null;
     private Double overridePower = null;
-    private RationalPayload ambient = new RationalPayload();
 
-    public LightingBehavior(FogRuntime runtime, String actuatorControlTopic, ActuatorDriverPort port, String publishTopic) {
+    public LightingBehavior(FogRuntime runtime, String actuatorControlTopic, ActuatorDriverPort port, String publishTopic, String lightCalibratedTopic) {
         this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
         this.publishTopic = publishTopic;
+        this.lightCalibratedTopic = lightCalibratedTopic;
         this.payload.port = port;
         this.payload.power = -1.0;
         this.actuatorControlTopic = actuatorControlTopic;
@@ -28,12 +33,14 @@ public class LightingBehavior implements PubSubMethodListener {
 
     public boolean onMqttConnected(CharSequence charSequence, BlobReader messageReader) {
         boolean isOn = this.payload.power != 0.0;
+        this.channel.publishTopic(lightCalibratedTopic, writer -> writer.write(calibration));
         this.channel.publishTopic(publishTopic, writer -> writer.writeBoolean(isOn));
         return true;
     }
 
     public boolean onCalibrate(CharSequence charSequence, BlobReader messageReader) {
-        this.threshold = null;
+        messageReader.readInto(this.calibration);
+        this.channel.publishTopic(lightCalibratedTopic, writer -> writer.write(calibration));
         return true;
     }
 
@@ -56,13 +63,14 @@ public class LightingBehavior implements PubSubMethodListener {
     }
 
     public boolean onDetected(CharSequence charSequence, BlobReader messageReader) {
-         messageReader.readInto(ambient);
+        messageReader.readInto(ambient);
 
         Double newPower;
-        if (threshold == null) {
-            threshold = (int)ambient.num / 2;
+        if (calibration.num == -1) {
+            calibration.num = ambient.num / 2;
+            this.channel.publishTopic(lightCalibratedTopic, writer -> writer.write(calibration));
             newPower = 0.0;
-        } else if (ambient.num >= threshold) {
+        } else if (ambient.num >= calibration.num) {
             newPower = 0.0;
         } else {
             newPower = 1.0;

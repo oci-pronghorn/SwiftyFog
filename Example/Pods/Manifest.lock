@@ -1,5 +1,5 @@
 PODS:
-  - SwiftyFog (0.1.0)
+  - SwiftyFog (0.1.1)
 
 DEPENDENCIES:
   - SwiftyFog (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  SwiftyFog: 4700485b7bab2013230e308300f35e5730685a6e
+  SwiftyFog: 1f64c822b3bc2cb35870b3dc025ac25c4bed354e
 
 PODFILE CHECKSUM: b74eadf6f8c40277c16753e1b182d85311017ba9
 
