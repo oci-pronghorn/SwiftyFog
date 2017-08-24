@@ -24,6 +24,7 @@ public class TheJoveExpress implements FogApp
         if (config.mqttEnabled) {
             this.mqttBridge = c.useMQTT(config.mqttBroker, config.mqttPort, false, config.mqttClientName, 20, 15000)
                     .cleanSession(true)
+                    .authentication("dsjove", "password")
                     .keepAliveSeconds(10);
         }
         if (config.appServerEnabled) c.enableServer(false, config.appServerPort); // TODO: heap problem on Pi0

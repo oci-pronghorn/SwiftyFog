@@ -13,7 +13,15 @@ public enum Qos2Mode {
 	case assured
 }
 
-// TODO: authentication
+public struct MQTTAuthentication {
+    public var username: String? = nil
+    public var password: String? = nil
+	
+    public init(username: String? = nil, password: String? = nil) {
+		self.username = username
+		self.password = password
+    }
+}
 
 public struct MQTTClientParams {
     public var clientID: String
@@ -24,9 +32,6 @@ public struct MQTTClientParams {
 	
     public var qos2Mode: Qos2Mode = .lowLatency
     public var lastWill: MQTTPubMsg? = nil
-	
-    public var username: String? = nil
-    public var password: String? = nil
 	
     public init(clientID: String, cleanSession: Bool = true, keepAlive: UInt16 = 60) {
 		self.clientID = clientID
@@ -79,6 +84,7 @@ protocol MQTTConnectionDelegate: class {
 
 final class MQTTConnection {
 	private let clientPrams: MQTTClientParams
+	private let authPrams: MQTTAuthentication
     private var factory: MQTTPacketFactory
     private var stream: MQTTSessionStream? = nil
     private var keepAliveTimer: DispatchSourceTimer?
@@ -96,8 +102,9 @@ final class MQTTConnection {
     private var lastControlPacketSent: Int64 = 0
     private var lastPingAck: Int64 = 0
 	
-    init(hostParams: MQTTHostParams, clientPrams: MQTTClientParams) {
+    init(hostParams: MQTTHostParams, clientPrams: MQTTClientParams, authPrams: MQTTAuthentication) {
 		self.clientPrams = clientPrams
+		self.authPrams = authPrams
 		self.factory = MQTTPacketFactory()
 		
 		// May return nil if streams cannot be open
@@ -151,8 +158,8 @@ extension MQTTConnection {
 			clientID: clientPrams.clientID,
 			cleanSession: clientPrams.cleanSession,
 			keepAlive: clientPrams.keepAlive)
-		packet.username = clientPrams.username?.utf8
-		packet.password = clientPrams.password?.utf8
+		packet.username = authPrams.username?.utf8
+		packet.password = authPrams.password?.utf8
 		packet.lastWillMessage = clientPrams.lastWill
 		return self.send(packet: packet)
     }

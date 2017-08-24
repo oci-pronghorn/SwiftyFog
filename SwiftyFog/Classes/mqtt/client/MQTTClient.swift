@@ -19,6 +19,7 @@ public protocol MQTTClientDelegate: class {
 
 public final class MQTTClient {
 	public let client: MQTTClientParams
+	public let auth: MQTTAuthentication
 	public let host: MQTTHostParams
 	public let reconnect: MQTTReconnectParams
 	
@@ -40,9 +41,10 @@ public final class MQTTClient {
 		}
     }
 	
-	public init(client: MQTTClientParams = MQTTClientParams(), host: MQTTHostParams = MQTTHostParams(), reconnect: MQTTReconnectParams = MQTTReconnectParams()) {
+	public init(client: MQTTClientParams = MQTTClientParams(), host: MQTTHostParams = MQTTHostParams(), auth: MQTTAuthentication, reconnect: MQTTReconnectParams = MQTTReconnectParams()) {
 		self.client = client
 		self.host = host
+		self.auth = auth
 		self.reconnect = reconnect
 		connectedCount = 0
 		idSource = MQTTMessageIdSource()
@@ -82,7 +84,7 @@ public final class MQTTClient {
 	
 	private func makeConnection() {
 		delegate?.mqttConnectAttempted(client: self)
-		connection = MQTTConnection(hostParams: host, clientPrams: client)
+		connection = MQTTConnection(hostParams: host, clientPrams: client, authPrams: auth)
 		connection?.debugOut = debugOut
 		connection?.delegate = self
 	}
