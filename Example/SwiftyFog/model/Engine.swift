@@ -22,8 +22,8 @@ public class Engine {
     var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				("powered", .atMostOnce, Engine.receivePower),
-				("calibrated", .atMostOnce, Engine.receiveCalibration)
+				("powered", .atLeastOnce, Engine.receivePower),
+				("calibrated", .atLeastOnce, Engine.receiveCalibration)
 			])
 		}
     }

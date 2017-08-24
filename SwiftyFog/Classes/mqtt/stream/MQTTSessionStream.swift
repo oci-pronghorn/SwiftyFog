@@ -13,7 +13,7 @@ public enum MQTTPort {
 	case ssl
 	case other(UInt16)
 	
-	var number: UInt16 {
+	public var number: UInt16 {
 		switch self {
 			case .standard:
 				return 1883

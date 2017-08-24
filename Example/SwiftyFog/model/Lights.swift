@@ -30,9 +30,9 @@ public class Lights {
     public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				("powered", .atMostOnce, Lights.powered),
-				("ambient", .atMostOnce, Lights.ambient),
-				("calibrated", .atMostOnce, Lights.calibrated),
+				("powered", .atLeastOnce, Lights.powered),
+				("ambient", .atLeastOnce, Lights.ambient),
+				("calibrated", .atLeastOnce, Lights.calibrated),
 			])
 		}
     }
