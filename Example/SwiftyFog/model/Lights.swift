@@ -23,7 +23,7 @@ public enum LightCommand: Int32 {
 
 public class Lights {
 	private var broadcaster: MQTTBroadcaster?
-	public private(set) var calibration = FogRational(num: Int64(0), den: 1)
+	public private(set) var calibration = FogRational(num: Int64(128), den: 255)
 	public private(set) var powered: Bool = false
 	public private(set) var ambient: FogRational<Int64> = FogRational()
 	

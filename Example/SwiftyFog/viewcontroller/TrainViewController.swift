@@ -77,7 +77,7 @@ class TrainViewController: UIViewController {
 		lightIndicatorImage?.isHighlighted = lights.powered
 		
 		powerGauge.rangeValues = [NSNumber(value: -engine.calibration.num), NSNumber(value: engine.calibration.num), 100]
-		ambientGauge.rangeValues = [NSNumber(value: -lights.calibration.num), 255]
+		ambientGauge.rangeValues = [NSNumber(value: lights.calibration.num), 256]
 	}
 }
 
@@ -140,23 +140,14 @@ extension TrainViewController: BillboardDelegate, LightsDelegate, EngineDelegate
 	}
 	
 	func onLightsCalibrated(power: FogRational<Int64>) {
-		if self.engineCalibration?.isHighlighted ?? true == false {
-			self.lightCalibration?.rational = power
-		}
-		ambientGauge?.rangeValues = [NSNumber(value: -lights.calibration.num), 255]
+		ambientGauge?.rangeValues = [NSNumber(value: lights.calibration.num), 256]
 	}
 	
 	func onEnginePower(power: FogRational<Int64>) {
-		if self.enginePower?.isHighlighted ?? true == false {
-			self.enginePower?.rational = power
-		}
 		self.powerGauge?.setValue(Float(power.num), animated: true, duration: 0.5)
 	}
 	
 	func onEngineCalibrated(power: FogRational<Int64>) {
-		if self.engineCalibration?.isHighlighted ?? true == false {
-			self.engineCalibration?.rational = power
-		}
 		powerGauge?.rangeValues = [NSNumber(value: -power.num), NSNumber(value: power.num), 100]
 	}
 	
