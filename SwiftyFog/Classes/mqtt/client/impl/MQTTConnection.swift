@@ -8,6 +8,11 @@
 
 import Foundation
 
+public enum Qos1Mode {
+	case dropOnNotConnected
+	case queueOnNotConnected
+}
+
 public enum Qos2Mode {
 	case lowLatency
 	case assured
@@ -31,6 +36,7 @@ public struct MQTTClientParams {
     public var resendPulseInterval: TimeInterval = 5.0
 	
     public var qos2Mode: Qos2Mode = .lowLatency
+	public var qos1Mode: Qos1Mode = .dropOnNotConnected
     public var lastWill: MQTTPubMsg? = nil
 	
     public init(clientID: String, cleanSession: Bool = true, keepAlive: UInt16 = 60) {

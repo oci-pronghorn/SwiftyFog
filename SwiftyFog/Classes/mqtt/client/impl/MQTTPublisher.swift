@@ -13,6 +13,7 @@ protocol MQTTPublisherDelegate: class {
 
 final class MQTTPublisher {
 	private let durability: MQTTPacketDurability
+	private let qos1Mode: Qos1Mode
 	private let qos2Mode: Qos2Mode
 
 	private let mutex = ReadWriteMutex()
@@ -20,8 +21,9 @@ final class MQTTPublisher {
 	
 	weak var delegate: MQTTPublisherDelegate?
 	
-	init(durability: MQTTPacketDurability, qos2Mode: Qos2Mode) {
+	init(durability: MQTTPacketDurability, qos1Mode: Qos1Mode, qos2Mode: Qos2Mode) {
 		self.durability = durability
+		self.qos1Mode = qos1Mode
 		self.qos2Mode = qos2Mode
 	}
 	
@@ -48,8 +50,16 @@ final class MQTTPublisher {
 		
 		if qos == .atMostOnce {
 			let packet = MQTTPublishPacket(messageID: 0, message: pubMsg, isRedelivery: false)
-			let success = durability.send(packet: packet)
-			completion?(success)
+			if qos1Mode == .dropOnNotConnected {
+				let success = durability.send(packet: packet)
+				completion?(success)
+			}
+			else {
+				let sent: ((MQTTPublishPacket, Bool)->())? = completion == nil ? nil : { [weak self] p, s in
+					if (s) { self?.deferredCompletion[p.messageID] = completion }
+				}
+				durability.send(packet: packet, expecting: expecting, sent: sent)
+			}
 		}
 		else {
 			let sent: ((MQTTPublishPacket, Bool)->())? = completion == nil ? nil : { [weak self] p, s in
