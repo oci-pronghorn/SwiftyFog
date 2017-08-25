@@ -1,6 +1,6 @@
 //
 //  MQTTBroadcaster.swift
-//  Pods-SwiftyFog_Example
+//  SwiftyFog
 //
 //  Created by David Giovannini on 8/20/17.
 //
@@ -17,6 +17,13 @@ public class MQTTBroadcaster {
 	}
 }
 
+// MQTTBroadcaster is a full declarative registration for both subscription and distribution
+/*
+			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
+				("powered", .atLeastOnce, Engine.receivePower),
+				("calibrated", .atLeastOnce, Engine.receiveCalibration)
+			])
+*/
 public extension MQTTBridge {
 	func broadcast<T: AnyObject>(to l: T, queue: DispatchQueue? = nil, topics: [(String, MQTTQoS, (T)->((MQTTMessage)->()))], completion: ((Bool)->())? = nil) -> MQTTBroadcaster {
 		return MQTTBroadcaster(

@@ -96,13 +96,13 @@ extension AppDelegate: MQTTClientDelegate {
 		}
 	}
 	
-	func mqttPinged(client: MQTTClient, status: MQTTPingStatus) {
-		print("\(Date.nowInSeconds()) MQTT Ping \(status)")
+	func mqtt(client: MQTTClient, pinged: MQTTPingStatus) {
+		print("\(Date.nowInSeconds()) MQTT Ping \(pinged)")
 	}
 	
-	func mqttSubscriptionChanged(client: MQTTClient, subscription: MQTTSubscriptionDetail, status: MQTTSubscriptionStatus) {
-		print("\(Date.nowInSeconds()) MQTT Subscription \(subscription) \(status)")
-		if status == .subscribed {
+	func mqtt(client: MQTTClient, subscription: MQTTSubscriptionDetail, changed: MQTTSubscriptionStatus) {
+		print("\(Date.nowInSeconds()) MQTT Subscription \(subscription) \(changed)")
+		if changed == .subscribed {
 			print("    \(subscription.topics)")
 		}
 	}
@@ -114,8 +114,8 @@ extension AppDelegate: MQTTClientDelegate {
 		}
 	}
 	
-	func mqttUnhandledMessage(message: MQTTMessage) {
-		print("\(Date.nowInSeconds()) MQTT unhandled \(message)")
+	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage) {
+		print("\(Date.nowInSeconds()) MQTT unhandled \(unhandledMessage)")
 	}
 }
 

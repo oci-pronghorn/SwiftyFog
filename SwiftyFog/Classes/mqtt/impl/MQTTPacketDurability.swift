@@ -8,7 +8,7 @@
 import Foundation
 
 protocol MQTTPacketDurabilityDelegate: class {
-	func send(packet: MQTTPacket, completion: @escaping (Bool)->())
+	func mqtt(send: MQTTPacket, completion: @escaping (Bool)->())
 }
 
 final class MQTTPacketDurability {
@@ -38,7 +38,7 @@ final class MQTTPacketDurability {
 	
 	public func send<T: MQTTPacket>(packet: T, sent: ((T, Bool)->())?) {
 		if let delegate = delegate {
-			delegate.send(packet: packet) { success in
+			delegate.mqtt(send: packet) { success in
 				sent?(packet, success)
 			}
 		}
@@ -80,7 +80,7 @@ final class MQTTPacketDurability {
 			}
 		}
 		if let delegate = delegate {
-			delegate.send(packet: instance) { [weak self] success in
+			delegate.mqtt(send: instance) { [weak self] success in
 				if success == false {
 					self?.didFailToSend(instance, ownership, messageId, expecting, sent)
 				}
@@ -129,7 +129,7 @@ final class MQTTPacketDurability {
 			}
 			for element in unacknowledgedPackets.sorted(by: {$0.1.0 < $1.1.0}) {
 				let packet = element.value.1
-				delegate?.send(packet: packet, completion: {_ in})
+				delegate?.mqtt(send: packet, completion: {_ in})
 			}
 		}
 	}

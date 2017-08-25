@@ -8,13 +8,23 @@
 
 import Foundation
 
+// TODO
+/*
+enum MQTTConnectedState {
+	case connected(Int)
+	case discconnected(Int, reason: MQTTConnectionDisconnect, error: Error?)
+	case retry(Int, Int, MQTTReconnectParams) // attempt counter, rescus counter
+}
+*/
 public protocol MQTTClientDelegate: class {
+	//func mqtt(client: MQTTClient, connected: MQTTConnectedState, error: Error?)
 	func mqttConnectAttempted(client: MQTTClient)
-	func mqttConnected(client: MQTTClient)
-	func mqttPinged(client: MQTTClient, status: MQTTPingStatus)
-	func mqttSubscriptionChanged(client: MQTTClient, subscription: MQTTSubscriptionDetail, status: MQTTSubscriptionStatus)
 	func mqttDisconnected(client: MQTTClient, reason: MQTTConnectionDisconnect, error: Error?)
-	func mqttUnhandledMessage(message: MQTTMessage)
+	func mqttConnected(client: MQTTClient)
+	
+	func mqtt(client: MQTTClient, pinged: MQTTPingStatus)
+	func mqtt(client: MQTTClient, subscription: MQTTSubscriptionDetail, changed: MQTTSubscriptionStatus)
+	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage)
 }
 
 public final class MQTTClient {
@@ -23,6 +33,7 @@ public final class MQTTClient {
 	public let host: MQTTHostParams
 	public let reconnect: MQTTReconnectParams
 	
+	private let queue: DispatchQueue
 	private let idSource: MQTTMessageIdSource
     private let durability: MQTTPacketDurability
 	private let publisher: MQTTPublisher
@@ -41,11 +52,17 @@ public final class MQTTClient {
 		}
     }
 	
-	public init(client: MQTTClientParams = MQTTClientParams(), host: MQTTHostParams = MQTTHostParams(), auth: MQTTAuthentication, reconnect: MQTTReconnectParams = MQTTReconnectParams()) {
+	public init(
+			client: MQTTClientParams = MQTTClientParams(),
+			host: MQTTHostParams = MQTTHostParams(),
+			auth: MQTTAuthentication,
+			reconnect: MQTTReconnectParams = MQTTReconnectParams(),
+			queue: DispatchQueue = DispatchQueue.global()) {
 		self.client = client
 		self.host = host
 		self.auth = auth
 		self.reconnect = reconnect
+		self.queue = queue
 		connectedCount = 0
 		idSource = MQTTMessageIdSource()
 		self.durability = MQTTPacketDurability(idSource: idSource, resendInterval: client.resendPulseInterval)
@@ -121,8 +138,8 @@ extension MQTTClient: MQTTBridge {
 }
 
 extension MQTTClient: MQTTConnectionDelegate {
-	func mqttDisconnected(_ connection: MQTTConnection, reason: MQTTConnectionDisconnect, error: Error?) {
-		doDisconnect(reason: reason, error: error)
+	func mqtt(connection: MQTTConnection, disconnected: MQTTConnectionDisconnect, error: Error?) {
+		doDisconnect(reason: disconnected, error: error)
 	}
 	
 	private func doDisconnect(reason: MQTTConnectionDisconnect, error: Error?) {
@@ -150,24 +167,24 @@ extension MQTTClient: MQTTConnectionDelegate {
 		}
 	}
 	
-	func mqttConnected(_ connection: MQTTConnection, present: Bool) {
+	func mqtt(connection: MQTTConnection, connectedAsPresent: Bool) {
 		connectedCount += 1
 		retry?.connected = true
 		delegate?.mqttConnected(client: self)
-		idSource.connected(cleanSession: client.cleanSession, present: present)
-		durability.connected(cleanSession: client.cleanSession, present: present, initial: connectedCount == 1)
-		publisher.connected(cleanSession: client.cleanSession, present: present, initial: connectedCount == 1)
-		subscriber.connected(cleanSession: client.cleanSession, present: present, initial: connectedCount == 1)
-		distributer.connected(cleanSession: client.cleanSession, present: present, initial: connectedCount == 1)
+		idSource.connected(cleanSession: client.cleanSession, present: connectedAsPresent)
+		durability.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: connectedCount == 1)
+		publisher.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: connectedCount == 1)
+		subscriber.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: connectedCount == 1)
+		distributer.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: connectedCount == 1)
 	}
 	
-	func mqttPinged(_ connection: MQTTConnection, status: MQTTPingStatus) {
-		delegate?.mqttPinged(client: self, status: status)
+	func mqtt(connection: MQTTConnection, pinged: MQTTPingStatus) {
+		delegate?.mqtt(client: self, pinged: pinged)
 	}
 	
-	func mqttReceived(_ connection: MQTTConnection, packet: MQTTPacket) {
-		DispatchQueue.global().async { [weak self] in
-			self?.dispatch(packet: packet)
+	func mqtt(connection: MQTTConnection, received: MQTTPacket) {
+		queue.async { [weak self] in
+			self?.dispatch(packet: received)
 		}
 	}
 	
@@ -186,15 +203,14 @@ extension MQTTClient: MQTTConnectionDelegate {
 }
 
 extension MQTTClient:
-	MQTTPublisherDelegate,
-	MQTTSubscriptionDelegate,
-	MQTTDistributorDelegate,
-	MQTTPacketDurabilityDelegate {
-
-	func send(packet: MQTTPacket, completion: @escaping (Bool)->()) {
+		MQTTPublisherDelegate,
+		MQTTSubscriptionDelegate,
+		MQTTDistributorDelegate,
+		MQTTPacketDurabilityDelegate {
+	func mqtt(send: MQTTPacket, completion: @escaping (Bool)->()) {
 		if let connection = connection, connected {
-			DispatchQueue.global().async {
-				let success = connection.send(packet: packet)
+			queue.async {
+				let success = connection.send(packet: send)
 				completion(success)
 			}
 		}
@@ -203,11 +219,11 @@ extension MQTTClient:
 		}
 	}
 	
-	func unhandledMessage(message: MQTTMessage) {
-		delegate?.mqttUnhandledMessage(message: message)
+	func mqtt(unhandledMessage: MQTTMessage) {
+		delegate?.mqtt(client: self, unhandledMessage: unhandledMessage)
 	}
 	
-	func subscriptionChanged(subscription: MQTTSubscriptionDetail, status: MQTTSubscriptionStatus) {
-		delegate?.mqttSubscriptionChanged(client: self, subscription: subscription, status: status)
+	func mqtt(subscription: MQTTSubscriptionDetail, changed: MQTTSubscriptionStatus) {
+		delegate?.mqtt(client: self, subscription: subscription, changed: changed)
 	}
 }

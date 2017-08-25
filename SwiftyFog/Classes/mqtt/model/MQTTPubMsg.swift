@@ -21,7 +21,7 @@ public struct MQTTPubMsg {
         self.qos = qos
     }
 	
-    var estimatedLastWillPayLoadLength: Int {
+    var estimatedPayLoadLength: Int {
 		return topic.fogSize + payload.count
     }
 }

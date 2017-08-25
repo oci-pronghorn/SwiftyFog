@@ -8,9 +8,9 @@
 import Foundation
 
 public protocol FogSocketStreamDelegate: class {
-    func fogStreamConnected(_ ready: Bool)
-    func fogStreamErrorOccurred(error: Error?)
-	func fogStreamReceived(read: StreamReader)
+    func fog(stream: FogSocketStream, ready: Bool)
+    func fog(stream: FogSocketStream, errored: Error?)
+	func fog(stream: FogSocketStream, received: StreamReader)
 }
 
 public typealias FogSocketStreamWrite = ((StreamWriter)->())->()
@@ -88,7 +88,7 @@ public class FogSocketStream: NSObject, StreamDelegate {
 	
 	private func connectTimeout() {
 		if inputReady == false || outputReady == false {
-			delegate?.fogStreamConnected(false)
+			delegate?.fog(stream: self, ready: false)
 		}
 	}
 	
@@ -104,20 +104,20 @@ public class FogSocketStream: NSObject, StreamDelegate {
 					// output almost ready
 				}
 				if !wasReady && inputReady && outputReady {
-					delegate?.fogStreamConnected(true)
+					delegate?.fog(stream: self, ready: true)
 				}
 				break
 			case Stream.Event.hasBytesAvailable:
 				if aStream == inputStream {
-					delegate?.fogStreamReceived(read: inputStream.read)
+					delegate?.fog(stream: self, received: inputStream.read)
 				}
 				break
 			case Stream.Event.errorOccurred:
-				delegate?.fogStreamErrorOccurred(error: aStream.streamError)
+				delegate?.fog(stream: self, errored: aStream.streamError)
 				break
 			case Stream.Event.endEncountered:
 				if aStream.streamError != nil {
-					delegate?.fogStreamErrorOccurred(error: aStream.streamError)
+					delegate?.fog(stream: self, errored: aStream.streamError)
 				}
 				break
 			case Stream.Event.hasSpaceAvailable:
@@ -126,7 +126,7 @@ public class FogSocketStream: NSObject, StreamDelegate {
 					outputReady = true
 				}
 				if !wasReady && inputReady && outputReady {
-					delegate?.fogStreamConnected(true)
+					delegate?.fog(stream: self, ready: true)
 				}
 				break
 			default:

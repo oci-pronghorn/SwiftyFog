@@ -13,3 +13,8 @@ public enum MQTTQoS: UInt8 {
     case atLeastOnce    = 0x01
     case exactlyOnce    = 0x02
 }
+
+public enum Qos2Mode {
+	case lowLatency
+	case assured
+}

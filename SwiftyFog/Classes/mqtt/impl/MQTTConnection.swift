@@ -8,86 +8,6 @@
 
 import Foundation
 
-public enum Qos2Mode {
-	case lowLatency
-	case assured
-}
-
-public struct MQTTAuthentication {
-    public var username: String? = nil
-    public var password: String? = nil
-	
-    public init(username: String? = nil, password: String? = nil) {
-		self.username = username
-		self.password = password
-    }
-}
-
-public enum MQTTPort {
-	case standard
-	case ssl
-	case other(UInt16)
-	
-	public var number: UInt16 {
-		switch self {
-			case .standard:
-				return 1883
-			case .ssl:
-				return 8883
-			case .other(let number):
-				return number
-		}
-	}
-}
-
-public struct MQTTHostParams {
-    public var host: String
-    public var port: UInt16
-    public var ssl: Bool
-    public var timeout: TimeInterval
-	
-    public init(host: String = "localhost", port: MQTTPort = .standard, ssl: Bool = false, timeout: TimeInterval = 10.0) {
-		self.host = host
-		self.port = port.number
-		self.ssl = ssl
-		self.timeout = timeout
-    }
-}
-
-public struct MQTTClientParams {
-    public var clientID: String
-    public var cleanSession: Bool
-    public var keepAlive: UInt16
-    public var detectServerDeath = false
-    public var resendPulseInterval: TimeInterval = 5.0
-	
-    public var qos2Mode: Qos2Mode = .lowLatency
-	public var queuePubOnDisconnect: MQTTQoS? = nil // TODO: impl
-    public var lastWill: MQTTPubMsg? = nil
-	
-	public var socketQoS: DispatchQoS = .userInitiated
-	
-    public init(clientID: String, cleanSession: Bool = true, keepAlive: UInt16 = 60) {
-		self.clientID = clientID
-		self.cleanSession = cleanSession
-		self.keepAlive = keepAlive
-    }
-	
-	public init(cleanSession: Bool = true, keepAlive: UInt16 = 60) {
-		// 1 and 23 UTF-8 encoded bytes
-		// Only "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-		let deviceID = UIDevice.current.identifierForVendor!.uuidString
-		let appId = Bundle.main.bundleIdentifier!
-		let fullId = appId + "-" + deviceID
-		let hash = Int64(fullId.hash)
-		let uhash = UInt64(bitPattern: hash)
-		let asciied = String(format: "ios%20lu", uhash)
-		self.clientID = asciied
-		self.cleanSession = cleanSession
-		self.keepAlive = keepAlive
-	}
-}
-
 // The following are the ping activities
 public enum MQTTPingStatus: String {
 	case notConnected
@@ -110,10 +30,10 @@ public enum MQTTConnectionDisconnect {
 }
 
 protocol MQTTConnectionDelegate: class {
-	func mqttDisconnected(_ connection: MQTTConnection, reason: MQTTConnectionDisconnect, error: Error?)
-	func mqttConnected(_ connection: MQTTConnection, present: Bool)
-	func mqttPinged(_ connection: MQTTConnection, status: MQTTPingStatus)
-	func mqttReceived(_ connection: MQTTConnection, packet: MQTTPacket)
+	func mqtt(connection: MQTTConnection, disconnected: MQTTConnectionDisconnect, error: Error?)
+	func mqtt(connection: MQTTConnection, connectedAsPresent: Bool)
+	func mqtt(connection: MQTTConnection, pinged: MQTTPingStatus)
+	func mqtt(connection: MQTTConnection, received: MQTTPacket)
 }
 
 final class MQTTConnection {
@@ -143,7 +63,7 @@ final class MQTTConnection {
 		self.authPrams = authPrams
 		self.factory = MQTTPacketFactory()
 		// May return nil if streams cannot be open
-		self.stream = FogSocketStream(hostName: hostParams.host, port: Int(hostParams.port), qos: .userInitiated)
+		self.stream = FogSocketStream(hostName: hostParams.host, port: Int(hostParams.port), qos: clientPrams.socketQoS)
     }
 	
     func start(delegate: MQTTConnectionDelegate?) {
@@ -166,7 +86,7 @@ final class MQTTConnection {
 	
     private func didDisconnect(reason: MQTTConnectionDisconnect, error: Error?) {
         keepAliveTimer?.cancel()
-		delegate?.mqttDisconnected(self, reason: reason, error: error)
+		delegate?.mqtt(connection: self, disconnected: reason, error: error)
 		mutex.writing {
 			isFullConnected = false
 		}
@@ -209,7 +129,7 @@ extension MQTTConnection {
 			mutex.writing {
 				isFullConnected = true
 			}
-			delegate?.mqttConnected(self, present: packet.sessionPresent)
+			delegate?.mqtt(connection: self, connectedAsPresent: packet.sessionPresent)
 			startPing()
 		}
 		else {
@@ -275,19 +195,19 @@ extension MQTTConnection {
 		if status == .serverDied {
 			self.didDisconnect(reason: .brokerNotAlive, error: nil)
 		}
-		delegate?.mqttPinged(self, status: status)
+		delegate?.mqtt(connection: self, pinged: status)
     }
 	
     private func pingResponseReceived(packet: MQTTPingAckPacket) {
 		mutex.writing {
 			lastPingAck = Date.nowInSeconds()
 		}
-		delegate?.mqttPinged(self, status: .ack)
+		delegate?.mqtt(connection: self, pinged: .ack)
     }
 }
 
 extension MQTTConnection: FogSocketStreamDelegate {
-	func fogStreamConnected(_ ready: Bool) {
+	func fog(stream: FogSocketStream, ready: Bool) {
 		if ready {
 			if startConnectionHandshake() == false {
 				self.didDisconnect(reason: .socket, error: nil)
@@ -298,13 +218,13 @@ extension MQTTConnection: FogSocketStreamDelegate {
 			self.didDisconnect(reason: .timeout, error: nil)
 		}
 	}
-	
-	func fogStreamErrorOccurred(error: Error?) {
-		self.didDisconnect(reason: .socket, error: error)
+
+	func fog(stream: FogSocketStream, errored: Error?) {
+		self.didDisconnect(reason: .socket, error: errored)
 	}
-	
-	func fogStreamReceived(read: (UnsafeMutablePointer<UInt8>, Int) -> Int) {
-		let parsed = factory.parse(read)
+
+	func fog(stream: FogSocketStream, received: StreamReader) {
+		let parsed = factory.parse(received)
 		if parsed.0 {
 			self.didDisconnect(reason: .serverDisconnectedUs, error: nil)
 			return
@@ -318,7 +238,7 @@ extension MQTTConnection: FogSocketStreamDelegate {
 					self.pingResponseReceived(packet: packet)
 					break
 				default:
-					delegate?.mqttReceived(self, packet: packet)
+					delegate?.mqtt(connection: self, received: packet)
 					break
 			}
         }

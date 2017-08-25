@@ -1,6 +1,6 @@
 //
 //  MQTTBridge.swift
-//  Pods-SwiftyFog_Example
+//  SwiftyFog
 //
 //  Created by David Giovannini on 8/15/17.
 //
@@ -16,6 +16,7 @@ import Foundation
 
 public protocol MQTTBridge {
 
+	// Pull connected state. You are responsible for push implementation.
 	var connected: Bool { get }
 	
 	// If pubMsg.topic begins with '$' it will be used as an absolute path

@@ -24,7 +24,7 @@ public final class MQTTRegistration {
 }
 
 protocol MQTTDistributorDelegate: class {
-	func unhandledMessage(message: MQTTMessage)
+	func mqtt(unhandledMessage: MQTTMessage)
 }
 
 final class MQTTDistributor {
@@ -88,7 +88,7 @@ final class MQTTDistributor {
 		}
 		actions.forEach { $0(msg) }
 		if actions.count == 0 {
-			delegate?.unhandledMessage(message: msg)
+			delegate?.mqtt(unhandledMessage: msg)
 		}
 	}
 

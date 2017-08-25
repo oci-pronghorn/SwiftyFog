@@ -67,7 +67,7 @@ class MQTTConnectPacket: MQTTPacket {
 	
     override var estimatedPayLoadLength: Int {
 		let a = clientID.fogSize
-		let b = lastWillMessage?.estimatedLastWillPayLoadLength ?? 0
+		let b = lastWillMessage?.estimatedPayLoadLength ?? 0
 		let c = username?.fogSize ?? 0
 		let d = password?.fogSize ?? 0
 		return a + b + c + d
