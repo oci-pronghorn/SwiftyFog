@@ -1,5 +1,5 @@
 //
-//  MQTTStreamReadable.swift
+//  FogStreamReadable.swift
 //  SwiftyFog
 //
 //  Created by David Giovannini on 8/12/17.
@@ -8,14 +8,14 @@
 
 import Foundation
 
-typealias StreamReader = (_ buffer: UnsafeMutablePointer<UInt8>, _ len: Int) -> Int
+public typealias StreamReader = (_ buffer: UnsafeMutablePointer<UInt8>, _ len: Int) -> Int
 
-protocol MQTTStreamReadable {
+public protocol FogStreamReadable {
     init?(len: Int, from read: StreamReader)
 }
 
-extension Data: MQTTStreamReadable {
-    init?(len: Int, from read: StreamReader) {
+extension Data: FogStreamReadable {
+    public init?(len: Int, from read: StreamReader) {
         self.init(count: len)
         if self.read(from: read) == false {
             return nil

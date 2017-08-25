@@ -1,5 +1,5 @@
 //
-//  MQTTStreamWritable.swift
+//  FogStreamWritable.swift
 //  SwiftyFog
 //
 //  Created by David Giovannini on 8/12/17.
@@ -8,14 +8,14 @@
 
 import Foundation
 
-typealias StreamWriter = (_ buffer: UnsafePointer<UInt8>, _ len: Int) -> Int
+public typealias StreamWriter = (_ buffer: UnsafePointer<UInt8>, _ len: Int) -> Int
 
-protocol MQTTStreamWritable {
+public protocol FogStreamWritable {
     func write(to write: StreamWriter) -> Bool
 }
 
-extension Data : MQTTStreamWritable {
-    func write(to write: StreamWriter) -> Bool {
+extension Data : FogStreamWritable {
+    public func write(to write: StreamWriter) -> Bool {
         let totalLength = self.count
         var writeLength: Int = 0
         self.withUnsafeBytes { (buffer: UnsafePointer<UInt8>) in

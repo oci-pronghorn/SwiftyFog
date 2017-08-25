@@ -23,6 +23,37 @@ public struct MQTTAuthentication {
     }
 }
 
+public enum MQTTPort {
+	case standard
+	case ssl
+	case other(UInt16)
+	
+	public var number: UInt16 {
+		switch self {
+			case .standard:
+				return 1883
+			case .ssl:
+				return 8883
+			case .other(let number):
+				return number
+		}
+	}
+}
+
+public struct MQTTHostParams {
+    public var host: String
+    public var port: UInt16
+    public var ssl: Bool
+    public var timeout: TimeInterval
+	
+    public init(host: String = "localhost", port: MQTTPort = .standard, ssl: Bool = false, timeout: TimeInterval = 10.0) {
+		self.host = host
+		self.port = port.number
+		self.ssl = ssl
+		self.timeout = timeout
+    }
+}
+
 public struct MQTTClientParams {
     public var clientID: String
     public var cleanSession: Bool
@@ -90,7 +121,7 @@ final class MQTTConnection {
 	private let clientPrams: MQTTClientParams
 	private let authPrams: MQTTAuthentication
     private var factory: MQTTPacketFactory
-    private var stream: MQTTSessionStream?
+    private var stream: FogSocketStream?
     private var keepAliveTimer: DispatchSourceTimer?
 	
     private weak var delegate: MQTTConnectionDelegate?
@@ -111,12 +142,13 @@ final class MQTTConnection {
 		self.clientPrams = clientPrams
 		self.authPrams = authPrams
 		self.factory = MQTTPacketFactory()
+		// May return nil if streams cannot be open
+		self.stream = FogSocketStream(hostName: hostParams.host, port: Int(hostParams.port), qos: .userInitiated)
     }
 	
     func start(delegate: MQTTConnectionDelegate?) {
 		self.delegate = delegate
-		// May return nil if streams cannot be open
-		self.stream = MQTTSessionStream(hostParams: hostParams, delegate: self)
+		self.stream?.start(isSSL: hostParams.ssl, timeout: hostParams.timeout, delegate: self)
 		if hostParams.timeout > 0 {
 			DispatchQueue.global().asyncAfter(deadline: .now() +  hostParams.timeout) { [weak self] in
 				self?.fullConnectionTimeout()
@@ -254,8 +286,8 @@ extension MQTTConnection {
     }
 }
 
-extension MQTTConnection: MQTTSessionStreamDelegate {
-	func mqttStreamConnected(_ ready: Bool, in stream: MQTTSessionStream) {
+extension MQTTConnection: FogSocketStreamDelegate {
+	func fogStreamConnected(_ ready: Bool) {
 		if ready {
 			if startConnectionHandshake() == false {
 				self.didDisconnect(reason: .socket, error: nil)
@@ -267,11 +299,11 @@ extension MQTTConnection: MQTTSessionStreamDelegate {
 		}
 	}
 	
-	func mqttStreamErrorOccurred(in stream: MQTTSessionStream, error: Error?) {
+	func fogStreamErrorOccurred(error: Error?) {
 		self.didDisconnect(reason: .socket, error: error)
 	}
 	
-	func mqttStreamReceived(in stream: MQTTSessionStream, _ read: (UnsafeMutablePointer<UInt8>, Int) -> Int) {
+	func fogStreamReceived(read: (UnsafeMutablePointer<UInt8>, Int) -> Int) {
 		let parsed = factory.parse(read)
 		if parsed.0 {
 			self.didDisconnect(reason: .serverDisconnectedUs, error: nil)
