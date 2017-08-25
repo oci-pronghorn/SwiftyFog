@@ -8,20 +8,14 @@
 
 import Foundation
 
-// TODO
-/*
-enum MQTTConnectedState {
+public enum MQTTConnectedState {
 	case connected(Int)
-	case discconnected(Int, reason: MQTTConnectionDisconnect, error: Error?)
+	case discconnected(reason: MQTTConnectionDisconnect, error: Error?)
 	case retry(Int, Int, MQTTReconnectParams) // attempt counter, rescus counter
 }
-*/
+
 public protocol MQTTClientDelegate: class {
-	//func mqtt(client: MQTTClient, connected: MQTTConnectedState, error: Error?)
-	func mqttConnectAttempted(client: MQTTClient)
-	func mqttDisconnected(client: MQTTClient, reason: MQTTConnectionDisconnect, error: Error?)
-	func mqttConnected(client: MQTTClient)
-	
+	func mqtt(client: MQTTClient, connected: MQTTConnectedState)
 	func mqtt(client: MQTTClient, pinged: MQTTPingStatus)
 	func mqtt(client: MQTTClient, subscription: MQTTSubscriptionDetail, changed: MQTTSubscriptionStatus)
 	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage)
@@ -86,7 +80,7 @@ public final class MQTTClient {
 	public func start() -> [MQTTSubscription] {
 		if retry == nil {
 			retry = MQTTRetryConnection(spec: reconnect, attemptConnect: { [weak self] in
-				self?.makeConnection()
+				self?.makeConnection(0, 0)
 			})
 			retry?.start()
 		}
@@ -103,8 +97,8 @@ public final class MQTTClient {
 		}
 	}
 	
-	private func makeConnection() {
-		delegate?.mqttConnectAttempted(client: self)
+	private func makeConnection(_ attempt: Int, _ rescus: Int) {
+		delegate?.mqtt(client: self, connected: .retry(attempt, rescus, self.reconnect))
 		connection = MQTTConnection(hostParams: host, clientPrams: client, authPrams: auth, socketQoS: socketQoS)
 		connection?.debugOut = debugOut
 		connection?.start(delegate: self)
@@ -157,7 +151,7 @@ extension MQTTClient: MQTTConnectionDelegate {
 		durability.disconnected(cleanSession: client.cleanSession, manual: manual)
 		idSource.disconnected(cleanSession: client.cleanSession, manual: manual)
 		self.connection = nil
-		delegate?.mqttDisconnected(client: self, reason: reason, error: error)
+		delegate?.mqtt(client: self, connected: .discconnected(reason: reason, error: error))
 		if case let .handshake(ack) = reason {
 			if ack.retries {
 				retry?.connected = false
@@ -174,7 +168,7 @@ extension MQTTClient: MQTTConnectionDelegate {
 	func mqtt(connection: MQTTConnection, connectedAsPresent: Bool) {
 		connectedCount += 1
 		retry?.connected = true
-		delegate?.mqttConnected(client: self)
+		delegate?.mqtt(client: self, connected: .connected(connectedCount))
 		idSource.connected(cleanSession: client.cleanSession, present: connectedAsPresent)
 		durability.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: connectedCount == 1)
 		publisher.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: connectedCount == 1)

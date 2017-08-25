@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Create the concrete MQTTClient to connect to a specific broker
 		// MQTTClient is an MSTTBridge
 		mqtt = MQTTClient(
-			//host: MQTTHostParams(host: trainName + ".local", port: .standard),
+			host: MQTTHostParams(host: trainName + ".local", port: .standard),
 			auth: MQTTAuthentication(username: "dsjove", password: "password"),
 			reconnect: MQTTReconnectParams())
 		mqtt.delegate = self
@@ -85,14 +85,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 // The client will broadcast important events to the application
 // can react appropriately. The invoking thread is not known.
 extension AppDelegate: MQTTClientDelegate {
-	func mqttConnectAttempted(client: MQTTClient) {
-		print("\(Date.nowInSeconds()) MQTT Connection Attempt")
-	}
-	
-	func mqttConnected(client: MQTTClient) {
-		print("\(Date.nowInSeconds()) MQTT Connected")
-		DispatchQueue.main.async {
-			self.trainControl.connected()
+	func mqtt(client: MQTTClient, connected: MQTTConnectedState) {
+		switch connected {
+			case .connected(let counter):
+				print("\(Date.nowInSeconds()) MQTT Connected \(counter)")
+				DispatchQueue.main.async {
+					self.trainControl.connected()
+				}
+				break
+			case .retry(let attempt, let rescus, let spec):
+				print("\(Date.nowInSeconds()) MQTT Connection Attempt \(rescus).\(attempt) of \(spec.retryCount)")
+				break
+			case .discconnected(let reason, let error):
+				print("\(Date.nowInSeconds()) MQTT Discconnected \(reason) \(error?.localizedDescription ?? "")")
+				DispatchQueue.main.async {
+					self.trainControl.disconnected()
+				}
+				break
 		}
 	}
 	
@@ -104,13 +113,6 @@ extension AppDelegate: MQTTClientDelegate {
 		print("\(Date.nowInSeconds()) MQTT Subscription \(subscription) \(changed)")
 		if changed == .subscribed {
 			print("    \(subscription.topics)")
-		}
-	}
-	
-	func mqttDisconnected(client: MQTTClient, reason: MQTTConnectionDisconnect, error: Error?) {
-		print("\(Date.nowInSeconds()) MQTT Discconnected \(reason) \(error?.localizedDescription ?? "")")
-		DispatchQueue.main.async {
-			self.trainControl.disconnected()
 		}
 	}
 	
