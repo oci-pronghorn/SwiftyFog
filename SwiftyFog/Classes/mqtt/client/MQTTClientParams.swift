@@ -16,10 +16,8 @@ public struct MQTTClientParams {
     public var detectServerDeath = false
 	
     public var qos2Mode: Qos2Mode = .lowLatency
-	public var queuePubOnDisconnect: MQTTQoS? = nil // TODO: impl
+	public var queuePubOnDisconnect: MQTTQoS? = nil
     public var resendPulseInterval: TimeInterval = 5.0
-	
-	public var socketQoS: DispatchQoS = .userInitiated
 	
     public init(clientID: String, cleanSession: Bool = true, keepAlive: UInt16 = 60) {
 		self.clientID = clientID

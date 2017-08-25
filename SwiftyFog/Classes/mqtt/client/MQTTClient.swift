@@ -34,6 +34,8 @@ public final class MQTTClient {
 	public let reconnect: MQTTReconnectParams
 	
 	private let queue: DispatchQueue
+	private let socketQoS: DispatchQoS
+	
 	private let idSource: MQTTMessageIdSource
     private let durability: MQTTPacketDurability
 	private let publisher: MQTTPublisher
@@ -57,12 +59,14 @@ public final class MQTTClient {
 			host: MQTTHostParams = MQTTHostParams(),
 			auth: MQTTAuthentication,
 			reconnect: MQTTReconnectParams = MQTTReconnectParams(),
-			queue: DispatchQueue = DispatchQueue.global()) {
+			queue: DispatchQueue = DispatchQueue.global(),
+			socketQoS: DispatchQoS = .userInitiated) {
 		self.client = client
 		self.host = host
 		self.auth = auth
 		self.reconnect = reconnect
 		self.queue = queue
+		self.socketQoS = socketQoS
 		connectedCount = 0
 		idSource = MQTTMessageIdSource()
 		self.durability = MQTTPacketDurability(idSource: idSource, queuePubOnDisconnect: client.queuePubOnDisconnect, resendInterval: client.resendPulseInterval)
@@ -101,7 +105,7 @@ public final class MQTTClient {
 	
 	private func makeConnection() {
 		delegate?.mqttConnectAttempted(client: self)
-		connection = MQTTConnection(hostParams: host, clientPrams: client, authPrams: auth)
+		connection = MQTTConnection(hostParams: host, clientPrams: client, authPrams: auth, socketQoS: socketQoS)
 		connection?.debugOut = debugOut
 		connection?.start(delegate: self)
 	}

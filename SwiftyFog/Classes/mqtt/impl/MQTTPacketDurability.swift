@@ -46,6 +46,7 @@ final class MQTTPacketDurability: MQTTPacketIssuer {
 	}
 	
 	public func send<T: MQTTPacket>(packet: T, sent: ((T, Bool)->())?) {
+		// TODO: use private send method
 		if let delegate = delegate {
 			delegate.mqtt(send: packet) { success in
 				sent?(packet, success)
@@ -109,6 +110,7 @@ final class MQTTPacketDurability: MQTTPacketIssuer {
 		}
 		mutex.writing {
 			unacknowledgedPackets.removeValue(forKey: messageId)
+			// TODO: use queuePubOnDisconnect on retry
 			retryRequestPackets.append({ [weak self] goForth in
 				if let me = self, goForth {
 					me.send(ownership: ownership, expecting: expecting, sent: sent)

@@ -57,13 +57,13 @@ final class MQTTConnection {
     private var lastControlPacketSent: Int64 = 0
     private var lastPingAck: Int64 = 0
 	
-    init(hostParams: MQTTHostParams, clientPrams: MQTTClientParams, authPrams: MQTTAuthentication) {
+    init(hostParams: MQTTHostParams, clientPrams: MQTTClientParams, authPrams: MQTTAuthentication, socketQoS: DispatchQoS) {
 		self.hostParams = hostParams
 		self.clientPrams = clientPrams
 		self.authPrams = authPrams
 		self.factory = MQTTPacketFactory()
 		// May return nil if streams cannot be open
-		self.stream = FogSocketStream(hostName: hostParams.host, port: Int(hostParams.port), qos: clientPrams.socketQoS)
+		self.stream = FogSocketStream(hostName: hostParams.host, port: Int(hostParams.port), qos: socketQoS)
     }
 	
     func start(delegate: MQTTConnectionDelegate?) {
