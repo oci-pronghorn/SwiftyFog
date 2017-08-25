@@ -17,9 +17,10 @@ public typealias FogSocketStreamWrite = ((StreamWriter)->())->()
 
 public class FogSocketStream: NSObject, StreamDelegate {
 	private let mutex = ReadWriteMutex()
-	private var sessionQueue: DispatchQueue
     private let inputStream: InputStream
     private let outputStream: OutputStream
+    private let label: String
+    private let qos: DispatchQoS
     private weak var delegate: FogSocketStreamDelegate?
 	
 	private var inputReady = false
@@ -34,9 +35,8 @@ public class FogSocketStream: NSObject, StreamDelegate {
 		
         var parts = hostName.components(separatedBy: ".")
         parts.insert("stream\(port)", at: 0)
-        let label = parts.reversed().joined(separator: ".")
-		
-        self.sessionQueue = DispatchQueue(label: label, qos: qos, target: nil)
+        self.label = parts.reversed().joined(separator: ".")
+		self.qos = qos
 		self.inputStream = hasInput
 		self.outputStream = hasOutput
 		super.init()
@@ -62,6 +62,7 @@ public class FogSocketStream: NSObject, StreamDelegate {
 		self.delegate = delegate
 		let hasInput = inputStream
 		let hasOutput = outputStream
+        let sessionQueue = DispatchQueue(label: label, qos: qos, target: nil)
 		sessionQueue.async {
 			FogSocketStream.run(isSSL, hasInput, hasOutput)
         }
@@ -74,15 +75,15 @@ public class FogSocketStream: NSObject, StreamDelegate {
 	
     private static func run(_ isSSL: Bool, _ inputStream: InputStream, _ outputStream: OutputStream) {
 		let currentRunLoop = RunLoop.current
+		if isSSL {
+			let securityLevel = StreamSocketSecurityLevel.negotiatedSSL.rawValue
+			let s1 = inputStream.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
+			let s2 = outputStream.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
+		}
 		inputStream.schedule(in: currentRunLoop, forMode: .defaultRunLoopMode)
 		outputStream.schedule(in: currentRunLoop, forMode: .defaultRunLoopMode)
 		inputStream.open()
 		outputStream.open()
-		if isSSL {
-			let securityLevel = StreamSocketSecurityLevel.negotiatedSSL.rawValue
-			inputStream.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
-			outputStream.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
-		}
 		currentRunLoop.run()
     }
 	
