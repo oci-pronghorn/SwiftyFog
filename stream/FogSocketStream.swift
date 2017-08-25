@@ -13,7 +13,10 @@ public protocol FogSocketStreamDelegate: class {
 	func fogStreamReceived(read: StreamReader)
 }
 
+public typealias FogSocketStreamWrite = ((StreamWriter)->())->()
+
 public class FogSocketStream: NSObject, StreamDelegate {
+	private let mutex = ReadWriteMutex()
 	private var sessionQueue: DispatchQueue
     private let inputStream: InputStream
     private let outputStream: OutputStream
@@ -48,8 +51,11 @@ public class FogSocketStream: NSObject, StreamDelegate {
         outputStream.delegate = nil
     }
 	
-    public var writer: StreamWriter {
-		return outputStream.write
+	public func writer(writer: (StreamWriter)->()) {
+		let hasOutput = outputStream
+		mutex.writing {
+			writer(hasOutput.write)
+		}
     }
 	
     public func start(isSSL: Bool, timeout: TimeInterval, delegate: FogSocketStreamDelegate?) {

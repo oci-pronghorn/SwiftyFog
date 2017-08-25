@@ -191,11 +191,16 @@ extension MQTTClient:
 	MQTTDistributorDelegate,
 	MQTTPacketDurabilityDelegate {
 
-	func send(packet: MQTTPacket) -> Bool {
-		if connected {
-			return connection?.send(packet: packet) ?? false
+	func send(packet: MQTTPacket, completion: @escaping (Bool)->()) {
+		if let connection = connection, connected {
+			DispatchQueue.global().async {
+				let success = connection.send(packet: packet)
+				completion(success)
+			}
 		}
-		return false
+		else {
+			completion(false)
+		}
 	}
 	
 	func unhandledMessage(message: MQTTMessage) {

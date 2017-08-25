@@ -8,7 +8,7 @@
 import Foundation
 
 protocol MQTTPacketDurabilityDelegate: class {
-	func send(packet: MQTTPacket) -> Bool
+	func send(packet: MQTTPacket, completion: @escaping (Bool)->())
 }
 
 final class MQTTPacketDurability {
@@ -36,21 +36,23 @@ final class MQTTPacketDurability {
 		resendTimer.resume()
 	}
 	
-	@discardableResult
-	public func send<T: MQTTPacket>(packet: T) -> Bool {
-		return delegate?.send(packet: packet) ?? false
+	public func send<T: MQTTPacket>(packet: T, sent: ((T, Bool)->())?) {
+		if let delegate = delegate {
+			delegate.send(packet: packet) { success in
+				sent?(packet, success)
+			}
+		}
+		else {
+			sent?(packet, false)
+		}
 	}
 	
 	public func send<T: MQTTPacket & MQTTIdentifiedPacket>(packet: T, expecting: MQTTPacketType?, sent: ((T, Bool)->())?) {
-		DispatchQueue.global().async {
-			self.send(ownership: .theirs(packet), expecting: expecting, sent: sent)
-		}
+		self.send(ownership: .theirs(packet), expecting: expecting, sent: sent)
 	}
 	
 	public func send<T: MQTTPacket & MQTTIdentifiedPacket>(packet: @escaping (UInt16)->T, expecting: MQTTPacketType?, sent: ((T, Bool)->())?) {
-		DispatchQueue.global().async {
-			self.send(ownership: .ours(packet), expecting: expecting, sent: sent)
-		}
+		self.send(ownership: .ours(packet), expecting: expecting, sent: sent)
 	}
 	
 	private enum IdOwnerShip<T: MQTTPacket & MQTTIdentifiedPacket> {
@@ -77,24 +79,35 @@ final class MQTTPacketDurability {
 				unacknowledgedPackets[messageId] = (Date().timeIntervalSince1970, dup, expecting)
 			}
 		}
-		if delegate?.send(packet: instance) ?? false == false {
-			if case .ours(_) = ownership {
-				idSource.free(id: messageId)
-			}
-			mutex.writing {
-				unacknowledgedPackets.removeValue(forKey: messageId)
-				retryRequestPackets.append({ [weak self] goForth in
-					if let me = self, goForth {
-						me.send(ownership: ownership, expecting: expecting, sent: sent)
-					}
-					else {
-						sent?(instance, false)
-					}
-				})
+		if let delegate = delegate {
+			delegate.send(packet: instance) { [weak self] success in
+				if success == false {
+					self?.didFailToSend(instance, ownership, messageId, expecting, sent)
+				}
+				else {
+					sent?(instance, true)
+				}
 			}
 		}
 		else {
-			sent?(instance, true)
+			sent?(instance, false)
+		}
+	}
+	
+	private func didFailToSend<T>(_ instance: T, _ ownership: IdOwnerShip<T>, _ messageId: UInt16, _ expecting: MQTTPacketType?, _ sent: ((T, Bool)->())?) {
+		if case .ours(_) = ownership {
+			idSource.free(id: messageId)
+		}
+		mutex.writing {
+			unacknowledgedPackets.removeValue(forKey: messageId)
+			retryRequestPackets.append({ [weak self] goForth in
+				if let me = self, goForth {
+					me.send(ownership: ownership, expecting: expecting, sent: sent)
+				}
+				else {
+					sent?(instance, false)
+				}
+			})
 		}
 	}
 	
@@ -116,7 +129,7 @@ final class MQTTPacketDurability {
 			}
 			for element in unacknowledgedPackets.sorted(by: {$0.1.0 < $1.1.0}) {
 				let packet = element.value.1
-				let _ = delegate?.send(packet: packet)
+				delegate?.send(packet: packet, completion: {_ in})
 			}
 		}
 	}

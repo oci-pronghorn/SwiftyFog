@@ -23,10 +23,14 @@ struct MQTTPacketFactory {
 	
 	var debugOut: ((String)->())?
 	
-	func send(_ packet: MQTTPacket, _ writer: StreamWriter) -> Bool {
+	func send(_ packet: MQTTPacket, _ writer: FogSocketStreamWrite) -> Bool {
 		let data = write(packet)
 		debugOut?("* Sent: \(type(of:packet)) [\(data.count)] \(data.fogHexDescription)")
-		return data.write(to: writer)
+		var success = false
+		writer({ w in
+			success = data.write(to: w)
+		})
+		return success
     }
 	
     static let filler = [UInt8](repeating: 0, count: MQTTPacket.fixedHeaderLength + MQTTPackedLength.maxLen)

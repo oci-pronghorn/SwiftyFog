@@ -50,8 +50,9 @@ final class MQTTPublisher {
 		
 		if qos == .atMostOnce {
 			let packet = MQTTPublishPacket(messageID: 0, message: pubMsg, isRedelivery: false)
-			let success = durability.send(packet: packet)
-			completion?(success)
+			durability.send(packet: packet) { packet, success in
+				completion?(success)
+			}
 		}
 		else {
 			let sent: ((MQTTPublishPacket, Bool)->())? = completion == nil ? nil : { [weak self] p, s in
