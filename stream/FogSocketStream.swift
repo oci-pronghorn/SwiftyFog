@@ -62,28 +62,32 @@ public class FogSocketStream: NSObject, StreamDelegate {
 		self.delegate = delegate
 		let hasInput = inputStream
 		let hasOutput = outputStream
-        let sessionQueue = DispatchQueue(label: label, qos: qos, target: nil)
-		sessionQueue.async {
-			FogSocketStream.run(isSSL, hasInput, hasOutput)
+        let inQueue = DispatchQueue(label: label + ".in", qos: qos, target: nil)
+		inQueue.async {
+			FogSocketStream.run(isSSL, hasInput)
+        }
+        let outQueue = DispatchQueue(label: label + ".out", qos: qos, target: nil)
+		outQueue.async {
+			FogSocketStream.run(isSSL, hasOutput)
         }
 		if timeout > 0.0 {
-			sessionQueue.asyncAfter(deadline: .now() +  timeout) { [weak self] in
+			inQueue.asyncAfter(deadline: .now() +  timeout) { [weak self] in
+				self?.connectTimeout()
+			}
+			outQueue.asyncAfter(deadline: .now() +  timeout) { [weak self] in
 				self?.connectTimeout()
 			}
 		}
     }
 	
-    private static func run(_ isSSL: Bool, _ inputStream: InputStream, _ outputStream: OutputStream) {
+    private static func run(_ isSSL: Bool, _ stream: Stream) {
 		let currentRunLoop = RunLoop.current
 		if isSSL {
 			let securityLevel = StreamSocketSecurityLevel.negotiatedSSL.rawValue
-			let s1 = inputStream.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
-			let s2 = outputStream.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
+			let s1 = stream.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
 		}
-		inputStream.schedule(in: currentRunLoop, forMode: .defaultRunLoopMode)
-		outputStream.schedule(in: currentRunLoop, forMode: .defaultRunLoopMode)
-		inputStream.open()
-		outputStream.open()
+		stream.schedule(in: currentRunLoop, forMode: .defaultRunLoopMode)
+		stream.open()
 		currentRunLoop.run()
     }
 	
