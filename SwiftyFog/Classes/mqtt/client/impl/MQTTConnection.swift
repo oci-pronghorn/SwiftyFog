@@ -8,11 +8,6 @@
 
 import Foundation
 
-public enum Qos1Mode {
-	case dropOnNotConnected
-	case queueOnNotConnected
-}
-
 public enum Qos2Mode {
 	case lowLatency
 	case assured
@@ -36,8 +31,10 @@ public struct MQTTClientParams {
     public var resendPulseInterval: TimeInterval = 5.0
 	
     public var qos2Mode: Qos2Mode = .lowLatency
-	public var qos1Mode: Qos1Mode = .dropOnNotConnected
+	public var queuePubOnDisconnect: MQTTQoS? = nil // TODO: impl
     public var lastWill: MQTTPubMsg? = nil
+	
+	public var socketQoS: DispatchQoS = .userInitiated
 	
     public init(clientID: String, cleanSession: Bool = true, keepAlive: UInt16 = 60) {
 		self.clientID = clientID
@@ -89,13 +86,14 @@ protocol MQTTConnectionDelegate: class {
 }
 
 final class MQTTConnection {
+	private let hostParams: MQTTHostParams
 	private let clientPrams: MQTTClientParams
 	private let authPrams: MQTTAuthentication
     private var factory: MQTTPacketFactory
-    private var stream: MQTTSessionStream? = nil
+    private var stream: MQTTSessionStream?
     private var keepAliveTimer: DispatchSourceTimer?
 	
-    weak var delegate: MQTTConnectionDelegate?
+    private weak var delegate: MQTTConnectionDelegate?
 	
     public var debugOut : ((String)->())? = nil {
 		didSet {
@@ -109,13 +107,16 @@ final class MQTTConnection {
     private var lastPingAck: Int64 = 0
 	
     init(hostParams: MQTTHostParams, clientPrams: MQTTClientParams, authPrams: MQTTAuthentication) {
+		self.hostParams = hostParams
 		self.clientPrams = clientPrams
 		self.authPrams = authPrams
 		self.factory = MQTTPacketFactory()
-		
+    }
+	
+    func start(delegate: MQTTConnectionDelegate?) {
+		self.delegate = delegate
 		// May return nil if streams cannot be open
 		self.stream = MQTTSessionStream(hostParams: hostParams, delegate: self)
-		
 		if hostParams.timeout > 0 {
 			DispatchQueue.global().asyncAfter(deadline: .now() +  hostParams.timeout) { [weak self] in
 				self?.fullConnectionTimeout()

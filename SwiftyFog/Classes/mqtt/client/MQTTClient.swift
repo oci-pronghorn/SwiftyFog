@@ -49,7 +49,7 @@ public final class MQTTClient {
 		connectedCount = 0
 		idSource = MQTTMessageIdSource()
 		self.durability = MQTTPacketDurability(idSource: idSource, resendInterval: client.resendPulseInterval)
-		self.publisher = MQTTPublisher(durability: durability, qos1Mode: client.qos1Mode, qos2Mode: client.qos2Mode)
+		self.publisher = MQTTPublisher(durability: durability, queuePubOnDisconnect: client.queuePubOnDisconnect, qos2Mode: client.qos2Mode)
 		self.subscriber = MQTTSubscriber(durability: durability)
 		self.distributer = MQTTDistributor(durability: durability, qos2Mode: client.qos2Mode)
 		
@@ -86,7 +86,7 @@ public final class MQTTClient {
 		delegate?.mqttConnectAttempted(client: self)
 		connection = MQTTConnection(hostParams: host, clientPrams: client, authPrams: auth)
 		connection?.debugOut = debugOut
-		connection?.delegate = self
+		connection?.start(delegate: self)
 	}
 	
 	private func unhandledPacket(packet: MQTTPacket) {
