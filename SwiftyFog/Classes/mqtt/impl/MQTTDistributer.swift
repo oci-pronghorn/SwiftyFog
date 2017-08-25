@@ -28,7 +28,7 @@ protocol MQTTDistributorDelegate: class {
 }
 
 final class MQTTDistributor {
-	private let durability: MQTTPacketDurability
+	private let issuer: MQTTPacketIssuer
 	private let qos2Mode: Qos2Mode
 	
 	weak var delegate: MQTTDistributorDelegate?
@@ -38,8 +38,8 @@ final class MQTTDistributor {
 	private var registeredPaths = [String: [(UInt64,(MQTTMessage)->())]]()
 	private var deferredPacket = [UInt16:MQTTPublishPacket]()
 	
-	init(durability: MQTTPacketDurability, qos2Mode: Qos2Mode) {
-		self.durability = durability
+	init(issuer: MQTTPacketIssuer, qos2Mode: Qos2Mode) {
+		self.issuer = issuer
 		self.qos2Mode = qos2Mode
 	}
 	
@@ -102,7 +102,7 @@ final class MQTTDistributor {
 					case .atLeastOnce:
 						issue(packet: packet)
 						let ack = MQTTPublishAckPacket(messageID: packet.messageID)
-						durability.send(packet: ack, expecting: nil, sent: nil)
+						issuer.send(packet: ack, expecting: nil, sent: nil)
 						break
 					case .exactlyOnce:
 						if qos2Mode == .lowLatency {
@@ -112,14 +112,14 @@ final class MQTTDistributor {
 							mutex.writing {deferredPacket[packet.messageID] = packet}
 						}
 						let rec = MQTTPublishRecPacket(messageID: packet.messageID)
-						durability.send(packet: rec, expecting: .pubRel, sent: nil)
+						issuer.send(packet: rec, expecting: .pubRel, sent: nil)
 						break
 				}
 				return true
 			case let rel as MQTTPublishRelPacket:
 				let comp = MQTTPublishCompPacket(messageID: rel.messageID)
-				durability.received(acknolwedgment: rel, releaseId: false)
-				durability.send(packet: comp, expecting: nil, sent: nil)
+				issuer.received(acknolwedgment: rel, releaseId: false)
+				issuer.send(packet: comp, expecting: nil, sent: nil)
 				if qos2Mode == .assured {
 					if let element = mutex.writing({deferredPacket.removeValue(forKey:rel.messageID)}) {
 						issue(packet: element)

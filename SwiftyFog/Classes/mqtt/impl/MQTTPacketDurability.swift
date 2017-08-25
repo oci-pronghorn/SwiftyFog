@@ -11,8 +11,16 @@ protocol MQTTPacketDurabilityDelegate: class {
 	func mqtt(send: MQTTPacket, completion: @escaping (Bool)->())
 }
 
-final class MQTTPacketDurability {
+protocol MQTTPacketIssuer {
+	func send<T: MQTTPacket>(packet: T, sent: ((T, Bool)->())?)
+	func send<T: MQTTPacket & MQTTIdentifiedPacket>(packet: T, expecting: MQTTPacketType?, sent: ((T, Bool)->())?)
+	func send<T: MQTTPacket & MQTTIdentifiedPacket>(packet: @escaping (UInt16)->T, expecting: MQTTPacketType?, sent: ((T, Bool)->())?)
+	func received<T: MQTTPacket & MQTTIdentifiedPacket>(acknolwedgment: T, releaseId: Bool)
+}
+
+final class MQTTPacketDurability: MQTTPacketIssuer {
 	private let idSource: MQTTMessageIdSource
+	private let queuePubOnDisconnect: MQTTQoS?
 	private let mutex = ReadWriteMutex()
     private let resendTimer: DispatchSourceTimer
     private let resendInterval: TimeInterval
@@ -22,8 +30,9 @@ final class MQTTPacketDurability {
 	
 	weak var delegate: MQTTPacketDurabilityDelegate?
 	
-	init(idSource: MQTTMessageIdSource, resendInterval: TimeInterval) {
+	init(idSource: MQTTMessageIdSource, queuePubOnDisconnect: MQTTQoS?, resendInterval: TimeInterval) {
 		self.idSource = idSource
+		self.queuePubOnDisconnect = queuePubOnDisconnect
 		self.resendInterval = resendInterval
 		resendTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
 		resendTimer.setEventHandler { [weak self] in

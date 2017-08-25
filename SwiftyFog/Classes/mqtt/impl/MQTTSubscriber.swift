@@ -54,7 +54,7 @@ public final class MQTTSubscription: CustomStringConvertible {
 }
 
 final class MQTTSubscriber {
-	private let durability: MQTTPacketDurability
+	private let issuer: MQTTPacketIssuer
 	
 	private let mutex = ReadWriteMutex()
 	private var token: UInt64 = 0
@@ -64,8 +64,8 @@ final class MQTTSubscriber {
 	
 	weak var delegate: MQTTSubscriptionDelegate?
 	
-	init(durability: MQTTPacketDurability) {
-		self.durability = durability
+	init(issuer: MQTTPacketIssuer) {
+		self.issuer = issuer
 	}
 	
 	func connected(cleanSession: Bool, present: Bool, initial: Bool) {
@@ -110,7 +110,7 @@ final class MQTTSubscriber {
 	
 	private func startSubscription(_ subscription: MQTTSubscriptionDetail, _ completion: ((Bool)->())?) {
 		delegate?.mqtt(subscription: subscription, changed: .subPending)
-		durability.send(packet: {MQTTSubPacket(topics: subscription.topics, messageID: $0)}, expecting: .subAck)  { [weak self] p, s in
+		issuer.send(packet: {MQTTSubPacket(topics: subscription.topics, messageID: $0)}, expecting: .subAck)  { [weak self] p, s in
 			if (s) { self?.deferredSubscriptions[p.messageID] = (subscription, nil) }
 		}
 	}
@@ -120,7 +120,7 @@ final class MQTTSubscriber {
 			knownSubscriptions[subscription.token] = nil
 			let topicStrings = subscription.topics.map({$0.0})
 			delegate?.mqtt(subscription: subscription, changed: .unsubPending)
-			durability.send(packet: {MQTTUnsubPacket(topics: topicStrings, messageID: $0)}, expecting: .subAck) { [weak self] p, s in
+			issuer.send(packet: {MQTTUnsubPacket(topics: topicStrings, messageID: $0)}, expecting: .subAck) { [weak self] p, s in
 				if (s) { self?.deferredUnSubscriptions[p.messageID] = (subscription, nil) }
 			}
 		}
@@ -133,14 +133,14 @@ final class MQTTSubscriber {
 					delegate?.mqtt(subscription: element.0, changed: .subscribed)
 					element.1?(true)
 				}
-				durability.received(acknolwedgment: packet, releaseId: true)
+				issuer.received(acknolwedgment: packet, releaseId: true)
 				return true
 			case let packet as MQTTUnsubAckPacket:
 				if let element = mutex.writing({deferredUnSubscriptions.removeValue(forKey:packet.messageID)}) {
 					delegate?.mqtt(subscription: element.0, changed: .unsubscribed)
 					element.1?(true)
 				}
-				durability.received(acknolwedgment: packet, releaseId: true)
+				issuer.received(acknolwedgment: packet, releaseId: true)
 				return true
 			default:
 				return false

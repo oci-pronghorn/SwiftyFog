@@ -12,7 +12,7 @@ protocol MQTTPublisherDelegate: class {
 }
 
 final class MQTTPublisher {
-	private let durability: MQTTPacketDurability
+	private let issuer: MQTTPacketIssuer
 	private let queuePubOnDisconnect: MQTTQoS?
 	private let qos2Mode: Qos2Mode
 
@@ -21,8 +21,8 @@ final class MQTTPublisher {
 	
 	weak var delegate: MQTTPublisherDelegate?
 	
-	init(durability: MQTTPacketDurability, queuePubOnDisconnect: MQTTQoS?, qos2Mode: Qos2Mode) {
-		self.durability = durability
+	init(issuer: MQTTPacketIssuer, queuePubOnDisconnect: MQTTQoS?, qos2Mode: Qos2Mode) {
+		self.issuer = issuer
 		self.queuePubOnDisconnect = queuePubOnDisconnect
 		self.qos2Mode = qos2Mode
 	}
@@ -50,7 +50,7 @@ final class MQTTPublisher {
 		
 		if qos == .atMostOnce {
 			let packet = MQTTPublishPacket(messageID: 0, message: pubMsg, isRedelivery: false)
-			durability.send(packet: packet) { packet, success in
+			issuer.send(packet: packet) { packet, success in
 				completion?(success)
 			}
 		}
@@ -58,7 +58,7 @@ final class MQTTPublisher {
 			let sent: ((MQTTPublishPacket, Bool)->())? = completion == nil ? nil : { [weak self] p, s in
 				if (s) { self?.deferredCompletion[p.messageID] = completion }
 			}
-			durability.send(packet: {MQTTPublishPacket(messageID: $0, message: pubMsg, isRedelivery: false)}, expecting: expecting, sent: sent)
+			issuer.send(packet: {MQTTPublishPacket(messageID: $0, message: pubMsg, isRedelivery: false)}, expecting: expecting, sent: sent)
 		}
 	}
 	
@@ -68,7 +68,7 @@ final class MQTTPublisher {
 				if let completion = mutex.writing({deferredCompletion.removeValue(forKey:ack.messageID)}) {
 					completion(true)
 				}
-				durability.received(acknolwedgment: ack, releaseId: true)
+				issuer.received(acknolwedgment: ack, releaseId: true)
 				return true
 			case let rec as MQTTPublishRecPacket: // received for Qos 2 step 1
 				if qos2Mode == .lowLatency {
@@ -77,8 +77,8 @@ final class MQTTPublisher {
 					}
 				}
 				let rel = MQTTPublishRelPacket(messageID: rec.messageID)
-				durability.received(acknolwedgment: rec, releaseId: false)
-				durability.send(packet: rel, expecting: .pubComp, sent: nil)
+				issuer.received(acknolwedgment: rec, releaseId: false)
+				issuer.send(packet: rel, expecting: .pubComp, sent: nil)
 				return true
 			case let comp as MQTTPublishCompPacket: // received for Qos 2 step 2
 				if qos2Mode == .assured {
@@ -86,7 +86,7 @@ final class MQTTPublisher {
 						completion(true)
 					}
 				}
-				durability.received(acknolwedgment: comp, releaseId: true)
+				issuer.received(acknolwedgment: comp, releaseId: true)
 				return true
 			default:
 				return false

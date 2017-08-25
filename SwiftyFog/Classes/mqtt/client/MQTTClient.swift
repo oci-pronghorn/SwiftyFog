@@ -65,10 +65,10 @@ public final class MQTTClient {
 		self.queue = queue
 		connectedCount = 0
 		idSource = MQTTMessageIdSource()
-		self.durability = MQTTPacketDurability(idSource: idSource, resendInterval: client.resendPulseInterval)
-		self.publisher = MQTTPublisher(durability: durability, queuePubOnDisconnect: client.queuePubOnDisconnect, qos2Mode: client.qos2Mode)
-		self.subscriber = MQTTSubscriber(durability: durability)
-		self.distributer = MQTTDistributor(durability: durability, qos2Mode: client.qos2Mode)
+		self.durability = MQTTPacketDurability(idSource: idSource, queuePubOnDisconnect: client.queuePubOnDisconnect, resendInterval: client.resendPulseInterval)
+		self.publisher = MQTTPublisher(issuer: durability, queuePubOnDisconnect: client.queuePubOnDisconnect, qos2Mode: client.qos2Mode)
+		self.subscriber = MQTTSubscriber(issuer: durability)
+		self.distributer = MQTTDistributor(issuer: durability, qos2Mode: client.qos2Mode)
 		
 		durability.delegate = self
 		publisher.delegate = self
