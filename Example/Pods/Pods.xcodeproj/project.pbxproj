@@ -35,6 +35,7 @@
 		55A7BB051F505999006D9BC9 /* MQTTClientParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A7BB031F50596D006D9BC9 /* MQTTClientParams.swift */; };
 		55A7BB061F50599F006D9BC9 /* MQTTHostParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A7BB011F505923006D9BC9 /* MQTTHostParams.swift */; };
 		55A7BB091F505A1C006D9BC9 /* MQTTAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A7BB071F505A0B006D9BC9 /* MQTTAuthentication.swift */; };
+		55B27C831F50F011008ED56E /* RunLoopPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B27C811F50EFFB008ED56E /* RunLoopPool.swift */; };
 		5E03D2D0A5DA00876E3F763A5F390E3E /* MQTTPackedLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AD10A32005FD03C2A429034A663F27 /* MQTTPackedLength.swift */; };
 		5FF67A72F76A5370F7079A1A3CC38A6C /* MQTTConnectPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17206844894914D8DA4C7213E4EAB758 /* MQTTConnectPacket.swift */; };
 		69A4AFB53C5B529105139921579E61D6 /* MQTTPacketDurability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D2F8CBF26F75AD6AED304F05B50FE9 /* MQTTPacketDurability.swift */; };
@@ -115,6 +116,7 @@
 		55A7BB011F505923006D9BC9 /* MQTTHostParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTHostParams.swift; sourceTree = "<group>"; };
 		55A7BB031F50596D006D9BC9 /* MQTTClientParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTClientParams.swift; sourceTree = "<group>"; };
 		55A7BB071F505A0B006D9BC9 /* MQTTAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTAuthentication.swift; sourceTree = "<group>"; };
+		55B27C811F50EFFB008ED56E /* RunLoopPool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunLoopPool.swift; sourceTree = "<group>"; };
 		585B2B78D1B842245A377C694EB120CE /* Pods-SwiftyFog_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SwiftyFog_Example-dummy.m"; sourceTree = "<group>"; };
 		58BAE6E42EF04BBD0C48EC6596605892 /* SwiftyFog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyFog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A80D061A73ADE6ADBAD32BF613473EB /* Pods_SwiftyFog_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftyFog_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -264,6 +266,7 @@
 			children = (
 				B623B9C2FAD06058DC648EFD1008DACC /* ReadWriteMutex.swift */,
 				CC16B12C4D6D3C76854B35256E1F4939 /* WeakHandle.swift */,
+				55B27C811F50EFFB008ED56E /* RunLoopPool.swift */,
 			);
 			name = thread;
 			path = SwiftyFog/Classes/thread;
@@ -665,6 +668,7 @@
 				C7A382CD5E0EE0DE72FFBEFEA61044F0 /* MQTTPublishCompPacket.swift in Sources */,
 				4948AA52F1E639F8D16A63C4EAF20D7C /* MQTTPublisher.swift in Sources */,
 				1D6620BEE104E5FCC3FAF69369312AE8 /* MQTTPublishPacket.swift in Sources */,
+				55B27C831F50F011008ED56E /* RunLoopPool.swift in Sources */,
 				BB1D8B5DB95C6AD82610952DB063680D /* MQTTPublishRecPacket.swift in Sources */,
 				4269670588CCF975D5A23D0E25CCB763 /* MQTTPublishRelPacket.swift in Sources */,
 				06FE03E4BFD8D3FA2940E35ACAD33F88 /* MQTTPubMsg.swift in Sources */,

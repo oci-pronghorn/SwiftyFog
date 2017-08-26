@@ -68,7 +68,7 @@ final class MQTTConnection {
 	
     func start(delegate: MQTTConnectionDelegate?) {
 		self.delegate = delegate
-		self.stream?.start(isSSL: hostParams.ssl, timeout: hostParams.timeout, delegate: self)
+		self.stream?.start(isSSL: hostParams.ssl, delegate: self)
 		if hostParams.timeout > 0 {
 			DispatchQueue.global().asyncAfter(deadline: .now() +  hostParams.timeout) { [weak self] in
 				self?.fullConnectionTimeout()

@@ -26,6 +26,8 @@ public class FogSocketStream: NSObject, StreamDelegate {
 	private var inputReady = false
 	private var outputReady = false
 	
+	private static let runloop =  RunLoopPool()
+	
 	public init?(hostName: String, port: Int, qos: DispatchQoS) {
         var inputStreamHandle: InputStream?
         var outputStreamHandle: OutputStream?
@@ -58,44 +60,27 @@ public class FogSocketStream: NSObject, StreamDelegate {
 		}
     }
 	
-    public func start(isSSL: Bool, timeout: TimeInterval, delegate: FogSocketStreamDelegate?) {
+    public func start(isSSL: Bool, delegate: FogSocketStreamDelegate?) {
 		self.delegate = delegate
 		let hasInput = inputStream
 		let hasOutput = outputStream
-        let inQueue = DispatchQueue(label: label + ".in", qos: qos, target: nil)
-		inQueue.async {
-			FogSocketStream.run(isSSL, hasInput)
-        }
-        let outQueue = DispatchQueue(label: label + ".out", qos: qos, target: nil)
-		outQueue.async {
-			FogSocketStream.run(isSSL, hasOutput)
-        }
-		if timeout > 0.0 {
-			inQueue.asyncAfter(deadline: .now() +  timeout) { [weak self] in
-				self?.connectTimeout()
-			}
-			outQueue.asyncAfter(deadline: .now() +  timeout) { [weak self] in
-				self?.connectTimeout()
-			}
-		}
-    }
-	
-    private static func run(_ isSSL: Bool, _ stream: Stream) {
-		let currentRunLoop = RunLoop.current
+		
 		if isSSL {
 			let securityLevel = StreamSocketSecurityLevel.negotiatedSSL.rawValue
-			let s1 = stream.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
+			let _ = hasInput.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
+			let _ = hasOutput.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
 		}
-		stream.schedule(in: currentRunLoop, forMode: .defaultRunLoopMode)
-		stream.open()
-		currentRunLoop.run()
+		
+		FogSocketStream.runloop.runLoop(label: label + ".in", qos: qos) {
+			hasInput.schedule(in: $0, forMode: .defaultRunLoopMode)
+			hasInput.open()
+		}
+		
+		FogSocketStream.runloop.runLoop(label: label + ".out", qos: qos) {
+			hasOutput.schedule(in: $0, forMode: .defaultRunLoopMode)
+			hasOutput.open()
+		}
     }
-	
-	private func connectTimeout() {
-		if inputReady == false || outputReady == false {
-			delegate?.fog(stream: self, ready: false)
-		}
-	}
 	
     @objc
 	public func stream(_ aStream: Stream, handle eventCode: Stream.Event) {

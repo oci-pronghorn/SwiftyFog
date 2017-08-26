@@ -51,7 +51,7 @@ public final class MQTTClient {
 	public init(
 			client: MQTTClientParams = MQTTClientParams(),
 			host: MQTTHostParams = MQTTHostParams(),
-			auth: MQTTAuthentication,
+			auth: MQTTAuthentication = MQTTAuthentication(),
 			reconnect: MQTTReconnectParams = MQTTReconnectParams(),
 			queue: DispatchQueue = DispatchQueue.global(),
 			socketQoS: DispatchQoS = .userInitiated) {
