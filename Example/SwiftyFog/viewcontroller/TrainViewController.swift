@@ -40,6 +40,7 @@ class TrainViewController: UIViewController {
 	let lights = Lights()
 	let billboard = Billboard()
 	
+	@IBOutlet weak var connectMetrics: FSDAirportFlipLabel!
 	@IBOutlet weak var connectedImage: UIImageView!
 	@IBOutlet weak var billboardImage: UIImageView!
 	
@@ -78,6 +79,25 @@ class TrainViewController: UIViewController {
 		
 		powerGauge.rangeValues = [NSNumber(value: -engine.calibration.num), NSNumber(value: engine.calibration.num), 100]
 		ambientGauge.rangeValues = [NSNumber(value: lights.calibration.num), 256]
+		
+		self.connectMetrics.textSize = 24
+		self.connectMetrics.useSound = true
+		self.connectMetrics.fixedLength = 15
+		self.connectMetrics.flipDuration = 0.1
+		self.connectMetrics.flipDurationRange = 1.0
+		self.connectMetrics.numberOfFlips = 1
+		self.connectMetrics.numberOfFlipsRange = 1.0
+		self.connectMetrics.flipTextColor = UIColor.white
+		self.connectMetrics.flipBackGroundColor = UIColor.black
+		
+		self.connectMetrics.startedFlippingLabelsBlock = { [weak self] in
+			//self?.changeButton.enabled = NO
+		}
+		self.connectMetrics.finishedFlippingLabelsBlock = {  [weak self] in
+			//self?.changeButton.enabled = YES
+		}
+		
+		self.connectMetrics.text = "\(0)\(0).\(0)\(0).\(0)\(0)"
 	}
 }
 

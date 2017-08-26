@@ -218,16 +218,26 @@
                                     <constraint firstAttribute="width" constant="96" id="uDI-6J-OYM"/>
                                 </constraints>
                             </imageView>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wEP-vK-Vun" customClass="FSDAirportFlipLabel">
+                                <rect key="frame" x="137.5" y="574" width="100" height="32"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="ilm-05-PgY"/>
+                                    <constraint firstAttribute="width" constant="100" id="n6v-mF-YxP"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="top" secondItem="Qsm-zT-BQc" secondAttribute="bottom" constant="8" id="0S3-ed-AQJ"/>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="height" secondItem="yOF-aF-Ux5" secondAttribute="height" id="7aO-DK-CQq"/>
                             <constraint firstItem="yOF-aF-Ux5" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="95U-ZV-7hR"/>
+                            <constraint firstItem="wEP-vK-Vun" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="H5B-kv-EEa"/>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="centerX" secondItem="yOF-aF-Ux5" secondAttribute="centerX" id="L16-OZ-Wcb"/>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="centerY" secondItem="yOF-aF-Ux5" secondAttribute="centerY" id="c2a-8f-3nQ"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="eBe-4Q-Ytg"/>
                             <constraint firstItem="yOF-aF-Ux5" firstAttribute="top" secondItem="0P7-i3-PrJ" secondAttribute="bottom" constant="17" id="eMJ-EH-bod"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="wEP-vK-Vun" secondAttribute="bottom" constant="12" id="fpF-9l-OjT"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="hUY-FX-r7F"/>
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" constant="-16" id="hfn-cg-vmm"/>
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="kwp-cM-kPw"/>
@@ -240,6 +250,7 @@
                     <connections>
                         <outlet property="ambientGauge" destination="YEQ-Tl-lGJ" id="LZq-Yo-ujQ"/>
                         <outlet property="billboardImage" destination="yOF-aF-Ux5" id="Tt9-ML-npC"/>
+                        <outlet property="connectMetrics" destination="wEP-vK-Vun" id="3Wd-jG-VMm"/>
                         <outlet property="connectedImage" destination="4zZ-K8-b71" id="nCN-Sr-VCd"/>
                         <outlet property="engineCalibration" destination="5SJ-Xc-cNf" id="Aei-r8-lVK"/>
                         <outlet property="enginePower" destination="frG-rd-tNm" id="qK1-9D-qZL"/>
