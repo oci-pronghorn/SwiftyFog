@@ -83,12 +83,12 @@ final class MQTTSubscriber {
 		}
 	}
 	
-	func disconnected(cleanSession: Bool, manual: Bool) {
+	func disconnected(cleanSession: Bool, stopped: Bool) {
 		mutex.writing {
 			// Do not remove completion blocks
 			for token in knownSubscriptions.keys.sorted().reversed() {
 				if let subscription = knownSubscriptions[token] {
-					delegate?.mqtt(subscription: subscription, changed: manual ? .unsubscribed : .suspended)
+					delegate?.mqtt(subscription: subscription, changed: stopped ? .unsubscribed : .suspended)
 				}
 				else {
 					knownSubscriptions.removeValue(forKey: token)

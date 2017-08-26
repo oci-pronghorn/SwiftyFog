@@ -218,29 +218,54 @@
                                     <constraint firstAttribute="width" constant="96" id="uDI-6J-OYM"/>
                                 </constraints>
                             </imageView>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wEP-vK-Vun" customClass="FSDAirportFlipLabel">
-                                <rect key="frame" x="137.5" y="574" width="100" height="32"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="32" id="ilm-05-PgY"/>
-                                    <constraint firstAttribute="width" constant="100" id="n6v-mF-YxP"/>
-                                </constraints>
-                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="A7W-5F-dl6" userLabel="Connection Stack">
+                                <rect key="frame" x="87" y="511" width="200" height="30"/>
+                                <subviews>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wEP-vK-Vun" customClass="FSDAirportFlipLabel">
+                                        <rect key="frame" x="0.0" y="-511" width="200" height="32"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="ilm-05-PgY"/>
+                                            <constraint firstAttribute="width" constant="200" id="n6v-mF-YxP"/>
+                                        </constraints>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="8xd-TB-fXL" userLabel="Action Stack">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="30"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vRb-rS-o5g">
+                                                <rect key="frame" x="0.0" y="0.0" width="96" height="30"/>
+                                                <state key="normal" title="Start"/>
+                                                <connections>
+                                                    <action selector="startConnecting" destination="dkx-z0-nzr" eventType="touchUpInside" id="BNB-sB-CtK"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cFR-rW-zut">
+                                                <rect key="frame" x="104" y="0.0" width="96" height="30"/>
+                                                <state key="normal" title="Stop"/>
+                                                <connections>
+                                                    <action selector="cleanDisconnect" destination="dkx-z0-nzr" eventType="touchUpInside" id="5cy-Sp-7bn"/>
+                                                    <action selector="stopConnecting" destination="dkx-z0-nzr" eventType="touchUpInside" id="ad8-oa-Ngu"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="top" secondItem="Qsm-zT-BQc" secondAttribute="bottom" constant="8" id="0S3-ed-AQJ"/>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="height" secondItem="yOF-aF-Ux5" secondAttribute="height" id="7aO-DK-CQq"/>
                             <constraint firstItem="yOF-aF-Ux5" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="95U-ZV-7hR"/>
-                            <constraint firstItem="wEP-vK-Vun" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="H5B-kv-EEa"/>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="centerX" secondItem="yOF-aF-Ux5" secondAttribute="centerX" id="L16-OZ-Wcb"/>
+                            <constraint firstItem="A7W-5F-dl6" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="QDK-6Z-baG"/>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="centerY" secondItem="yOF-aF-Ux5" secondAttribute="centerY" id="c2a-8f-3nQ"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="eBe-4Q-Ytg"/>
                             <constraint firstItem="yOF-aF-Ux5" firstAttribute="top" secondItem="0P7-i3-PrJ" secondAttribute="bottom" constant="17" id="eMJ-EH-bod"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="wEP-vK-Vun" secondAttribute="bottom" constant="12" id="fpF-9l-OjT"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="hUY-FX-r7F"/>
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" constant="-16" id="hfn-cg-vmm"/>
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="kwp-cM-kPw"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="A7W-5F-dl6" secondAttribute="bottom" constant="77" id="l77-MR-Uag"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" constant="-16" id="pwc-xu-es9"/>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="width" secondItem="yOF-aF-Ux5" secondAttribute="width" multiplier="0.75" id="v15-Jg-PZJ"/>
                         </constraints>
@@ -271,25 +296,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fT7-IB-PV9" userLabel="Connection Stack">
-                                <rect key="frame" x="115" y="28" width="145" height="30"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="epn-d7-Tko">
-                                        <rect key="frame" x="0.0" y="0.0" width="59" height="30"/>
-                                        <state key="normal" title="Connect"/>
-                                        <connections>
-                                            <action selector="connect" destination="VGR-hs-tvm" eventType="touchUpInside" id="bNC-ws-jQH"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r0N-sW-a6o">
-                                        <rect key="frame" x="67" y="0.0" width="78" height="30"/>
-                                        <state key="normal" title="Disconnect"/>
-                                        <connections>
-                                            <action selector="cleanDisconnect" destination="VGR-hs-tvm" eventType="touchUpInside" id="s5e-kf-swi"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Yb0-mG-QZ9" userLabel="Test Stack">
                                 <rect key="frame" x="100" y="66" width="174" height="68"/>
                                 <subviews>
@@ -364,10 +370,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Yb0-mG-QZ9" firstAttribute="centerX" secondItem="uST-wk-6Gm" secondAttribute="centerX" id="1Wh-OZ-rp3"/>
+                            <constraint firstItem="uST-wk-6Gm" firstAttribute="top" secondItem="Yb0-mG-QZ9" secondAttribute="bottom" constant="-114" id="FV6-vn-sDQ"/>
                             <constraint firstItem="amV-JQ-ofh" firstAttribute="centerX" secondItem="uST-wk-6Gm" secondAttribute="centerX" id="Pc6-bb-VWD"/>
-                            <constraint firstItem="Yb0-mG-QZ9" firstAttribute="top" secondItem="fT7-IB-PV9" secondAttribute="bottom" constant="8" id="WA7-UP-flq"/>
-                            <constraint firstItem="fT7-IB-PV9" firstAttribute="centerX" secondItem="uST-wk-6Gm" secondAttribute="centerX" id="X7z-DD-jJo"/>
-                            <constraint firstItem="uST-wk-6Gm" firstAttribute="top" secondItem="fT7-IB-PV9" secondAttribute="bottom" constant="-38" id="asz-3Q-3BA"/>
                             <constraint firstItem="amV-JQ-ofh" firstAttribute="top" secondItem="Yb0-mG-QZ9" secondAttribute="bottom" constant="8" id="pin-Fv-IeM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="uST-wk-6Gm"/>
@@ -388,8 +392,8 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="fV6-iJ-f1p" kind="relationship" relationship="viewControllers" id="JKr-pf-ZaF"/>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="7zy-xD-7wF"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="yid-ho-gJa"/>
+                        <segue destination="fV6-iJ-f1p" kind="relationship" relationship="viewControllers" id="nPI-Bn-PRb"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jqN-KY-I3X" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -405,4 +409,5 @@
         <image name="TorchOn" width="32" height="32"/>
         <image name="Train" width="30" height="30"/>
     </resources>
+    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
 </document>

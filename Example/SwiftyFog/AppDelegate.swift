@@ -20,8 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		
-		trainSelect = (self.window!.rootViewController as! UITabBarController).viewControllers![0] as! TrainSelectViewController
-		trainControl = (self.window!.rootViewController as! UITabBarController).viewControllers![1] as! TrainViewController
+		trainSelect = (self.window!.rootViewController as! UITabBarController).viewControllers![1] as! TrainSelectViewController
+		trainControl = (self.window!.rootViewController as! UITabBarController).viewControllers![0] as! TrainViewController
 
 		// Select the train
 		let trainName = "thejoveexpress"
@@ -44,17 +44,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		trainControl.mqtt = scoped
 		
 		// We want to start the process right away
-		connect()
+		startConnecting()
 		
 		return true
 	}
 
-	@IBAction func connect() {
+	@IBAction func startConnecting() {
 		wantConnection = true
 		mqtt.start()
 	}
 
-	@IBAction func cleanDisconnect() {
+	@IBAction func stopConnecting() {
 		wantConnection = false
 		mqtt.stop()
 	}
@@ -94,8 +94,8 @@ extension AppDelegate: MQTTClientDelegate {
 					self.trainControl.connected()
 				}
 				break
-			case .retry(let attempt, let rescus, let spec):
-				print("\(Date.nowInSeconds()) MQTT Connection Attempt \(rescus).\(attempt) of \(spec.retryCount)")
+			case .retry(let rescus, let attempt, _):
+				print("\(Date.nowInSeconds()) MQTT Connection Attempt \(rescus).\(attempt)")
 				break
 			case .discconnected(let reason, let error):
 				print("\(Date.nowInSeconds()) MQTT Discconnected \(reason) \(error?.localizedDescription ?? "")")
@@ -111,7 +111,7 @@ extension AppDelegate: MQTTClientDelegate {
 	}
 	
 	func mqtt(client: MQTTClient, subscription: MQTTSubscriptionDetail, changed: MQTTSubscriptionStatus) {
-		print("\(Date.nowInSeconds()) MQTT Subscription \(subscription) \(changed)")
+		//print("\(Date.nowInSeconds()) MQTT Subscription \(subscription) \(changed)")
 		if changed == .subscribed {
 			print("    \(subscription.topics)")
 		}

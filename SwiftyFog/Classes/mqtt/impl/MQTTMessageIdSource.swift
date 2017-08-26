@@ -20,7 +20,7 @@ final class MQTTMessageIdSource {
 	func connected(cleanSession: Bool, present: Bool) {
 	}
 	
-	func disconnected(cleanSession: Bool, manual: Bool) {
+	func disconnected(cleanSession: Bool, stopped: Bool) {
 		if cleanSession {
 			mutex.writing {
 				chart = [UInt8](repeating: 0xFF, count: Int(UInt16.max / 8))

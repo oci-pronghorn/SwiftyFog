@@ -145,7 +145,7 @@ final class MQTTPacketDurability: MQTTPacketIssuer {
 		}
 	}
 	
-	func disconnected(cleanSession: Bool, manual: Bool) {
+	func disconnected(cleanSession: Bool, stopped: Bool) {
 		resendTimer.suspend()
 		mutex.writing {
 			for request in retryRequestPackets {

@@ -30,7 +30,7 @@ final class MQTTPublisher {
 	func connected(cleanSession: Bool, present: Bool, initial: Bool) {
 	}
 	
-	func disconnected(cleanSession: Bool, manual: Bool) {
+	func disconnected(cleanSession: Bool, stopped: Bool) {
 	}
 
 	func publish(pubMsg: MQTTPubMsg, completion: ((Bool)->())?) {

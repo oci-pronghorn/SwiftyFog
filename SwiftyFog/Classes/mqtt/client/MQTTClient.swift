@@ -11,7 +11,7 @@ import Foundation
 public enum MQTTConnectedState {
 	case connected(Int)
 	case discconnected(reason: MQTTConnectionDisconnect, error: Error?)
-	case retry(Int, Int, MQTTReconnectParams) // attempt counter, rescus counter
+	case retry(Int, Int, MQTTReconnectParams) // escus counter, attempt counter
 }
 
 public protocol MQTTClientDelegate: class {
@@ -79,9 +79,9 @@ public final class MQTTClient {
 	@discardableResult
 	public func start() -> [MQTTSubscription] {
 		if retry == nil {
-			retry = MQTTRetryConnection(spec: reconnect, attemptConnect: { [weak self] in
-				self?.makeConnection(0, 0)
-			})
+			retry = MQTTRetryConnection(spec: reconnect) { [weak self] r, a in
+				self?.makeConnection(r, a)
+			}
 			retry?.start()
 		}
 		// TODO on clean == false return recreated last known subscriptions
@@ -93,15 +93,17 @@ public final class MQTTClient {
 			retry = nil
 			connection = nil
 			// connection does not call delegate in deinit
-			doDisconnect(reason: .manual, error: nil)
+			doDisconnect(reason: .stopped, error: nil)
 		}
 	}
 	
-	private func makeConnection(_ attempt: Int, _ rescus: Int) {
-		delegate?.mqtt(client: self, connected: .retry(attempt, rescus, self.reconnect))
-		connection = MQTTConnection(hostParams: host, clientPrams: client, authPrams: auth, socketQoS: socketQoS)
-		connection?.debugOut = debugOut
-		connection?.start(delegate: self)
+	private func makeConnection(_ rescus: Int, _ attempt : Int) {
+		delegate?.mqtt(client: self, connected: .retry(rescus, attempt, self.reconnect))
+		connection = MQTTConnection(
+			hostParams: host,
+			clientPrams: client,
+			authPrams: auth,
+			socketQoS: socketQoS)
 		if let connection = connection {
 			connection.start(delegate: self)
 		}
@@ -147,15 +149,15 @@ extension MQTTClient: MQTTConnectionDelegate {
 	}
 	
 	private func doDisconnect(reason: MQTTConnectionDisconnect, error: Error?) {
-		var manual = false
-		if case .manual = reason {
-			manual = true
+		var stopped = false
+		if case .stopped = reason {
+			stopped = true
 		}
-		publisher.disconnected(cleanSession: client.cleanSession, manual: manual)
-		subscriber.disconnected(cleanSession: client.cleanSession, manual: manual)
-		distributer.disconnected(cleanSession: client.cleanSession, manual: manual)
-		durability.disconnected(cleanSession: client.cleanSession, manual: manual)
-		idSource.disconnected(cleanSession: client.cleanSession, manual: manual)
+		publisher.disconnected(cleanSession: client.cleanSession, stopped: stopped)
+		subscriber.disconnected(cleanSession: client.cleanSession, stopped: stopped)
+		distributer.disconnected(cleanSession: client.cleanSession, stopped: stopped)
+		durability.disconnected(cleanSession: client.cleanSession, stopped: stopped)
+		idSource.disconnected(cleanSession: client.cleanSession, stopped: stopped)
 		self.connection = nil
 		delegate?.mqtt(client: self, connected: .discconnected(reason: reason, error: error))
 		if case let .handshake(ack) = reason {

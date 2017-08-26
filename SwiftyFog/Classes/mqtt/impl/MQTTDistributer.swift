@@ -46,7 +46,7 @@ final class MQTTDistributor {
 	func connected(cleanSession: Bool, present: Bool, initial: Bool) {
 	}
 	
-	func disconnected(cleanSession: Bool, manual: Bool) {
+	func disconnected(cleanSession: Bool, stopped: Bool) {
 		if cleanSession == true {
 			mutex.writing {
 				deferredPacket.removeAll()

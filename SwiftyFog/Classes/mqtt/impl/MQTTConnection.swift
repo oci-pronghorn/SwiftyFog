@@ -19,9 +19,8 @@ public enum MQTTPingStatus: String {
 
 // The following are reasons for disconnection from broker
 public enum MQTTConnectionDisconnect {
-	case manual
+	case stopped
 	case socket
-	case timeout
 	case handshake(MQTTConnAckResponse)
 	case failedRead
 	case failedWrite
@@ -71,18 +70,13 @@ final class MQTTConnection {
     func start(delegate: MQTTConnectionDelegate?) {
 		self.delegate = delegate
 		self.stream?.start(isSSL: hostParams.ssl, delegate: self)
-		if hostParams.timeout > 0 {
-			DispatchQueue.global().asyncAfter(deadline: .now() +  hostParams.timeout) { [weak self] in
-				self?.fullConnectionTimeout()
-			}
-		}
     }
 	
     deinit {
 		if mutex.reading({isFullConnected}) {
 			send(packet: MQTTDisconnectPacket())
 			self.delegate = nil // do not expose self in deinit
-			didDisconnect(reason: .manual, error: nil)
+			didDisconnect(reason: .stopped, error: nil)
 		}
 	}
 	
@@ -141,7 +135,7 @@ extension MQTTConnection {
 	
 	private func fullConnectionTimeout() {
 		if mutex.reading({isFullConnected}) == false {
-			self.didDisconnect(reason: .timeout, error: nil)
+			//self.didDisconnect(reason: .handshake(.timeout), error: nil)
 		}
 		// else we are already connected!
 	}
@@ -212,6 +206,13 @@ extension MQTTConnection: FogSocketStreamDelegate {
 	func fog(streamReady: FogSocketStream) {
 		if startConnectionHandshake() == false {
 			self.didDisconnect(reason: .socket, error: nil)
+		}
+		else {
+			if hostParams.timeout > 0 {
+				DispatchQueue.global().asyncAfter(deadline: .now() +  hostParams.timeout) { [weak self] in
+					self?.fullConnectionTimeout()
+				}
+			}
 		}
 	}
 
