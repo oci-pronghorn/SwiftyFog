@@ -1,6 +1,6 @@
 //
 //  MQTTMetrics.swift
-//  Pods-SwiftyFog_Example
+//  SwiftyFog
 //
 //  Created by David Giovannini on 8/26/17.
 //

@@ -13,7 +13,6 @@ import SwiftyFog
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
 	var mqtt: MQTTClient!
-	var metrics: MQTTMetrics?
 	var wantConnection: Bool = false
 	
 	var trainSelect: TrainSelectViewController!
@@ -26,20 +25,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 		// Select the train
 		let trainName = "thejoveexpress"
-		
-		// Setup metrics
-		metrics = MQTTMetrics(prefix: {"\(Date.nowInSeconds()) MQTT: "})
-		//metrics?.debugOut = {print($0)}
-		metrics?.consoleOut = {print($0)}
 
 		// Create the concrete MQTTClient to connect to a specific broker
-		// MQTTClient is an MQTTBridge
+		// MQTTClient is an MSTTBridge
 		mqtt = MQTTClient(
 			host: MQTTHostParams(host: trainName + ".local", port: .standard),
 			auth: MQTTAuthentication(username: "dsjove", password: "password"),
-			reconnect: MQTTReconnectParams(),
-			metrics: metrics)
+			reconnect: MQTTReconnectParams())
 		mqtt.delegate = self
+		
+		// We can add more debugging to look at the binary data moving in and out
+		//mqtt.debugOut = {print($0)}
 		
 		// This view controller is specific to a train topic
 		// Create an MSTTBridge specific to the selected train
@@ -93,16 +89,16 @@ extension AppDelegate: MQTTClientDelegate {
 	func mqtt(client: MQTTClient, connected: MQTTConnectedState) {
 		switch connected {
 			case .connected(let counter):
-				metrics?.print("Connected \(counter)")
+				print("\(Date.nowInSeconds()) MQTT Connected \(counter)")
 				DispatchQueue.main.async {
 					self.trainControl.connected()
 				}
 				break
 			case .retry(let attempt, let rescus, let spec):
-				metrics?.print("Connection Attempt \(rescus).\(attempt) of \(spec.retryCount)")
+				print("\(Date.nowInSeconds()) MQTT Connection Attempt \(rescus).\(attempt) of \(spec.retryCount)")
 				break
 			case .discconnected(let reason, let error):
-				print("Discconnected \(reason) \(error?.localizedDescription ?? "")")
+				print("\(Date.nowInSeconds()) MQTT Discconnected \(reason) \(error?.localizedDescription ?? "")")
 				DispatchQueue.main.async {
 					self.trainControl.disconnected()
 				}
@@ -111,18 +107,18 @@ extension AppDelegate: MQTTClientDelegate {
 	}
 	
 	func mqtt(client: MQTTClient, pinged: MQTTPingStatus) {
-		metrics?.debug("Ping \(pinged)")
+		print("\(Date.nowInSeconds()) MQTT Ping \(pinged)")
 	}
 	
 	func mqtt(client: MQTTClient, subscription: MQTTSubscriptionDetail, changed: MQTTSubscriptionStatus) {
-		metrics?.debug("Subscription \(subscription) \(changed)")
+		print("\(Date.nowInSeconds()) MQTT Subscription \(subscription) \(changed)")
 		if changed == .subscribed {
-			metrics?.debug("    \(subscription.topics)")
+			print("    \(subscription.topics)")
 		}
 	}
 	
 	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage) {
-		metrics?.print("Unhandled \(unhandledMessage)")
+		print("\(Date.nowInSeconds()) MQTT unhandled \(unhandledMessage)")
 	}
 }
 

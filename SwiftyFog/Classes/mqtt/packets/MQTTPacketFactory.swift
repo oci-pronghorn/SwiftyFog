@@ -21,36 +21,21 @@ struct MQTTPacketFactory {
         .unSubAck : MQTTUnsubAckPacket.init,
     ]
 	
-	private let metrics: MQTTMetrics?
-	
-	init( metrics: MQTTMetrics?) {
-		self.metrics = metrics
-	}
+	var debugOut: ((String)->())?
 	
 	func send(_ packet: MQTTPacket, _ writer: FogSocketStreamWrite) -> Bool {
-		let data = marshal(packet)
-		metrics?.marshalledPacket()
+		let data = write(packet)
+		debugOut?("* Sent: \(type(of:packet)) [\(data.count)] \(data.fogHexDescription)")
 		var success = false
 		writer({ w in
 			success = data.write(to: w)
-			if success == false {
-				metrics?.deliveredFailedPacket()
-			}
 		})
 		return success
     }
 	
-    func receive(_ read: StreamReader) -> (Bool, MQTTPacket?) {
-		let result = unmarshal(read)
-		if result.1 == nil && result.0 == true {
-			metrics?.unmarshallFailedPacket()
-		}
-		return result
-    }
-	
     private static let filler = [UInt8](repeating: 0, count: MQTTPacket.fixedHeaderLength + MQTTPackedLength.maxLen)
 	
-    private func marshal(_ packet: MQTTPacket) -> Data {
+    private func write(_ packet: MQTTPacket) -> Data {
 		let fcl = MQTTPacketFactory.filler.count
 		let fhl = MQTTPacket.fixedHeaderLength
 		let fsl = fcl - fhl
@@ -67,34 +52,33 @@ struct MQTTPacketFactory {
 		data[remainder] = packet.header.memento
 		data = data.subdata(in: remainder..<data.count)
 
-		if let metrics = metrics {
-			metrics.debug("Sent: \(type(of:packet)) [\(data.count)] \(data.fogHexDescription)")
+		if let debugOut = debugOut {
 			let realCapacity = capacity - remainder
 			if realCapacity < data.count {
-				metrics.debug("Underallocated: \(type(of:packet)) \(data.count) > \(realCapacity)")
+				debugOut("* Underallocated: \(type(of:packet)) \(data.count) > \(realCapacity)")
 			}
 			else if realCapacity > data.count {
-				metrics.debug("Overallocated: \(type(of:packet)) \(data.count) < \(realCapacity)")
+				debugOut("* Overallocated: \(type(of:packet)) \(data.count) < \(realCapacity)")
 			}
 		}
 		return data
     }
 
-    private func unmarshal(_ read: StreamReader) -> (Bool, MQTTPacket?) {
+    func parse(_ read: StreamReader) -> (Bool, MQTTPacket?) {
         var headerByte: UInt8 = 0
         let headerReadLen = read(&headerByte, MQTTPacket.fixedHeaderLength)
 		guard headerReadLen > 0 else { return (true, nil) }
         if let header = MQTTPacketFixedHeader(memento: headerByte) {
 			if let len = MQTTPackedLength.read(from: read) {
 				if let data = Data(len: len, from: read) {
-					if let metrics = metrics {
+					if let debugOut = debugOut {
 						let lenSize = MQTTPackedLength.bytesRquired(for: len)
 						let len = data.count + MQTTPacket.fixedHeaderLength + lenSize
 						let headerStr = String(format: "%02x.", headerByte)
 						let lenStr = (0..<lenSize).reduce("", { r, _ in return r + "##." })
-						metrics.debug("Received: \(header.packetType) [\(len)] \(headerStr)\(lenStr)\(data.fogHexDescription)")
+						debugOut("* Received: \(header.packetType) [\(len)] \(headerStr)\(lenStr)\(data.fogHexDescription)")
 					}
-					return (true, constructors[header.packetType]?(header, data))
+					return (false, constructors[header.packetType]?(header, data))
 				}
 			}
 		}

@@ -40,28 +40,28 @@ final class MQTTConnection {
 	private let hostParams: MQTTHostParams
 	private let clientPrams: MQTTClientParams
 	private let authPrams: MQTTAuthentication
-	private let metrics: MQTTMetrics?
-    private let factory: MQTTPacketFactory
+    private var factory: MQTTPacketFactory
     private var stream: FogSocketStream?
     private var keepAliveTimer: DispatchSourceTimer?
 	
     private weak var delegate: MQTTConnectionDelegate?
+	
+    public var debugOut : ((String)->())? = nil {
+		didSet {
+			factory.debugOut = debugOut
+		}
+    }
 	
 	private let mutex = ReadWriteMutex()
     private(set) var isFullConnected: Bool = false
     private var lastControlPacketSent: Int64 = 0
     private var lastPingAck: Int64 = 0
 	
-    init?(	hostParams: MQTTHostParams,
-			clientPrams: MQTTClientParams,
-			authPrams: MQTTAuthentication,
-			socketQoS: DispatchQoS,
-			metrics: MQTTMetrics?) {
+    init?(hostParams: MQTTHostParams, clientPrams: MQTTClientParams, authPrams: MQTTAuthentication, socketQoS: DispatchQoS) {
 		self.hostParams = hostParams
 		self.clientPrams = clientPrams
 		self.authPrams = authPrams
-		self.metrics = metrics
-		self.factory = MQTTPacketFactory(metrics: metrics)
+		self.factory = MQTTPacketFactory()
 		
 		let stream = FogSocketStream(hostName: hostParams.host, port: Int(hostParams.port), qos: socketQoS)
 		guard let hasStream = stream else { return nil }
@@ -209,15 +209,9 @@ extension MQTTConnection {
 }
 
 extension MQTTConnection: FogSocketStreamDelegate {
-	func fog(stream: FogSocketStream, ready: Bool) {
-		if ready {
-			if startConnectionHandshake() == false {
-				self.didDisconnect(reason: .socket, error: nil)
-			}
-			// else wait for ack
-		}
-		else {
-			self.didDisconnect(reason: .timeout, error: nil)
+	func fog(streamReady: FogSocketStream) {
+		if startConnectionHandshake() == false {
+			self.didDisconnect(reason: .socket, error: nil)
 		}
 	}
 
@@ -226,7 +220,7 @@ extension MQTTConnection: FogSocketStreamDelegate {
 	}
 
 	func fog(stream: FogSocketStream, received: StreamReader) {
-		let parsed = factory.receive(received)
+		let parsed = factory.parse(received)
 		if parsed.0 {
 			self.didDisconnect(reason: .serverDisconnectedUs, error: nil)
 			return

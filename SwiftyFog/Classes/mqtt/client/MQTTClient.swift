@@ -29,19 +29,24 @@ public final class MQTTClient {
 	
 	private let queue: DispatchQueue
 	private let socketQoS: DispatchQoS
-	private let metrics: MQTTMetrics?
 	
 	private let idSource: MQTTMessageIdSource
     private let durability: MQTTPacketDurability
 	private let publisher: MQTTPublisher
 	private let subscriber: MQTTSubscriber
 	private let distributer: MQTTDistributor
-	
 	private var connection: MQTTConnection?
 	private var retry: MQTTRetryConnection?
-	private var madeInitialConnection = false
+	private var connectedCount: Int
 	
     public weak var delegate: MQTTClientDelegate?
+	
+    public var debugOut : ((String)->())? {
+		didSet {
+			idSource.debugOut = debugOut
+			connection?.debugOut = debugOut
+		}
+    }
 	
 	public init(
 			client: MQTTClientParams = MQTTClientParams(),
@@ -49,17 +54,15 @@ public final class MQTTClient {
 			auth: MQTTAuthentication = MQTTAuthentication(),
 			reconnect: MQTTReconnectParams = MQTTReconnectParams(),
 			queue: DispatchQueue = DispatchQueue.global(),
-			socketQoS: DispatchQoS = .userInitiated,
-			metrics: MQTTMetrics? = nil) {
+			socketQoS: DispatchQoS = .userInitiated) {
 		self.client = client
 		self.host = host
 		self.auth = auth
 		self.reconnect = reconnect
 		self.queue = queue
 		self.socketQoS = socketQoS
-		self.metrics = metrics
-		
-		idSource = MQTTMessageIdSource(metrics: metrics)
+		connectedCount = 0
+		idSource = MQTTMessageIdSource()
 		self.durability = MQTTPacketDurability(idSource: idSource, queuePubOnDisconnect: client.queuePubOnDisconnect, resendInterval: client.resendPulseInterval)
 		self.publisher = MQTTPublisher(issuer: durability, queuePubOnDisconnect: client.queuePubOnDisconnect, qos2Mode: client.qos2Mode)
 		self.subscriber = MQTTSubscriber(issuer: durability)
@@ -96,12 +99,9 @@ public final class MQTTClient {
 	
 	private func makeConnection(_ attempt: Int, _ rescus: Int) {
 		delegate?.mqtt(client: self, connected: .retry(attempt, rescus, self.reconnect))
-		connection = MQTTConnection(
-			hostParams: host,
-			clientPrams: client,
-			authPrams: auth,
-			socketQoS: socketQoS,
-			metrics: metrics)
+		connection = MQTTConnection(hostParams: host, clientPrams: client, authPrams: auth, socketQoS: socketQoS)
+		connection?.debugOut = debugOut
+		connection?.start(delegate: self)
 		if let connection = connection {
 			connection.start(delegate: self)
 		}
@@ -111,10 +111,7 @@ public final class MQTTClient {
 	}
 	
 	private func unhandledPacket(packet: MQTTPacket) {
-		if let metrics = metrics {
-			metrics.unhandledPacket()
-			metrics.debug("Unhandled: \(type(of:packet))")
-		}
+		debugOut?("* MQTT Unhandled: \(type(of:packet))")
 	}
 }
 
@@ -175,16 +172,14 @@ extension MQTTClient: MQTTConnectionDelegate {
 	}
 	
 	func mqtt(connection: MQTTConnection, connectedAsPresent: Bool) {
-		metrics?.madeConnection()
-		let wasInitialConnection = madeInitialConnection == false
-		madeInitialConnection = true
+		connectedCount += 1
 		retry?.connected = true
-		delegate?.mqtt(client: self, connected: .connected(0))
+		delegate?.mqtt(client: self, connected: .connected(connectedCount))
 		idSource.connected(cleanSession: client.cleanSession, present: connectedAsPresent)
-		durability.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
-		publisher.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
-		subscriber.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
-		distributer.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
+		durability.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: connectedCount == 1)
+		publisher.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: connectedCount == 1)
+		subscriber.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: connectedCount == 1)
+		distributer.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: connectedCount == 1)
 	}
 	
 	func mqtt(connection: MQTTConnection, pinged: MQTTPingStatus) {

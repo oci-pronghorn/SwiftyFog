@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol FogSocketStreamDelegate: class {
-    func fog(stream: FogSocketStream, ready: Bool)
+    func fog(streamReady: FogSocketStream)
     func fog(stream: FogSocketStream, errored: Error?)
 	func fog(stream: FogSocketStream, received: StreamReader)
 }
@@ -95,7 +95,7 @@ public final class FogSocketStream: NSObject, StreamDelegate {
 					// output almost ready
 				}
 				if !wasReady && inputReady && outputReady {
-					delegate?.fog(stream: self, ready: true)
+					delegate?.fog(streamReady: self)
 				}
 				break
 			case Stream.Event.hasBytesAvailable:
@@ -117,7 +117,7 @@ public final class FogSocketStream: NSObject, StreamDelegate {
 					outputReady = true
 				}
 				if !wasReady && inputReady && outputReady {
-					delegate?.fog(stream: self, ready: true)
+					delegate?.fog(streamReady: self)
 				}
 				break
 			default:
