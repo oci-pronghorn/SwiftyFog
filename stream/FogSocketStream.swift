@@ -15,7 +15,7 @@ public protocol FogSocketStreamDelegate: class {
 
 public typealias FogSocketStreamWrite = ((StreamWriter)->())->()
 
-public class FogSocketStream: NSObject, StreamDelegate {
+public final class FogSocketStream: NSObject, StreamDelegate {
 	private let mutex = ReadWriteMutex()
     private let inputStream: InputStream
     private let outputStream: OutputStream

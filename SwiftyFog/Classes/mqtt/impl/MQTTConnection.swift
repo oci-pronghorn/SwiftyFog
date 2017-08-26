@@ -40,30 +40,32 @@ final class MQTTConnection {
 	private let hostParams: MQTTHostParams
 	private let clientPrams: MQTTClientParams
 	private let authPrams: MQTTAuthentication
-    private var factory: MQTTPacketFactory
+	private let metrics: MQTTMetrics?
+    private let factory: MQTTPacketFactory
     private var stream: FogSocketStream?
     private var keepAliveTimer: DispatchSourceTimer?
 	
     private weak var delegate: MQTTConnectionDelegate?
-	
-    public var debugOut : ((String)->())? = nil {
-		didSet {
-			factory.debugOut = debugOut
-		}
-    }
 	
 	private let mutex = ReadWriteMutex()
     private(set) var isFullConnected: Bool = false
     private var lastControlPacketSent: Int64 = 0
     private var lastPingAck: Int64 = 0
 	
-    init(hostParams: MQTTHostParams, clientPrams: MQTTClientParams, authPrams: MQTTAuthentication, socketQoS: DispatchQoS) {
+    init?(	hostParams: MQTTHostParams,
+			clientPrams: MQTTClientParams,
+			authPrams: MQTTAuthentication,
+			socketQoS: DispatchQoS,
+			metrics: MQTTMetrics?) {
 		self.hostParams = hostParams
 		self.clientPrams = clientPrams
 		self.authPrams = authPrams
-		self.factory = MQTTPacketFactory()
-		// May return nil if streams cannot be open
-		self.stream = FogSocketStream(hostName: hostParams.host, port: Int(hostParams.port), qos: socketQoS)
+		self.metrics = metrics
+		self.factory = MQTTPacketFactory(metrics: metrics)
+		
+		let stream = FogSocketStream(hostName: hostParams.host, port: Int(hostParams.port), qos: socketQoS)
+		guard let hasStream = stream else { return nil }
+		self.stream = hasStream
     }
 	
     func start(delegate: MQTTConnectionDelegate?) {
@@ -139,7 +141,7 @@ extension MQTTConnection {
 	
 	private func fullConnectionTimeout() {
 		if mutex.reading({isFullConnected}) == false {
-			//self.didDisconnect(reason: .timeout, error: nil)
+			self.didDisconnect(reason: .timeout, error: nil)
 		}
 		// else we are already connected!
 	}
@@ -224,7 +226,7 @@ extension MQTTConnection: FogSocketStreamDelegate {
 	}
 
 	func fog(stream: FogSocketStream, received: StreamReader) {
-		let parsed = factory.parse(received)
+		let parsed = factory.receive(received)
 		if parsed.0 {
 			self.didDisconnect(reason: .serverDisconnectedUs, error: nil)
 			return

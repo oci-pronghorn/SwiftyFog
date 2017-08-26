@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class MQTTBroadcaster {
+public final class MQTTBroadcaster {
 	private let registration: [MQTTRegistration]
 	private let subscription: MQTTSubscription!
 	

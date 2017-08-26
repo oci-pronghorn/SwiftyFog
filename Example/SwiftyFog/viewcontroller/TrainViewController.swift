@@ -128,7 +128,6 @@ extension TrainViewController: BillboardDelegate, LightsDelegate, EngineDelegate
 	}
 	
 	func onImageSpecConfirmed(layout: FogBitmapLayout) {
-		print("Billboard Specified: \(layout)")
 	}
 	
 	func onLightsPowered(powered: Bool) {
