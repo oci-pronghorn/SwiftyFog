@@ -14,13 +14,13 @@ public class EngineBehavior implements PubSubMethodListener {
     private final String enginePoweredTopic;
     private final String engineCalibratedTopic;
 
-    private final ActuatorDriverPayload actuator = new ActuatorDriverPayload();
+    private final ActuatorDriverPayload actuatorPayload = new ActuatorDriverPayload();
     private final RationalPayload calibration = new RationalPayload(15, 100);
-    private final RationalPayload actuatorPayload = new RationalPayload();
+    private final RationalPayload enginePower = new RationalPayload(0, 100);
 
     public EngineBehavior(FogRuntime runtime, String actuatorControlTopic, ActuatorDriverPort port, String enginePoweredTopic, String engineCalibratedTopic) {
         this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
-        this.actuator.port = port;
+        this.actuatorPayload.port = port;
         this.actuatorControlTopic = actuatorControlTopic;
         this.enginePoweredTopic = enginePoweredTopic;
         this.engineCalibratedTopic = engineCalibratedTopic;
@@ -34,17 +34,25 @@ public class EngineBehavior implements PubSubMethodListener {
 
     public boolean onCalibrate(CharSequence charSequence, BlobReader messageReader) {
         messageReader.readInto(this.calibration);
+        double actualPower = enginePower.ratio();
         this.channel.publishTopic(engineCalibratedTopic, writer -> writer.write(calibration));
+        issuePower(actualPower);
         return true;
     }
 
     public boolean onPower(CharSequence charSequence, BlobReader messageReader) {
-        messageReader.readInto(actuatorPayload);
-        double actualPower = actuatorPayload.ratio();
-        if (Math.abs(actualPower) < calibration.ratio()) actualPower = 0.0;
-        actuator.power = actualPower;
-        this.channel.publishTopic(actuatorControlTopic, writer -> writer.write(actuator));
-        this.channel.publishTopic(enginePoweredTopic, writer -> writer.write(actuatorPayload));
+        messageReader.readInto(enginePower);
+        double actualPower = enginePower.ratio();
+        this.channel.publishTopic(enginePoweredTopic, writer -> writer.write(enginePower));
+        issuePower(actualPower);
         return true;
+    }
+
+    private void issuePower(double actualPower) {
+        if (Math.abs(actualPower) < calibration.ratio()) actualPower = 0.0;
+        if (actualPower != actuatorPayload.power) {
+            actuatorPayload.power = actualPower;
+            this.channel.publishTopic(actuatorControlTopic, writer -> writer.write(actuatorPayload));
+        }
     }
 }

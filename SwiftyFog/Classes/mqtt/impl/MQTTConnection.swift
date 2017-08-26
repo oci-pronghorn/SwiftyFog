@@ -139,7 +139,7 @@ extension MQTTConnection {
 	
 	private func fullConnectionTimeout() {
 		if mutex.reading({isFullConnected}) == false {
-			self.didDisconnect(reason: .timeout, error: nil)
+			//self.didDisconnect(reason: .timeout, error: nil)
 		}
 		// else we are already connected!
 	}
