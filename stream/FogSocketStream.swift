@@ -47,10 +47,12 @@ public final class FogSocketStream: NSObject, StreamDelegate {
 	}
 	
     deinit {
+		// make certain no more callbacks happen
+		inputStream.delegate = nil
+		outputStream.delegate = nil
+		// we are told it will be unscheduled from runloop
         inputStream.close()
-        inputStream.delegate = nil
         outputStream.close()
-        outputStream.delegate = nil
     }
 	
 	public func writer(writer: (StreamWriter)->()) {
@@ -60,15 +62,14 @@ public final class FogSocketStream: NSObject, StreamDelegate {
 		}
     }
 	
-    public func start(isSSL: Bool, delegate: FogSocketStreamDelegate?) {
+    public func start(isSSL: StreamSocketSecurityLevel?, delegate: FogSocketStreamDelegate?) {
 		self.delegate = delegate
 		let hasInput = inputStream
 		let hasOutput = outputStream
 		
-		if isSSL {
-			let securityLevel = StreamSocketSecurityLevel.negotiatedSSL.rawValue
-			let _ = hasInput.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
-			let _ = hasOutput.setProperty(securityLevel, forKey: Stream.PropertyKey.socketSecurityLevelKey)
+		if let raw = isSSL?.rawValue {
+			let _ = hasInput.setProperty(raw, forKey: Stream.PropertyKey.socketSecurityLevelKey)
+			let _ = hasOutput.setProperty(raw, forKey: Stream.PropertyKey.socketSecurityLevelKey)
 		}
 		
 		FogSocketStream.runloop.runLoop(label: label + ".in", qos: qos) {
