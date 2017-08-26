@@ -22,9 +22,10 @@ public class AmbientLightBroadcast implements AnalogListener {
     @Override
     public void analogEvent(Port port, long l, long l1, int i, int i1) {
         if (port == lightSensorPort) {
+            // TODO: only broadcast if significant change...
             if (l != oldValue.num) {
+                System.out.println(String.format("%d -> %d", oldValue.num, i));
                 oldValue.num = i;
-                // TODO: only broadcast non-noise averaged per second changes
                 channel.publishTopic(publishTopic, writer -> writer.write(oldValue));
             }
         }

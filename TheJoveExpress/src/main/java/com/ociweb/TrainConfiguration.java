@@ -12,6 +12,7 @@ public class TrainConfiguration  {
     final String mqttBroker;
     final String mqttClientName;
     final int mqttPort = 1883;
+    final boolean forceTelemetry = false;
     final boolean engineEnabled = true;
     final boolean lightsEnabled = true;
     final boolean billboardEnabled = true;

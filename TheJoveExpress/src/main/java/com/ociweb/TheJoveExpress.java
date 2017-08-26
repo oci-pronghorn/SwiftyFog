@@ -38,7 +38,7 @@ public class TheJoveExpress implements FogApp
         if (config.cameraEnabled) ; //c.connect(pi-bus camera);
         if (config.soundEnabled) ; //c.connect(serial mp3 player);
 
-        if (c.isTestHardware()) c.enableTelemetry();
+        if (config.forceTelemetry || c.isTestHardware()) c.enableTelemetry();
 
         // TODO: only needed for MQTT connect workaround
         c.setTimerPulseRate(500);
