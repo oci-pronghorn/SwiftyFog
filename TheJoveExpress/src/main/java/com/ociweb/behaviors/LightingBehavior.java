@@ -41,6 +41,12 @@ public class LightingBehavior implements PubSubMethodListener {
     public boolean onCalibrate(CharSequence charSequence, BlobReader messageReader) {
         messageReader.readInto(this.calibration);
         this.channel.publishTopic(lightCalibratedTopic, writer -> writer.write(calibration));
+        if (ambient.num >= calibration.num) {
+            determinedPower = 0.0;
+        } else {
+            determinedPower = 1.0;
+        }
+        issuePower();
         return true;
     }
 

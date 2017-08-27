@@ -69,6 +69,7 @@ final class MQTTSubscriber {
 	}
 	
 	func connected(cleanSession: Bool, present: Bool, initial: Bool) {
+		// TODO on clean == false return recreated last known subscriptions from file
 		mutex.writing {
 			if initial == false {
 				for token in knownSubscriptions.keys.sorted() {

@@ -83,7 +83,6 @@ public final class MQTTClient {
 			}
 			retry?.start()
 		}
-		// TODO on clean == false return recreated last known subscriptions
 		return []
 	}
 	

@@ -281,6 +281,7 @@
                         <outlet property="enginePower" destination="frG-rd-tNm" id="qK1-9D-qZL"/>
                         <outlet property="lightCalibration" destination="Ulu-J2-pss" id="Vzm-JV-9VR"/>
                         <outlet property="lightIndicatorImage" destination="I8S-Am-1OA" id="oTj-7e-Fp7"/>
+                        <outlet property="lightPower" destination="N5j-RN-YrA" id="ppI-LP-0aJ"/>
                         <outlet property="powerGauge" destination="i1b-Ey-Udf" id="KrQ-ev-3sc"/>
                     </connections>
                 </viewController>

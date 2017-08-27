@@ -45,6 +45,7 @@ class TrainViewController: UIViewController {
 	@IBOutlet weak var billboardImage: UIImageView!
 	
 	@IBOutlet weak var lightCalibration: UISlider!
+	@IBOutlet weak var lightPower: UISegmentedControl!
 	@IBOutlet weak var engineCalibration: UISlider!
 	@IBOutlet weak var enginePower: ScrubControl!
 	
@@ -72,14 +73,10 @@ class TrainViewController: UIViewController {
 		ambientGauge.rangeLabels = ["Dark", "Light"]
 		ambientGauge.rangeColors = [UIColor.darkGray, UIColor.lightGray]
 		
-		self.engineCalibration.rational = engine.calibration
-		self.enginePower.rational = engine.power
-		self.connectedImage.isHighlighted = mqtt.connected
-		lightIndicatorImage?.isHighlighted = lights.powered
+		updateGauges()
+		updateControls()
 		
-		powerGauge.rangeValues = [NSNumber(value: -engine.calibration.num), NSNumber(value: engine.calibration.num), 100]
-		ambientGauge.rangeValues = [NSNumber(value: lights.calibration.num), 256]
-		
+		/*
 		self.connectMetrics.textSize = 24
 		self.connectMetrics.useSound = true
 		self.connectMetrics.fixedLength = 15
@@ -98,10 +95,26 @@ class TrainViewController: UIViewController {
 		}
 		
 		self.connectMetrics.text = "\(0)\(0).\(0)\(0).\(0)\(0)"
+		*/
 	}
 }
 
 extension TrainViewController {
+
+	func updateGauges() {
+		self.connectedImage.isHighlighted = mqtt.connected
+		self.powerGauge.rangeValues = [NSNumber(value: -engine.calibration.num), NSNumber(value: engine.calibration.num), 100]
+		self.ambientGauge.rangeValues = [NSNumber(value: lights.calibration.num), 256]
+		self.lightIndicatorImage?.isHighlighted = lights.powered
+	}
+	
+	func updateControls() {
+		self.engineCalibration.rational = engine.calibration
+		self.enginePower.rational = engine.power
+		self.lightCalibration.rational = lights.calibration
+		self.lightPower.selectedSegmentIndex = Int(lights.powerOverride.rawValue)
+	}
+	
 	@IBAction
 	func onPicture(sender: UIButton?) {
 		let photos = PhotosAccess(title: nil, root: self);

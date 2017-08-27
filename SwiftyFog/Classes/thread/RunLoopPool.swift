@@ -14,6 +14,7 @@ We are trying to solve several issues
 -- But closing the sockets does not dismiss the runloop
 -- But there is no way to determine what is keeping the runloop alive
 -- But there is no high level quit method on the runloop
+-- But the need for unscheduling is not consistently documented, exampled, or easily done
 
  Today we are not reusing DispatchQueue per host and aborting old DispatchQueue's
 */

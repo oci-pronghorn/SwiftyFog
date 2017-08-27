@@ -50,8 +50,8 @@ public final class FogSocketStream: NSObject, StreamDelegate {
     }
 	
     private func closeStreams() {
-		// we are told streams will be unscheduled from runloop
-		// make certain no more callbacks happen
+		// We are told streams will be unscheduled from runloop on close
+		// Make certain no more callbacks happen
 		if let input = inputStream {
 			inputStream = nil
 			input.delegate = nil
