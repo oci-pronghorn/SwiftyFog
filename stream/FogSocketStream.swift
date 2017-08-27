@@ -17,16 +17,15 @@ public typealias FogSocketStreamWrite = ((StreamWriter)->())->()
 
 public final class FogSocketStream: NSObject, StreamDelegate {
 	private let mutex = ReadWriteMutex()
-    private let inputStream: InputStream
-    private let outputStream: OutputStream
+    private var inputStream: InputStream?
+    private var outputStream: OutputStream?
     private let label: String
     private let qos: DispatchQoS
     private weak var delegate: FogSocketStreamDelegate?
 	
-	private var inputReady = false
-	private var outputReady = false
+	private static let runloop =  RunLoopPool(resuseMode: false)
 	
-	private static let runloop =  RunLoopPool()
+    private var isReady = false
 	
 	public init?(hostName: String, port: Int, qos: DispatchQoS) {
         var inputStreamHandle: InputStream?
@@ -42,21 +41,43 @@ public final class FogSocketStream: NSObject, StreamDelegate {
 		self.inputStream = hasInput
 		self.outputStream = hasOutput
 		super.init()
-        self.inputStream.delegate = self
-        self.outputStream.delegate = self
+        self.inputStream?.delegate = self
+        self.outputStream?.delegate = self
 	}
 	
     deinit {
+		closeStreams()
+    }
+	
+    private func closeStreams() {
+		// we are told streams will be unscheduled from runloop
 		// make certain no more callbacks happen
-		inputStream.delegate = nil
-		outputStream.delegate = nil
-		// we are told it will be unscheduled from runloop
-        inputStream.close()
-        outputStream.close()
+		if let input = inputStream {
+			inputStream = nil
+			input.delegate = nil
+			input.close()
+		}
+		if let output = outputStream {
+			outputStream = nil
+			output.delegate = nil
+			output.close()
+		}
+    }
+	
+    private func endStream(_ aStream: Stream) {
+		aStream.close()
+		aStream.remove(from: RunLoop.current, forMode: .defaultRunLoopMode)
+		aStream.delegate = nil
+		if aStream === outputStream {
+			outputStream = nil
+		}
+		else if aStream === inputStream {
+			inputStream = nil
+		}
     }
 	
 	public func writer(writer: (StreamWriter)->()) {
-		let hasOutput = outputStream
+		let hasOutput = outputStream!
 		mutex.writing {
 			writer(hasOutput.write)
 		}
@@ -64,8 +85,8 @@ public final class FogSocketStream: NSObject, StreamDelegate {
 	
     public func start(isSSL: StreamSocketSecurityLevel?, delegate: FogSocketStreamDelegate?) {
 		self.delegate = delegate
-		let hasInput = inputStream
-		let hasOutput = outputStream
+		let hasInput = inputStream!
+		let hasOutput = outputStream!
 		
 		if let raw = isSSL?.rawValue {
 			let _ = hasInput.setProperty(raw, forKey: Stream.PropertyKey.socketSecurityLevelKey)
@@ -83,42 +104,41 @@ public final class FogSocketStream: NSObject, StreamDelegate {
 		}
     }
 	
+    private func checkForReady() {
+		mutex.writing {
+			if isReady == false {
+				if inputStream?.streamStatus == Stream.Status.open &&
+				   outputStream?.streamStatus == Stream.Status.open &&
+				   outputStream?.hasSpaceAvailable == true {
+					isReady = true
+					delegate?.fog(streamReady: self)
+				}
+			}
+		}
+	}
+	
     @objc
 	public func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
         switch eventCode {
 			case Stream.Event.openCompleted:
-				let wasReady = inputReady && outputReady
-				if aStream == inputStream {
-					inputReady = true
-				}
-				else if aStream == outputStream {
-					// output almost ready
-				}
-				if !wasReady && inputReady && outputReady {
-					delegate?.fog(streamReady: self)
-				}
+				checkForReady()
 				break
 			case Stream.Event.hasBytesAvailable:
-				if aStream == inputStream {
-					delegate?.fog(stream: self, received: inputStream.read)
+				if let input = inputStream, aStream == input {
+					delegate?.fog(stream: self, received: input.read)
 				}
 				break
 			case Stream.Event.errorOccurred:
 				delegate?.fog(stream: self, errored: aStream.streamError)
 				break
 			case Stream.Event.endEncountered:
+				endStream(aStream)
 				if aStream.streamError != nil {
 					delegate?.fog(stream: self, errored: aStream.streamError)
 				}
 				break
 			case Stream.Event.hasSpaceAvailable:
-				let wasReady = inputReady && outputReady
-				if aStream == outputStream {
-					outputReady = true
-				}
-				if !wasReady && inputReady && outputReady {
-					delegate?.fog(streamReady: self)
-				}
+				checkForReady()
 				break
 			default:
 				break

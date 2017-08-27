@@ -112,9 +112,6 @@ extension AppDelegate: MQTTClientDelegate {
 	
 	func mqtt(client: MQTTClient, subscription: MQTTSubscriptionDetail, changed: MQTTSubscriptionStatus) {
 		//print("\(Date.nowInSeconds()) MQTT Subscription \(subscription) \(changed)")
-		if changed == .subscribed {
-			print("    \(subscription.topics)")
-		}
 	}
 	
 	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage) {

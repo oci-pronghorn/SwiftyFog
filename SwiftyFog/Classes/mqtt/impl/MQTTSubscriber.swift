@@ -88,7 +88,7 @@ final class MQTTSubscriber {
 			// Do not remove completion blocks
 			for token in knownSubscriptions.keys.sorted().reversed() {
 				if let subscription = knownSubscriptions[token] {
-					delegate?.mqtt(subscription: subscription, changed: stopped ? .unsubscribed : .suspended)
+					delegate?.mqtt(subscription: subscription, changed: .suspended)
 				}
 				else {
 					knownSubscriptions.removeValue(forKey: token)
