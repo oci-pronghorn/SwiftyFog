@@ -10,14 +10,17 @@ import Foundation
 
 final class MQTTMessageIdSource {
 	private let mutex = ReadWriteMutex()
+	private let metrics: MQTTMetrics?
 	private var chart = [UInt8](repeating: 0xFF, count: Int(UInt16.max / 8))
 	private var hint = UInt16(0)
 	
 	private(set) var inuse: Int = 0
 	
-	var debugOut: ((String)->())?
+	init(metrics: MQTTMetrics?) {
+		self.metrics = metrics
+	}
 	
-	func connected(cleanSession: Bool, present: Bool) {
+	func connected(cleanSession: Bool, present: Bool, initial: Bool) {
 	}
 	
 	func disconnected(cleanSession: Bool, stopped: Bool) {
@@ -84,7 +87,10 @@ final class MQTTMessageIdSource {
 	
 	private func retain(_ id: UInt16) {
 		inuse += 1
-		debugOut?("* Retain \(id) used: \(inuse)")
+		if let metrics = metrics {
+			metrics.setIdsInUse(idsInUse: inuse)
+			metrics.debug("Retain \(id) used: \(inuse)")
+		}
 		let idx = Int(id) / 8
 		let offset = (id + 8) % 8
 		chart[idx] &= ~(0x01 << offset)
@@ -92,7 +98,10 @@ final class MQTTMessageIdSource {
 	
 	private func release(_ id: UInt16) {
 		inuse -= 1
-		debugOut?("* Release \(id) used: \(inuse)")
+		if let metrics = metrics {
+			metrics.setIdsInUse(idsInUse: inuse)
+			metrics.debug("Release \(id) used: \(inuse)")
+		}
 		let idx = Int(id) / 8
 		let offset = (id + 8) % 8
 		chart[idx] |= (0x01 << offset)
