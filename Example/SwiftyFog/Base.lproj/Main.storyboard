@@ -29,8 +29,9 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Disconnected" highlightedImage="Connected" translatesAutoresizingMaskIntoConstraints="NO" id="4zZ-K8-b71">
+                                    <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Disconnected" highlightedImage="Connected" translatesAutoresizingMaskIntoConstraints="NO" id="4zZ-K8-b71">
                                         <rect key="frame" x="327" y="0.0" width="32" height="32"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="32" id="3VN-HX-69l"/>
                                             <constraint firstAttribute="width" constant="32" id="yP0-Kq-eiq"/>
@@ -44,7 +45,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="jch-e0-4v6" userLabel="Engine">
                                         <rect key="frame" x="0.0" y="0.0" width="175.5" height="255.5"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i1b-Ey-Udf" customClass="WMGaugeView">
+                                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i1b-Ey-Udf" customClass="WMGaugeView">
                                                 <rect key="frame" x="0.0" y="0.0" width="175.5" height="175.5"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -75,7 +76,7 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="scaleIgnoreRangeColors" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="frG-rd-tNm" customClass="ScrubControl" customModule="SwiftyFog_Example" customModuleProvider="target">
+                                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="frG-rd-tNm" customClass="ScrubControl" customModule="SwiftyFog_Example" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="185.5" width="175.5" height="29"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -125,7 +126,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="fI1-eS-yQm" userLabel="Lights">
                                         <rect key="frame" x="183.5" y="0.0" width="175.5" height="255.5"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YEQ-Tl-lGJ" customClass="WMGaugeView">
+                                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YEQ-Tl-lGJ" customClass="WMGaugeView">
                                                 <rect key="frame" x="0.0" y="0.0" width="175.5" height="175.5"/>
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TorchOff" highlightedImage="TorchOn" translatesAutoresizingMaskIntoConstraints="NO" id="I8S-Am-1OA" userLabel="Light Indicator">
@@ -287,7 +288,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="724" y="289.20539730134936"/>
+            <point key="canvasLocation" x="647" y="-384"/>
         </scene>
         <!--Train Select View Controller-->
         <scene sceneID="lOi-5S-Dex">
@@ -381,7 +382,40 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VGR-hs-tvm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="724" y="-379"/>
+            <point key="canvasLocation" x="1466" y="-47"/>
+        </scene>
+        <!--Item-->
+        <scene sceneID="qDw-vI-B03">
+            <objects>
+                <viewController id="p7y-jt-jyH" customClass="LogViewController" customModule="SwiftyFog_Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5be-nD-Odl">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="0X2-YR-r96">
+                                <rect key="frame" x="-0.5" y="20" width="375" height="598"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="0X2-YR-r96" firstAttribute="centerX" secondItem="YgF-uf-hUR" secondAttribute="centerX" id="9Bz-bX-kDt"/>
+                            <constraint firstItem="0X2-YR-r96" firstAttribute="height" secondItem="YgF-uf-hUR" secondAttribute="height" id="Hee-9i-nlW"/>
+                            <constraint firstItem="0X2-YR-r96" firstAttribute="width" secondItem="YgF-uf-hUR" secondAttribute="width" id="M79-DN-Rey"/>
+                            <constraint firstItem="0X2-YR-r96" firstAttribute="centerY" secondItem="YgF-uf-hUR" secondAttribute="centerY" id="QY3-cA-dRY"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="YgF-uf-hUR"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="VEb-3x-ue5"/>
+                    <connections>
+                        <outlet property="log" destination="0X2-YR-r96" id="bHW-sD-pxO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ykS-WP-cUh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="646" y="313"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="oJy-au-iyg">
@@ -395,6 +429,7 @@
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="yid-ho-gJa"/>
                         <segue destination="fV6-iJ-f1p" kind="relationship" relationship="viewControllers" id="nPI-Bn-PRb"/>
+                        <segue destination="p7y-jt-jyH" kind="relationship" relationship="viewControllers" id="B0q-0k-Fva"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jqN-KY-I3X" userLabel="First Responder" sceneMemberID="firstResponder"/>

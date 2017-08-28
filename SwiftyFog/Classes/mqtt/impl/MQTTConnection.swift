@@ -19,13 +19,13 @@ public enum MQTTPingStatus: String {
 
 // The following are reasons for disconnection from broker
 public enum MQTTConnectionDisconnect {
-	case stopped
-	case socket
-	case handshake(MQTTConnAckResponse)
-	case failedRead
-	case failedWrite
-	case brokerNotAlive
-	case serverDisconnectedUs // cause by client sending bad data to server
+	case stopped // by client
+	case socket // by connection
+	case handshake(MQTTConnAckResponse) // by connection
+	case brokerNotAlive // by connection
+	case failedRead // from stream
+	case failedWrite // from stream
+	case serverDisconnectedUs // from stream
 }
 
 protocol MQTTConnectionDelegate: class {
@@ -51,7 +51,7 @@ final class MQTTConnection {
     private var lastControlPacketSent: Int64 = 0
     private var lastPingAck: Int64 = 0
 	
-    init?(
+    init(
 			hostParams: MQTTHostParams,
 			clientPrams: MQTTClientParams,
 			authPrams: MQTTAuthentication,
@@ -63,39 +63,46 @@ final class MQTTConnection {
 		self.metrics = metrics
 		self.factory = MQTTPacketFactory(metrics: metrics)
 		
-		let stream = FogSocketStream(hostName: hostParams.host, port: Int(hostParams.port), qos: socketQoS)
-		guard let hasStream = stream else { return nil }
-		self.stream = hasStream
+		self.stream = FogSocketStream(hostName: hostParams.host, port: Int(hostParams.port), qos: socketQoS)
     }
 	
     func start(delegate: MQTTConnectionDelegate?) {
 		self.delegate = delegate
-		self.stream?.start(isSSL: hostParams.ssl, delegate: self)
+		if let stream = stream {
+			stream.start(isSSL: hostParams.ssl, delegate: self)
+		}
+		else {
+			didDisconnect(reason: .socket, error: nil)
+		}
     }
 	
     deinit {
 		if mutex.reading({isFullConnected}) {
 			send(packet: MQTTDisconnectPacket())
 			self.delegate = nil // do not expose self in deinit
-			didDisconnect(reason: .stopped, error: nil)
+			didDisconnect(reason: .socket, error: nil)
 		}
 	}
 	
     private func didDisconnect(reason: MQTTConnectionDisconnect, error: Error?) {
-        keepAliveTimer?.cancel()
-		delegate?.mqtt(connection: self, disconnected: reason, error: error)
-		mutex.writing {
-			isFullConnected = false
+		if self.stream != nil {
+			self.stream = nil
+			keepAliveTimer?.cancel()
+			delegate?.mqtt(connection: self, disconnected: reason, error: error)
+			mutex.writing {
+				isFullConnected = false
+			}
 		}
-		self.stream = nil
     }
 	
 	@discardableResult
     func send(packet: MQTTPacket) -> Bool {
 		if let writer = stream?.writer {
 			if factory.send(packet, writer) {
-				mutex.writing {
-					lastControlPacketSent = Date.nowInSeconds()
+				if clientPrams.treatControlPacketsAsPings {
+					mutex.writing {
+						lastControlPacketSent = Date.nowInSeconds()
+					}
 				}
 				return true
 			}
@@ -146,7 +153,7 @@ extension MQTTConnection {
     private func startPing() {
 		if clientPrams.keepAlive > 0 {
 			let keepAliveTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
-			keepAliveTimer.schedule(deadline: .now() + .seconds(Int(clientPrams.keepAlive)), repeating: .seconds(Int(clientPrams.keepAlive)), leeway: .milliseconds(250))
+			keepAliveTimer.schedule(deadline: .now() + .seconds(Int(clientPrams.keepAlive)), repeating: .seconds(Int(clientPrams.keepAlive)), leeway: .seconds(1))
 			keepAliveTimer.setEventHandler { [weak self] in
 				self?.pingFired()
 			}
@@ -178,7 +185,8 @@ extension MQTTConnection {
 					}
 				}
 				if status != .serverDied {
-					if (now - lastControlPacketSent >= UInt64(clientPrams.keepAlive)) {
+					let secondsSinceLastPacket = now - lastControlPacketSent
+					if (clientPrams.treatControlPacketsAsPings == false || secondsSinceLastPacket >= UInt64(clientPrams.keepAlive)) {
 						status = .sent
 					}
 				}
@@ -189,7 +197,7 @@ extension MQTTConnection {
 				status = .notConnected
 			}
 		}
-		if status == .serverDied {
+		if status == .serverDied || status == .notConnected {
 			self.didDisconnect(reason: .brokerNotAlive, error: nil)
 		}
 		delegate?.mqtt(connection: self, pinged: status)
@@ -209,8 +217,9 @@ extension MQTTConnection: FogSocketStreamDelegate {
 			self.didDisconnect(reason: .socket, error: nil)
 		}
 		else {
-			if hostParams.timeout > 0 {
-				DispatchQueue.global().asyncAfter(deadline: .now() +  hostParams.timeout) { [weak self] in
+			// TODO: I don't think this is required
+			if 10 > 0 {
+				DispatchQueue.global().asyncAfter(deadline: .now() +  10) { [weak self] in
 					self?.fullConnectionTimeout()
 				}
 			}

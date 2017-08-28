@@ -53,6 +53,8 @@ class TrainViewController: UIViewController {
 	@IBOutlet weak var lightIndicatorImage: UIImageView!
 	@IBOutlet weak var ambientGauge: WMGaugeView!
 	
+	//let pulsator = Pulsator()
+	
     var mqtt: MQTTBridge! {
 		didSet {
 			engine.delegate = self
@@ -65,9 +67,19 @@ class TrainViewController: UIViewController {
 			billboard.mqtt = mqtt.createBridge(subPath: "billboard")
 		}
 	}
-	
+/*
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        view.layer.layoutIfNeeded()
+        pulsator.position = connectedImage.layer.position
+    }
+*/
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+        //connectedImage.layer.superlayer?.insertSublayer(pulsator, below: connectedImage.layer)
+		//pulsator.start()
+		
 		powerGauge.rangeLabels = ["Reverse", "Idle", "Forward"]
 		powerGauge.rangeColors = [UIColor.red, UIColor.yellow, UIColor.green]
 		ambientGauge.rangeLabels = ["Dark", "Light"]
@@ -151,14 +163,21 @@ extension TrainViewController {
 	}
 }
 
-extension TrainViewController: BillboardDelegate, LightsDelegate, EngineDelegate {
+extension TrainViewController {
 	func connected() {
 		self.connectedImage?.isHighlighted = true
+	}
+	
+	func pinged() {
+		//pulsator.start()
 	}
 	
 	func disconnected() {
 		self.connectedImage?.isHighlighted = false
 	}
+}
+
+extension TrainViewController: BillboardDelegate, LightsDelegate, EngineDelegate {
 	
 	func onImageSpecConfirmed(layout: FogBitmapLayout) {
 	}

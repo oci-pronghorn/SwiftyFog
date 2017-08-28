@@ -9,42 +9,42 @@ import Foundation
 
 public final class MQTTMetrics {
 	private let prefix: ()->(String)
-	public private(set) var marshalled: UInt64 = 0
-	public private(set) var deliveryFailed: UInt64 = 0
+	
+	public private(set) var connectionCount: UInt64 = 0
+	
+	public private(set) var idsInUse: Int = 0
+	public private(set) var written: UInt64 = 0
+	public private(set) var writesFailed: UInt64 = 0
 	public private(set) var received: UInt64 = 0
 	public private(set) var unmarshalFailed: UInt64 = 0
 	public private(set) var unhandled: UInt64 = 0
 	
-	public private(set) var idsInUse: Int = 0
-	
-	public private(set) var connectionCount: UInt64 = 0
-
-	func marshalledPacket() {
-		marshalled += 1
-	}
-	
-	func deliveredFailedPacket() {
-		deliveryFailed += 1
-	}
-	
-	func receivedPacket() {
-		received += 1
-	}
-	
-	func unmarshallFailedPacket() {
-		unmarshalFailed += 1
-	}
-	
-	func unhandledPacket() {
-		unhandled += 1
+	func madeConnection() {
+		connectionCount += 1
 	}
 	
 	func setIdsInUse(idsInUse: Int) {
 		self.idsInUse = idsInUse
 	}
+
+	func writingPacket() {
+		written += 1
+	}
 	
-	func madeConnection() {
-		connectionCount += 1
+	func failedToWitePcket() {
+		writesFailed += 1
+	}
+	
+	func receivedMessage() {
+		received += 1
+	}
+	
+	func failedToCreatePacket() {
+		unmarshalFailed += 1
+	}
+	
+	func unhandledPacket() {
+		unhandled += 1
 	}
 	
 	public var consoleOut: ((String)->())?

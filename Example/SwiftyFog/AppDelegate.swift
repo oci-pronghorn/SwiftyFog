@@ -18,11 +18,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	var trainSelect: TrainSelectViewController!
 	var trainControl: TrainViewController!
+	var logView: LogViewController!
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		
 		trainSelect = (self.window!.rootViewController as! UITabBarController).viewControllers![1] as! TrainSelectViewController
 		trainControl = (self.window!.rootViewController as! UITabBarController).viewControllers![0] as! TrainViewController
+		logView = (self.window!.rootViewController as! UITabBarController).viewControllers![2] as! LogViewController
 
 		// Select the train
 		let trainName = "thejoveexpress"
@@ -30,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Setup metrics
 		metrics = MQTTMetrics(prefix: {"\(Date.nowInSeconds()) MQTT: "})
 		//metrics?.debugOut = {print($0)}
-		metrics?.consoleOut = {print($0)}
+		metrics?.consoleOut = logView.onLog
 
 		// Create the concrete MQTTClient to connect to a specific broker
 		// MQTTClient is an MQTTBridge
@@ -111,7 +113,10 @@ extension AppDelegate: MQTTClientDelegate {
 	}
 	
 	func mqtt(client: MQTTClient, pinged: MQTTPingStatus) {
-		metrics?.print("Ping \(pinged)")
+		metrics?.print("Pinged \(pinged)")
+		DispatchQueue.main.async {
+			self.trainControl.pinged()
+		}
 	}
 	
 	func mqtt(client: MQTTClient, subscription: MQTTSubscriptionDetail, changed: MQTTSubscriptionStatus) {

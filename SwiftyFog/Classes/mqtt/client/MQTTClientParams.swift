@@ -8,24 +8,31 @@
 import Foundation
 
 public struct MQTTClientParams {
-    public var clientID: String
-    public var cleanSession: Bool
-    public var keepAlive: UInt16
-    public var lastWill: MQTTPubMsg? = nil
-    
-    public var detectServerDeath = false
+    public let clientID: String
+    public let cleanSession: Bool
+    public let keepAlive: UInt16
 	
+    public var lastWill: MQTTPubMsg? = nil
+	
+    // Some brokers are good about acks and can be treated as server is alive
+    public var detectServerDeath = false
+    // Some brokers are good about treating any packet as a ping
+    public var treatControlPacketsAsPings = false
+	
+	// The spec states that business logic may be invoked on either the 1st or 2nd ack
     public var qos2Mode: Qos2Mode = .lowLatency
+    // The spec states that retransmission of disconnected pubs is up to business logic
 	public var queuePubOnDisconnect: MQTTQoS? = nil
+	// There is no spec on the rate of unacknowledged pubs
     public var resendPulseInterval: TimeInterval = 5.0
 	
-    public init(clientID: String, cleanSession: Bool = true, keepAlive: UInt16 = 60) {
+    public init(clientID: String, cleanSession: Bool = true, keepAlive: UInt16 = 15) {
 		self.clientID = clientID
 		self.cleanSession = cleanSession
 		self.keepAlive = keepAlive
     }
 	
-	public init(cleanSession: Bool = true, keepAlive: UInt16 = 60) {
+	public init(cleanSession: Bool = true, keepAlive: UInt16 = 15) {
 		// 1 and 23 UTF-8 encoded bytes
 		// Only "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 		let deviceID = UIDevice.current.identifierForVendor!.uuidString

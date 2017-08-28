@@ -97,18 +97,14 @@ public final class MQTTClient {
 	
 	private func makeConnection(_ rescus: Int, _ attempt : Int) {
 		delegate?.mqtt(client: self, connected: .retry(rescus, attempt, self.reconnect))
-		connection = MQTTConnection(
+		let connection = MQTTConnection(
 			hostParams: host,
 			clientPrams: client,
 			authPrams: auth,
 			socketQoS: socketQoS,
 			metrics: metrics)
-		if let connection = connection {
-			connection.start(delegate: self)
-		}
-		else {
-			doDisconnect(reason: .socket, error: nil)
-		}
+		self.connection = connection
+		connection.start(delegate: self)
 	}
 	
 	private func unhandledPacket(packet: MQTTPacket) {

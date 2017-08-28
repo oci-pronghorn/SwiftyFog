@@ -14,6 +14,8 @@
 		553F97341F434D2000CBF725 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F972D1F434C6800CBF725 /* Engine.swift */; };
 		553F97351F434D2000CBF725 /* Lights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F972E1F434C6800CBF725 /* Lights.swift */; };
 		55B27CA11F51C778008ED56E /* FSDAirportFlipLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B27CA01F51C778008ED56E /* FSDAirportFlipLabel.m */; };
+		55E4C6DD1F544E7F0060A230 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E4C6DC1F544E7F0060A230 /* LogViewController.swift */; };
+		55E729921F538C26008646AB /* Pulsator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E729911F538C26008646AB /* Pulsator.swift */; };
 		55F2285F1F4E1048001CC21B /* ScubControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F2285E1F4E1048001CC21B /* ScubControl.swift */; };
 		55F228611F4E22D6001CC21B /* MetalPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F228601F4E22D6001CC21B /* MetalPanelView.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
@@ -49,6 +51,8 @@
 		553F972E1F434C6800CBF725 /* Lights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lights.swift; sourceTree = "<group>"; };
 		55B27C9F1F51C778008ED56E /* FSDAirportFlipLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSDAirportFlipLabel.h; sourceTree = "<group>"; };
 		55B27CA01F51C778008ED56E /* FSDAirportFlipLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSDAirportFlipLabel.m; sourceTree = "<group>"; };
+		55E4C6DC1F544E7F0060A230 /* LogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
+		55E729911F538C26008646AB /* Pulsator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pulsator.swift; sourceTree = "<group>"; };
 		55F2285E1F4E1048001CC21B /* ScubControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScubControl.swift; sourceTree = "<group>"; };
 		55F228601F4E22D6001CC21B /* MetalPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalPanelView.swift; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* SwiftyFog_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftyFog_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,6 +106,7 @@
 			children = (
 				550414B31F4DAA8F00226A1C /* TrainSelectViewController.swift */,
 				550414B41F4DAA8F00226A1C /* TrainViewController.swift */,
+				55E4C6DC1F544E7F0060A230 /* LogViewController.swift */,
 			);
 			path = viewcontroller;
 			sourceTree = "<group>";
@@ -116,6 +121,7 @@
 				550414B81F4DAAE200226A1C /* SwiftyFog_Example-Bridging-Header.h */,
 				55F2285E1F4E1048001CC21B /* ScubControl.swift */,
 				55F228601F4E22D6001CC21B /* MetalPanelView.swift */,
+				55E729911F538C26008646AB /* Pulsator.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -429,9 +435,11 @@
 				553F97341F434D2000CBF725 /* Engine.swift in Sources */,
 				553F97351F434D2000CBF725 /* Lights.swift in Sources */,
 				55F2285F1F4E1048001CC21B /* ScubControl.swift in Sources */,
+				55E4C6DD1F544E7F0060A230 /* LogViewController.swift in Sources */,
 				55F228611F4E22D6001CC21B /* MetalPanelView.swift in Sources */,
 				55B27CA11F51C778008ED56E /* FSDAirportFlipLabel.m in Sources */,
 				550414BB1F4DAB0C00226A1C /* WMGaugeView.m in Sources */,
+				55E729921F538C26008646AB /* Pulsator.swift in Sources */,
 				550414BC1F4DAC2600226A1C /* TrainSelectViewController.swift in Sources */,
 				553F97331F434D2000CBF725 /* Billboard.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
@@ -593,6 +601,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "SwiftyFog/view/SwiftyFog_Example-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -610,6 +619,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "SwiftyFog/view/SwiftyFog_Example-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

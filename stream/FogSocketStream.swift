@@ -14,7 +14,22 @@ public protocol FogSocketStreamDelegate: class {
 }
 
 public typealias FogSocketStreamWrite = ((StreamWriter)->())->()
-
+/*
+extension Stream.Status {
+	var canBeUsed: Bool {
+		switch self {
+			case .open:
+				fallthrough
+			case .reading:
+				fallthrough
+			case .writing:
+				return true
+			default:
+				return false
+		}
+	}
+}
+*/
 public final class FogSocketStream: NSObject, StreamDelegate {
 	private let mutex = ReadWriteMutex()
     private var inputStream: InputStream?
@@ -49,6 +64,10 @@ public final class FogSocketStream: NSObject, StreamDelegate {
 		closeStreams()
     }
 	
+    public override var description: String {
+		return "\(self.inputStream?.streamStatus.rawValue ?? 99) \(self.outputStream?.streamStatus.rawValue ?? 99)"
+    }
+	
     private func closeStreams() {
 		// We are told streams will be unscheduled from runloop on close
 		// Make certain no more callbacks happen
@@ -77,10 +96,15 @@ public final class FogSocketStream: NSObject, StreamDelegate {
     }
 	
 	public func writer(writer: (StreamWriter)->()) {
-		let hasOutput = outputStream!
-		mutex.writing {
-			writer(hasOutput.write)
+		if let hasOutput = outputStream/*, let hasInput = inputStream,
+			hasOutput.streamStatus.canBeUsed,
+			hasInput.streamStatus.canBeUsed */{
+			mutex.writing {
+				writer(hasOutput.write)
+			}
+			return
 		}
+		writer { (_, _) -> Int in return -1 }
     }
 	
     public func start(isSSL: StreamSocketSecurityLevel?, delegate: FogSocketStreamDelegate?) {

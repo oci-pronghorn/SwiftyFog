@@ -25,15 +25,13 @@ public enum MQTTPort {
 }
 
 public struct MQTTHostParams {
-    public var host: String
-    public var port: UInt16
-    public var ssl: StreamSocketSecurityLevel?
-    public var timeout: TimeInterval
+    public let host: String
+    public let port: UInt16
+    public let ssl: StreamSocketSecurityLevel?
 	
-    public init(host: String = "localhost", port: MQTTPort = .standard, ssl: StreamSocketSecurityLevel? = nil, timeout: TimeInterval = 10.0) {
+    public init(host: String = "localhost", port: MQTTPort = .standard, ssl: StreamSocketSecurityLevel? = nil) {
 		self.host = host
 		self.port = port.number
 		self.ssl = ssl
-		self.timeout = timeout
     }
 }

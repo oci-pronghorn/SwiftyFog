@@ -29,22 +29,22 @@ struct MQTTPacketFactory {
 	
 	func send(_ packet: MQTTPacket, _ writer: FogSocketStreamWrite) -> Bool {
 		let data = marshal(packet)
-		metrics?.marshalledPacket()
 		var success = false
+		metrics?.writingPacket()
 		writer({ w in
 			success = data.write(to: w)
 			if success == false {
-				metrics?.deliveredFailedPacket()
+				metrics?.failedToWitePcket()
 			}
 		})
 		return success
     }
 	
     func receive(_ read: StreamReader) -> (Bool, MQTTPacket?) {
-		metrics?.receivedPacket()
+		metrics?.receivedMessage()
 		let result = unmarshal(read)
 		if result.1 == nil && result.0 == true {
-			metrics?.unmarshallFailedPacket()
+			metrics?.failedToCreatePacket()
 		}
 		return result
     }
