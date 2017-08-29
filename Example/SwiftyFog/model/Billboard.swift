@@ -15,7 +15,10 @@ public protocol BillboardDelegate: class {
 }
 
 public class Billboard {
+	private var bitmap: FogBitMap?
 	private var broadcaster: MQTTBroadcaster?
+	
+	public weak var delegate: BillboardDelegate?
 	
     public var mqtt: MQTTBridge! {
 		didSet {
@@ -25,13 +28,16 @@ public class Billboard {
 		}
     }
 	
-	private var bitmap: FogBitMap?
+	init() {
+	}
+	
+	var isReady: Bool {
+		return bitmap != nil
+	}
 	
 	public var layout: FogBitmapLayout? {
 		return bitmap?.layout
 	}
-	
-	public weak var delegate: BillboardDelegate?
 	
 	public func display(image: UIImage) {
 		if var bitmap = bitmap {

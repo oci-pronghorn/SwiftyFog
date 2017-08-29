@@ -10,16 +10,23 @@ import Foundation
 import SwiftyFog
 
 public protocol EngineDelegate: class {
-	func onEnginePower(power: FogRational<Int64>)
-	func onEngineCalibrated(power: FogRational<Int64>)
+	func onEnginePower(power: FogRational<Int64>, _ asserted: Bool)
+	func onEngineCalibrated(power: FogRational<Int64>, _ asserted: Bool)
 }
 
 public class Engine {
 	private var broadcaster: MQTTBroadcaster?
-	public private(set) var calibration = FogRational(num: Int64(15), den: 100)
-	public private(set) var power = FogRational(num: Int64(0), den: 1)
+	public private(set) var calibration: FogFeedbackValue<FogRational<Int64>>
+	public private(set) var power: FogFeedbackValue<FogRational<Int64>>
 	
-    var mqtt: MQTTBridge! {
+	public weak var delegate: EngineDelegate?
+	
+	public init() {
+		self.calibration = FogFeedbackValue(FogRational(num: Int64(15), den: 100))
+		self.power = FogFeedbackValue(FogRational(num: Int64(0), den: 1))
+	}
+	
+    public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("powered", .atLeastOnce, Engine.receivePower),
@@ -28,28 +35,35 @@ public class Engine {
 		}
     }
 	
-	public weak var delegate: EngineDelegate?
+	public var isReady: Bool {
+		return calibration.hasFeedback && power.hasFeedback
+	}
 	
 	public func calibrate(_ calibration: FogRational<Int64>) {
-		var data  = Data(capacity: calibration.fogSize)
-		data.fogAppend(calibration)
-		mqtt.publish(MQTTPubMsg(topic: "calibrate", payload: data))
+		self.calibration.controlled(calibration) { value in
+			var data  = Data(capacity: calibration.fogSize)
+			data.fogAppend(calibration)
+			mqtt.publish(MQTTPubMsg(topic: "calibrate", payload: data))
+		}
 	}
 	
 	public func setPower(_ power: FogRational<Int64>) {
-		self.power = power
-		var data  = Data(capacity: power.fogSize)
-		data.fogAppend(power)
-		mqtt.publish(MQTTPubMsg(topic: "power", payload: data))
+		self.power.controlled(power) { value in
+			var data  = Data(capacity: value.fogSize)
+			data.fogAppend(value)
+			mqtt.publish(MQTTPubMsg(topic: "power", payload: data))
+		}
 	}
 	
 	private func receivePower(msg: MQTTMessage) {
-		power = msg.payload.fogExtract()
-		delegate?.onEnginePower(power: power)
+		self.power.received(msg.payload.fogExtract()) { value, asserted in
+			delegate?.onEnginePower(power: value, asserted)
+		}
 	}
 	
 	private func receiveCalibration(msg: MQTTMessage) {
-		calibration = msg.payload.fogExtract()
-		delegate?.onEngineCalibrated(power: calibration)
+		self.calibration.received(msg.payload.fogExtract()) { value, asserted in
+			delegate?.onEngineCalibrated(power: value, asserted)
+		}
 	}
 }

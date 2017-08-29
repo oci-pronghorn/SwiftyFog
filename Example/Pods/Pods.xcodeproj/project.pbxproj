@@ -38,6 +38,7 @@
 		55B27C831F50F011008ED56E /* RunLoopPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B27C811F50EFFB008ED56E /* RunLoopPool.swift */; };
 		55B27C861F51A84E008ED56E /* MQTTMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B27C841F51A6B4008ED56E /* MQTTMetrics.swift */; };
 		55B27CA71F51E2C3008ED56E /* MQTTReconnectParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B27CA51F51E2B5008ED56E /* MQTTReconnectParams.swift */; };
+		55DE21861F55B7AC0005B0E2 /* FogFeedbackValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DE21841F55AC450005B0E2 /* FogFeedbackValue.swift */; };
 		5E03D2D0A5DA00876E3F763A5F390E3E /* MQTTPackedLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AD10A32005FD03C2A429034A663F27 /* MQTTPackedLength.swift */; };
 		5FF67A72F76A5370F7079A1A3CC38A6C /* MQTTConnectPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17206844894914D8DA4C7213E4EAB758 /* MQTTConnectPacket.swift */; };
 		69A4AFB53C5B529105139921579E61D6 /* MQTTPacketDurability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D2F8CBF26F75AD6AED304F05B50FE9 /* MQTTPacketDurability.swift */; };
@@ -121,6 +122,7 @@
 		55B27C811F50EFFB008ED56E /* RunLoopPool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunLoopPool.swift; sourceTree = "<group>"; };
 		55B27C841F51A6B4008ED56E /* MQTTMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTMetrics.swift; sourceTree = "<group>"; };
 		55B27CA51F51E2B5008ED56E /* MQTTReconnectParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTReconnectParams.swift; sourceTree = "<group>"; };
+		55DE21841F55AC450005B0E2 /* FogFeedbackValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FogFeedbackValue.swift; sourceTree = "<group>"; };
 		585B2B78D1B842245A377C694EB120CE /* Pods-SwiftyFog_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SwiftyFog_Example-dummy.m"; sourceTree = "<group>"; };
 		58BAE6E42EF04BBD0C48EC6596605892 /* SwiftyFog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyFog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A80D061A73ADE6ADBAD32BF613473EB /* Pods_SwiftyFog_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftyFog_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -493,6 +495,7 @@
 			isa = PBXGroup;
 			children = (
 				B7C7147191590F00095D1F471BB5A617 /* FogRational.swift */,
+				55DE21841F55AC450005B0E2 /* FogFeedbackValue.swift */,
 			);
 			name = types;
 			path = SwiftyFog/Classes/types;
@@ -661,6 +664,7 @@
 				A80AED9F8A2ABFEF42B8B7C6BFA11170 /* MQTTPayload.swift in Sources */,
 				98C8E50921253FB38339832F1E8DD5AF /* MQTTPersistance.swift in Sources */,
 				55A7BAFF1F4FBC59006D9BC9 /* FogStreamWritable.swift in Sources */,
+				55DE21861F55B7AC0005B0E2 /* FogFeedbackValue.swift in Sources */,
 				C36D28E56941068386C572F7E112CC4B /* MQTTPingAckPacket.swift in Sources */,
 				441AD395F60EF9B120B4405B473B57F7 /* MQTTPingPacket.swift in Sources */,
 				7F044A383EDF1243C34786460903AAC2 /* MQTTPublishAckPacket.swift in Sources */,

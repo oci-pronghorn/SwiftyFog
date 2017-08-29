@@ -15,6 +15,9 @@ public protocol TrainDelegate: class {
 
 public class Train {
 	private var broadcaster: MQTTBroadcaster?
+    //private var pingeChecker: DispatchSourceTimer?
+	
+	public weak var delegate: TrainDelegate?
 	
     public var mqtt: MQTTBridge! {
 		didSet {
@@ -24,6 +27,23 @@ public class Train {
 		}
     }
 	
+    init() {
+	/*
+			let keepAliveTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
+			keepAliveTimer.schedule(deadline: .now() + .seconds(Int(clientPrams.keepAlive)), repeating: .seconds(Int(clientPrams.keepAlive)), leeway: .seconds(1))
+			keepAliveTimer.setEventHandler { [weak self] in
+				self?.pingFired()
+			}
+			self.keepAliveTimer = keepAliveTimer
+			keepAliveTimer.resume()
+		*/
+	}
+	
+	var isReady: Bool {
+		return true
+	}
+	
 	private func receivePing(msg: MQTTMessage) {
+		
 	}
 }

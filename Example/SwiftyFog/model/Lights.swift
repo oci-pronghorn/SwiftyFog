@@ -10,9 +10,9 @@ import Foundation
 import SwiftyFog
 
 public protocol LightsDelegate: class {
-	func onLightsPowered(powered: Bool)
-	func onLightsAmbient(power: FogRational<Int64>)
-	func onLightsCalibrated(power: FogRational<Int64>)
+	func onLightsPowered(powered: Bool, _ asserted: Bool)
+	func onLightsAmbient(power: FogRational<Int64>, _ asserted: Bool)
+	func onLightsCalibrated(power: FogRational<Int64>, _ asserted: Bool)
 }
 
 public enum LightCommand: Int32 {
@@ -23,26 +23,38 @@ public enum LightCommand: Int32 {
 
 public class Lights {
 	private var broadcaster: MQTTBroadcaster?
-	public private(set) var calibration = FogRational(num: Int64(128), den: 255)
-	public private(set) var powered: Bool = false
-	public private(set) var ambient: FogRational<Int64> = FogRational()
+	public private(set) var calibration: FogFeedbackValue<FogRational<Int64>>
+	public private(set) var powered: FogFeedbackValue<Bool>
+	public private(set) var ambient: FogFeedbackValue<FogRational<Int64>>
+	
+	public weak var delegate: LightsDelegate?
 	
     public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				("powered", .atLeastOnce, Lights.powered),
-				("ambient", .atLeastOnce, Lights.ambient),
-				("calibrated", .atLeastOnce, Lights.calibrated),
+				("powered", .atLeastOnce, Lights.receivePowered),
+				("ambient", .atLeastOnce, Lights.receiveAmbient),
+				("calibrated", .atLeastOnce, Lights.receiveCalibration),
 			])
 		}
     }
 	
-	public weak var delegate: LightsDelegate?
+    init() {
+		self.calibration = FogFeedbackValue(FogRational(num: Int64(128), den: 255))
+		self.powered = FogFeedbackValue(false)
+		self.ambient = FogFeedbackValue(FogRational())
+    }
+	
+	var isReady: Bool {
+		return calibration.hasFeedback && powered.hasFeedback
+	}
 	
 	public func calibrate(_ calibration: FogRational<Int64>) {
-		var data  = Data(capacity: calibration.fogSize)
-		data.fogAppend(calibration)
-		mqtt.publish(MQTTPubMsg(topic: "calibrate", payload: data))
+		self.calibration.controlled(calibration) { value in
+			var data  = Data(capacity: value.fogSize)
+			data.fogAppend(value)
+			mqtt.publish(MQTTPubMsg(topic: "calibrate", payload: data))
+		}
 	}
 	
 	public var powerOverride: LightCommand = .auto {
@@ -53,18 +65,21 @@ public class Lights {
 		}
 	}
 	
-	private func calibrated(msg: MQTTMessage) {
-		calibration = msg.payload.fogExtract()
-		delegate?.onLightsCalibrated(power: calibration)
+	private func receiveCalibration(msg: MQTTMessage) {
+		self.calibration.received(msg.payload.fogExtract()) { value, asserted in
+			delegate?.onLightsCalibrated(power: value, asserted)
+		}
 	}
 	
-	private func powered(_ msg: MQTTMessage) {
-		powered = msg.payload.fogExtract()
-		delegate?.onLightsPowered(powered: powered)
+	private func receivePowered(_ msg: MQTTMessage) {
+		self.powered.received(msg.payload.fogExtract()) { value, asserted in
+			delegate?.onLightsPowered(powered: value, asserted)
+		}
 	}
 	
-	private func ambient(_ msg: MQTTMessage) {
-		ambient = msg.payload.fogExtract()
-		delegate?.onLightsAmbient(power: ambient)
+	private func receiveAmbient(_ msg: MQTTMessage) {
+		self.ambient.received(msg.payload.fogExtract()) { value, asserted in
+			delegate?.onLightsAmbient(power: value, asserted)
+		}
 	}
 }

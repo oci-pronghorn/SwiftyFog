@@ -39,6 +39,7 @@ class TrainViewController: UIViewController {
 	let engine = Engine()
 	let lights = Lights()
 	let billboard = Billboard()
+	let train = Train()
 	
 	@IBOutlet weak var connectMetrics: FSDAirportFlipLabel!
 	@IBOutlet weak var connectedImage: UIImageView!
@@ -65,6 +66,9 @@ class TrainViewController: UIViewController {
 			
 			billboard.delegate = self
 			billboard.mqtt = mqtt.createBridge(subPath: "billboard")
+			
+			train.delegate = self
+			train.mqtt = mqtt
 		}
 	}
 
@@ -118,15 +122,15 @@ extension TrainViewController {
 
 	func updateGauges() {
 		//self.connectedImage.isHighlighted = mqtt.connected
-		self.powerGauge.rangeValues = [NSNumber(value: -engine.calibration.num), NSNumber(value: engine.calibration.num), 100]
-		self.ambientGauge.rangeValues = [NSNumber(value: lights.calibration.num), 256]
-		self.lightIndicatorImage?.isHighlighted = lights.powered
+		self.powerGauge.rangeValues = [NSNumber(value: -engine.calibration.resolved.num), NSNumber(value: engine.calibration.resolved.num), 100]
+		self.ambientGauge.rangeValues = [NSNumber(value: lights.calibration.resolved.num), 256]
+		self.lightIndicatorImage?.isHighlighted = lights.powered.resolved
 	}
 	
 	func updateControls() {
-		self.engineCalibration.rational = engine.calibration
-		self.enginePower.rational = engine.power
-		self.lightCalibration.rational = lights.calibration
+		self.engineCalibration.rational = engine.calibration.resolved
+		self.enginePower.rational = engine.power.resolved
+		self.lightCalibration.rational = lights.calibration.resolved
 		self.lightPower.selectedSegmentIndex = Int(lights.powerOverride.rawValue)
 	}
 	
@@ -186,29 +190,41 @@ extension TrainViewController {
 	}
 }
 
-extension TrainViewController: BillboardDelegate, LightsDelegate, EngineDelegate {
+extension TrainViewController: BillboardDelegate, LightsDelegate, EngineDelegate, TrainDelegate {
+
+	func train(handshake: Bool) {
+	}
 	
 	func onImageSpecConfirmed(layout: FogBitmapLayout) {
 	}
 	
-	func onLightsPowered(powered: Bool) {
+	func onLightsPowered(powered: Bool, _ asserted: Bool) {
 		lightIndicatorImage?.isHighlighted = powered
 	}
 	
-	func onLightsAmbient(power: FogRational<Int64>) {
+	func onLightsAmbient(power: FogRational<Int64>, _ asserted: Bool) {
 		self.ambientGauge?.setValue(Float(power.num), animated: true, duration: 0.5)
 	}
 	
-	func onLightsCalibrated(power: FogRational<Int64>) {
-		ambientGauge?.rangeValues = [NSNumber(value: lights.calibration.num), 256]
+	func onLightsCalibrated(power: FogRational<Int64>, _ asserted: Bool) {
+		ambientGauge?.rangeValues = [NSNumber(value: power.num), 256]
+		if asserted {
+			self.lightCalibration.rational = power
+		}
 	}
 	
-	func onEnginePower(power: FogRational<Int64>) {
+	func onEnginePower(power: FogRational<Int64>, _ asserted: Bool) {
 		self.powerGauge?.setValue(Float(power.num), animated: true, duration: 0.5)
+		if asserted {
+			self.enginePower.rational = power
+		}
 	}
 	
-	func onEngineCalibrated(power: FogRational<Int64>) {
+	func onEngineCalibrated(power: FogRational<Int64>, _ asserted: Bool) {
 		powerGauge?.rangeValues = [NSNumber(value: -power.num), NSNumber(value: power.num), 100]
+		if asserted {
+			self.engineCalibration.rational = power
+		}
 	}
 	
 	func onPostImage(image: UIImage) {
