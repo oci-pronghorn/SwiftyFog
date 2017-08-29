@@ -53,7 +53,7 @@ class TrainViewController: UIViewController {
 	@IBOutlet weak var lightIndicatorImage: UIImageView!
 	@IBOutlet weak var ambientGauge: WMGaugeView!
 	
-	//let pulsator = Pulsator()
+	let pulsator = Pulsator()
 	
     var mqtt: MQTTBridge! {
 		didSet {
@@ -67,18 +67,21 @@ class TrainViewController: UIViewController {
 			billboard.mqtt = mqtt.createBridge(subPath: "billboard")
 		}
 	}
-/*
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         view.layer.layoutIfNeeded()
         pulsator.position = connectedImage.layer.position
+        pulsator.radius = connectedImage.frame.width
     }
-*/
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-        //connectedImage.layer.superlayer?.insertSublayer(pulsator, below: connectedImage.layer)
-		//pulsator.start()
+        connectedImage.layer.superlayer?.insertSublayer(pulsator, below: connectedImage.layer)
+        pulsator.animationDuration = 1
+		pulsator.backgroundColor = UIColor.blue.cgColor
+		pulsator.repeatCount = 1
 		
 		powerGauge.rangeLabels = ["Reverse", "Idle", "Forward"]
 		powerGauge.rangeColors = [UIColor.red, UIColor.yellow, UIColor.green]
@@ -114,7 +117,7 @@ class TrainViewController: UIViewController {
 extension TrainViewController {
 
 	func updateGauges() {
-		self.connectedImage.isHighlighted = mqtt.connected
+		//self.connectedImage.isHighlighted = mqtt.connected
 		self.powerGauge.rangeValues = [NSNumber(value: -engine.calibration.num), NSNumber(value: engine.calibration.num), 100]
 		self.ambientGauge.rangeValues = [NSNumber(value: lights.calibration.num), 256]
 		self.lightIndicatorImage?.isHighlighted = lights.powered
@@ -164,16 +167,22 @@ extension TrainViewController {
 }
 
 extension TrainViewController {
-	func connected() {
-		self.connectedImage?.isHighlighted = true
+	func mqtt(connected: MQTTConnectedState) {
+		switch connected {
+			case .connected(let counter):
+				pulsator.start()
+				self.connectedImage?.isHighlighted = true
+				break
+			case .retry(let rescus, let attempt, _):
+				break
+			case .discconnected(let reason, let error):
+				self.connectedImage?.isHighlighted = false
+				break
+		}
 	}
 	
 	func pinged() {
-		//pulsator.start()
-	}
-	
-	func disconnected() {
-		self.connectedImage?.isHighlighted = false
+		pulsator.start()
 	}
 }
 
