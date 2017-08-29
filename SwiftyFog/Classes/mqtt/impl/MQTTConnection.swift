@@ -140,13 +140,6 @@ extension MQTTConnection {
 			self.didDisconnect(reason: .handshake(packet.response), error: packet.response)
 		}
     }
-	
-	private func fullConnectionTimeout() {
-		if mutex.reading({isFullConnected}) == false {
-			//self.didDisconnect(reason: .handshake(.timeout), error: nil)
-		}
-		// else we are already connected!
-	}
 }
 
 extension MQTTConnection {
@@ -216,14 +209,7 @@ extension MQTTConnection: FogSocketStreamDelegate {
 		if startConnectionHandshake() == false {
 			self.didDisconnect(reason: .socket, error: nil)
 		}
-		else {
-			// TODO: I don't think this is required
-			if 10 > 0 {
-				DispatchQueue.global().asyncAfter(deadline: .now() +  10) { [weak self] in
-					self?.fullConnectionTimeout()
-				}
-			}
-		}
+		// else wait for ack
 	}
 
 	func fog(stream: FogSocketStream, errored: Error?) {

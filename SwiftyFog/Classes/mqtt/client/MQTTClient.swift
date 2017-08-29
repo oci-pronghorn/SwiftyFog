@@ -11,7 +11,7 @@ import Foundation
 public enum MQTTConnectedState {
 	case connected(Int)
 	case discconnected(reason: MQTTConnectionDisconnect, error: Error?)
-	case retry(Int, Int, MQTTReconnectParams) // escus counter, attempt counter
+	case retry(Int, Int, MQTTReconnectParams) // rescus counter, attempt counter
 }
 
 public protocol MQTTClientDelegate: class {
@@ -19,6 +19,7 @@ public protocol MQTTClientDelegate: class {
 	func mqtt(client: MQTTClient, pinged: MQTTPingStatus)
 	func mqtt(client: MQTTClient, subscription: MQTTSubscriptionDetail, changed: MQTTSubscriptionStatus)
 	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage)
+	func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription])
 }
 
 public final class MQTTClient {
@@ -73,17 +74,22 @@ public final class MQTTClient {
 		distributer.delegate = self
 	}
 	
-	public var connected: Bool { return connection?.isFullConnected ?? false }
+	public var connected: Bool {
+		get {
+			return connection?.isFullConnected ?? false
+		}
+		set {
+			newValue ? start(): stop()
+		}
+	}
 	
-	@discardableResult
-	public func start() -> [MQTTSubscription] {
+	public func start() {
 		if retry == nil {
 			retry = MQTTRetryConnection(spec: reconnect) { [weak self] r, a in
 				self?.makeConnection(r, a)
 			}
 			retry?.start()
 		}
-		return []
 	}
 	
 	public func stop() {

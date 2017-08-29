@@ -11,7 +11,7 @@ final class MQTTTopicScope: MQTTBridge {
 	private var base: MQTTBridge
 	private let fullPath: String
 	
-	var connected: Bool { return base.connected }
+	var connected: Bool { get { return base.connected } set { base.connected = newValue } }
 	
 	func createBridge(subPath: String) -> MQTTBridge {
 		return MQTTTopicScope(base: self.base, fullPath: self.fullPath + subPath)

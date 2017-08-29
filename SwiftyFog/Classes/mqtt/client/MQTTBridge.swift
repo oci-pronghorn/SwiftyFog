@@ -16,8 +16,8 @@ import Foundation
 
 public protocol MQTTBridge {
 
-	// Pull connected state. You are responsible for push implementation.
-	var connected: Bool { get }
+	// Connected state.
+	var connected: Bool { get set }
 	
 	// If pubMsg.topic begins with '$' it will be used as an absolute path
 	// Otherwise fullpath is built from the bridge chain

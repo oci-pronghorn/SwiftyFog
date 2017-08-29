@@ -123,5 +123,8 @@ extension AppDelegate: MQTTClientDelegate {
 	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage) {
 		metrics?.print("Unhandled \(unhandledMessage)")
 	}
+	
+	func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription]) {
+	}
 }
 
