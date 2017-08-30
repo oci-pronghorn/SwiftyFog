@@ -10,11 +10,11 @@ import Foundation
 import SwiftyFog
 
 public protocol EngineDelegate: class {
-	func onEnginePower(power: FogRational<Int64>, _ asserted: Bool)
-	func onEngineCalibrated(power: FogRational<Int64>, _ asserted: Bool)
+	func engine(power: FogRational<Int64>, _ asserted: Bool)
+	func engine(calibration: FogRational<Int64>, _ asserted: Bool)
 }
 
-public class Engine {
+public class Engine: FogFeedbackModel {
 	private var broadcaster: MQTTBroadcaster?
 	public private(set) var calibration: FogFeedbackValue<FogRational<Int64>>
 	public private(set) var power: FogFeedbackValue<FogRational<Int64>>
@@ -35,12 +35,22 @@ public class Engine {
 		}
     }
 	
-	public var isReady: Bool {
+	public var hasFeedback: Bool {
 		return calibration.hasFeedback && power.hasFeedback
 	}
 	
+	public func reset() {
+		calibration.reset()
+		power.reset()
+	}
+	
+	public func assertValues() {
+		delegate?.engine(power: power.value, true)
+		delegate?.engine(calibration: calibration.value, true)
+	}
+	
 	public func calibrate(_ calibration: FogRational<Int64>) {
-		self.calibration.controlled(calibration) { value in
+		self.calibration.control(calibration) { value in
 			var data  = Data(capacity: calibration.fogSize)
 			data.fogAppend(calibration)
 			mqtt.publish(MQTTPubMsg(topic: "calibrate", payload: data))
@@ -48,7 +58,7 @@ public class Engine {
 	}
 	
 	public func setPower(_ power: FogRational<Int64>) {
-		self.power.controlled(power) { value in
+		self.power.control(power) { value in
 			var data  = Data(capacity: value.fogSize)
 			data.fogAppend(value)
 			mqtt.publish(MQTTPubMsg(topic: "power", payload: data))
@@ -56,14 +66,14 @@ public class Engine {
 	}
 	
 	private func receivePower(msg: MQTTMessage) {
-		self.power.received(msg.payload.fogExtract()) { value, asserted in
-			delegate?.onEnginePower(power: value, asserted)
+		self.power.receive(msg.payload.fogExtract()) { value, asserted in
+			delegate?.engine(power: value, asserted)
 		}
 	}
 	
 	private func receiveCalibration(msg: MQTTMessage) {
-		self.calibration.received(msg.payload.fogExtract()) { value, asserted in
-			delegate?.onEngineCalibrated(power: value, asserted)
+		self.calibration.receive(msg.payload.fogExtract()) { value, asserted in
+			delegate?.engine(calibration: value, asserted)
 		}
 	}
 }

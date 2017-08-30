@@ -11,7 +11,7 @@ import Foundation
 public enum MQTTConnectedState {
 	case connected(Int)
 	case discconnected(reason: MQTTConnectionDisconnect, error: Error?)
-	case retry(Int, Int, MQTTReconnectParams) // rescus counter, attempt counter
+	case retry(Int, Int, Int, MQTTReconnectParams) // connection counter, rescus counter, attempt counter
 }
 
 public protocol MQTTClientDelegate: class {
@@ -41,6 +41,7 @@ public final class MQTTClient {
 	private var connection: MQTTConnection?
 	private var retry: MQTTRetryConnection?
 	private var madeInitialConnection = false
+	private var connectionCounter = 0
 
     public weak var delegate: MQTTClientDelegate?
 	
@@ -102,7 +103,7 @@ public final class MQTTClient {
 	}
 	
 	private func makeConnection(_ rescus: Int, _ attempt : Int) {
-		delegate?.mqtt(client: self, connected: .retry(rescus, attempt, self.reconnect))
+		delegate?.mqtt(client: self, connected: .retry(connectionCounter, rescus, attempt, self.reconnect))
 		let connection = MQTTConnection(
 			hostParams: host,
 			clientPrams: client,
@@ -183,7 +184,8 @@ extension MQTTClient: MQTTConnectionDelegate {
 		madeInitialConnection = true
 
 		retry?.connected = true
-		delegate?.mqtt(client: self, connected: .connected(0))
+		connectionCounter += 1
+		delegate?.mqtt(client: self, connected: .connected(connectionCounter))
 		idSource.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
 		durability.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
 		publisher.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)

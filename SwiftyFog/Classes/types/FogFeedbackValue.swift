@@ -7,38 +7,49 @@
 
 import Foundation
 
+public protocol FogFeedbackModel {
+	var hasFeedback: Bool { get }
+	func reset()
+	func assertValues()
+}
+
 public struct FogFeedbackValue<T: Equatable> {
-	public private(set) var control: T
-	public private(set) var detected: T?
-	
-	public var resolved: T {
-		return detected ?? control
-	}
+	private let defaultValue: T
+	private var controlled: T
+	private var detected: T?
+	public var value: T { return detected ?? controlled }
 	
 	public init(_ defaultValue: T) {
-		control = defaultValue
+		self.defaultValue = defaultValue
+		self.controlled = defaultValue
 	}
 	
-	public mutating func feedbackCut() {
-		detected = nil
-	}
-	
-	public var isSyncronize: Bool {
-		return detected != nil && (control == detected)
-	}
-	
+	// Have we received any feedback
 	public var hasFeedback: Bool {
 		return detected != nil
 	}
 	
-	public mutating func controlled(_ value: T, change: (T)->()) {
-		if !(value == control) {
-			control = value
+	// Removes feedback value and resets controlled to default
+	public mutating func reset() {
+		self.controlled = defaultValue
+		self.detected = nil
+	}
+	
+	// True when both controlled and received match
+	public var isSyncronize: Bool {
+		return detected != nil && (controlled == detected)
+	}
+	
+	// If control changed then invoke lambda
+	public mutating func control(_ value: T, _ change: (T)->()) {
+		if !(value == controlled) {
+			controlled = value
 			change(value)
 		}
 	}
 	
-	public mutating func received(_ value: T, change: (T, Bool)->()) {
+	// If detected changed then invoke lambda
+	public mutating func receive(_ value: T, _ change: (T, Bool)->()) {
 		let wasNil = detected == nil
 		if wasNil || !(value == detected) {
 			detected = value

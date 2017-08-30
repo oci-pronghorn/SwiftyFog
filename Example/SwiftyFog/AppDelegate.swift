@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Create the concrete MQTTClient to connect to a specific broker
 		// MQTTClient is an MQTTBridge
 		mqtt = MQTTClient(
-			//host: MQTTHostParams(host: trainName + ".local", port: .standard),
+			host: MQTTHostParams(host: trainName + ".local", port: .standard),
 			auth: MQTTAuthentication(username: "dsjove", password: "password"),
 			reconnect: MQTTReconnectParams(),
 			metrics: metrics)
@@ -97,7 +97,7 @@ extension AppDelegate: MQTTClientDelegate {
 			case .connected(let counter):
 				metrics?.print("Connected \(counter)")
 				break
-			case .retry(let rescus, let attempt, _):
+			case .retry(_, let rescus, let attempt, _):
 				metrics?.print("Connection Attempt \(rescus).\(attempt)")
 				break
 			case .discconnected(let reason, let error):

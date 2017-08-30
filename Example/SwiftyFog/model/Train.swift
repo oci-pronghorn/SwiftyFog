@@ -13,7 +13,8 @@ public protocol TrainDelegate: class {
 	func train(handshake: Bool)
 }
 
-public class Train {
+public class Train: FogFeedbackModel {
+	
 	private var broadcaster: MQTTBroadcaster?
     //private var pingeChecker: DispatchSourceTimer?
 	
@@ -39,11 +40,16 @@ public class Train {
 		*/
 	}
 	
-	var isReady: Bool {
+	public func reset() {
+	}
+	
+	public var hasFeedback: Bool {
 		return true
 	}
 	
+	public func assertValues() {
+	}
+	
 	private func receivePing(msg: MQTTMessage) {
-		
 	}
 }

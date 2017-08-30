@@ -120,7 +120,7 @@ static FlipAudioPlayer *sharedInstance = nil;
     self.flipDurationRange = 1.0;
     self.numberOfFlips = 1;
     self.numberOfFlipsRange = 1.0;
-    self.flipBackGroundColor = [UIColor colorWithRed:0.157 green:0.161 blue:0.165 alpha:1.000];
+    self.flipBackGroundColor = [UIColor blackColor];
     self.flipTextColor = [UIColor whiteColor];
     
     
@@ -137,7 +137,9 @@ static FlipAudioPlayer *sharedInstance = nil;
 
 - (UILabel *)getOrCreateLabelForIndex:(NSInteger)index {
     CGRect frame = CGRectMake(self.bounds.origin.x + (self.textSize + 3) * index,
-                              self.bounds.origin.y, self.textSize + 2, self.textSize + 2);
+                              self.bounds.origin.y,
+                              self.textSize + 2,
+                              self.textSize + 2);
     
     UILabel *label;
     
@@ -164,6 +166,13 @@ static FlipAudioPlayer *sharedInstance = nil;
 - (void)setText:(NSString *)text {
     [super setText:text];
     [self updateText:text];
+}
+
+- (CGSize) intrinsicContentSize {
+	NSInteger charCount = MAX(self.fixedLength, self.text.length);
+	return CGSizeMake(
+			  charCount * (self.textSize + 3) - 3,
+		      self.textSize + 2);
 }
 
 - (void)updateText:(NSString *)text {

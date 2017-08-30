@@ -220,28 +220,31 @@
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="A7W-5F-dl6" userLabel="Connection Stack">
-                                <rect key="frame" x="87" y="511" width="200" height="30"/>
+                                <rect key="frame" x="146" y="481" width="82" height="60"/>
                                 <subviews>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wEP-vK-Vun" customClass="FSDAirportFlipLabel">
-                                        <rect key="frame" x="0.0" y="-511" width="200" height="32"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="32" id="ilm-05-PgY"/>
-                                            <constraint firstAttribute="width" constant="200" id="n6v-mF-YxP"/>
-                                        </constraints>
-                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3O4-37-QBa" customClass="FSDAirportFlipLabel">
+                                        <rect key="frame" x="0.0" y="0.0" width="82" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="fixedLength">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="8xd-TB-fXL" userLabel="Action Stack">
-                                        <rect key="frame" x="0.0" y="0.0" width="200" height="30"/>
+                                        <rect key="frame" x="0.0" y="30" width="82" height="30"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vRb-rS-o5g">
-                                                <rect key="frame" x="0.0" y="0.0" width="96" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="37" height="30"/>
                                                 <state key="normal" title="Start"/>
                                                 <connections>
                                                     <action selector="startConnecting" destination="dkx-z0-nzr" eventType="touchUpInside" id="BNB-sB-CtK"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cFR-rW-zut">
-                                                <rect key="frame" x="104" y="0.0" width="96" height="30"/>
+                                                <rect key="frame" x="45" y="0.0" width="37" height="30"/>
                                                 <state key="normal" title="Stop"/>
                                                 <connections>
                                                     <action selector="cleanDisconnect" destination="dkx-z0-nzr" eventType="touchUpInside" id="5cy-Sp-7bn"/>
@@ -276,7 +279,7 @@
                     <connections>
                         <outlet property="ambientGauge" destination="YEQ-Tl-lGJ" id="LZq-Yo-ujQ"/>
                         <outlet property="billboardImage" destination="yOF-aF-Ux5" id="Tt9-ML-npC"/>
-                        <outlet property="connectMetrics" destination="wEP-vK-Vun" id="3Wd-jG-VMm"/>
+                        <outlet property="connectMetrics" destination="3O4-37-QBa" id="Ine-a8-zxW"/>
                         <outlet property="connectedImage" destination="4zZ-K8-b71" id="nCN-Sr-VCd"/>
                         <outlet property="engineCalibration" destination="5SJ-Xc-cNf" id="Aei-r8-lVK"/>
                         <outlet property="enginePower" destination="frG-rd-tNm" id="qK1-9D-qZL"/>

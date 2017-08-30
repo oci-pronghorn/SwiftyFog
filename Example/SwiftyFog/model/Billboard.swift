@@ -10,11 +10,11 @@ import UIKit
 import SwiftyFog
 
 public protocol BillboardDelegate: class {
-	func onImageSpecConfirmed(layout: FogBitmapLayout)
-	func onPostImage(image: UIImage)
+	func billboard(layout: FogBitmapLayout)
+	func billboard(image: UIImage)
 }
 
-public class Billboard {
+public class Billboard: FogFeedbackModel {
 	private var bitmap: FogBitMap?
 	private var broadcaster: MQTTBroadcaster?
 	
@@ -28,11 +28,18 @@ public class Billboard {
 		}
     }
 	
-	init() {
+	public init() {
 	}
 	
-	var isReady: Bool {
+	public var hasFeedback: Bool {
 		return bitmap != nil
+	}
+	
+	public func reset() {
+		bitmap = nil
+	}
+	
+	public func assertValues() {
 	}
 	
 	public var layout: FogBitmapLayout? {
@@ -42,19 +49,19 @@ public class Billboard {
 	public func display(image: UIImage) {
 		if var bitmap = bitmap {
 			let resized = bitmap.imbue(image)
-			delegate?.onPostImage(image: resized!)
+			delegate?.billboard(image: resized!)
 			var data  = Data(capacity: bitmap.fogSize)
 			data.fogAppend(bitmap)
 			mqtt.publish(MQTTPubMsg(topic: "image", payload: data))
 		}
 		else {
-			delegate?.onPostImage(image: image)
+			delegate?.billboard(image: image)
 		}
 	}
 	
 	private func receiveSpec(msg: MQTTMessage) {
 		let layout: FogBitmapLayout = msg.payload.fogExtract()
-		delegate?.onImageSpecConfirmed(layout: layout)
+		delegate?.billboard(layout: layout)
 		bitmap = FogBitMap(layout: layout)
 	}
 }

@@ -10,9 +10,9 @@ import Foundation
 import SwiftyFog
 
 public protocol LightsDelegate: class {
-	func onLightsPowered(powered: Bool, _ asserted: Bool)
-	func onLightsAmbient(power: FogRational<Int64>, _ asserted: Bool)
-	func onLightsCalibrated(power: FogRational<Int64>, _ asserted: Bool)
+	func lights(powered: Bool, _ asserted: Bool)
+	func lights(ambient: FogRational<Int64>, _ asserted: Bool)
+	func lights(calibration: FogRational<Int64>, _ asserted: Bool)
 }
 
 public enum LightCommand: Int32 {
@@ -21,7 +21,7 @@ public enum LightCommand: Int32 {
 	case auto
 }
 
-public class Lights {
+public class Lights: FogFeedbackModel {
 	private var broadcaster: MQTTBroadcaster?
 	public private(set) var calibration: FogFeedbackValue<FogRational<Int64>>
 	public private(set) var powered: FogFeedbackValue<Bool>
@@ -39,18 +39,30 @@ public class Lights {
 		}
     }
 	
-    init() {
+    public init() {
 		self.calibration = FogFeedbackValue(FogRational(num: Int64(128), den: 255))
 		self.powered = FogFeedbackValue(false)
 		self.ambient = FogFeedbackValue(FogRational())
     }
 	
-	var isReady: Bool {
+	public var hasFeedback: Bool {
 		return calibration.hasFeedback && powered.hasFeedback
 	}
 	
+	public func reset() {
+		calibration.reset()
+		powered.reset()
+		ambient.reset()
+	}
+	
+	public func assertValues() {
+		delegate?.lights(calibration: calibration.value, true)
+		delegate?.lights(powered: powered.value, true)
+		delegate?.lights(ambient: ambient.value, true)
+	}
+	
 	public func calibrate(_ calibration: FogRational<Int64>) {
-		self.calibration.controlled(calibration) { value in
+		self.calibration.control(calibration) { value in
 			var data  = Data(capacity: value.fogSize)
 			data.fogAppend(value)
 			mqtt.publish(MQTTPubMsg(topic: "calibrate", payload: data))
@@ -66,20 +78,20 @@ public class Lights {
 	}
 	
 	private func receiveCalibration(msg: MQTTMessage) {
-		self.calibration.received(msg.payload.fogExtract()) { value, asserted in
-			delegate?.onLightsCalibrated(power: value, asserted)
+		self.calibration.receive(msg.payload.fogExtract()) { value, asserted in
+			delegate?.lights(calibration: value, asserted)
 		}
 	}
 	
 	private func receivePowered(_ msg: MQTTMessage) {
-		self.powered.received(msg.payload.fogExtract()) { value, asserted in
-			delegate?.onLightsPowered(powered: value, asserted)
+		self.powered.receive(msg.payload.fogExtract()) { value, asserted in
+			delegate?.lights(powered: value, asserted)
 		}
 	}
 	
 	private func receiveAmbient(_ msg: MQTTMessage) {
-		self.ambient.received(msg.payload.fogExtract()) { value, asserted in
-			delegate?.onLightsAmbient(power: value, asserted)
+		self.ambient.receive(msg.payload.fogExtract()) { value, asserted in
+			delegate?.lights(ambient: value, asserted)
 		}
 	}
 }
