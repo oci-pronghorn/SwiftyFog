@@ -19,18 +19,23 @@ public class Engine: FogFeedbackModel {
 	public private(set) var calibration: FogFeedbackValue<FogRational<Int64>>
 	public private(set) var power: FogFeedbackValue<FogRational<Int64>>
 	
+	private let engineControlPowerTopic = "power"
+    private let engineControlCalibrateTopic = "calibrate"
+	private let engineFeedbackPowerTopic = "powered"
+    private let engineFeedbackCalibrateTopic = "calibrated"
+	
 	public weak var delegate: EngineDelegate?
 	
 	public init() {
 		self.calibration = FogFeedbackValue(FogRational(num: Int64(15), den: 100))
-		self.power = FogFeedbackValue(FogRational(num: Int64(0), den: 1))
+		self.power = FogFeedbackValue(FogRational(num: Int64(0), den: 100))
 	}
 	
     public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				("powered", .atLeastOnce, Engine.receivePower),
-				("calibrated", .atLeastOnce, Engine.receiveCalibration)
+				(engineFeedbackPowerTopic, .atLeastOnce, Engine.receivePower),
+				(engineFeedbackCalibrateTopic, .atLeastOnce, Engine.receiveCalibration)
 			])
 		}
     }
@@ -53,7 +58,7 @@ public class Engine: FogFeedbackModel {
 		self.calibration.control(calibration) { value in
 			var data  = Data(capacity: calibration.fogSize)
 			data.fogAppend(calibration)
-			mqtt.publish(MQTTPubMsg(topic: "calibrate", payload: data))
+			mqtt.publish(MQTTPubMsg(topic: engineControlCalibrateTopic, payload: data))
 		}
 	}
 	
@@ -61,12 +66,13 @@ public class Engine: FogFeedbackModel {
 		self.power.control(power) { value in
 			var data  = Data(capacity: value.fogSize)
 			data.fogAppend(value)
-			mqtt.publish(MQTTPubMsg(topic: "power", payload: data))
+			mqtt.publish(MQTTPubMsg(topic: engineControlPowerTopic, payload: data))
 		}
 	}
 	
 	private func receivePower(msg: MQTTMessage) {
-		self.power.receive(msg.payload.fogExtract()) { value, asserted in
+		let value: FogRational<Int64> = msg.payload.fogExtract()
+		self.power.receive(value) { value, asserted in
 			delegate?.engine(power: value, asserted)
 		}
 	}

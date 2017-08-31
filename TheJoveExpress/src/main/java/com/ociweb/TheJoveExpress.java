@@ -50,16 +50,16 @@ public class TheJoveExpress implements FogApp
         final String prefix = config.trainName + "/";
         final String actuatorPowerTopic = "actuator/power";
 
-        final String enginePowerTopic = "engine/power";
-        final String engineCalibrateTopic = "engine/calibrate";
-        final String enginePoweredTopic = "engine/powered";
-        final String engineCalibratedTopic = "engine/calibrated";
+        final String engineControlPowerTopic = "engine/power";
+        final String engineControlCalibrateTopic = "engine/calibrate";
+        final String engineFeedbackPowerTopic = "engine/powered";
+        final String engineFeedbackCalibrateTopic = "engine/calibrated";
 
-        final String lightsPoweredTopic = "lights/powered";
-        final String lightsOverrideTopic = "lights/override";
-        final String lightCalibrateTopic = "lights/calibrate";
-        final String ambientLightPublishTopic = "lights/ambient";
-        final String lightCalibratedTopic = "lights/calibrated";
+        final String lightsControlOverrideTopic = "lights/override";
+        final String lightsControlCalibrateTopic = "lights/calibrate";
+        final String lightsFeedbackAmbientTopic = "lights/ambient";
+        final String lightFeedbackCalibrateTopic = "lights/calibrated";
+        final String lightsFeedbackPoweredTopic = "lights/powered";
 
         final String accelerometerPublishTopic = "accelerometer";
 
@@ -87,34 +87,34 @@ public class TheJoveExpress implements FogApp
 
         if (config.engineEnabled) {
             if (config.mqttEnabled) {
-                runtime.bridgeSubscription(enginePowerTopic, prefix + enginePowerTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeSubscription(engineCalibrateTopic, prefix + engineCalibrateTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(enginePoweredTopic, prefix + enginePoweredTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
-                runtime.bridgeTransmission(engineCalibratedTopic, prefix + engineCalibratedTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+                runtime.bridgeSubscription(engineControlPowerTopic, prefix + engineControlPowerTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeSubscription(engineControlCalibrateTopic, prefix + engineControlCalibrateTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeTransmission(engineFeedbackPowerTopic, prefix + engineFeedbackPowerTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+                runtime.bridgeTransmission(engineFeedbackCalibrateTopic, prefix + engineFeedbackCalibrateTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
             }
-            final EngineBehavior engine = new EngineBehavior(runtime, actuatorPowerTopic, config.engineAccuatorPort, enginePoweredTopic, engineCalibratedTopic);
+            final EngineBehavior engine = new EngineBehavior(runtime, actuatorPowerTopic, config.engineAccuatorPort, engineFeedbackPowerTopic, engineFeedbackCalibrateTopic);
             runtime.registerListener(engine)
                     .addSubscription(mqttConnectedTopic, engine::onMqttConnected)
-                    .addSubscription(enginePowerTopic, engine::onPower)
-                    .addSubscription(engineCalibrateTopic, engine::onCalibrate);
+                    .addSubscription(engineControlPowerTopic, engine::onPower)
+                    .addSubscription(engineControlCalibrateTopic, engine::onCalibrate);
         }
 
         if (config.lightsEnabled) {
             if (config.mqttEnabled) {
-                runtime.bridgeSubscription(lightsOverrideTopic, prefix + lightsOverrideTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeSubscription(lightCalibrateTopic, prefix + lightCalibrateTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(ambientLightPublishTopic, prefix + ambientLightPublishTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
-                runtime.bridgeTransmission(lightsPoweredTopic, prefix + lightsPoweredTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
-                runtime.bridgeTransmission(lightCalibratedTopic, prefix + lightCalibratedTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+                runtime.bridgeSubscription(lightsControlOverrideTopic, prefix + lightsControlOverrideTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeSubscription(lightsControlCalibrateTopic, prefix + lightsControlCalibrateTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeTransmission(lightsFeedbackAmbientTopic, prefix + lightsFeedbackAmbientTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+                runtime.bridgeTransmission(lightsFeedbackPoweredTopic, prefix + lightsFeedbackPoweredTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+                runtime.bridgeTransmission(lightFeedbackCalibrateTopic, prefix + lightFeedbackCalibrateTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
             }
-            final AmbientLightBroadcast ambientLight = new AmbientLightBroadcast(runtime, config.lightSensorPort, ambientLightPublishTopic);
+            final AmbientLightBroadcast ambientLight = new AmbientLightBroadcast(runtime, config.lightSensorPort, lightsFeedbackAmbientTopic);
             runtime.registerListener(ambientLight);
-            final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerTopic, config.lightAccuatorPort, lightsPoweredTopic, lightCalibratedTopic);
+            final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerTopic, config.lightAccuatorPort, lightsFeedbackPoweredTopic, lightFeedbackCalibrateTopic);
             runtime.registerListener(lights)
                     .addSubscription(mqttConnectedTopic, lights::onMqttConnected)
-                    .addSubscription(lightsOverrideTopic, lights::onOverride)
-                    .addSubscription(lightCalibrateTopic, lights::onCalibrate)
-                    .addSubscription(ambientLightPublishTopic, lights::onDetected);
+                    .addSubscription(lightsControlOverrideTopic, lights::onOverride)
+                    .addSubscription(lightsControlCalibrateTopic, lights::onCalibrate)
+                    .addSubscription(lightsFeedbackAmbientTopic, lights::onDetected);
         }
 
         if (config.speedometerEnabled) {

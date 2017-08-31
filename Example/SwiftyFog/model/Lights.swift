@@ -26,15 +26,21 @@ public class Lights: FogFeedbackModel {
 	public private(set) var calibration: FogFeedbackValue<FogRational<Int64>>
 	public private(set) var powered: FogFeedbackValue<Bool>
 	public private(set) var ambient: FogFeedbackValue<FogRational<Int64>>
+
+    private let lightsControlOverrideTopic = "override"
+    private let lightsControlCalibrateTopic = "calibrate"
+    private let lightsFeedbackAmbientTopic = "ambient"
+    private let lightFeedbackCalibrateTopic = "calibrated"
+    private let lightsFeedbackPoweredTopic = "powered"
 	
 	public weak var delegate: LightsDelegate?
 	
     public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				("powered", .atLeastOnce, Lights.receivePowered),
-				("ambient", .atLeastOnce, Lights.receiveAmbient),
-				("calibrated", .atLeastOnce, Lights.receiveCalibration),
+				(lightsFeedbackPoweredTopic, .atLeastOnce, Lights.receivePowered),
+				(lightsFeedbackAmbientTopic, .atLeastOnce, Lights.receiveAmbient),
+				(lightFeedbackCalibrateTopic, .atLeastOnce, Lights.receiveCalibration),
 			])
 		}
     }
@@ -65,7 +71,7 @@ public class Lights: FogFeedbackModel {
 		self.calibration.control(calibration) { value in
 			var data  = Data(capacity: value.fogSize)
 			data.fogAppend(value)
-			mqtt.publish(MQTTPubMsg(topic: "calibrate", payload: data))
+			mqtt.publish(MQTTPubMsg(topic: lightsControlCalibrateTopic, payload: data))
 		}
 	}
 	
@@ -73,7 +79,7 @@ public class Lights: FogFeedbackModel {
 		didSet {
 			var data  = Data(capacity: powerOverride.fogSize)
 			data.fogAppend(powerOverride)
-			mqtt.publish(MQTTPubMsg(topic: "override", payload: data))
+			mqtt.publish(MQTTPubMsg(topic: lightsControlOverrideTopic, payload: data))
 		}
 	}
 	

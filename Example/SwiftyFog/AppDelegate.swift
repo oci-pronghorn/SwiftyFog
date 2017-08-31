@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		// Setup metrics
 		metrics = MQTTMetrics(prefix: {"\(Date.nowInSeconds()) MQTT: "})
-		//metrics?.debugOut = {print($0)}
+		metrics?.debugOut = {print($0)}
 		metrics?.consoleOut = logView.onLog
 
 		// Create the concrete MQTTClient to connect to a specific broker
