@@ -9,7 +9,7 @@ import Foundation
 
 class MQTTRetryConnection {
 	private let spec: MQTTReconnectParams
-	private let makeConnection: (Int, Int)->()
+	private let makeConnection: (Int, Int?)->()
 	
 	var connected: Bool = false {
 		didSet {
@@ -20,7 +20,7 @@ class MQTTRetryConnection {
 		}
 	}
 	
-	init(spec: MQTTReconnectParams, makeConnection: @escaping (Int, Int)->()) {
+	init(spec: MQTTReconnectParams, makeConnection: @escaping (Int, Int?)->()) {
 		self.spec = spec
 		self.makeConnection = makeConnection
 	}
@@ -43,9 +43,13 @@ class MQTTRetryConnection {
 			}
 		}
 		else {
-			if spec.resuscitateTimeInterval > 0.0 {
-				DispatchQueue.main.asyncAfter(deadline: .now() +  spec.resuscitateTimeInterval) { [weak self] in
-					self?.attemptConnection(resusc: resusc + 1, attempt: 1)
+			let spec = self.spec
+			DispatchQueue.main.asyncAfter(deadline: .now() +  spec.retryTimeInterval) { [weak self] in
+				self?.makeConnection(resusc, nil)
+				if spec.resuscitateTimeInterval > 0.0 {
+					DispatchQueue.main.asyncAfter(deadline: .now() +  spec.resuscitateTimeInterval - spec.retryTimeInterval) { [weak self] in
+						self?.attemptConnection(resusc: resusc + 1, attempt: 1)
+					}
 				}
 			}
 		}

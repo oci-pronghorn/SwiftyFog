@@ -100,6 +100,9 @@ extension AppDelegate: MQTTClientDelegate {
 			case .retry(_, let rescus, let attempt, _):
 				metrics?.print("Connection Attempt \(rescus).\(attempt)")
 				break
+			case .retriesFailed(let counter, let rescus, _):
+				metrics?.print("Connection Failed \(counter).\(rescus)")
+				break
 			case .discconnected(let reason, let error):
 				metrics?.print("Discconnected \(reason) \(error?.localizedDescription ?? "")")
 				break

@@ -55,11 +55,12 @@ public class TheJoveExpress implements FogApp
         final String engineFeedbackPowerTopic = "engine/powered";
         final String engineFeedbackCalibrateTopic = "engine/calibrated";
 
-        final String lightsControlOverrideTopic = "lights/override";
+        final String lightsControlOverrideTopic = "lights/control/override";
         final String lightsControlCalibrateTopic = "lights/calibrate";
-        final String lightsFeedbackAmbientTopic = "lights/ambient";
+        final String lightFeedbackOverriddenTopic = "lights/overridden";
         final String lightFeedbackCalibrateTopic = "lights/calibrated";
         final String lightsFeedbackPoweredTopic = "lights/powered";
+        final String lightsFeedbackAmbientTopic = "lights/ambient";
 
         final String accelerometerPublishTopic = "accelerometer";
 

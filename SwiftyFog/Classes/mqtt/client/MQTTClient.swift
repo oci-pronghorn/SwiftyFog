@@ -12,6 +12,7 @@ public enum MQTTConnectedState {
 	case connected(Int)
 	case discconnected(reason: MQTTConnectionDisconnect, error: Error?)
 	case retry(Int, Int, Int, MQTTReconnectParams) // connection counter, rescus counter, attempt counter
+	case retriesFailed(Int, Int, MQTTReconnectParams)
 }
 
 public protocol MQTTClientDelegate: class {
@@ -102,16 +103,21 @@ public final class MQTTClient {
 		}
 	}
 	
-	private func makeConnection(_ rescus: Int, _ attempt : Int) {
-		delegate?.mqtt(client: self, connected: .retry(connectionCounter, rescus, attempt, self.reconnect))
-		let connection = MQTTConnection(
-			hostParams: host,
-			clientPrams: client,
-			authPrams: auth,
-			socketQoS: socketQoS,
-			metrics: metrics)
-		self.connection = connection
-		connection.start(delegate: self)
+	private func makeConnection(_ rescus: Int, _ attempt : Int?) {
+		if let attempt = attempt {
+			delegate?.mqtt(client: self, connected: .retry(connectionCounter, rescus, attempt, self.reconnect))
+			let connection = MQTTConnection(
+				hostParams: host,
+				clientPrams: client,
+				authPrams: auth,
+				socketQoS: socketQoS,
+				metrics: metrics)
+			self.connection = connection
+			connection.start(delegate: self)
+		}
+		else {
+			delegate?.mqtt(client: self, connected: .retriesFailed(connectionCounter, rescus, self.reconnect));
+		}
 	}
 	
 	private func unhandledPacket(packet: MQTTPacket) {

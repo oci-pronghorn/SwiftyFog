@@ -84,13 +84,6 @@ class TrainViewController: UIViewController {
 		
 		self.connectedImage?.isHighlighted = mqtt.connected
 		assertValues()
-		
-		self.connectMetrics.startedFlippingLabelsBlock = { [weak self] in
-			//self?.changeButton.enabled = NO
-		}
-		self.connectMetrics.finishedFlippingLabelsBlock = {  [weak self] in
-			//self?.changeButton.enabled = YES
-		}
 	}
 	
 	func codeUi() {
@@ -121,12 +114,15 @@ extension TrainViewController {
 				assertValues()
 				pulsator.start()
 				self.connectedImage?.isHighlighted = true
-				self.connectMetrics.text = "\(counter).\(0).\(0)"
+				self.connectMetrics.text = "\(counter).-.-"
 				break
 			case .retry(let counter, let rescus, let attempt, _):
 				self.connectMetrics.text = "\(counter).\(rescus).\(attempt)"
 				break
-			case .discconnected(let reason, let error):
+			case .retriesFailed(let counter, let rescus, _):
+				self.connectMetrics.text = "\(counter).\(rescus).-"
+				break
+			case .discconnected(_, _):
 				self.connectedImage?.isHighlighted = false
 				feedbackCut()
 				break
