@@ -265,16 +265,16 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="Train" id="iLc-kK-t0f"/>
                     <connections>
-                        <outlet property="ambientGauge" destination="YEQ-Tl-lGJ" id="LZq-Yo-ujQ"/>
                         <outlet property="billboardImage" destination="yOF-aF-Ux5" id="Tt9-ML-npC"/>
                         <outlet property="connectMetrics" destination="3O4-37-QBa" id="Ine-a8-zxW"/>
                         <outlet property="connectedImage" destination="4zZ-K8-b71" id="nCN-Sr-VCd"/>
                         <outlet property="engineCalibration" destination="5SJ-Xc-cNf" id="Aei-r8-lVK"/>
+                        <outlet property="engineGauge" destination="i1b-Ey-Udf" id="30O-KE-jVv"/>
                         <outlet property="enginePower" destination="frG-rd-tNm" id="qK1-9D-qZL"/>
                         <outlet property="lightCalibration" destination="Ulu-J2-pss" id="Vzm-JV-9VR"/>
                         <outlet property="lightIndicatorImage" destination="I8S-Am-1OA" id="oTj-7e-Fp7"/>
-                        <outlet property="lightPower" destination="N5j-RN-YrA" id="ppI-LP-0aJ"/>
-                        <outlet property="powerGauge" destination="i1b-Ey-Udf" id="KrQ-ev-3sc"/>
+                        <outlet property="lightOverride" destination="N5j-RN-YrA" id="V9s-s2-1wZ"/>
+                        <outlet property="lightingGauge" destination="YEQ-Tl-lGJ" id="XdX-qt-wSf"/>
                         <outlet property="stopStartButton" destination="Wpe-Ny-YbN" id="GnV-Hl-k0c"/>
                     </connections>
                 </viewController>

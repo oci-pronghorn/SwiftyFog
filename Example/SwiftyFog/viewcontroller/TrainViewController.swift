@@ -53,14 +53,14 @@ class TrainViewController: UIViewController {
 	
 	@IBOutlet weak var billboardImage: UIImageView!
 	
-	@IBOutlet weak var lightCalibration: UISlider!
-	@IBOutlet weak var lightPower: UISegmentedControl!
-	@IBOutlet weak var engineCalibration: UISlider!
-	@IBOutlet weak var enginePower: ScrubControl!
-	
-	@IBOutlet weak var powerGauge: WMGaugeView!
+	@IBOutlet weak var lightOverride: UISegmentedControl!
 	@IBOutlet weak var lightIndicatorImage: UIImageView!
-	@IBOutlet weak var ambientGauge: WMGaugeView!
+	@IBOutlet weak var lightCalibration: UISlider!
+	@IBOutlet weak var lightingGauge: WMGaugeView!
+	
+	@IBOutlet weak var enginePower: ScrubControl!
+	@IBOutlet weak var engineCalibration: UISlider!
+	@IBOutlet weak var engineGauge: WMGaugeView!
 	
 	let pulsator = Pulsator()
 	
@@ -102,10 +102,10 @@ class TrainViewController: UIViewController {
 		pulsator.backgroundColor = UIColor.blue.cgColor
 		pulsator.repeatCount = 1
 		
-		powerGauge.rangeLabels = ["Reverse", "Idle", "Forward"]
-		powerGauge.rangeColors = [UIColor.red, UIColor.yellow, UIColor.green]
-		ambientGauge.rangeLabels = ["Dark", "Light"]
-		ambientGauge.rangeColors = [UIColor.darkGray, UIColor.lightGray]
+		engineGauge.rangeLabels = ["Reverse", "Idle", "Forward"]
+		engineGauge.rangeColors = [UIColor.red, UIColor.yellow, UIColor.green]
+		lightingGauge.rangeLabels = ["Dark", "Light"]
+		lightingGauge.rangeColors = [UIColor.darkGray, UIColor.lightGray]
 	}
 
     override func viewDidLayoutSubviews() {
@@ -172,48 +172,83 @@ extension TrainViewController {
 	}
 	
 	@IBAction
+	func doEnginePower(sender: ScrubControl?) {
+		engine.control(power: sender!.rational)
+	}
+	
+	@IBAction
+	func doEngineCalibration(sender: UISlider?) {
+		engine.control(calibration: sender!.rational)
+	}
+	
+	@IBAction
+	func doLightOverride(sender: UISegmentedControl?) {
+		let override = LightCommand(rawValue: Int32(sender!.selectedSegmentIndex))!
+		lights.control(override: override)
+	}
+	
+	@IBAction
+	func doLightCalibration(sender: UISlider?) {
+		lights.control(calibration: sender!.rational)
+	}
+	
+	@IBAction
 	func onPicture(sender: UIButton?) {
 		let photos = PhotosAccess(title: nil, root: self);
 		photos.selectImage(hasCamera: true, hasClear: false) { (image, access) in
 			if access {
 				if let image = image {
 					DispatchQueue.main.async {
-						self.billboard.display(image: image)
+						self.billboard.control(image: image)
 					}
 				}
 			}
 		}
 	}
-	
-	@IBAction
-	func doEnginePower(sender: ScrubControl?) {
-		engine.setPower(sender!.rational)
-	}
-	
-	@IBAction
-	func doEngineCalibration(sender: UISlider?) {
-		engine.calibrate(sender!.rational)
-	}
-	
-	@IBAction
-	func doLightOverride(sender: UISegmentedControl?) {
-		let powerOverride = LightCommand(rawValue: Int32(sender!.selectedSegmentIndex))!
-		lights.powerOverride = powerOverride
-	}
-	
-	@IBAction
-	func doLightCalibration(sender: UISlider?) {
-		lights.calibrate(sender!.rational)
-	}
 }
 
 extension TrainViewController:
 		TrainDelegate,
-		BillboardDelegate,
+		EngineDelegate,
 		LightsDelegate,
-		EngineDelegate {
+		BillboardDelegate {
 	
 	func train(handshake: Bool) {
+	}
+	
+	func engine(power: FogRational<Int64>, _ asserted: Bool) {
+		engineGauge?.setValue(Float(power.num), animated: true, duration: 0.5)
+		if asserted {
+			self.enginePower.rational = power
+		}
+	}
+	
+	func engine(calibration: FogRational<Int64>, _ asserted: Bool) {
+		engineGauge?.rangeValues = [NSNumber(value: -calibration.num), NSNumber(value: calibration.num), 100]
+		if asserted {
+			self.engineCalibration.rational = calibration
+		}
+	}
+	
+	func lights(override: LightCommand, _ asserted: Bool) {
+		if asserted {
+			lightOverride.selectedSegmentIndex = Int(override.rawValue)
+		}
+	}
+	
+	func lights(power: Bool, _ asserted: Bool) {
+		lightIndicatorImage?.isHighlighted = power
+	}
+	
+	func lights(calibration: FogRational<Int64>, _ asserted: Bool) {
+		lightingGauge?.rangeValues = [NSNumber(value: calibration.num), 256]
+		if asserted {
+			self.lightCalibration.rational = calibration
+		}
+	}
+	
+	func lights(ambient: FogRational<Int64>, _ asserted: Bool) {
+		self.lightingGauge?.setValue(Float(ambient.num), animated: true, duration: 0.5)
 	}
 
 	func billboard(layout: FogBitmapLayout) {
@@ -221,34 +256,5 @@ extension TrainViewController:
 	
 	func billboard(image: UIImage) {
 		billboardImage?.image = image
-	}
-	
-	func lights(powered: Bool, _ asserted: Bool) {
-		lightIndicatorImage?.isHighlighted = powered
-	}
-	
-	func lights(ambient: FogRational<Int64>, _ asserted: Bool) {
-		self.ambientGauge?.setValue(Float(ambient.num), animated: true, duration: 0.5)
-	}
-	
-	func lights(calibration: FogRational<Int64>, _ asserted: Bool) {
-		ambientGauge?.rangeValues = [NSNumber(value: calibration.num), 256]
-		if asserted {
-			self.lightCalibration.rational = calibration
-		}
-	}
-	
-	func engine(power: FogRational<Int64>, _ asserted: Bool) {
-		self.powerGauge?.setValue(Float(power.num), animated: true, duration: 0.5)
-		if asserted {
-			self.enginePower.rational = power
-		}
-	}
-	
-	func engine(calibration: FogRational<Int64>, _ asserted: Bool) {
-		powerGauge?.rangeValues = [NSNumber(value: -calibration.num), NSNumber(value: calibration.num), 100]
-		if asserted {
-			self.engineCalibration.rational = calibration
-		}
 	}
 }

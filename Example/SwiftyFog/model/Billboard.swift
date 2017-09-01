@@ -23,7 +23,7 @@ public class Billboard: FogFeedbackModel {
     public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				("spec", .atLeastOnce, Billboard.receiveSpec)
+				("spec/feedback", .atLeastOnce, Billboard.feedbackSpec)
 			])
 		}
     }
@@ -46,20 +46,20 @@ public class Billboard: FogFeedbackModel {
 		return bitmap?.layout
 	}
 	
-	public func display(image: UIImage) {
+	public func control(image: UIImage) {
 		if var bitmap = bitmap {
 			let resized = bitmap.imbue(image)
 			delegate?.billboard(image: resized!)
 			var data  = Data(capacity: bitmap.fogSize)
 			data.fogAppend(bitmap)
-			mqtt.publish(MQTTPubMsg(topic: "image", payload: data))
+			mqtt.publish(MQTTPubMsg(topic: "image/control", payload: data))
 		}
 		else {
 			delegate?.billboard(image: image)
 		}
 	}
 	
-	private func receiveSpec(msg: MQTTMessage) {
+	private func feedbackSpec(msg: MQTTMessage) {
 		let layout: FogBitmapLayout = msg.payload.fogExtract()
 		delegate?.billboard(layout: layout)
 		bitmap = FogBitMap(layout: layout)

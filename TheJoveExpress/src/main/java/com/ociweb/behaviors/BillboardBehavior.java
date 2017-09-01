@@ -43,7 +43,7 @@ public class BillboardBehavior implements PubSubMethodListener {
         bufferChannel.publishTopic("billboard/image", writer->{writer.write(bmp);});
     }
 
-    public boolean displayImage(CharSequence charSequence, BlobReader blobReader) {
+    public boolean onImage(CharSequence charSequence, BlobReader blobReader) {
         blobReader.readInto(bmp);
         // TODO: have display use bitmap model
         //display.display(new FogPixelProgressiveScanner(bmp));

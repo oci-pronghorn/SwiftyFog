@@ -48,24 +48,25 @@ public class TheJoveExpress implements FogApp
     public void declareBehavior(FogRuntime runtime) {
         // Topics
         final String prefix = config.trainName + "/";
-        final String actuatorPowerTopic = "actuator/power";
 
-        final String engineControlPowerTopic = "engine/power";
-        final String engineControlCalibrateTopic = "engine/calibrate";
-        final String engineFeedbackPowerTopic = "engine/powered";
-        final String engineFeedbackCalibrateTopic = "engine/calibrated";
+        final String actuatorPowerInternal = "actuator/power/internal";
 
-        final String lightsControlOverrideTopic = "lights/control/override";
-        final String lightsControlCalibrateTopic = "lights/calibrate";
-        final String lightFeedbackOverriddenTopic = "lights/overridden";
-        final String lightFeedbackCalibrateTopic = "lights/calibrated";
-        final String lightsFeedbackPoweredTopic = "lights/powered";
-        final String lightsFeedbackAmbientTopic = "lights/ambient";
+        final String enginePowerControl = "engine/power/control";
+        final String engineCalibrationControl = "engine/calibration/control";
+        final String enginePowerFeedback = "engine/power/feedback";
+        final String engineCalibrationFeedback = "engine/calibration/feedback";
+
+        final String lightsOverrideControl = "lights/override/control";
+        final String lightsCalibrationControl = "lights/calibration/control";
+        final String lightsOverrideFeedback = "lights/override/feedback";
+        final String lightsPowerFeedback = "lights/power/feedback";
+        final String lightsCalibrationFeedback = "lights/calibration/feedback";
+        final String lightsAmbientFeedback = "lights/ambient/feedback";
+
+        final String billboardImageControl = "billboard/image/control";
+        final String billboardSpecFeedback = "billboard/spec/feedback";
 
         final String accelerometerPublishTopic = "accelerometer";
-
-        final String billboardImageTopic = "billboard/image";
-        final String billboardSpecPublishTopic = "billboard/spec";
 
         // TODO: this is a hack - remove when we have the listener
         final String mqttConnectedTopic = "mqttConnected";
@@ -83,39 +84,40 @@ public class TheJoveExpress implements FogApp
         if (config.engineEnabled || config.lightsEnabled) {
             final ActuatorDriverBehavior actuator = new ActuatorDriverBehavior(runtime);
             runtime.registerListener(actuator)
-                    .addSubscription(actuatorPowerTopic, actuator::setPower);
+                    .addSubscription(actuatorPowerInternal, actuator::setPower);
         }
 
         if (config.engineEnabled) {
             if (config.mqttEnabled) {
-                runtime.bridgeSubscription(engineControlPowerTopic, prefix + engineControlPowerTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeSubscription(engineControlCalibrateTopic, prefix + engineControlCalibrateTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(engineFeedbackPowerTopic, prefix + engineFeedbackPowerTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
-                runtime.bridgeTransmission(engineFeedbackCalibrateTopic, prefix + engineFeedbackCalibrateTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+                runtime.bridgeSubscription(enginePowerControl, prefix + enginePowerControl, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeSubscription(engineCalibrationControl, prefix + engineCalibrationControl, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeTransmission(enginePowerFeedback, prefix + enginePowerFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+                runtime.bridgeTransmission(engineCalibrationFeedback, prefix + engineCalibrationFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
             }
-            final EngineBehavior engine = new EngineBehavior(runtime, actuatorPowerTopic, config.engineAccuatorPort, engineFeedbackPowerTopic, engineFeedbackCalibrateTopic);
+            final EngineBehavior engine = new EngineBehavior(runtime, actuatorPowerInternal, config.engineAccuatorPort, enginePowerFeedback, engineCalibrationFeedback);
             runtime.registerListener(engine)
                     .addSubscription(mqttConnectedTopic, engine::onMqttConnected)
-                    .addSubscription(engineControlPowerTopic, engine::onPower)
-                    .addSubscription(engineControlCalibrateTopic, engine::onCalibrate);
+                    .addSubscription(enginePowerControl, engine::onPower)
+                    .addSubscription(engineCalibrationControl, engine::onCalibration);
         }
 
         if (config.lightsEnabled) {
             if (config.mqttEnabled) {
-                runtime.bridgeSubscription(lightsControlOverrideTopic, prefix + lightsControlOverrideTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeSubscription(lightsControlCalibrateTopic, prefix + lightsControlCalibrateTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(lightsFeedbackAmbientTopic, prefix + lightsFeedbackAmbientTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
-                runtime.bridgeTransmission(lightsFeedbackPoweredTopic, prefix + lightsFeedbackPoweredTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
-                runtime.bridgeTransmission(lightFeedbackCalibrateTopic, prefix + lightFeedbackCalibrateTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+                runtime.bridgeSubscription(lightsOverrideControl, prefix + lightsOverrideControl, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeSubscription(lightsCalibrationControl, prefix + lightsCalibrationControl, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeTransmission(lightsOverrideFeedback, prefix + lightsOverrideFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+                runtime.bridgeTransmission(lightsPowerFeedback, prefix + lightsPowerFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+                runtime.bridgeTransmission(lightsCalibrationFeedback, prefix + lightsCalibrationFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+                runtime.bridgeTransmission(lightsAmbientFeedback, prefix + lightsAmbientFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
             }
-            final AmbientLightBroadcast ambientLight = new AmbientLightBroadcast(runtime, config.lightSensorPort, lightsFeedbackAmbientTopic);
+            final AmbientLightBroadcast ambientLight = new AmbientLightBroadcast(runtime, config.lightSensorPort, lightsAmbientFeedback);
             runtime.registerListener(ambientLight);
-            final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerTopic, config.lightAccuatorPort, lightsFeedbackPoweredTopic, lightFeedbackCalibrateTopic);
+            final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerInternal, config.lightAccuatorPort, lightsOverrideFeedback, lightsPowerFeedback, lightsCalibrationFeedback);
             runtime.registerListener(lights)
                     .addSubscription(mqttConnectedTopic, lights::onMqttConnected)
-                    .addSubscription(lightsControlOverrideTopic, lights::onOverride)
-                    .addSubscription(lightsControlCalibrateTopic, lights::onCalibrate)
-                    .addSubscription(lightsFeedbackAmbientTopic, lights::onDetected);
+                    .addSubscription(lightsOverrideControl, lights::onOverride)
+                    .addSubscription(lightsCalibrationControl, lights::onCalibration)
+                    .addSubscription(lightsAmbientFeedback, lights::onDetected);
         }
 
         if (config.speedometerEnabled) {
@@ -129,13 +131,13 @@ public class TheJoveExpress implements FogApp
 
         if (config.billboardEnabled) {
             if (config.mqttEnabled) {
-                runtime.bridgeSubscription(billboardImageTopic, prefix + billboardImageTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(billboardSpecPublishTopic, prefix + billboardSpecPublishTopic, mqttBridge).setQoS(MQTTQOS.atLeastOnce).setRetain(true);
+                runtime.bridgeSubscription(billboardImageControl, prefix + billboardImageControl, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeTransmission(billboardSpecFeedback, prefix + billboardSpecFeedback, mqttBridge).setQoS(MQTTQOS.atLeastOnce).setRetain(true);
             }
-            final BillboardBehavior billboard = new BillboardBehavior(runtime, billboardSpecPublishTopic);
+            final BillboardBehavior billboard = new BillboardBehavior(runtime, billboardSpecFeedback);
             runtime.registerListener(billboard)
                     .addSubscription(mqttConnectedTopic, billboard::onMqttConnected)
-                    .addSubscription(billboardImageTopic, billboard::displayImage);
+                    .addSubscription(billboardImageControl, billboard::onImage);
         }
 
         if (config.cameraEnabled) {

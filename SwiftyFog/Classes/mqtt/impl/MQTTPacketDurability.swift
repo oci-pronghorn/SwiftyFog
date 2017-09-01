@@ -40,6 +40,7 @@ final class MQTTPacketDurability: MQTTPacketIssuer {
 		}
 	}
 
+	// TODO: spec says retry must be on reconnect but not necessarely timer while connected
 	func connected(cleanSession: Bool, present: Bool, initial: Bool) {
 		resendTimer.schedule(deadline: .now() + resendInterval, repeating: resendInterval, leeway: .milliseconds(250))
 		resendTimer.resume()

@@ -16,37 +16,32 @@ public protocol EngineDelegate: class {
 
 public class Engine: FogFeedbackModel {
 	private var broadcaster: MQTTBroadcaster?
-	public private(set) var calibration: FogFeedbackValue<FogRational<Int64>>
-	public private(set) var power: FogFeedbackValue<FogRational<Int64>>
-	
-	private let engineControlPowerTopic = "power"
-    private let engineControlCalibrateTopic = "calibrate"
-	private let engineFeedbackPowerTopic = "powered"
-    private let engineFeedbackCalibrateTopic = "calibrated"
+	private var power: FogFeedbackValue<FogRational<Int64>>
+	private var calibration: FogFeedbackValue<FogRational<Int64>>
 	
 	public weak var delegate: EngineDelegate?
 	
 	public init() {
-		self.calibration = FogFeedbackValue(FogRational(num: Int64(15), den: 100))
 		self.power = FogFeedbackValue(FogRational(num: Int64(0), den: 100))
+		self.calibration = FogFeedbackValue(FogRational(num: Int64(15), den: 100))
 	}
 	
     public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				(engineFeedbackPowerTopic, .atLeastOnce, Engine.receivePower),
-				(engineFeedbackCalibrateTopic, .atLeastOnce, Engine.receiveCalibration)
+				("power/feedback", .atLeastOnce, Engine.feedbackPower),
+				("calibration/feedback", .atLeastOnce, Engine.feedbackCalibration)
 			])
 		}
     }
 	
 	public var hasFeedback: Bool {
-		return calibration.hasFeedback && power.hasFeedback
+		return power.hasFeedback && calibration.hasFeedback
 	}
 	
 	public func reset() {
-		calibration.reset()
 		power.reset()
+		calibration.reset()
 	}
 	
 	public func assertValues() {
@@ -54,30 +49,30 @@ public class Engine: FogFeedbackModel {
 		delegate?.engine(calibration: calibration.value, true)
 	}
 	
-	public func calibrate(_ calibration: FogRational<Int64>) {
-		self.calibration.control(calibration) { value in
-			var data  = Data(capacity: calibration.fogSize)
-			data.fogAppend(calibration)
-			mqtt.publish(MQTTPubMsg(topic: engineControlCalibrateTopic, payload: data))
-		}
-	}
-	
-	public func setPower(_ power: FogRational<Int64>) {
+	public func control(power: FogRational<Int64>) {
 		self.power.control(power) { value in
 			var data  = Data(capacity: value.fogSize)
 			data.fogAppend(value)
-			mqtt.publish(MQTTPubMsg(topic: engineControlPowerTopic, payload: data))
+			mqtt.publish(MQTTPubMsg(topic: "power/control", payload: data))
 		}
 	}
 	
-	private func receivePower(msg: MQTTMessage) {
+	public func control(calibration: FogRational<Int64>) {
+		self.calibration.control(calibration) { value in
+			var data  = Data(capacity: calibration.fogSize)
+			data.fogAppend(calibration)
+			mqtt.publish(MQTTPubMsg(topic: "calibration/control", payload: data))
+		}
+	}
+	
+	private func feedbackPower(_ msg: MQTTMessage) {
 		let value: FogRational<Int64> = msg.payload.fogExtract()
 		self.power.receive(value) { value, asserted in
 			delegate?.engine(power: value, asserted)
 		}
 	}
 	
-	private func receiveCalibration(msg: MQTTMessage) {
+	private func feedbackCalibration(_ msg: MQTTMessage) {
 		self.calibration.receive(msg.payload.fogExtract()) { value, asserted in
 			delegate?.engine(calibration: value, asserted)
 		}
