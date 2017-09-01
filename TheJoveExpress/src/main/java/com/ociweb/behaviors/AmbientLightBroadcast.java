@@ -19,10 +19,14 @@ public class AmbientLightBroadcast implements AnalogListener {
         this.publishTopic = publishTopic;
     }
 
+    private long last = System.currentTimeMillis();
+
     @Override
     public void analogEvent(Port port, long time, long durationMillis, int average, int value) {
         if (port == lightSensorPort) {
-            System.out.print(String.format("t:%d d:%d a:%d v:%d\n", time, durationMillis, average, value));
+            long t = System.currentTimeMillis();
+            System.out.print(String.format("%d, p: %d t:%d d:%d a:%d v:%d\n", (t - last), port.port, time, durationMillis, average, value));
+            last = t;
             if (value != oldValue.num) {
                 oldValue.num = value;
                 channel.publishTopic(publishTopic, writer -> writer.write(oldValue));

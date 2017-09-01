@@ -72,8 +72,8 @@ class TrainViewController: UIViewController {
 	
     var mqtt: MQTTBridge! {
 		didSet {
-			engine.delegate = self
-			engine.mqtt = mqtt
+			train.delegate = self
+			train.mqtt = mqtt
 			
 			engine.delegate = self
 			engine.mqtt = mqtt.createBridge(subPath: "engine")
