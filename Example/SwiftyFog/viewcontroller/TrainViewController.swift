@@ -49,6 +49,8 @@ class TrainViewController: UIViewController {
 	
 	@IBOutlet weak var connectMetrics: FSDAirportFlipLabel!
 	@IBOutlet weak var connectedImage: UIImageView!
+	@IBOutlet weak var stopStartButton: UIButton!
+	
 	@IBOutlet weak var billboardImage: UIImageView!
 	
 	@IBOutlet weak var lightCalibration: UISlider!
@@ -61,6 +63,12 @@ class TrainViewController: UIViewController {
 	@IBOutlet weak var ambientGauge: WMGaugeView!
 	
 	let pulsator = Pulsator()
+	
+	var mqttControl: MQTTControl! {
+		didSet {
+			mqttControl.start()
+		}
+	}
 	
     var mqtt: MQTTBridge! {
 		didSet {
@@ -82,7 +90,9 @@ class TrainViewController: UIViewController {
 		super.viewDidLoad()
 		self.codeUi()
 		
-		self.connectedImage?.isHighlighted = mqtt.connected
+		self.connectedImage.isHighlighted = mqttControl.connected
+		self.stopStartButton.isSelected = mqttControl.started
+		
 		assertValues()
 	}
 	
@@ -109,6 +119,9 @@ class TrainViewController: UIViewController {
 extension TrainViewController {
 	func mqtt(connected: MQTTConnectedState) {
 		switch connected {
+			case .started:
+				self.stopStartButton.isSelected = mqttControl.started
+				break
 			case .connected(let counter):
 				feedbackCut()
 				assertValues()
@@ -124,6 +137,7 @@ extension TrainViewController {
 				break
 			case .discconnected(_, _):
 				self.connectedImage?.isHighlighted = false
+				self.stopStartButton.isSelected = mqttControl.started
 				feedbackCut()
 				break
 		}
@@ -146,6 +160,15 @@ extension TrainViewController {
 		engine.assertValues()
 		lights.assertValues()
 		billboard.assertValues()
+	}
+	
+	@IBAction func stopStartConnecting(sender: UIButton?) {
+		if mqttControl.started {
+			mqttControl.stop()
+		}
+		else {
+			mqttControl.start()
+		}
 	}
 	
 	@IBAction

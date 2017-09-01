@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
 	var mqtt: MQTTClient!
 	var metrics: MQTTMetrics?
-	var wantConnection: Bool = false
+	var wasStarted: Bool = false
 	
 	var trainSelect: TrainSelectViewController!
 	var trainControl: TrainViewController!
@@ -48,25 +48,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		trainSelect.mqtt = mqtt
 		let scoped = mqtt.createBridge(subPath: trainName)
 		trainControl.mqtt = scoped
+		trainControl.mqttControl = mqtt
 		
 		// We want to start the process right away
-		startConnecting()
 		
 		return true
 	}
 
-	@IBAction func startConnecting() {
-		wantConnection = true
-		mqtt.start()
-	}
-
-	@IBAction func stopConnecting() {
-		wantConnection = false
-		mqtt.stop()
-	}
-
 	func applicationWillResignActive(_ application: UIApplication) {
 		// Be a good iOS citizen and shutdown the connection and timers
+		wasStarted = mqtt.started
 		mqtt.stop()
 	}
 
@@ -74,8 +65,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 
 	func applicationWillEnterForeground(_ application: UIApplication) {
-		// If want to be connected, restore it
-		if wantConnection {
+		// If want to be started, restore it
+		if wasStarted {
 			mqtt.start()
 		}
 	}
@@ -94,6 +85,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate: MQTTClientDelegate {
 	func mqtt(client: MQTTClient, connected: MQTTConnectedState) {
 		switch connected {
+			case .started:
+				metrics?.print("Started")
+				break
 			case .connected(let counter):
 				metrics?.print("Connected \(counter)")
 				break

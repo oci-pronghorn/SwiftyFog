@@ -9,6 +9,7 @@
 import Foundation
 
 public enum MQTTConnectedState {
+	case started
 	case connected(Int)
 	case discconnected(reason: MQTTConnectionDisconnect, error: Error?)
 	case retry(Int, Int, Int, MQTTReconnectParams) // connection counter, rescus counter, attempt counter
@@ -76,33 +77,6 @@ public final class MQTTClient {
 		distributer.delegate = self
 	}
 	
-	public var connected: Bool {
-		get {
-			return connection?.isFullConnected ?? false
-		}
-		set {
-			newValue ? start(): stop()
-		}
-	}
-	
-	public func start() {
-		if retry == nil {
-			retry = MQTTRetryConnection(spec: reconnect) { [weak self] r, a in
-				self?.makeConnection(r, a)
-			}
-			retry?.start()
-		}
-	}
-	
-	public func stop() {
-		if retry != nil {
-			retry = nil
-			connection = nil
-			// connection does not call delegate in deinit
-			doDisconnect(reason: .stopped, error: nil)
-		}
-	}
-	
 	private func makeConnection(_ rescus: Int, _ attempt : Int?) {
 		if let attempt = attempt {
 			delegate?.mqtt(client: self, connected: .retry(connectionCounter, rescus, attempt, self.reconnect))
@@ -124,6 +98,40 @@ public final class MQTTClient {
 		if let metrics = metrics {
 			metrics.unhandledPacket()
 			metrics.debug("Unhandled: \(type(of:packet))")
+		}
+	}
+}
+
+extension MQTTClient: MQTTControl {
+	public var started: Bool {
+		return retry != nil
+	}
+	
+	public var connected: Bool {
+		get {
+			return connection?.isFullConnected ?? false
+		}
+		set {
+			newValue ? start(): stop()
+		}
+	}
+
+	public func start() {
+		if retry == nil {
+			retry = MQTTRetryConnection(spec: reconnect) { [weak self] r, a in
+				self?.makeConnection(r, a)
+			}
+			delegate?.mqtt(client: self, connected: .started)
+			retry?.start()
+		}
+	}
+
+	public func stop() {
+		if retry != nil {
+			retry = nil
+			connection = nil
+			// connection does not call delegate in deinit
+			doDisconnect(reason: .stopped, error: nil)
 		}
 	}
 }

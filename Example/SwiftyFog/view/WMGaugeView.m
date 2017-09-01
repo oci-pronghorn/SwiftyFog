@@ -160,6 +160,10 @@
     _unitOfMeasurementFont = [UIFont fontWithName:@"Helvetica" size:0.04];
     _unitOfMeasurement = @"";
     _showUnitOfMeasurement = NO;
+	
+    _scaleDescription = ^NSString* (float value) {
+		return [NSString stringWithFormat:@"%0.0f",value];
+    };
     
     animationCompletion = nil;
 
@@ -378,7 +382,7 @@
             CGContextStrokePath(context);
             
             // Draw label
-            NSString *valueString = [NSString stringWithFormat:@"%0.0f",value];
+            NSString *valueString = _scaleDescription(value);
             UIFont* font = _scaleFont ? _scaleFont : [UIFont fontWithName:@"Helvetica-Bold" size:0.05];
             NSDictionary* stringAttrs = @{ NSFontAttributeName : font, NSForegroundColorAttributeName : color };
             NSAttributedString* attrStr = [[NSAttributedString alloc] initWithString:valueString attributes:stringAttrs];

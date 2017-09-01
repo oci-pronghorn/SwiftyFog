@@ -32,13 +32,13 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="The Jove Express" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qsm-zT-BQc">
-                                        <rect key="frame" x="36" y="6" width="237" height="20.5"/>
+                                        <rect key="frame" x="36" y="6" width="201" height="20.5"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3O4-37-QBa" customClass="FSDAirportFlipLabel">
-                                        <rect key="frame" x="277" y="8" width="82" height="16"/>
+                                        <rect key="frame" x="241" y="8" width="82" height="16"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -46,8 +46,23 @@
                                             <userDefinedRuntimeAttribute type="number" keyPath="fixedLength">
                                                 <integer key="value" value="1"/>
                                             </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="flipDuration">
+                                                <real key="value" value="0.5"/>
+                                            </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wpe-Ny-YbN">
+                                        <rect key="frame" x="327" y="0.0" width="32" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="H5f-f4-yYD"/>
+                                            <constraint firstAttribute="width" constant="32" id="tN9-NR-RBW"/>
+                                        </constraints>
+                                        <state key="normal" image="impressed"/>
+                                        <state key="selected" image="depressed"/>
+                                        <connections>
+                                            <action selector="stopStartConnectingWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TSa-sQ-3hQ"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="0P7-i3-PrJ" userLabel="Power">
@@ -230,31 +245,6 @@
                                     <constraint firstAttribute="width" constant="96" id="uDI-6J-OYM"/>
                                 </constraints>
                             </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="A7W-5F-dl6" userLabel="Connection Stack">
-                                <rect key="frame" x="149" y="511" width="76" height="30"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="8xd-TB-fXL" userLabel="Action Stack">
-                                        <rect key="frame" x="0.0" y="0.0" width="76" height="30"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vRb-rS-o5g">
-                                                <rect key="frame" x="0.0" y="0.0" width="34" height="30"/>
-                                                <state key="normal" title="Start"/>
-                                                <connections>
-                                                    <action selector="startConnecting" destination="dkx-z0-nzr" eventType="touchUpInside" id="BNB-sB-CtK"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cFR-rW-zut">
-                                                <rect key="frame" x="42" y="0.0" width="34" height="30"/>
-                                                <state key="normal" title="Stop"/>
-                                                <connections>
-                                                    <action selector="cleanDisconnect" destination="dkx-z0-nzr" eventType="touchUpInside" id="5cy-Sp-7bn"/>
-                                                    <action selector="stopConnecting" destination="dkx-z0-nzr" eventType="touchUpInside" id="ad8-oa-Ngu"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
-                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -262,14 +252,12 @@
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="height" secondItem="yOF-aF-Ux5" secondAttribute="height" id="7aO-DK-CQq"/>
                             <constraint firstItem="yOF-aF-Ux5" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="95U-ZV-7hR"/>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="centerX" secondItem="yOF-aF-Ux5" secondAttribute="centerX" id="L16-OZ-Wcb"/>
-                            <constraint firstItem="A7W-5F-dl6" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="QDK-6Z-baG"/>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="centerY" secondItem="yOF-aF-Ux5" secondAttribute="centerY" id="c2a-8f-3nQ"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="eBe-4Q-Ytg"/>
                             <constraint firstItem="yOF-aF-Ux5" firstAttribute="top" secondItem="0P7-i3-PrJ" secondAttribute="bottom" constant="17" id="eMJ-EH-bod"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="hUY-FX-r7F"/>
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" constant="-16" id="hfn-cg-vmm"/>
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="kwp-cM-kPw"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="A7W-5F-dl6" secondAttribute="bottom" constant="77" id="l77-MR-Uag"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" constant="-16" id="pwc-xu-es9"/>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="width" secondItem="yOF-aF-Ux5" secondAttribute="width" multiplier="0.75" id="v15-Jg-PZJ"/>
                         </constraints>
@@ -287,6 +275,7 @@
                         <outlet property="lightIndicatorImage" destination="I8S-Am-1OA" id="oTj-7e-Fp7"/>
                         <outlet property="lightPower" destination="N5j-RN-YrA" id="ppI-LP-0aJ"/>
                         <outlet property="powerGauge" destination="i1b-Ey-Udf" id="KrQ-ev-3sc"/>
+                        <outlet property="stopStartButton" destination="Wpe-Ny-YbN" id="GnV-Hl-k0c"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -447,6 +436,8 @@
         <image name="TorchOff" width="32" height="32"/>
         <image name="TorchOn" width="32" height="32"/>
         <image name="Train" width="30" height="30"/>
+        <image name="depressed" width="32" height="32"/>
+        <image name="impressed" width="32" height="32"/>
     </resources>
     <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
 </document>

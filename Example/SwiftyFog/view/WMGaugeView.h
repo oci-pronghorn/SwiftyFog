@@ -35,6 +35,8 @@ typedef NS_ENUM(NSInteger, WMGaugeViewInnerBackgroundStyle)
     WMGaugeViewInnerBackgroundStyleFlat
 };
 
+typedef NSString* (^ScaleDescription)(float);
+
 /**
  * WMGaugeView class
  */
@@ -99,6 +101,8 @@ IB_DESIGNABLE
 @property (nonatomic) IBInspectable NSInteger needleStyleNum;
 @property (nonatomic) IBInspectable NSInteger needleScrewStyleNum;
 @property (nonatomic) IBInspectable NSInteger scalesubdivisionsaligmentNum;
+
+@property (nonatomic) ScaleDescription scaleDescription;
 
 /**
  * WMGaugeView public functions
