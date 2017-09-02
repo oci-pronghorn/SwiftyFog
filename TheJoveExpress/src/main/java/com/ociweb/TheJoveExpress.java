@@ -38,7 +38,14 @@ public class TheJoveExpress implements FogApp
         if (config.cameraEnabled) ; //c.connect(pi-bus camera);
         if (config.soundEnabled) ; //c.connect(serial mp3 player);
 
-        if (config.forceTelemetry || c.isTestHardware()) c.enableTelemetry();
+        switch (config.telemetryEnabled) {
+            case on:
+                c.enableTelemetry();
+                break;
+            case latent:
+                if (c.isTestHardware()) c.enableTelemetry();
+                break;
+        }
 
         //c.setTimerPulseRate(1000);
     }
@@ -68,7 +75,9 @@ public class TheJoveExpress implements FogApp
         final String accelerometerPublishTopic = "accelerometer";
 
         final String allFeedback = "feedback";
-        runtime.bridgeSubscription(allFeedback, prefix + allFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+        if (config.mqttEnabled) {
+            runtime.bridgeSubscription(allFeedback, prefix + allFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+        }
 
         // TODO: all inbound have the train name wildcard topic
 
