@@ -83,6 +83,8 @@ class TrainViewController: UIViewController {
 			
 			billboard.delegate = self
 			billboard.mqtt = mqtt.createBridge(subPath: "billboard")
+			
+			//mqtt.publish(MQTTPubMsg(topic: "feedback"))
 		}
 	}
 
@@ -162,6 +164,17 @@ extension TrainViewController {
 		billboard.assertValues()
 	}
 	
+	func isReady() {
+/*		if engine.hasFeedback &&
+			lights.hasFeedback &&
+		billboard.hasFeedback {
+			print("ready")
+		}
+		else {
+			print("not yet")
+		}*/
+	}
+	
 	@IBAction func stopStartConnecting(sender: UIButton?) {
 		if mqttControl.started {
 			mqttControl.stop()
@@ -220,6 +233,7 @@ extension TrainViewController:
 		engineGauge?.setValue(Float(power.num), animated: true, duration: 0.5)
 		if asserted {
 			self.enginePower.rational = power
+			isReady()
 		}
 	}
 	
@@ -227,12 +241,14 @@ extension TrainViewController:
 		engineGauge?.rangeValues = [NSNumber(value: -calibration.num), NSNumber(value: calibration.num), 100]
 		if asserted {
 			self.engineCalibration.rational = calibration
+			isReady()
 		}
 	}
 	
 	func lights(override: LightCommand, _ asserted: Bool) {
 		if asserted {
 			lightOverride.selectedSegmentIndex = Int(override.rawValue)
+			isReady()
 		}
 	}
 	
@@ -244,14 +260,19 @@ extension TrainViewController:
 		lightingGauge?.rangeValues = [NSNumber(value: calibration.num), 256]
 		if asserted {
 			self.lightCalibration.rational = calibration
+			isReady()
 		}
 	}
 	
 	func lights(ambient: FogRational<Int64>, _ asserted: Bool) {
 		self.lightingGauge?.setValue(Float(ambient.num), animated: true, duration: 0.5)
+		if asserted {
+			isReady()
+		}
 	}
 
 	func billboard(layout: FogBitmapLayout) {
+		isReady()
 	}
 	
 	func billboard(image: UIImage) {

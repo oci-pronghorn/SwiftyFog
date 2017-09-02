@@ -26,7 +26,7 @@ public class EngineBehavior implements PubSubMethodListener {
         this.calibrationTopic = engineCalibratedTopic;
     }
 
-    public boolean onMqttConnected(CharSequence charSequence, BlobReader messageReader) {
+    public boolean onAllFeedback(CharSequence charSequence, BlobReader messageReader) {
         this.channel.publishTopic(calibrationTopic, writer -> writer.write(calibration));
         this.channel.publishTopic(powerTopic, writer -> writer.write(actuatorPayload));
         return true;

@@ -40,8 +40,7 @@ public class TheJoveExpress implements FogApp
 
         if (config.forceTelemetry || c.isTestHardware()) c.enableTelemetry();
 
-        // TODO: only needed for MQTT connect workaround
-        c.setTimerPulseRate(500);
+        //c.setTimerPulseRate(1000);
     }
 
     @Override
@@ -68,9 +67,8 @@ public class TheJoveExpress implements FogApp
 
         final String accelerometerPublishTopic = "accelerometer";
 
-        // TODO: this is a hack - remove when we have the listener
-        final String mqttConnectedTopic = "mqttConnected";
-        runtime.registerListener(new MQttConnectedWorkAround(runtime, mqttConnectedTopic));
+        final String allFeedback = "feedback";
+        runtime.bridgeSubscription(allFeedback, prefix + allFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
 
         // TODO: all inbound have the train name wildcard topic
 
@@ -96,7 +94,7 @@ public class TheJoveExpress implements FogApp
             }
             final EngineBehavior engine = new EngineBehavior(runtime, actuatorPowerInternal, config.engineAccuatorPort, enginePowerFeedback, engineCalibrationFeedback);
             runtime.registerListener(engine)
-                    .addSubscription(mqttConnectedTopic, engine::onMqttConnected)
+                    .addSubscription(allFeedback, engine::onAllFeedback)
                     .addSubscription(enginePowerControl, engine::onPower)
                     .addSubscription(engineCalibrationControl, engine::onCalibration);
         }
@@ -111,10 +109,11 @@ public class TheJoveExpress implements FogApp
                 runtime.bridgeTransmission(lightsAmbientFeedback, prefix + lightsAmbientFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
             }
             final AmbientLightBroadcast ambientLight = new AmbientLightBroadcast(runtime, config.lightSensorPort, lightsAmbientFeedback);
-            runtime.registerListener(ambientLight);
+            runtime.registerListener(ambientLight)
+                    .addSubscription(allFeedback, ambientLight::onAllFeedback);
             final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerInternal, config.lightAccuatorPort, lightsOverrideFeedback, lightsPowerFeedback, lightsCalibrationFeedback);
             runtime.registerListener(lights)
-                    .addSubscription(mqttConnectedTopic, lights::onMqttConnected)
+                    .addSubscription(allFeedback, lights::onAllFeedback)
                     .addSubscription(lightsOverrideControl, lights::onOverride)
                     .addSubscription(lightsCalibrationControl, lights::onCalibration)
                     .addSubscription(lightsAmbientFeedback, lights::onDetected);
@@ -136,7 +135,7 @@ public class TheJoveExpress implements FogApp
             }
             final BillboardBehavior billboard = new BillboardBehavior(runtime, billboardSpecFeedback);
             runtime.registerListener(billboard)
-                    .addSubscription(mqttConnectedTopic, billboard::onMqttConnected)
+                    .addSubscription(allFeedback, billboard::onAllFeedback)
                     .addSubscription(billboardImageControl, billboard::onImage);
         }
 

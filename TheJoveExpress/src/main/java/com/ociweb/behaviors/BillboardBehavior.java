@@ -27,9 +27,9 @@ public class BillboardBehavior implements PubSubMethodListener {
         bufferChannel.ensureDynamicMessaging(5, bmp.messageSize());
     }
 
-    public boolean onMqttConnected(CharSequence charSequence, BlobReader messageReader) {
+    public boolean onAllFeedback(CharSequence charSequence, BlobReader messageReader) {
         bufferChannel.publishTopic(publishTopic, writer->{writer.write(display.newBmpLayout());});
-        sendTestImage();
+        //sendTestImage();
         return true;
     }
 

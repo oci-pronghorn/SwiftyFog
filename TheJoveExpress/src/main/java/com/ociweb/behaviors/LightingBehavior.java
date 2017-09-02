@@ -33,7 +33,7 @@ public class LightingBehavior implements PubSubMethodListener {
         this.actuatorPayload.power = -1.0;
     }
 
-    public boolean onMqttConnected(CharSequence charSequence, BlobReader messageReader) {
+    public boolean onAllFeedback(CharSequence charSequence, BlobReader messageReader) {
         boolean isOn = this.actuatorPayload.power > 0.0;
         TriState lightsOn = overridePower == null ? TriState.latent : overridePower == 0.0 ? TriState.on : TriState.off;
         this.channel.publishTopic(overrideTopic, writer -> writer.writeInt(lightsOn.ordinal()));
