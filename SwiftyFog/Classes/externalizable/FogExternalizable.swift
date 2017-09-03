@@ -13,5 +13,5 @@ public protocol FogWritingExternalizable {
 }
 
 public protocol FogExternalizable: FogWritingExternalizable {
-	init(data: Data, cursor: inout Int)
+	init?(data: Data, cursor: inout Int)
 }

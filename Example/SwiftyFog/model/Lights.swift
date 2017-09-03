@@ -82,7 +82,7 @@ public class Lights: FogFeedbackModel {
 	}
 	
 	private func feedbackOverride(_ msg: MQTTMessage) {
-		self.override.receive(msg.payload.fogExtract()!) { value, asserted in
+		self.override.receive(msg.payload.fogExtract()) { value, asserted in
 			delegate?.lights(override: value, asserted)
 		}
 	}

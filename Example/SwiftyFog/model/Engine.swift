@@ -66,8 +66,7 @@ public class Engine: FogFeedbackModel {
 	}
 	
 	private func feedbackPower(_ msg: MQTTMessage) {
-		let value: FogRational<Int64> = msg.payload.fogExtract()
-		self.power.receive(value) { value, asserted in
+		self.power.receive(msg.payload.fogExtract()) { value, asserted in
 			delegate?.engine(power: value, asserted)
 		}
 	}

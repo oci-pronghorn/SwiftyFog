@@ -22,9 +22,12 @@ public struct FogRational<T: FixedWidthInteger> : Equatable, FogExternalizable, 
 		self.den = den
 	}
 	
-	public init(data: Data, cursor: inout Int) {
+	public init?(data: Data, cursor: inout Int) {
 		self.num = data.fogExtract(&cursor)
 		self.den = data.fogExtract(&cursor)
+		if self.den == 0 {
+			return nil
+		}
 	}
 
 	public var description: String {

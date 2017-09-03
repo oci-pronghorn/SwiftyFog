@@ -14,12 +14,13 @@ public struct FogBitMap: FogExternalizable, CustomStringConvertible {
 	
 	public init(layout: FogBitmapLayout) {
 		self.layout = layout
-		bmp = [UInt8](repeating: 0, count: layout.bmpSize)
+		self.bmp = [UInt8](repeating: 0, count: layout.bmpSize)
 	}
 	
-	public init(data: Data, cursor: inout Int) {
-		layout = data.fogExtract(&cursor)
-		bmp = data.fogExtract(len: layout.bmpSize, &cursor)
+	public init?(data: Data, cursor: inout Int) {
+		guard let layout: FogBitmapLayout = data.fogExtract(&cursor) else { return nil }
+		self.layout = layout
+		self.bmp = data.fogExtract(len: layout.bmpSize, &cursor)
 	}
 	
 	public var fogSize: Int {

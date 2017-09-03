@@ -25,7 +25,7 @@ public struct FogBitmapLayout: FogExternalizable, Equatable, CustomStringConvert
 		self.colorSpace = colorSpace
     }
 	
-	public init(data: Data, cursor: inout Int) {
+	public init?(data: Data, cursor: inout Int) {
 		width = data.fogExtract(&cursor)
 		height = data.fogExtract(&cursor)
 		colorSpace = data.fogExtract(&cursor) ?? .gray

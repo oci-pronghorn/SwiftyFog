@@ -48,12 +48,25 @@ public struct FogFeedbackValue<T: Equatable> {
 		}
 	}
 	
+	public enum ReceiveAppled {
+		case no
+		case failed
+		case asserted
+		case yes
+	
+		var changed: Bool { return self == .asserted || self == .yes }
+	}
+	
 	// If detected changed then invoke lambda
-	public mutating func receive(_ value: T, _ change: (T, Bool)->()) {
+	@discardableResult
+	public mutating func receive(_ value: T?, _ change: (T, Bool)->()) -> ReceiveAppled {
+		guard let value = value else { return .failed }
 		let wasNil = detected == nil
 		if wasNil || !(value == detected) {
 			detected = value
 			change(value, wasNil)
+			return wasNil ? .asserted : .yes
 		}
+		return .no
 	}
 }

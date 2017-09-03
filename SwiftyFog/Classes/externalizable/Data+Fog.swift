@@ -152,12 +152,12 @@ public extension Data {
 		rhs.writeTo(data: &self)
 	}
 	
-	public func fogExtract<T: FogExternalizable>() -> T {
+	public func fogExtract<T: FogExternalizable>() -> T? {
 		var cursor = 0
 		return T(data: self, cursor: &cursor)
 	}
 	
-	public func fogExtract<T: FogExternalizable>(_ cursor: inout Int) -> T {
+	public func fogExtract<T: FogExternalizable>(_ cursor: inout Int) -> T? {
 		return T(data: self, cursor: &cursor)
 	}
 }

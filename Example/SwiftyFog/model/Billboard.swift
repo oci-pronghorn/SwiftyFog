@@ -60,8 +60,9 @@ public class Billboard: FogFeedbackModel {
 	}
 	
 	private func feedbackSpec(msg: MQTTMessage) {
-		let layout: FogBitmapLayout = msg.payload.fogExtract()
-		delegate?.billboard(layout: layout)
-		bitmap = FogBitMap(layout: layout)
+		if let layout: FogBitmapLayout = msg.payload.fogExtract() {
+			delegate?.billboard(layout: layout)
+			bitmap = FogBitMap(layout: layout)
+		}
 	}
 }
