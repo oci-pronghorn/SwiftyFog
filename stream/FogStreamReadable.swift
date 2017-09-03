@@ -24,6 +24,9 @@ extension Data: FogStreamReadable {
 	
     private mutating func read(from read: StreamReader) -> Bool {
         let totalLength = self.count
+        if totalLength == 0 {
+			return true
+        }
         var readLength: Int = 0
         self.withUnsafeBytes { (buffer: UnsafePointer<UInt8>) in
             repeat {
