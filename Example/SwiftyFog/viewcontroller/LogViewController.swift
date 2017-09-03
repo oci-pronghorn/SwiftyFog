@@ -11,7 +11,7 @@ import UIKit
 class LogViewController: UIViewController {
 	@IBOutlet weak var log: UITextView!
 	
-	func onLog(str: String) {
+	func onLog(_ str: String) {
 		DispatchQueue.main.async {
 			let _ = self.view
 			let range = NSMakeRange(self.log.text.characters.count, 0)

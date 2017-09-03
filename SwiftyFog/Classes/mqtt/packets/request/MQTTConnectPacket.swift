@@ -1,5 +1,5 @@
 //
-//  MQTTMessage.swift
+//  MQTTConnectPacket.swift
 //  SwiftyFog
 //
 //  Created by David Giovannini on 5/20/17.
@@ -17,7 +17,7 @@ class MQTTConnectPacket: MQTTPacket {
     
     var username: String.UTF8View? = nil
     var password: String.UTF8View? = nil
-    var lastWillMessage: MQTTPubMsg? = nil
+    var lastWillMessage: MQTTMessage? = nil
     
     init(clientID: String, cleanSession: Bool, keepAlive: UInt16) {
         self.protocolName = "MQTT".utf8
@@ -26,6 +26,17 @@ class MQTTConnectPacket: MQTTPacket {
         self.keepAlive = keepAlive
         self.clientID = clientID.utf8
         super.init(header: MQTTPacketFixedHeader(packetType: .connect, flags: 0))
+    }
+	
+    override var description: String {
+		var desc = "\(super.description): \(protocolName).\(protocolLevel) '\(clientID)'\(cleanSession ? "" : "*") \(keepAlive)secs"
+		if username != nil || password != nil {
+			desc += " w/auth"
+		}
+		if let lastWillMessage = lastWillMessage {
+			desc += "\n\tWill: \(lastWillMessage)"
+		}
+		return desc
     }
     
     private lazy var encodedConnectFlags: UInt8 = {

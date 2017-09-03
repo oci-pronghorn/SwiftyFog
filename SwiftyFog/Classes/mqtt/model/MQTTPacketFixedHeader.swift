@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct MQTTPacketFixedHeader {
+struct MQTTPacketFixedHeader: CustomStringConvertible {
     let packetType: MQTTPacketType
     let flags: UInt8
     
@@ -22,6 +22,10 @@ struct MQTTPacketFixedHeader {
         self.packetType = packetType
         self.flags = memento & 0x0F
     }
+	
+	var description: String {
+		return "\(packetType).\(String(flags, radix: 2))"
+	}
     
     var memento : UInt8 {
         return (0x0F & flags) | (packetType.rawValue << 4)

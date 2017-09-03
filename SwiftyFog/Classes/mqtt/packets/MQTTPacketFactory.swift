@@ -1,5 +1,5 @@
 //
-//  MQTTMessage.swift
+//  MQTTPacketFactory.swift
 //  SwiftyFog
 //
 //  Created by David Giovannini on 5/20/17.
@@ -67,7 +67,7 @@ struct MQTTPacketFactory {
 		let remainder = fsl - lengthSize
 		data[remainder] = packet.header.memento
 		data = data.subdata(in: remainder..<data.count)
-		if let metrics = metrics, metrics.debugOut != nil {
+		if let metrics = metrics, metrics.debugOut != nil, metrics.printWireData {
 			let realCapacity = capacity - remainder
 			if realCapacity < data.count {
 				metrics.debug("Underallocated: \(type(of:packet)) \(data.count) > \(realCapacity)")
@@ -87,12 +87,12 @@ struct MQTTPacketFactory {
         if let header = MQTTPacketFixedHeader(memento: headerByte) {
 			if let len = MQTTPackedLength.read(from: read) {
 				if let data = Data(len: len, from: read) {
-					if let metrics = metrics, metrics.debugOut != nil {
+					if let metrics = metrics, metrics.debugOut != nil, metrics.printWireData {
 						let lenSize = MQTTPackedLength.bytesRquired(for: len)
 						let len = data.count + MQTTPacket.fixedHeaderLength + lenSize
 						let headerStr = String(format: "%02x.", headerByte)
 						let lenStr = (0..<lenSize).reduce("", { r, _ in return r + "##." })
-						metrics.debug("Received: \(header.packetType) [\(len)] \(headerStr)\(lenStr)\(data.fogHexDescription)")
+						//metrics.debug("Received: \(header.packetType) [\(len)] \(headerStr)\(lenStr)\(data.fogHexDescription)")
 					}
 					return (false, constructors[header.packetType]?(header, data))
 				}

@@ -53,7 +53,7 @@ public class Engine: FogFeedbackModel {
 		self.power.control(power) { value in
 			var data  = Data(capacity: value.fogSize)
 			data.fogAppend(value)
-			mqtt.publish(MQTTPubMsg(topic: "power/control", payload: data))
+			mqtt.publish(MQTTMessage(topic: "power/control", payload: data))
 		}
 	}
 	
@@ -61,7 +61,7 @@ public class Engine: FogFeedbackModel {
 		self.calibration.control(calibration) { value in
 			var data  = Data(capacity: calibration.fogSize)
 			data.fogAppend(calibration)
-			mqtt.publish(MQTTPubMsg(topic: "calibration/control", payload: data))
+			mqtt.publish(MQTTMessage(topic: "calibration/control", payload: data))
 		}
 	}
 	

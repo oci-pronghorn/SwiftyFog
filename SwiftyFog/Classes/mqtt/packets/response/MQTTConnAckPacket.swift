@@ -1,5 +1,5 @@
 //
-//  MQTTMessage.swift
+//  MQTTConnAckPacket.swift
 //  SwiftyFog
 //
 //  Created by David Giovannini on 5/20/17.
@@ -18,5 +18,9 @@ class MQTTConnAckPacket: MQTTPacket {
         self.sessionPresent = (networkData[0] & 0x01) == 0x01
         self.response = response
         super.init(header: header)
+    }
+	
+    override var description: String {
+		return "\(super.description): \(response) present=\(sessionPresent)"
     }
 }

@@ -28,7 +28,9 @@ extension Dictionary {
 
 public extension Data {
     public var fogHexDescription: String {
-        return reduce("") {$0 + String(format: "%02x.", $1)}
+		var desc = (reduce("") {$0 + String(format: "%02x.", $1)})
+		desc.removeLast()
+        return desc
     }
 	
 	private func fogExtractRaw<T>(_ cursor: inout Int) -> T {

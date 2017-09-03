@@ -19,6 +19,12 @@ public final class MQTTMetrics {
 	public private(set) var unmarshalFailed: UInt64 = 0
 	public private(set) var unhandled: UInt64 = 0
 	
+	public var printIdRetains: Bool = false
+	public var printWireData: Bool = false
+	public var printSendPackets: Bool = false
+	public var printReceivePackets: Bool = false
+	public var printUnhandledPackets: Bool = false
+	
 	func madeConnection() {
 		connectionCount += 1
 	}
@@ -47,19 +53,10 @@ public final class MQTTMetrics {
 		unhandled += 1
 	}
 	
-	public var consoleOut: ((String)->())?
 	public var debugOut: ((String)->())?
 	
 	public init(prefix: @escaping ()->(String) = {""}) {
 		self.prefix = prefix
-	}
-	
-	public func print(_ out: @autoclosure ()->(String?)) {
-		if let consoleOut = consoleOut {
-			if let str = out() {
-				consoleOut("\(prefix())\(str)")
-			}
-		}
 	}
 	
 	public func debug(_ out: @autoclosure ()->(String?)) {

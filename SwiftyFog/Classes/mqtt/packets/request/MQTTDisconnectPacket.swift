@@ -1,5 +1,5 @@
 //
-//  MQTTMessage.swift
+//  MQTTDisconnectPacket.swift
 //  SwiftyFog
 //
 //  Created by David Giovannini on 5/20/17.

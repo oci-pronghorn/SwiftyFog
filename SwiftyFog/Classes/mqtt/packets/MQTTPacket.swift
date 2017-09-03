@@ -1,5 +1,5 @@
 //
-//  MQTTMessage.swift
+//  MQTTPacket.swift
 //  SwiftyFog
 //
 //  Created by David Giovannini on 5/20/17.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class MQTTPacket {
+class MQTTPacket: CustomStringConvertible {
     let header: MQTTPacketFixedHeader
     
     init(header: MQTTPacketFixedHeader) {
@@ -16,6 +16,10 @@ class MQTTPacket {
     }
 	
     static let fixedHeaderLength: Int = 1
+	
+    var description: String {
+		return "\(header.packetType)"
+    }
 	
     var estimatedPayLoadLength: Int {
 		return 0

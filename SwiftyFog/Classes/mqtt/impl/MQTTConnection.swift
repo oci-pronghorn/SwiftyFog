@@ -97,6 +97,9 @@ final class MQTTConnection {
 	
 	@discardableResult
     func send(packet: MQTTPacket) -> Bool {
+		if let metrics = metrics, metrics.printSendPackets {
+			metrics.debug("Send: \(packet)")
+		}
 		if let writer = stream?.writer {
 			if factory.send(packet, writer) {
 				if clientPrams.treatControlPacketsAsPings {
@@ -223,6 +226,9 @@ extension MQTTConnection: FogSocketStreamDelegate {
 			return
 		}
         if let packet = parsed.1 {
+			if let metrics = metrics, metrics.printReceivePackets {
+				metrics.debug("Receive: \(packet)")
+			}
 			switch packet {
 				case let packet as MQTTConnAckPacket:
 					self.handshakeFinished(packet: packet)

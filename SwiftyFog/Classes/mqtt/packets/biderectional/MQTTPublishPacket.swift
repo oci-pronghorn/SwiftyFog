@@ -1,5 +1,5 @@
 //
-//  MQTTMessage.swift
+//  MQTTPublishPacket.swift
 //  SwiftyFog
 //
 //  Created by David Giovannini on 5/20/17.
@@ -11,12 +11,16 @@ import Foundation
 // Publish payload (QoS 0 final)
 class MQTTPublishPacket: MQTTPacket, MQTTIdentifiedPacket {
     let messageID: UInt16
-    let message: MQTTPubMsg
+    let message: MQTTMessage
     
-    init(messageID: UInt16, message: MQTTPubMsg, isRedelivery: Bool = false) {
+    init(messageID: UInt16, message: MQTTMessage, isRedelivery: Bool = false) {
         self.messageID = messageID
         self.message = message
         super.init(header: MQTTPacketFixedHeader(packetType: .publish, flags: MQTTPublishPacket.fixedHeaderFlags(for: message, isRedelivery: isRedelivery)))
+    }
+	
+    override var description: String {
+		return "\(super.description) id:\(messageID) \(message)"
     }
     
     func dupForResend() -> MQTTPacket {
@@ -42,12 +46,12 @@ class MQTTPublishPacket: MQTTPacket, MQTTIdentifiedPacket {
         }
 		
         let retain = (header.flags & 0x01) == 0x01
-		self.message = MQTTPubMsg(topic: topic, payload: payload, retain: retain, qos: qos)
+		self.message = MQTTMessage(topic: topic, payload: payload, retain: retain, qos: qos)
 		
         super.init(header: header)
     }
     
-    private static func fixedHeaderFlags(for message: MQTTPubMsg, isRedelivery: Bool) -> UInt8 {
+    private static func fixedHeaderFlags(for message: MQTTMessage, isRedelivery: Bool) -> UInt8 {
         var flags = UInt8(0)
         if message.retain {
             flags |= 0x01

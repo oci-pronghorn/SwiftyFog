@@ -18,7 +18,7 @@ public protocol MQTTBridge {
 	
 	// If pubMsg.topic begins with '$' it will be used as an absolute path
 	// Otherwise fullpath is built from the bridge chain
-	func publish(_ pubMsg: MQTTPubMsg, completion: ((Bool)->())?)
+	func publish(_ pubMsg: MQTTMessage, completion: ((Bool)->())?)
 	
 	// If topic.0 begins with '$' it will be used as an absolute path
 	// Otherwise fullpath is built from the bridge chain
@@ -35,7 +35,7 @@ public protocol MQTTBridge {
 }
 
 public extension MQTTBridge {
-	public func publish(_ pubMsg: MQTTPubMsg) {
+	public func publish(_ pubMsg: MQTTMessage) {
 		return publish(pubMsg, completion: nil)
 	}
 	

@@ -84,7 +84,7 @@ class TrainViewController: UIViewController {
 			billboard.delegate = self
 			billboard.mqtt = mqtt.createBridge(subPath: "billboard")
 			
-			//mqtt.publish(MQTTPubMsg(topic: "feedback"))
+			//mqtt.publish(MQTTMessage(topic: "feedback"))
 		}
 	}
 

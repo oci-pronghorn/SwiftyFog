@@ -70,14 +70,14 @@ public class Lights: FogFeedbackModel {
 	public func control(override: LightCommand) {
 		var data  = Data(capacity: override.fogSize)
 		data.fogAppend(override)
-		mqtt.publish(MQTTPubMsg(topic: "override/control", payload: data))
+		mqtt.publish(MQTTMessage(topic: "override/control", payload: data))
 	}
 	
 	public func control(calibration: FogRational<Int64>) {
 		self.calibration.control(calibration) { value in
 			var data  = Data(capacity: value.fogSize)
 			data.fogAppend(value)
-			mqtt.publish(MQTTPubMsg(topic: "calibration/control", payload: data))
+			mqtt.publish(MQTTMessage(topic: "calibration/control", payload: data))
 		}
 	}
 	

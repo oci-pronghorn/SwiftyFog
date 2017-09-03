@@ -52,7 +52,7 @@ public class Billboard: FogFeedbackModel {
 			delegate?.billboard(image: resized!)
 			var data  = Data(capacity: bitmap.fogSize)
 			data.fogAppend(bitmap)
-			mqtt.publish(MQTTPubMsg(topic: "image/control", payload: data))
+			mqtt.publish(MQTTMessage(topic: "image/control", payload: data))
 		}
 		else {
 			delegate?.billboard(image: image)

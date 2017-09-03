@@ -22,19 +22,19 @@ class TrainSelectViewController: UIViewController {
     }
 
 	@IBAction func publishQos0() {
-		mqtt.publish(MQTTPubMsg(topic: "Bobs/Store/1", qos: .atMostOnce)) { (success) in
+		mqtt.publish(MQTTMessage(topic: "Bobs/Store/1", qos: .atMostOnce)) { (success) in
 			print("\(Date.nowInSeconds()) publishQos0: \(success)")
 		}
 	}
 
 	@IBAction func publishQos1() {
-		mqtt.publish(MQTTPubMsg(topic: "Bobs/Store/1", qos: .atLeastOnce)) { (success) in
+		mqtt.publish(MQTTMessage(topic: "Bobs/Store/1", qos: .atLeastOnce)) { (success) in
 			print("\(Date.nowInSeconds()) publishQos1: \(success)")
 		}
 	}
 
 	@IBAction func publishQos2() {
-		mqtt.publish(MQTTPubMsg(topic: "Bobs/Store/1", qos: .exactlyOnce)) { (success) in
+		mqtt.publish(MQTTMessage(topic: "Bobs/Store/1", qos: .exactlyOnce)) { (success) in
 			print("\(Date.nowInSeconds()) publishQos2: \(success)")
 		}
 	}

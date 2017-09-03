@@ -30,10 +30,10 @@ final class MQTTTopicScope: MQTTBridge {
 		return base.subscribe(topics: qualified, completion: completion)
 	}
 
-	func publish(_ pubMsg: MQTTPubMsg, completion: ((Bool)->())?) {
+	func publish(_ pubMsg: MQTTMessage, completion: ((Bool)->())?) {
 		let topic = String(pubMsg.topic)
 		let resolved = topic.hasPrefix("/") ? String(topic.dropFirst()) : self.fullPath + topic
-		let scoped = MQTTPubMsg(topic: resolved, payload: pubMsg.payload, retain: pubMsg.retain, qos: pubMsg.qos)
+		let scoped = MQTTMessage(topic: resolved, payload: pubMsg.payload, retain: pubMsg.retain, qos: pubMsg.qos)
 		base.publish(scoped)
 	}
 	

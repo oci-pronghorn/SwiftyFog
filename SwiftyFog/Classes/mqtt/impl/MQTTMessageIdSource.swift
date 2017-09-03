@@ -89,7 +89,9 @@ final class MQTTMessageIdSource {
 		inuse += 1
 		if let metrics = metrics {
 			metrics.setIdsInUse(idsInUse: inuse)
-			metrics.debug("Retain \(id) used: \(inuse)")
+			if metrics.printIdRetains {
+				metrics.debug("Retain \(id) used: \(inuse)")
+			}
 		}
 		let idx = Int(id) / 8
 		let offset = (id + 8) % 8
@@ -100,7 +102,9 @@ final class MQTTMessageIdSource {
 		inuse -= 1
 		if let metrics = metrics {
 			metrics.setIdsInUse(idsInUse: inuse)
-			metrics.debug("Release \(id) used: \(inuse)")
+			if metrics.printIdRetains {
+				metrics.debug("Release \(id) used: \(inuse)")
+			}
 		}
 		let idx = Int(id) / 8
 		let offset = (id + 8) % 8

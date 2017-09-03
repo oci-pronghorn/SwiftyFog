@@ -33,7 +33,7 @@ final class MQTTPublisher {
 	func disconnected(cleanSession: Bool, stopped: Bool) {
 	}
 
-	func publish(pubMsg: MQTTPubMsg, completion: ((Bool)->())?) {
+	func publish(pubMsg: MQTTMessage, completion: ((Bool)->())?) {
 		let qos = pubMsg.qos
 		
 		let expecting: MQTTPacketType?

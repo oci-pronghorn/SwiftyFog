@@ -97,7 +97,9 @@ public final class MQTTClient {
 	private func unhandledPacket(packet: MQTTPacket) {
 		if let metrics = metrics {
 			metrics.unhandledPacket()
-			metrics.debug("Unhandled: \(type(of:packet))")
+			if metrics.printUnhandledPackets {
+				metrics.debug("Unhandled: \(packet)")
+			}
 		}
 	}
 }
@@ -141,10 +143,10 @@ extension MQTTClient: MQTTBridge {
 		return MQTTTopicScope(base: self, fullPath: subPath)
 	}
 
-	public func publish(_ pubMsg: MQTTPubMsg, completion: ((Bool)->())?) {
+	public func publish(_ pubMsg: MQTTMessage, completion: ((Bool)->())?) {
 		let path = String(pubMsg.topic)
 		let resolved = path.hasPrefix("$") ? String(path.dropFirst()) : path
-		let newMessage = MQTTPubMsg(topic: resolved, payload: pubMsg.payload, retain: pubMsg.retain, qos: pubMsg.qos)
+		let newMessage = MQTTMessage(topic: resolved, payload: pubMsg.payload, retain: pubMsg.retain, qos: pubMsg.qos)
 		publisher.publish(pubMsg: newMessage, completion: completion)
 	}
 	

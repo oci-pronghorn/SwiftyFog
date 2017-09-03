@@ -30,9 +30,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let trainName = "thejoveexpress"
 		
 		// Setup metrics
-		metrics = MQTTMetrics(prefix: {"\(Date.nowInSeconds()) MQTT: "})
+		metrics = MQTTMetrics(prefix: {"\(Date.nowInSeconds()) MQTT "})
+		metrics?.printSendPackets = true
+		metrics?.printReceivePackets = true
 		metrics?.debugOut = {print($0)}
-		metrics?.consoleOut = logView.onLog
 
 		// Create the concrete MQTTClient to connect to a specific broker
 		// MQTTClient is an MQTTBridge
@@ -86,19 +87,19 @@ extension AppDelegate: MQTTClientDelegate {
 	func mqtt(client: MQTTClient, connected: MQTTConnectedState) {
 		switch connected {
 			case .started:
-				metrics?.print("Started")
+				logView.onLog("Started")
 				break
 			case .connected(let counter):
-				metrics?.print("Connected \(counter)")
+				logView.onLog("Connected \(counter)")
 				break
 			case .retry(_, let rescus, let attempt, _):
-				metrics?.print("Connection Attempt \(rescus).\(attempt)")
+				logView.onLog("Connection Attempt \(rescus).\(attempt)")
 				break
 			case .retriesFailed(let counter, let rescus, _):
-				metrics?.print("Connection Failed \(counter).\(rescus)")
+				logView.onLog("Connection Failed \(counter).\(rescus)")
 				break
 			case .discconnected(let reason, let error):
-				metrics?.print("Discconnected \(reason) \(error?.localizedDescription ?? "")")
+				logView.onLog("Discconnected \(reason) \(error?.localizedDescription ?? "")")
 				break
 		}
 		DispatchQueue.main.async {
@@ -107,18 +108,18 @@ extension AppDelegate: MQTTClientDelegate {
 	}
 	
 	func mqtt(client: MQTTClient, pinged: MQTTPingStatus) {
-		metrics?.print("Pinged \(pinged)")
+		logView.onLog("Pinged \(pinged)")
 		DispatchQueue.main.async {
 			self.trainControl.pinged()
 		}
 	}
 	
 	func mqtt(client: MQTTClient, subscription: MQTTSubscriptionDetail, changed: MQTTSubscriptionStatus) {
-		metrics?.print("Subscription \(subscription) \(changed)")
+		logView.onLog("Subscription \(subscription) \(changed)")
 	}
 	
 	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage) {
-		metrics?.print("Unhandled \(unhandledMessage)")
+		logView.onLog("Unhandled \(unhandledMessage)")
 	}
 	
 	func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription]) {

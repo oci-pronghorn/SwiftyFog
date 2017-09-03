@@ -12,7 +12,7 @@ public struct MQTTClientParams {
     public let cleanSession: Bool
     public let keepAlive: UInt16
 	
-    public var lastWill: MQTTPubMsg? = nil
+    public var lastWill: MQTTMessage? = nil
 	
     // Some brokers are good about acks and can be treated as server is alive
     public var detectServerDeath = false

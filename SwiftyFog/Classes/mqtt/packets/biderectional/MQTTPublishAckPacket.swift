@@ -1,5 +1,5 @@
 //
-//  MQTTMessage.swift
+//  MQTTPublishAckPacket.swift
 //  SwiftyFog
 //
 //  Created by David Giovannini on 5/20/17.
@@ -21,6 +21,10 @@ class MQTTPublishAckPacket: MQTTPacket, MQTTIdentifiedPacket {
 		guard networkData.count >= UInt16.fogSize else { return nil }
 		self.messageID = networkData.fogExtract()
         super.init(header: header)
+    }
+	
+    override var description: String {
+		return "\(super.description) id:\(messageID)"
     }
 	
     override var estimatedVariableHeaderLength: Int {

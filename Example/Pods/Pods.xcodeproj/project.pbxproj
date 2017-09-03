@@ -9,13 +9,12 @@
 /* Begin PBXBuildFile section */
 		02C02D9EE7302C1038794F63C9806F52 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C18E1E3585B9685AE5ABC67EBBE72BC5 /* Foundation.framework */; };
 		05C510A940D6B063E86CB97F25C86F56 /* MQTTQoS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2659C4B7A7295BAC556540584A9C781C /* MQTTQoS.swift */; };
-		06FE03E4BFD8D3FA2940E35ACAD33F88 /* MQTTPubMsg.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0F832F7A6CF029C694F2130520D083 /* MQTTPubMsg.swift */; };
+		06FE03E4BFD8D3FA2940E35ACAD33F88 /* MQTTMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0F832F7A6CF029C694F2130520D083 /* MQTTMessage.swift */; };
 		0DB2E63432540EAAE45F592B5051E7FE /* Pods-SwiftyFog_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 17223B8947C116A19D1A7D147D464402 /* Pods-SwiftyFog_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		125F3F2B68E95A67CA88F85CCBABB53E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B82A5B271D73E69B0A0AD91C86035742 /* UIKit.framework */; };
 		130D930BA4EB16811A94C4BEF873BC9F /* MQTTMessageIdSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83613B3FB704C8C577914C7655715F /* MQTTMessageIdSource.swift */; };
 		17E3EC200BD09AC2CEFEF1327E17F427 /* MQTTPacketFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC44FA3DF4C64C0CD014854FD0B49C64 /* MQTTPacketFactory.swift */; };
 		1D6620BEE104E5FCC3FAF69369312AE8 /* MQTTPublishPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F0DFFFCAC481B25DC38184A8B793C3 /* MQTTPublishPacket.swift */; };
-		228F7D8325D359E187D40496D3DAAE14 /* MQTTMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4A23541C4CCFC4F38DD5A40E402DD06 /* MQTTMessage.swift */; };
 		2B05DCEB303AA5D860A2E5759C0090E5 /* MQTTUnsubPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985CB3638172B7144CC12AED44649412 /* MQTTUnsubPacket.swift */; };
 		2F017A9F712BEA7C584032AB981CE597 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C18E1E3585B9685AE5ABC67EBBE72BC5 /* Foundation.framework */; };
 		2F02CCF29F358CF673A50996A7F167C5 /* MQTTPacketFixedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169C3E3D403448E305A20772E2143289 /* MQTTPacketFixedHeader.swift */; };
@@ -56,7 +55,6 @@
 		A2053B4D374E79CA70BA25D3CDED7A44 /* MQTTSubAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF971156F5900AEC7E02CF536974C791 /* MQTTSubAckPacket.swift */; };
 		A31FEB3F756B6924648233AC48BF8DE1 /* FogBitMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1673D725003E944FA2BA14E69E29183 /* FogBitMap.swift */; };
 		A7B4E44406C46239BEAB1693757DDC0E /* SwiftyFog-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC93BF1599E5E69FCA33F300183CC5A /* SwiftyFog-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A80AED9F8A2ABFEF42B8B7C6BFA11170 /* MQTTPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59262F554C74B1F9A013DB991BE0F50 /* MQTTPayload.swift */; };
 		ABD8524ACF673FCAE31231C1E2E283C5 /* MQTTConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD49F70AE621DA2477D82E382A6CA389 /* MQTTConnection.swift */; };
 		ADC1EFD2CF20AA5D991EA50F8D4B33B7 /* FogBitmapLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA8B3EC721C863C9E8B37D7C1093F1E /* FogBitmapLayout.swift */; };
 		BB1D8B5DB95C6AD82610952DB063680D /* MQTTPublishRecPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139C8ACACA3B366895CA317FEEBAAB27 /* MQTTPublishRecPacket.swift */; };
@@ -135,7 +133,7 @@
 		6218354E9E848371764061C473838737 /* MQTTTopicScope.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MQTTTopicScope.swift; sourceTree = "<group>"; };
 		654402EDB4ED910EAD6EFB407D801694 /* Pods-SwiftyFog_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SwiftyFog_Example-resources.sh"; sourceTree = "<group>"; };
 		6BDCDCA13F607B7975F7A9738AA19FD7 /* Pods-SwiftyFog_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SwiftyFog_Tests-resources.sh"; sourceTree = "<group>"; };
-		6E0F832F7A6CF029C694F2130520D083 /* MQTTPubMsg.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MQTTPubMsg.swift; sourceTree = "<group>"; };
+		6E0F832F7A6CF029C694F2130520D083 /* MQTTMessage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MQTTMessage.swift; sourceTree = "<group>"; };
 		7149309E38AD1888D35E8212939D3AD8 /* Pods-SwiftyFog_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SwiftyFog_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		75C34BB5BF7804FA7F2070B0825279EE /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Photos.framework; sourceTree = DEVELOPER_DIR; };
 		7B39DD25087C1DD5CF4AAFF1F4F5D532 /* Pods-SwiftyFog_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SwiftyFog_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
@@ -157,7 +155,6 @@
 		AFF602A560FB536A3FA97DBAC6F75F10 /* MQTTPersistance.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MQTTPersistance.swift; sourceTree = "<group>"; };
 		B25967B50DDCA2066B96EB506FB19E66 /* Pods-SwiftyFog_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-SwiftyFog_Example.modulemap"; sourceTree = "<group>"; };
 		B284910AE51388AB7CB511D50B2C7AAF /* Pods-SwiftyFog_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SwiftyFog_Example-umbrella.h"; sourceTree = "<group>"; };
-		B4A23541C4CCFC4F38DD5A40E402DD06 /* MQTTMessage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MQTTMessage.swift; sourceTree = "<group>"; };
 		B623B9C2FAD06058DC648EFD1008DACC /* ReadWriteMutex.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReadWriteMutex.swift; sourceTree = "<group>"; };
 		B6B6842D65D7EBAAA2E0FCFEC077FF0A /* MQTTConnAckResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MQTTConnAckResponse.swift; sourceTree = "<group>"; };
 		B7C7147191590F00095D1F471BB5A617 /* FogRational.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FogRational.swift; sourceTree = "<group>"; };
@@ -286,7 +283,8 @@
 				B6B6842D65D7EBAAA2E0FCFEC077FF0A /* MQTTConnAckResponse.swift */,
 				169C3E3D403448E305A20772E2143289 /* MQTTPacketFixedHeader.swift */,
 				16D5C85B8A857316D341E215D19334A3 /* MQTTPacketType.swift */,
-				6E0F832F7A6CF029C694F2130520D083 /* MQTTPubMsg.swift */,
+				6E0F832F7A6CF029C694F2130520D083 /* MQTTMessage.swift */,
+				C59262F554C74B1F9A013DB991BE0F50 /* MQTTPayload.swift */,
 				2659C4B7A7295BAC556540584A9C781C /* MQTTQoS.swift */,
 			);
 			path = model;
@@ -329,7 +327,6 @@
 			children = (
 				9B751DBCE324E961C7F08FE692A06E58 /* client */,
 				E87937D1BCBA98E9A35FD4D27D3EE647 /* impl */,
-				CCC1466B143C2CCA95B937E58E486811 /* message */,
 				6EA13F198BC46B999FA712D06A80181B /* model */,
 				B6E4EDD3275F658CFD44BF0F73A42CDA /* packets */,
 			);
@@ -443,15 +440,6 @@
 			);
 			name = "Pods-SwiftyFog_Tests";
 			path = "Target Support Files/Pods-SwiftyFog_Tests";
-			sourceTree = "<group>";
-		};
-		CCC1466B143C2CCA95B937E58E486811 /* message */ = {
-			isa = PBXGroup;
-			children = (
-				B4A23541C4CCFC4F38DD5A40E402DD06 /* MQTTMessage.swift */,
-				C59262F554C74B1F9A013DB991BE0F50 /* MQTTPayload.swift */,
-			);
-			path = message;
 			sourceTree = "<group>";
 		};
 		CD20F0EDDDA5DB553A9FD278965E438E /* Support Files */ = {
@@ -655,7 +643,6 @@
 				5FF67A72F76A5370F7079A1A3CC38A6C /* MQTTConnectPacket.swift in Sources */,
 				BD35080985BF64C4C794AAB50F6B1F8B /* MQTTDisconnectPacket.swift in Sources */,
 				F5AED92EFD9AB93D9D4322B2F57DF71D /* MQTTDistributer.swift in Sources */,
-				228F7D8325D359E187D40496D3DAAE14 /* MQTTMessage.swift in Sources */,
 				130D930BA4EB16811A94C4BEF873BC9F /* MQTTMessageIdSource.swift in Sources */,
 				5E03D2D0A5DA00876E3F763A5F390E3E /* MQTTPackedLength.swift in Sources */,
 				4ABA744F93CC9192F1C4796FA325045B /* MQTTPacket.swift in Sources */,
@@ -664,7 +651,6 @@
 				17E3EC200BD09AC2CEFEF1327E17F427 /* MQTTPacketFactory.swift in Sources */,
 				2F02CCF29F358CF673A50996A7F167C5 /* MQTTPacketFixedHeader.swift in Sources */,
 				33055A73A17E227711E1E671B4616CDB /* MQTTPacketType.swift in Sources */,
-				A80AED9F8A2ABFEF42B8B7C6BFA11170 /* MQTTPayload.swift in Sources */,
 				98C8E50921253FB38339832F1E8DD5AF /* MQTTPersistance.swift in Sources */,
 				55A7BAFF1F4FBC59006D9BC9 /* FogStreamWritable.swift in Sources */,
 				55DE21861F55B7AC0005B0E2 /* FogFeedbackValue.swift in Sources */,
@@ -677,7 +663,7 @@
 				55B27C831F50F011008ED56E /* RunLoopPool.swift in Sources */,
 				BB1D8B5DB95C6AD82610952DB063680D /* MQTTPublishRecPacket.swift in Sources */,
 				4269670588CCF975D5A23D0E25CCB763 /* MQTTPublishRelPacket.swift in Sources */,
-				06FE03E4BFD8D3FA2940E35ACAD33F88 /* MQTTPubMsg.swift in Sources */,
+				06FE03E4BFD8D3FA2940E35ACAD33F88 /* MQTTMessage.swift in Sources */,
 				05C510A940D6B063E86CB97F25C86F56 /* MQTTQoS.swift in Sources */,
 				3E57BCFD05427F3FE538BFEBD1D34955 /* MQTTRetryConnection.swift in Sources */,
 				55A7BAFE1F4FBC59006D9BC9 /* FogStreamReadable.swift in Sources */,

@@ -23,6 +23,10 @@ class MQTTPublishRelPacket: MQTTPacket, MQTTIdentifiedPacket {
         super.init(header: header)
     }
 	
+    override var description: String {
+		return "\(super.description) id:\(messageID)"
+    }
+	
     override var estimatedVariableHeaderLength: Int {
 		return messageID.fogSize
     }

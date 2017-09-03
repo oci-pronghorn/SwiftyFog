@@ -1,5 +1,5 @@
 //
-//  MQTTMessage.swift
+//  MQTTSubPacket.swift
 //  SwiftyFog
 //
 //  Created by David Giovannini on 5/20/17.
@@ -16,6 +16,12 @@ class MQTTSubPacket: MQTTPacket, MQTTIdentifiedPacket {
         self.topics = topics.map { ($0.0.utf8, $0.1) }
         self.messageID = messageID
         super.init(header: MQTTPacketFixedHeader(packetType: .subscribe, flags: 0x02))
+    }
+	
+    override var description: String {
+		return topics.reduce("\(super.description) id:\(messageID) ") { (r, e) in
+			return r + "\n\t\(e.0) - \(e.1)"
+		}
     }
 	
     override var estimatedVariableHeaderLength: Int {
