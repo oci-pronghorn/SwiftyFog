@@ -38,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Create the concrete MQTTClient to connect to a specific broker
 		// MQTTClient is an MQTTBridge
 		mqtt = MQTTClient(
+			client: MQTTClientParams(keepAlive: 0),
 			host: MQTTHostParams(host: trainName + ".local", port: .standard),
 			auth: MQTTAuthentication(username: "dsjove", password: "password"),
 			reconnect: MQTTReconnectParams(),
