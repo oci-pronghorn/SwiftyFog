@@ -1,5 +1,6 @@
 package com.ociweb.behaviors;
 
+import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.iot.maker.AnalogListener;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
@@ -7,7 +8,7 @@ import com.ociweb.iot.maker.Port;
 import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.BlobReader;
 
-public class AmbientLightBroadcast implements AnalogListener {
+public class AmbientLightBroadcast implements PubSubMethodListener, AnalogListener {
     private final FogCommandChannel channel;
     private final Port lightSensorPort;
     private final String publishTopic;

@@ -11,7 +11,7 @@ import Foundation
 struct MQTTPacketFactory {
     private let constructors: [MQTTPacketType : (MQTTPacketFixedHeader, Data)->MQTTPacket?] = [
         .connAck : MQTTConnAckPacket.init,
-        .pingAck : { h, _ in MQTTPingAckPacket.init(header: h) },
+        .pingAck : MQTTPingAckPacket.init,
         .publish : MQTTPublishPacket.init,
         .pubAck : MQTTPublishAckPacket.init,
         .pubRec : MQTTPublishRecPacket.init,
@@ -84,9 +84,9 @@ struct MQTTPacketFactory {
         var headerByte: UInt8 = 0
         let headerReadLen = read(&headerByte, MQTTPacket.fixedHeaderLength)
 		guard headerReadLen > 0 else { return (true, nil) }
-        if let header = MQTTPacketFixedHeader(memento: headerByte) {
-			if let len = MQTTPackedLength.read(from: read) {
-				if let data = Data(len: len, from: read) {
+		if let len = MQTTPackedLength.read(from: read) {
+			if let data = Data(len: len, from: read) {
+				if let header = MQTTPacketFixedHeader(memento: headerByte) {
 					if let metrics = metrics, metrics.debugOut != nil, metrics.printWireData {
 						let lenSize = MQTTPackedLength.bytesRquired(for: len)
 						let len = data.count + MQTTPacket.fixedHeaderLength + lenSize

@@ -9,7 +9,7 @@
 import Foundation
 
 class MQTTPingAckPacket: MQTTPacket {
-    override init(header: MQTTPacketFixedHeader) {
+    init(header: MQTTPacketFixedHeader, networkData: Data) {
         super.init(header: header)
     }
 }
