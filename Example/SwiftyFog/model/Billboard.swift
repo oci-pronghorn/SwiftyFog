@@ -23,7 +23,7 @@ public class Billboard: FogFeedbackModel {
     public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				("spec/feedback", .atLeastOnce, Billboard.feedbackSpec)
+				("spec/feedback", .atMostOnce, Billboard.feedbackSpec)
 			])
 		}
     }

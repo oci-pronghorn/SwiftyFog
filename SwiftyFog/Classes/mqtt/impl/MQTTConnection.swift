@@ -97,10 +97,10 @@ final class MQTTConnection {
 	
 	@discardableResult
     func send(packet: MQTTPacket) -> Bool {
-		if let metrics = metrics, metrics.printSendPackets {
-			metrics.debug("Send: \(packet)")
-		}
 		if let writer = stream?.writer {
+			if let metrics = metrics, metrics.printSendPackets {
+				metrics.debug("Send: \(packet)")
+			}
 			if factory.send(packet, writer) {
 				if clientPrams.treatControlPacketsAsPings {
 					mutex.writing {

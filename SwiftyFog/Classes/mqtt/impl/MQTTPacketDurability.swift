@@ -42,7 +42,7 @@ final class MQTTPacketDurability: MQTTPacketIssuer {
 
 	// TODO: spec says retry must be on reconnect but not necessarely timer while connected
 	func connected(cleanSession: Bool, present: Bool, initial: Bool) {
-		resendTimer.schedule(deadline: .now() + resendInterval, repeating: resendInterval, leeway: .milliseconds(250))
+		resendTimer.schedule(deadline: .now(), repeating: resendInterval, leeway: .milliseconds(250))
 		resendTimer.resume()
 	}
 	
@@ -134,14 +134,14 @@ final class MQTTPacketDurability: MQTTPacketIssuer {
 	
 	private func resendPulse() {
 		mutex.writing {
+			for element in unacknowledgedPackets.sorted(by: {$0.1.0 < $1.1.0}) {
+				let packet = element.value.1
+				delegate?.mqtt(send: packet, completion: {_ in})
+			}
 			let all = retryRequestPackets
 			retryRequestPackets.removeAll(keepingCapacity: true)
 			for retry in all {
 				retry(true) // will reappend
-			}
-			for element in unacknowledgedPackets.sorted(by: {$0.1.0 < $1.1.0}) {
-				let packet = element.value.1
-				delegate?.mqtt(send: packet, completion: {_ in})
 			}
 		}
 	}

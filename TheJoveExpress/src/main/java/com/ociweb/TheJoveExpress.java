@@ -76,13 +76,13 @@ public class TheJoveExpress implements FogApp
 
         final String allFeedback = "feedback";
         if (config.mqttEnabled) {
-            runtime.bridgeSubscription(allFeedback, prefix + allFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+            runtime.bridgeSubscription(allFeedback, prefix + allFeedback, mqttBridge).setQoS(MQTTQOS.atLeastOnce);
         }
 
         // TODO: all inbound have the train name wildcard topic
 
-        // All transmissions should have retain so controlling UIs can always get the latest state
-        // Schema defining tramsmissions should have a qos of atLeastOnce
+        // All transient transmissions should have retain no retain to enforce feedbackloop with UI
+        // Schema defining transmissions should have retain
 
         if (config.appServerEnabled) {
             runtime.addFileServer("").includeAllRoutes(); // TODO: use resource folder
@@ -98,8 +98,8 @@ public class TheJoveExpress implements FogApp
             if (config.mqttEnabled) {
                 runtime.bridgeSubscription(enginePowerControl, prefix + enginePowerControl, mqttBridge).setQoS(MQTTQOS.atMostOnce);
                 runtime.bridgeSubscription(engineCalibrationControl, prefix + engineCalibrationControl, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(enginePowerFeedback, prefix + enginePowerFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
-                runtime.bridgeTransmission(engineCalibrationFeedback, prefix + engineCalibrationFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+                runtime.bridgeTransmission(enginePowerFeedback, prefix + enginePowerFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeTransmission(engineCalibrationFeedback, prefix + engineCalibrationFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
             }
             final EngineBehavior engine = new EngineBehavior(runtime, actuatorPowerInternal, config.engineAccuatorPort, enginePowerFeedback, engineCalibrationFeedback);
             runtime.registerListener(engine)
@@ -112,10 +112,10 @@ public class TheJoveExpress implements FogApp
             if (config.mqttEnabled) {
                 runtime.bridgeSubscription(lightsOverrideControl, prefix + lightsOverrideControl, mqttBridge).setQoS(MQTTQOS.atMostOnce);
                 runtime.bridgeSubscription(lightsCalibrationControl, prefix + lightsCalibrationControl, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(lightsOverrideFeedback, prefix + lightsOverrideFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
-                runtime.bridgeTransmission(lightsPowerFeedback, prefix + lightsPowerFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
-                runtime.bridgeTransmission(lightsCalibrationFeedback, prefix + lightsCalibrationFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
-                runtime.bridgeTransmission(lightsAmbientFeedback, prefix + lightsAmbientFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+                runtime.bridgeTransmission(lightsOverrideFeedback, prefix + lightsOverrideFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeTransmission(lightsPowerFeedback, prefix + lightsPowerFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeTransmission(lightsCalibrationFeedback, prefix + lightsCalibrationFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeTransmission(lightsAmbientFeedback, prefix + lightsAmbientFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
             }
             final AmbientLightBroadcast ambientLight = new AmbientLightBroadcast(runtime, config.lightSensorPort, lightsAmbientFeedback);
             runtime.registerListener(ambientLight)
@@ -130,7 +130,7 @@ public class TheJoveExpress implements FogApp
 
         if (config.speedometerEnabled) {
             if (config.mqttEnabled) {
-                runtime.bridgeTransmission(accelerometerPublishTopic, prefix + accelerometerPublishTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+                runtime.bridgeTransmission(accelerometerPublishTopic, prefix + accelerometerPublishTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
             }
             final AccelerometerBehavior accelerometer = new AccelerometerBehavior(runtime, accelerometerPublishTopic);
             runtime.registerListener(accelerometer);

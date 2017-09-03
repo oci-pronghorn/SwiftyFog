@@ -29,7 +29,9 @@ extension Dictionary {
 public extension Data {
     public var fogHexDescription: String {
 		var desc = (reduce("") {$0 + String(format: "%02x.", $1)})
-		desc.removeLast()
+		if desc.isEmpty == false {
+			desc.removeLast()
+		}
         return desc
     }
 	

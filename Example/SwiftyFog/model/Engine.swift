@@ -29,8 +29,8 @@ public class Engine: FogFeedbackModel {
     public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				("power/feedback", .atLeastOnce, Engine.feedbackPower),
-				("calibration/feedback", .atLeastOnce, Engine.feedbackCalibration)
+				("power/feedback", .atMostOnce, Engine.feedbackPower),
+				("calibration/feedback", .atMostOnce, Engine.feedbackCalibration)
 			])
 		}
     }
