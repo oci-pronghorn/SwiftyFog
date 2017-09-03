@@ -75,7 +75,7 @@ struct MQTTPacketFactory {
 			else if realCapacity > data.count {
 				metrics.debug("Overallocated: \(type(of:packet)) \(data.count) < \(realCapacity)")
 			}
-			metrics.debug("Sent: \(type(of:packet)) [\(data.count)] \(data.fogHexDescription)")
+			metrics.debug("Wire->: \(type(of:packet)) [\(data.count)] \(data.fogHexDescription)")
 		}
 		return data
     }
@@ -92,7 +92,7 @@ struct MQTTPacketFactory {
 						let len = data.count + MQTTPacket.fixedHeaderLength + lenSize
 						let headerStr = String(format: "%02x.", headerByte)
 						let lenStr = (0..<lenSize).reduce("", { r, _ in return r + "##." })
-						//metrics.debug("Received: \(header.packetType) [\(len)] \(headerStr)\(lenStr)\(data.fogHexDescription)")
+						metrics.debug("Wire<-: \(header.packetType) [\(len)] \(headerStr)\(lenStr)\(data.fogHexDescription)")
 					}
 					return (false, constructors[header.packetType]?(header, data))
 				}

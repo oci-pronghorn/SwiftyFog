@@ -140,7 +140,7 @@ public class TheJoveExpress implements FogApp
         if (config.billboardEnabled) {
             if (config.mqttEnabled) {
                 runtime.bridgeSubscription(billboardImageControl, prefix + billboardImageControl, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(billboardSpecFeedback, prefix + billboardSpecFeedback, mqttBridge).setQoS(MQTTQOS.atLeastOnce).setRetain(true);
+                runtime.bridgeTransmission(billboardSpecFeedback, prefix + billboardSpecFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
             }
             final BillboardBehavior billboard = new BillboardBehavior(runtime, billboardSpecFeedback);
             runtime.registerListener(billboard)
