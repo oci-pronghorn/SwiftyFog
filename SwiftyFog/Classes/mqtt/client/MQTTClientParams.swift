@@ -19,14 +19,17 @@ public struct MQTTClientParams {
     public var treatControlPacketsAsPings = true
     // We can detect server death if we have not received a control packet
     // (including ping ack) in a 1.5 * keepAlive interval
+	// TODO: allow stricter time after a ping
     public var detectServerDeath = true
 	
 	// The spec states that business logic may be invoked on either the 1st or 2nd ack
     public var qos2Mode: Qos2Mode = .lowLatency
     // The spec states that retransmission of disconnected pubs is up to business logic
+	// TODO: not implemented yet
 	public var queuePubOnDisconnect: MQTTQoS? = nil
 	// Spec says we must resend only on reconnect not-clean-session.
 	// A non-zero interval will resend while connected
+	// TODO: not working yet - has to be > 0.0 and works with queuePubOnDisconnect
     public var resendPulseInterval: TimeInterval = 5.0
 	
     public init(clientID: String, cleanSession: Bool = true, keepAlive: UInt16 = 15) {

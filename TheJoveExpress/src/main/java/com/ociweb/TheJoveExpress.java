@@ -2,6 +2,7 @@ package com.ociweb;
 
 import com.ociweb.behaviors.*;
 import com.ociweb.gl.api.MQTTBridge;
+import com.ociweb.gl.api.StartupListener;
 import com.ociweb.gl.impl.MQTTQOS;
 import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometerTwig;
 import com.ociweb.iot.maker.*;
@@ -19,6 +20,9 @@ public class TheJoveExpress implements FogApp
     public void declareConnections(Hardware c) {
         config = new TrainConfiguration(c);
 
+        //final String prefix = config.trainName + "/";
+        //final String trainAliveFeedback = "alive/feedback";
+
         // TODO: calculating maxMessageLength anf maxinFlight given the private channel definitions and arbitrary bridging
         // is too difficult. And we are declaring this in connections where channel message lengths are in behavior
         if (config.mqttEnabled) {
@@ -26,7 +30,7 @@ public class TheJoveExpress implements FogApp
                     .cleanSession(true)
                     .authentication("dsjove", "password")
                     .keepAliveSeconds(10);
-                    //.will(true, MQTTQOS.atMostOnce, config.trainName + "/died", blobWriter -> {});
+                    //.will(true, MQTTQOS.atMostOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
         }
         if (config.appServerEnabled) c.enableServer(false, config.appServerPort); // TODO: heap problem on Pi0
         if (config.lightsEnabled) c.connect(LightSensor, config.lightSensorPort, config.lightDetectFreq);
@@ -55,6 +59,8 @@ public class TheJoveExpress implements FogApp
     public void declareBehavior(FogRuntime runtime) {
         // Topics
         final String prefix = config.trainName + "/";
+
+        final String trainAliveFeedback = "alive/feedback";
 
         final String actuatorPowerInternal = "actuator/power/internal";
 
@@ -161,5 +167,14 @@ public class TheJoveExpress implements FogApp
             // MQTT inbound with play/stop/pause commands
             // runtime.registerListener(new SoundBehavior(runtime));
         }
+
+        runtime.bridgeTransmission(trainAliveFeedback, prefix + trainAliveFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+        runtime.addStartupListener(new StartupListener() {
+            final FogCommandChannel channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
+            @Override
+            public void startup() {
+                channel.publishTopic( trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(true);});
+            }
+        });
     }
 }

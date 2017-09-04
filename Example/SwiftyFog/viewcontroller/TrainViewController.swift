@@ -72,9 +72,6 @@ class TrainViewController: UIViewController {
 	
     var mqtt: MQTTBridge! {
 		didSet {
-			train.delegate = self
-			train.mqtt = mqtt
-			
 			engine.delegate = self
 			engine.mqtt = mqtt.createBridge(subPath: "engine")
 			
@@ -84,7 +81,8 @@ class TrainViewController: UIViewController {
 			billboard.delegate = self
 			billboard.mqtt = mqtt.createBridge(subPath: "billboard")
 			
-			mqtt.publish(MQTTMessage(topic: "feedback", qos: .atLeastOnce))
+			train.delegate = self
+			train.mqtt = mqtt
 		}
 	}
 
@@ -225,8 +223,10 @@ extension TrainViewController:
 		LightsDelegate,
 		BillboardDelegate {
 	
-	func trainDied() {
-		feedbackCut()
+	func train(alive: Bool) {
+		if alive == false {
+			feedbackCut()
+		}
 	}
 	
 	func engine(power: FogRational<Int64>, _ asserted: Bool) {

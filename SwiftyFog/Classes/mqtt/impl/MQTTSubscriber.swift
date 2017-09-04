@@ -112,7 +112,7 @@ final class MQTTSubscriber {
 	private func startSubscription(_ subscription: MQTTSubscriptionDetail, _ completion: ((Bool)->())?) {
 		delegate?.mqtt(subscription: subscription, changed: .subPending)
 		issuer.send(packet: {MQTTSubPacket(topics: subscription.topics, messageID: $0)}, expecting: .subAck)  { [weak self] p, s in
-			if (s) { self?.deferredSubscriptions[p.messageID] = (subscription, nil) }
+			if (s) { self?.deferredSubscriptions[p.messageID] = (subscription, completion) }
 		}
 	}
 	

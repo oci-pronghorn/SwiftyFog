@@ -3,18 +3,17 @@
 //  SwiftyFog_Example
 //
 //  Created by David Giovannini on 8/28/17.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
 import Foundation
 import SwiftyFog
 
 public protocol TrainDelegate: class {
-	func trainDied()
+	func train(alive: Bool)
 }
 
 public class Train: FogFeedbackModel {
-	
 	private var broadcaster: MQTTBroadcaster?
 	
 	public weak var delegate: TrainDelegate?
@@ -22,8 +21,10 @@ public class Train: FogFeedbackModel {
     public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				("died", .atLeastOnce, Train.feedbackDied)
-			])
+				("alive/feedback", .atLeastOnce, Train.feedbackAlive)
+			]) { _ in
+				self.askForFeedback()
+			}
 		}
     }
 	
@@ -40,7 +41,15 @@ public class Train: FogFeedbackModel {
 	public func assertValues() {
 	}
 	
-	private func feedbackDied(msg: MQTTMessage) {
-		delegate?.trainDied()
+	private func askForFeedback() {
+		mqtt.publish(MQTTMessage(topic: "feedback", qos: .atLeastOnce))
+	}
+	
+	private func feedbackAlive(msg: MQTTMessage) {
+		let alive: Bool = msg.payload.fogExtract()
+		if alive {
+			askForFeedback()
+		}
+		delegate?.train(alive: alive)
 	}
 }

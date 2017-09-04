@@ -3,7 +3,7 @@
 //  SwiftyFog_Example
 //
 //  Created by David Giovannini on 8/23/17.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
 import Foundation
