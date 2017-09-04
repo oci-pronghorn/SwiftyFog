@@ -20,9 +20,6 @@ public class TheJoveExpress implements FogApp
     public void declareConnections(Hardware c) {
         config = new TrainConfiguration(c);
 
-        final String prefix = config.trainName + "/";
-        final String trainAliveFeedback = "alive/feedback";
-
         // TODO: calculating maxMessageLength anf maxinFlight given the private channel definitions and arbitrary bridging
         // is too difficult. And we are declaring this in connections where channel message lengths are in behavior
         if (config.mqttEnabled) {
@@ -30,7 +27,6 @@ public class TheJoveExpress implements FogApp
                     .cleanSession(true)
                     .authentication("dsjove", "password")
                     .keepAliveSeconds(10);
-                    //.will(true, MQTTQOS.atMostOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
         }
         if (config.appServerEnabled) c.enableServer(false, config.appServerPort); // TODO: heap problem on Pi0
         if (config.lightsEnabled) c.connect(LightSensor, config.lightSensorPort, config.lightDetectFreq);
@@ -168,8 +164,12 @@ public class TheJoveExpress implements FogApp
             // runtime.registerListener(new SoundBehavior(runtime));
         }
 
-        // firstWill
-        runtime.bridgeTransmission(trainAliveFeedback, prefix + trainAliveFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+        // TODO: we really need a "firstWill" message sent on connect where lastWill is sent on disconnect
+        if (config.mqttEnabled) {
+            //this.mqttBridge.firstill(true, MQTTQOS.atMostOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(true);});
+            //this.mqttBridge.lastWill(true, MQTTQOS.atMostOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
+            runtime.bridgeTransmission(trainAliveFeedback, prefix + trainAliveFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+        }
         runtime.addStartupListener(new StartupListener() {
             final FogCommandChannel channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
             @Override
