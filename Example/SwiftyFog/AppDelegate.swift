@@ -90,6 +90,9 @@ extension AppDelegate: MQTTClientDelegate {
 			case .started:
 				logView.onLog("Started")
 				break
+			case .pinged(let status):
+				logView.onLog("Pinged \(status)")
+				break
 			case .connected(let counter):
 				logView.onLog("Connected \(counter)")
 				break
@@ -105,13 +108,6 @@ extension AppDelegate: MQTTClientDelegate {
 		}
 		DispatchQueue.main.async {
 			self.trainControl.mqtt(connected: connected)
-		}
-	}
-	
-	func mqtt(client: MQTTClient, pinged: MQTTPingStatus) {
-		logView.onLog("Pinged \(pinged)")
-		DispatchQueue.main.async {
-			self.trainControl.pinged()
 		}
 	}
 	

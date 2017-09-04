@@ -11,6 +11,7 @@ import Foundation
 public enum MQTTConnectedState {
 	case started
 	case connected(Int)
+	case pinged(MQTTPingStatus)
 	case discconnected(reason: MQTTConnectionDisconnect, error: Error?)
 	case retry(Int, Int, Int, MQTTReconnectParams) // connection counter, rescus counter, attempt counter
 	case retriesFailed(Int, Int, MQTTReconnectParams)
@@ -18,7 +19,6 @@ public enum MQTTConnectedState {
 
 public protocol MQTTClientDelegate: class {
 	func mqtt(client: MQTTClient, connected: MQTTConnectedState)
-	func mqtt(client: MQTTClient, pinged: MQTTPingStatus)
 	func mqtt(client: MQTTClient, subscription: MQTTSubscriptionDetail, changed: MQTTSubscriptionStatus)
 	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage)
 	func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription])
@@ -209,8 +209,8 @@ extension MQTTClient: MQTTConnectionDelegate {
 		distributer.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
 	}
 	
-	func mqtt(connection: MQTTConnection, pinged: MQTTPingStatus) {
-		delegate?.mqtt(client: self, pinged: pinged)
+	func mqtt(connection: MQTTConnection, pinged status: MQTTPingStatus) {
+		delegate?.mqtt(client: self, connected: .pinged(status))
 	}
 	
 	func mqtt(connection: MQTTConnection, received: MQTTPacket) {

@@ -129,6 +129,9 @@ extension TrainViewController {
 				self.connectedImage?.isHighlighted = true
 				self.connectMetrics.text = "\(counter).-.-"
 				break
+			case .pinged(_):
+				pulsator.start()
+				break
 			case .retry(let counter, let rescus, let attempt, _):
 				self.connectMetrics.text = "\(counter).\(rescus).\(attempt)"
 				break
@@ -141,10 +144,6 @@ extension TrainViewController {
 				feedbackCut()
 				break
 		}
-	}
-	
-	func pinged() {
-		pulsator.start()
 	}
 }
 
