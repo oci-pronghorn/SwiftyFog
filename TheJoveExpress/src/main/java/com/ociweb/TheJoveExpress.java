@@ -26,6 +26,7 @@ public class TheJoveExpress implements FogApp
                     .cleanSession(true)
                     .authentication("dsjove", "password")
                     .keepAliveSeconds(10);
+                    //.will(true, MQTTQOS.atMostOnce, config.trainName + "/died", blobWriter -> {});
         }
         if (config.appServerEnabled) c.enableServer(false, config.appServerPort); // TODO: heap problem on Pi0
         if (config.lightsEnabled) c.connect(LightSensor, config.lightSensorPort, config.lightDetectFreq);

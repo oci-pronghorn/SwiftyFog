@@ -48,8 +48,8 @@ final class MQTTConnection {
 	
 	private let mutex = ReadWriteMutex()
     private(set) var isFullConnected: Bool = false
-    private var lastControlPacketSent: Int64 = 0
-    private var lastPingAck: Int64 = 0
+    private var lastPingPacketSent: Int64 = 0
+    private var lastPingPacketReceived: Int64 = 0
 	
     init(
 			hostParams: MQTTHostParams,
@@ -102,9 +102,9 @@ final class MQTTConnection {
 				metrics.debug("Send: \(packet)")
 			}
 			if factory.send(packet, writer) {
-				if clientPrams.treatControlPacketsAsPings {
+				if clientPrams.treatControlPacketsAsPings || packet.header.packetType == .pingReq {
 					mutex.writing {
-						lastControlPacketSent = Date.nowInSeconds()
+						lastPingPacketSent = Date.nowInSeconds()
 					}
 				}
 				return true
@@ -149,7 +149,7 @@ extension MQTTConnection {
     private func startPing() {
 		if clientPrams.keepAlive > 0 {
 			let keepAliveTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
-			keepAliveTimer.schedule(deadline: .now() + .seconds(Int(clientPrams.keepAlive)), repeating: .seconds(Int(clientPrams.keepAlive)), leeway: .seconds(1))
+			keepAliveTimer.schedule(deadline: .now() + .seconds(Int(clientPrams.keepAlive)), repeating: .seconds(Int(clientPrams.keepAlive / 3)), leeway: .seconds(1))
 			keepAliveTimer.setEventHandler { [weak self] in
 				self?.pingFired()
 			}
@@ -165,24 +165,21 @@ extension MQTTConnection {
 				status = .notConnected
 			}
 			else {
-				let now = Date.nowInSeconds()
-				if lastPingAck == 0 {
-					lastPingAck = now
-				}
 				if clientPrams.detectServerDeath {
+					let now = Date.nowInSeconds()
 					// The spec says we should receive a a ping ack after a "reasonable amount of time"
-					// The mosquitto logs states that it is sending immediately and every time.
-					// Actual send is usually ony once and after keep alive period
-					let timePassed = now - lastPingAck
+					let secondsSinceLastPing = now - lastPingPacketReceived
 					// The keep alive range on server is 1.5 * keepAlive
 					let limit = UInt64(clientPrams.keepAlive + (clientPrams.keepAlive / 2))
-					if timePassed > limit {
+					if secondsSinceLastPing > limit {
 						status = .serverDied
 					}
 				}
 				if status != .serverDied {
-					let secondsSinceLastPacket = now - lastControlPacketSent
-					if (clientPrams.treatControlPacketsAsPings == false || secondsSinceLastPacket >= UInt64(clientPrams.keepAlive)) {
+					let now = Date.nowInSeconds()
+					let secondsSinceLastPing = now - lastPingPacketSent
+					let limit = UInt64(clientPrams.keepAlive)
+					if secondsSinceLastPing >= limit {
 						status = .sent
 					}
 				}
@@ -200,9 +197,6 @@ extension MQTTConnection {
     }
 	
     private func pingResponseReceived(packet: MQTTPingAckPacket) {
-		mutex.writing {
-			lastPingAck = Date.nowInSeconds()
-		}
 		delegate?.mqtt(connection: self, pinged: .ack)
     }
 }
@@ -226,6 +220,11 @@ extension MQTTConnection: FogSocketStreamDelegate {
 			return
 		}
         if let packet = parsed.1 {
+			if clientPrams.detectServerDeath {
+				mutex.writing {
+					lastPingPacketReceived = Date.nowInSeconds()
+				}
+			}
 			if let metrics = metrics, metrics.printReceivePackets {
 				metrics.debug("Receive: \(packet)")
 			}

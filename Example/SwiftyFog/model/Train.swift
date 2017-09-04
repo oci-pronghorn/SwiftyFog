@@ -23,7 +23,7 @@ public class Train: FogFeedbackModel {
     public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				("ping", .atLeastOnce, Train.receivePing)
+				("died", .atLeastOnce, Train.feedbackDied)
 			])
 		}
     }
@@ -50,6 +50,7 @@ public class Train: FogFeedbackModel {
 	public func assertValues() {
 	}
 	
-	private func receivePing(msg: MQTTMessage) {
+	private func feedbackDied(msg: MQTTMessage) {
+		print("The train died")
 	}
 }

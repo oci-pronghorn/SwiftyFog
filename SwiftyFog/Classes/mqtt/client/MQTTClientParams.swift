@@ -11,19 +11,22 @@ public struct MQTTClientParams {
     public let clientID: String
     public let cleanSession: Bool
     public let keepAlive: UInt16
-	
+
     public var lastWill: MQTTMessage? = nil
 	
-    // Some brokers are good about acks and can be treated as server is alive
-    public var detectServerDeath = false
-    // Some brokers are good about treating any packet as a ping
-    public var treatControlPacketsAsPings = false
+    // Some brokers are not good about treating any packet as a ping
+    // Set to false to remove this optimization
+    public var treatControlPacketsAsPings = true
+    // We can detect server death if we have not received a control packet
+    // (including ping ack) in a 1.5 * keepAlive interval
+    public var detectServerDeath = true
 	
 	// The spec states that business logic may be invoked on either the 1st or 2nd ack
     public var qos2Mode: Qos2Mode = .lowLatency
     // The spec states that retransmission of disconnected pubs is up to business logic
 	public var queuePubOnDisconnect: MQTTQoS? = nil
-	// There is no spec on the rate of unacknowledged pubs
+	// Spec says we must resend only on reconnect not-clean-session.
+	// A non-zero interval will resend while connected
     public var resendPulseInterval: TimeInterval = 5.0
 	
     public init(clientID: String, cleanSession: Bool = true, keepAlive: UInt16 = 15) {
