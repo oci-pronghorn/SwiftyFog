@@ -12,9 +12,7 @@ import SwiftyFog
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
-	var mqtt: MQTTClient!
-	var metrics: MQTTMetrics?
-	var wasStarted: Bool = false
+	var controller: AppController!
 	
 	var trainSelect: TrainSelectViewController!
 	var trainControl: TrainViewController!
@@ -25,101 +23,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		trainSelect = (self.window!.rootViewController as! UITabBarController).viewControllers![1] as! TrainSelectViewController
 		trainControl = (self.window!.rootViewController as! UITabBarController).viewControllers![0] as! TrainViewController
 		logView = (self.window!.rootViewController as! UITabBarController).viewControllers![2] as! LogViewController
-
+		
 		// Select the train
 		let trainName = "thejoveexpress"
-		
-		// Setup metrics
-		metrics = MQTTMetrics(prefix: {"\(Date.nowInSeconds()) MQTT "})
-		metrics?.printSendPackets = true
-		metrics?.printReceivePackets = true
-		metrics?.debugOut = {print($0)}
 
-		// Create the concrete MQTTClient to connect to a specific broker
-		// MQTTClient is an MQTTBridge
-		mqtt = MQTTClient(
-			client: MQTTClientParams(keepAlive: 15),
-			host: MQTTHostParams(host: trainName + ".local", port: .standard),
-			auth: MQTTAuthentication(username: "dsjove", password: "password"),
-			reconnect: MQTTReconnectParams(),
-			metrics: metrics)
-		mqtt.delegate = self
+		controller = AppController(trainName)
+		controller.delegate = self
 		
 		// This view controller is specific to a train topic
-		// Create an MSTTBridge specific to the selected train
-		trainSelect.mqtt = mqtt
-		let scoped = mqtt.createBridge(subPath: trainName)
+		// Create an MQTTBridge specific to the selected train
+		trainSelect.mqtt = controller.mqtt
+		let scoped = controller.mqtt.createBridge(subPath: trainName)
 		trainControl.mqtt = scoped
-		trainControl.mqttControl = mqtt
-		
-		// We want to start the process right away
+		trainControl.mqttControl = controller.mqtt
 		
 		return true
 	}
 
 	func applicationWillResignActive(_ application: UIApplication) {
-		// Be a good iOS citizen and shutdown the connection and timers
-		wasStarted = mqtt.started
-		mqtt.stop()
+		controller.goBackground()
 	}
 
 	func applicationDidEnterBackground(_ application: UIApplication) {
 	}
 
 	func applicationWillEnterForeground(_ application: UIApplication) {
-		// If want to be started, restore it
-		if wasStarted {
-			mqtt.start()
-		}
+		controller.goForeground()
 	}
 
 	func applicationDidBecomeActive(_ application: UIApplication) {
 	}
 
 	func applicationWillTerminate(_ application: UIApplication) {
-		// Be a good MQTT citizen and issue the Disconnect message
-		mqtt.stop()
+		controller.goBackground()
 	}
 }
 
-// The client will broadcast important events to the application
-// can react appropriately. The invoking thread is not known.
-extension AppDelegate: MQTTClientDelegate {
-	func mqtt(client: MQTTClient, connected: MQTTConnectedState) {
-		switch connected {
-			case .started:
-				logView.onLog("Started")
-				break
-			case .pinged(let status):
-				logView.onLog("Pinged \(status)")
-				break
-			case .connected(let counter):
-				logView.onLog("Connected \(counter)")
-				break
-			case .retry(_, let rescus, let attempt, _):
-				logView.onLog("Connection Attempt \(rescus).\(attempt)")
-				break
-			case .retriesFailed(let counter, let rescus, _):
-				logView.onLog("Connection Failed \(counter).\(rescus)")
-				break
-			case .discconnected(let reason, let error):
-				logView.onLog("Discconnected \(reason) \(error?.localizedDescription ?? "")")
-				break
-		}
-		DispatchQueue.main.async {
-			self.trainControl.mqtt(connected: connected)
-		}
+extension AppDelegate: AppControllerDelegate {
+	func on(log: String) {
+		logView.onLog(log)
 	}
-	
-	func mqtt(client: MQTTClient, subscription: MQTTSubscriptionDetail, changed: MQTTSubscriptionStatus) {
-		logView.onLog("Subscription \(subscription) \(changed)")
-	}
-	
-	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage) {
-		logView.onLog("Unhandled \(unhandledMessage)")
-	}
-	
-	func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription]) {
+
+	func on(connected: MQTTConnectedState) {
+		self.trainControl.mqtt(connected: connected)
 	}
 }
 

@@ -10,6 +10,7 @@
 		550414BB1F4DAB0C00226A1C /* WMGaugeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 550414BA1F4DAAE300226A1C /* WMGaugeView.m */; };
 		550414BC1F4DAC2600226A1C /* TrainSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550414B31F4DAA8F00226A1C /* TrainSelectViewController.swift */; };
 		550414BD1F4DAC2600226A1C /* TrainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550414B41F4DAA8F00226A1C /* TrainViewController.swift */; };
+		551880661F5DC932001985AD /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551880651F5DC932001985AD /* AppController.swift */; };
 		552202FD1F574CCC00575DCD /* Train.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DE21821F54D6AC0005B0E2 /* Train.swift */; };
 		553F97331F434D2000CBF725 /* Billboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F972C1F434C6800CBF725 /* Billboard.swift */; };
 		553F97341F434D2000CBF725 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F972D1F434C6800CBF725 /* Engine.swift */; };
@@ -47,6 +48,7 @@
 		550414B81F4DAAE200226A1C /* SwiftyFog_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftyFog_Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		550414B91F4DAAE300226A1C /* WMGaugeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMGaugeView.h; sourceTree = "<group>"; };
 		550414BA1F4DAAE300226A1C /* WMGaugeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WMGaugeView.m; sourceTree = "<group>"; };
+		551880651F5DC932001985AD /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		553F972C1F434C6800CBF725 /* Billboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Billboard.swift; sourceTree = "<group>"; };
 		553F972D1F434C6800CBF725 /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
 		553F972E1F434C6800CBF725 /* Lights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lights.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 			isa = PBXGroup;
 			children = (
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
+				551880651F5DC932001985AD /* AppController.swift */,
 				550414B51F4DAA8F00226A1C /* view */,
 				550414B21F4DAA8F00226A1C /* viewcontroller */,
 				553F972B1F434C6800CBF725 /* model */,
@@ -448,6 +451,7 @@
 				553F97331F434D2000CBF725 /* Billboard.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				550414BD1F4DAC2600226A1C /* TrainViewController.swift in Sources */,
+				551880661F5DC932001985AD /* AppController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
