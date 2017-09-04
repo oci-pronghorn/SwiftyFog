@@ -10,13 +10,12 @@ import Foundation
 import SwiftyFog
 
 public protocol TrainDelegate: class {
-	func train(handshake: Bool)
+	func trainDied()
 }
 
 public class Train: FogFeedbackModel {
 	
 	private var broadcaster: MQTTBroadcaster?
-    //private var pingeChecker: DispatchSourceTimer?
 	
 	public weak var delegate: TrainDelegate?
 	
@@ -29,15 +28,6 @@ public class Train: FogFeedbackModel {
     }
 	
     init() {
-	/*
-			let keepAliveTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
-			keepAliveTimer.schedule(deadline: .now() + .seconds(Int(clientPrams.keepAlive)), repeating: .seconds(Int(clientPrams.keepAlive)), leeway: .seconds(1))
-			keepAliveTimer.setEventHandler { [weak self] in
-				self?.pingFired()
-			}
-			self.keepAliveTimer = keepAliveTimer
-			keepAliveTimer.resume()
-		*/
 	}
 	
 	public func reset() {
@@ -51,6 +41,6 @@ public class Train: FogFeedbackModel {
 	}
 	
 	private func feedbackDied(msg: MQTTMessage) {
-		print("The train died")
+		delegate?.trainDied()
 	}
 }

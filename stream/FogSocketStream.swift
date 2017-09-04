@@ -14,21 +14,17 @@ public protocol FogSocketStreamDelegate: class {
 }
 
 public typealias FogSocketStreamWrite = ((StreamWriter)->())->()
+
 /*
-extension Stream.Status {
-	var canBeUsed: Bool {
-		switch self {
-			case .open:
-				fallthrough
-			case .reading:
-				fallthrough
-			case .writing:
-				return true
-			default:
-				return false
-		}
-	}
-}
+	Important Note:
+		A disconnect is not reported until approximately 30 seconds
+		after a failed write that is reported as success.
+
+		There appears to be no way to change this behavior in the stream
+		objects. You business logic will have to assume this responsibility
+		with pings and acks.
+
+	See RunLoopPool for further issues with iOS Streams
 */
 public final class FogSocketStream: NSObject, StreamDelegate {
 	private let mutex = ReadWriteMutex()

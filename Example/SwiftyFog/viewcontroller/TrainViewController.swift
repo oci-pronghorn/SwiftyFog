@@ -151,7 +151,6 @@ extension TrainViewController {
 }
 
 extension TrainViewController {
-
 	func feedbackCut() {
 		engine.reset()
 		lights.reset()
@@ -226,7 +225,8 @@ extension TrainViewController:
 		LightsDelegate,
 		BillboardDelegate {
 	
-	func train(handshake: Bool) {
+	func trainDied() {
+		feedbackCut()
 	}
 	
 	func engine(power: FogRational<Int64>, _ asserted: Bool) {

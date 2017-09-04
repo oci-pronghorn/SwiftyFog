@@ -10,7 +10,7 @@ import Foundation
 /*
 We are trying to solve several issues
 - We don't want to be creating and deleting Queue-Thread-RunLoop on every connection attempt.
--- But resusing DispatchQueue's will cause subsequent connections to start failing
+-- But reusing DispatchQueue's will cause subsequent connections to start failing
 -- But closing the sockets does not dismiss the runloop
 -- But there is no way to determine what is keeping the runloop alive
 -- But there is no high level quit method on the runloop
