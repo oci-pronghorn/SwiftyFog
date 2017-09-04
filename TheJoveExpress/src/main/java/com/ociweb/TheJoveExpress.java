@@ -20,8 +20,8 @@ public class TheJoveExpress implements FogApp
     public void declareConnections(Hardware c) {
         config = new TrainConfiguration(c);
 
-        //final String prefix = config.trainName + "/";
-        //final String trainAliveFeedback = "alive/feedback";
+        final String prefix = config.trainName + "/";
+        final String trainAliveFeedback = "alive/feedback";
 
         // TODO: calculating maxMessageLength anf maxinFlight given the private channel definitions and arbitrary bridging
         // is too difficult. And we are declaring this in connections where channel message lengths are in behavior
@@ -168,12 +168,13 @@ public class TheJoveExpress implements FogApp
             // runtime.registerListener(new SoundBehavior(runtime));
         }
 
-        runtime.bridgeTransmission(trainAliveFeedback, prefix + trainAliveFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+        // firstWill
+        runtime.bridgeTransmission(trainAliveFeedback, prefix + trainAliveFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
         runtime.addStartupListener(new StartupListener() {
             final FogCommandChannel channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
             @Override
             public void startup() {
-                channel.publishTopic( trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(true);});
+                //channel.publishTopic( trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(true);});
             }
         });
     }

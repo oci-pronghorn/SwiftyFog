@@ -125,6 +125,7 @@ extension TrainViewController {
 			case .connected(let counter):
 				feedbackCut()
 				assertValues()
+				pulsator.backgroundColor = UIColor.green.cgColor
 				pulsator.start()
 				self.connectedImage?.isHighlighted = true
 				self.connectMetrics.text = "\(counter).-.-"
