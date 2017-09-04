@@ -129,8 +129,27 @@ extension TrainViewController {
 				self.connectedImage?.isHighlighted = true
 				self.connectMetrics.text = "\(counter).-.-"
 				break
-			case .pinged(_):
-				pulsator.start()
+			case .pinged(let status):
+				switch status {
+					case .notConnected:
+						pulsator.backgroundColor = UIColor.black.cgColor
+						pulsator.start()
+						break
+					case .sent:
+						break
+					case .skipped:
+						pulsator.backgroundColor = UIColor.white.cgColor
+						pulsator.start()
+						break
+					case .ack:
+						pulsator.backgroundColor = UIColor.blue.cgColor
+						pulsator.start()
+						break
+					case .serverDied:
+						pulsator.backgroundColor = UIColor.red.cgColor
+						pulsator.start()
+						break
+				}
 				break
 			case .retry(let counter, let rescus, let attempt, _):
 				self.connectMetrics.text = "\(counter).\(rescus).\(attempt)"

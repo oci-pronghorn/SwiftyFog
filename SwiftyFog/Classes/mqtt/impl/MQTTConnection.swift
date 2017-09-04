@@ -160,13 +160,13 @@ extension MQTTConnection {
 	
     private func pingFired() {
 		var status: MQTTPingStatus = .skipped
+		let now = Date.nowInSeconds()
 		mutex.writing {
 			if isFullConnected == false {
 				status = .notConnected
 			}
 			else {
 				if clientPrams.detectServerDeath {
-					let now = Date.nowInSeconds()
 					// The spec says we should receive a a ping ack after a "reasonable amount of time"
 					let secondsSinceLastPing = now - lastPingPacketReceived
 					// The keep alive range on server is 1.5 * keepAlive
@@ -176,7 +176,6 @@ extension MQTTConnection {
 					}
 				}
 				if status != .serverDied {
-					let now = Date.nowInSeconds()
 					let secondsSinceLastPing = now - lastPingPacketSent
 					let limit = UInt64(clientPrams.keepAlive)
 					if secondsSinceLastPing >= limit {
@@ -192,6 +191,12 @@ extension MQTTConnection {
 		}
 		if status == .serverDied || status == .notConnected {
 			self.didDisconnect(reason: .brokerNotAlive, error: nil)
+		}
+		else if status == .skipped {
+			let secondsSinceLastPing = now - lastPingPacketSent
+			if secondsSinceLastPing <= UInt64(clientPrams.keepAlive * 2 / 3) {
+				return
+			}
 		}
 		delegate?.mqtt(connection: self, pinged: status)
     }
