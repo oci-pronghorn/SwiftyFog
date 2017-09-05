@@ -164,18 +164,9 @@ public class TheJoveExpress implements FogApp
             // runtime.registerListener(new SoundBehavior(runtime));
         }
 
-        // TODO: we really need a "firstWill" message sent on connect where lastWill is sent on disconnect
         if (config.mqttEnabled) {
-            //this.mqttBridge.firstill(true, MQTTQOS.atMostOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(true);});
-            //this.mqttBridge.lastWill(true, MQTTQOS.atMostOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
-            runtime.bridgeTransmission(trainAliveFeedback, prefix + trainAliveFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce).setRetain(true);
+            //this.mqttBridge.firstWill(true, MQTTQOS.atLeastOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(true);});
+            //this.mqttBridge.lastWill(true, MQTTQOS.atLeastOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
         }
-        runtime.addStartupListener(new StartupListener() {
-            final FogCommandChannel channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
-            @Override
-            public void startup() {
-                //channel.publishTopic( trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(true);});
-            }
-        });
     }
 }
