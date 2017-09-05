@@ -248,6 +248,7 @@ extension TrainViewController:
 		if alive == false {
 			feedbackCut()
 		}
+		trainAlive.isHighlighted = alive
 	}
 	
 	func engine(power: FogRational<Int64>, _ asserted: Bool) {

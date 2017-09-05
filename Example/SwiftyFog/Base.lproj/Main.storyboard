@@ -73,7 +73,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="0P7-i3-PrJ" userLabel="Power">
-                                <rect key="frame" x="8" y="54.5" width="359" height="255.5"/>
+                                <rect key="frame" x="8" y="60" width="359" height="255.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="jch-e0-4v6" userLabel="Engine">
                                         <rect key="frame" x="0.0" y="0.0" width="175.5" height="255.5"/>
@@ -236,7 +236,7 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="HPE-xF-BzU">
-                                <rect key="frame" x="151" y="327" width="72" height="96"/>
+                                <rect key="frame" x="151" y="332.5" width="72" height="96"/>
                                 <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="Selfie Board">
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -246,7 +246,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yOF-aF-Ux5">
-                                <rect key="frame" x="139" y="327" width="96" height="96"/>
+                                <rect key="frame" x="139" y="332.5" width="96" height="96"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="96" id="DPC-qZ-v9n"/>
                                     <constraint firstAttribute="width" constant="96" id="uDI-6J-OYM"/>
@@ -255,13 +255,13 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="0P7-i3-PrJ" firstAttribute="top" secondItem="Qsm-zT-BQc" secondAttribute="bottom" constant="8" id="0S3-ed-AQJ"/>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="height" secondItem="yOF-aF-Ux5" secondAttribute="height" id="7aO-DK-CQq"/>
                             <constraint firstItem="yOF-aF-Ux5" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="95U-ZV-7hR"/>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="centerX" secondItem="yOF-aF-Ux5" secondAttribute="centerX" id="L16-OZ-Wcb"/>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="centerY" secondItem="yOF-aF-Ux5" secondAttribute="centerY" id="c2a-8f-3nQ"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="eBe-4Q-Ytg"/>
                             <constraint firstItem="yOF-aF-Ux5" firstAttribute="top" secondItem="0P7-i3-PrJ" secondAttribute="bottom" constant="17" id="eMJ-EH-bod"/>
+                            <constraint firstItem="0P7-i3-PrJ" firstAttribute="top" secondItem="C7y-xd-CAj" secondAttribute="bottom" constant="8" id="gdp-td-0mE"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="hUY-FX-r7F"/>
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" constant="-16" id="hfn-cg-vmm"/>
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="kwp-cM-kPw"/>
@@ -385,7 +385,7 @@
             </objects>
             <point key="canvasLocation" x="1466" y="-47"/>
         </scene>
-        <!--Item-->
+        <!--Log View Controller-->
         <scene sceneID="qDw-vI-B03">
             <objects>
                 <viewController id="p7y-jt-jyH" customClass="LogViewController" customModule="SwiftyFog_Example" customModuleProvider="target" sceneMemberID="viewController">
@@ -409,7 +409,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="YgF-uf-hUR"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="VEb-3x-ue5"/>
+                    <tabBarItem key="tabBarItem" title="" image="Log" id="VEb-3x-ue5"/>
                     <connections>
                         <outlet property="log" destination="0X2-YR-r96" id="bHW-sD-pxO"/>
                     </connections>
@@ -443,6 +443,7 @@
         <image name="Connected" width="128" height="128"/>
         <image name="Dead" width="32" height="32"/>
         <image name="Disconnected" width="128" height="128"/>
+        <image name="Log" width="32" height="32"/>
         <image name="Off" width="32" height="32"/>
         <image name="On" width="32" height="32"/>
         <image name="Remote" width="30" height="30"/>
