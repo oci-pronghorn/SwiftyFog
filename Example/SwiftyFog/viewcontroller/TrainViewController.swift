@@ -47,6 +47,8 @@ class TrainViewController: UIViewController {
 	let lights = Lights()
 	let billboard = Billboard()
 	
+	@IBOutlet weak var trainAlive: UIImageView!
+	@IBOutlet weak var trainName: UILabel!
 	@IBOutlet weak var connectMetrics: FSDAirportFlipLabel!
 	@IBOutlet weak var connectedImage: UIImageView!
 	@IBOutlet weak var stopStartButton: UIButton!
