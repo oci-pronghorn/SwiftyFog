@@ -10,14 +10,25 @@ import Foundation
 
 class MQTTSubAckPacket: MQTTPacket, MQTTIdentifiedPacket {
     let messageID: UInt16
+    let maxQoS: [MQTTQoS?]
     
     init?(header: MQTTPacketFixedHeader, networkData: Data) {
 		guard networkData.count >= UInt16.fogSize else { return nil }
-        self.messageID = networkData.fogExtract()
+		var cursor = 0
+        self.messageID = networkData.fogExtract(&cursor)
+        let resultCount = networkData.count - cursor
+        var maxQoS: [MQTTQoS?] = []
+        maxQoS.reserveCapacity(resultCount)
+        for _ in 0..<resultCount {
+			maxQoS.append(networkData.fogExtract(&cursor))
+        }
+        self.maxQoS = maxQoS
         super.init(header: header)
     }
 	
     override var description: String {
-		return "\(super.description) id:\(messageID)"
+		return maxQoS.reduce("\(super.description) id:\(messageID)") { (r, e) in
+			return r + "\n\t\(e != nil ? String(describing: e!) : "Failed")"
+		}
     }
 }
