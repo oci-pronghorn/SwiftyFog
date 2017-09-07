@@ -3,6 +3,7 @@
 //  SwiftyFog
 //
 //  Created by David Giovannini on 8/20/17.
+//  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
 import Foundation
@@ -20,8 +21,8 @@ public final class MQTTBroadcaster {
 // MQTTBroadcaster is a full declarative registration for both subscription and distribution
 /*
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				("powered", .atLeastOnce, Engine.receivePower),
-				("calibrated", .atLeastOnce, Engine.receiveCalibration)
+				("power/feedback", .atMostOnce, Engine.feedbackPower),
+				("calibration/feedback", .atMostOnce, Engine.feedbackCalibration)
 			])
 */
 public extension MQTTBridge {

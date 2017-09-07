@@ -8,20 +8,11 @@
 
 import Foundation
 
-public enum MQTTConnectedState {
-	case started
-	case connected(Int)
-	case pinged(MQTTPingStatus)
-	case discconnected(reason: MQTTConnectionDisconnect, error: Error?)
-	case retry(Int, Int, Int, MQTTReconnectParams) // connection counter, rescus counter, attempt counter
-	case retriesFailed(Int, Int, MQTTReconnectParams)
-}
-
 public protocol MQTTClientDelegate: class {
 	func mqtt(client: MQTTClient, connected: MQTTConnectedState)
 	func mqtt(client: MQTTClient, subscription: MQTTSubscriptionDetail, changed: MQTTSubscriptionStatus)
 	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage)
-	func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription])
+	//func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription])
 }
 
 public final class MQTTClient {

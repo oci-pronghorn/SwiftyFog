@@ -3,6 +3,7 @@
 //  SwiftyFog
 //
 //  Created by David Giovannini on 8/26/17.
+//  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
 import Foundation

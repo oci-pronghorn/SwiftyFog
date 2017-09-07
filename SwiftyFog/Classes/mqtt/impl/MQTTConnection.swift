@@ -8,26 +8,6 @@
 
 import Foundation
 
-// The following are the ping activities
-public enum MQTTPingStatus: String {
-	case notConnected
-	case sent
-	case skipped
-	case ack
-	case serverDied
-}
-
-// The following are reasons for disconnection from broker
-public enum MQTTConnectionDisconnect {
-	case stopped // by client
-	case socket // by connection
-	case handshake(MQTTConnAckResponse) // by connection
-	case brokerNotAlive // by connection
-	case failedRead // from stream
-	case failedWrite // from stream
-	case serverDisconnectedUs // from stream
-}
-
 protocol MQTTConnectionDelegate: class {
 	func mqtt(connection: MQTTConnection, disconnected: MQTTConnectionDisconnect, error: Error?)
 	func mqtt(connection: MQTTConnection, connectedAsPresent: Bool)
