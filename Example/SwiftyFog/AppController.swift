@@ -22,18 +22,15 @@ class AppController {
 	weak var delegate: AppControllerDelegate?
 	
 	init(_ trainName: String) {
-		// Select the train
-		let trainName = "thejoveexpress"
-		
 		// Setup metrics
 		metrics = MQTTMetrics(prefix: {"\(Date.nowInSeconds()) MQTT "})
 		metrics?.printSendPackets = true
 		metrics?.printReceivePackets = true
+		//metrics?.printWireData = true
 		metrics?.debugOut = {print($0)}
 
 		// Create the concrete MQTTClient to connect to a specific broker
 		let mqtt = MQTTClient(
-			client: MQTTClientParams(keepAlive: 15),
 			host: MQTTHostParams(host: trainName + ".local", port: .standard),
 			auth: MQTTAuthentication(username: "dsjove", password: "password"),
 			reconnect: MQTTReconnectParams(),

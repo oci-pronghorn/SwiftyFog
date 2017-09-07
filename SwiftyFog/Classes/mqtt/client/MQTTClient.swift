@@ -150,7 +150,7 @@ extension MQTTClient: MQTTBridge {
 		publisher.publish(pubMsg: newMessage, completion: completion)
 	}
 	
-	public func subscribe(topics: [(String, MQTTQoS)], completion: ((Bool)->())?) -> MQTTSubscription {
+	public func subscribe(topics: [(String, MQTTQoS)], completion: (([(String, MQTTQoS, MQTTQoS?)])->())?) -> MQTTSubscription {
 		let resolved = topics.map { (
 			$0.0.hasPrefix("$") ? String($0.0.dropFirst()) : $0.0,
 			$0.1

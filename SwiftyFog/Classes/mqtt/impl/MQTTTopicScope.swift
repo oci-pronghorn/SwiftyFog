@@ -20,7 +20,7 @@ final class MQTTTopicScope: MQTTBridge {
 		self.fullPath = fullPath + "/"
 	}
 	
-	func subscribe(topics: [(String, MQTTQoS)], completion: ((Bool)->())?) -> MQTTSubscription {
+	func subscribe(topics: [(String, MQTTQoS)], completion: (([(String, MQTTQoS, MQTTQoS?)])->())?) -> MQTTSubscription {
 		let qualified = topics.map {
 			return (
 				$0.0.hasPrefix("$") ? String($0.0.dropFirst()) : self.fullPath + $0.0,

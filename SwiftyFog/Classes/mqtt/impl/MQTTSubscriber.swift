@@ -59,7 +59,7 @@ final class MQTTSubscriber {
 	private let mutex = ReadWriteMutex()
 	private var token: UInt64 = 0
 	private var knownSubscriptions = [UInt64 : MQTTSubscriptionDetail]()
-	private var deferredSubscriptions = [UInt16 : (MQTTSubscriptionDetail, ((Bool)->())?)]()
+	private var deferredSubscriptions = [UInt16 : (MQTTSubscriptionDetail, (([(String, MQTTQoS, MQTTQoS?)])->())?)]()
 	private var deferredUnSubscriptions = [UInt16 : (MQTTSubscriptionDetail, ((Bool)->())?)]()
 	
 	weak var delegate: MQTTSubscriptionDelegate?
@@ -98,7 +98,7 @@ final class MQTTSubscriber {
 		}
 	}
 
-	func subscribe(topics: [(String, MQTTQoS)], completion: ((Bool)->())?) -> MQTTSubscription {
+	func subscribe(topics: [(String, MQTTQoS)], completion: (([(String, MQTTQoS, MQTTQoS?)])->())?) -> MQTTSubscription {
 		return mutex.writing {
 			token += 1
 			let subscription = MQTTSubscription(token: token, topics: topics)
@@ -109,7 +109,7 @@ final class MQTTSubscriber {
 		}
 	}
 	
-	private func startSubscription(_ subscription: MQTTSubscriptionDetail, _ completion: ((Bool)->())?) {
+	private func startSubscription(_ subscription: MQTTSubscriptionDetail, _ completion: (([(String, MQTTQoS, MQTTQoS?)])->())?) {
 		delegate?.mqtt(subscription: subscription, changed: .subPending)
 		issuer.send(packet: {MQTTSubPacket(topics: subscription.topics, messageID: $0)}, expecting: .subAck)  { [weak self] p, s in
 			if (s) { self?.deferredSubscriptions[p.messageID] = (subscription, completion) }
@@ -132,7 +132,10 @@ final class MQTTSubscriber {
 			case let packet as MQTTSubAckPacket:
 				if let element = mutex.writing({deferredSubscriptions.removeValue(forKey:packet.messageID)}) {
 					delegate?.mqtt(subscription: element.0, changed: .subscribed)
-					element.1?(true)
+					if let completion = element.1 {
+						let result = zip(element.0.topics, packet.maxQoS).map { ($0.0.0, $0.0.1, $0.1) }
+						completion(result)
+					}
 				}
 				issuer.received(acknolwedgment: packet, releaseId: true)
 				return true

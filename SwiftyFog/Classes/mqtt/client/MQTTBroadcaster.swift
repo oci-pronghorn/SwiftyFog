@@ -25,7 +25,7 @@ public final class MQTTBroadcaster {
 			])
 */
 public extension MQTTBridge {
-	public func broadcast<T: AnyObject>(to l: T, queue: DispatchQueue? = nil, topics: [(String, MQTTQoS, (T)->((MQTTMessage)->()))], completion: ((Bool)->())? = nil) -> MQTTBroadcaster {
+	public func broadcast<T: AnyObject>(to l: T, queue: DispatchQueue? = nil, topics: [(String, MQTTQoS, (T)->((MQTTMessage)->()))], completion: (([(String, MQTTQoS, MQTTQoS?)])->())? = nil) -> MQTTBroadcaster {
 		return MQTTBroadcaster(
 			registration: register(topics: topics.map {
 				e in (e.0, { [weak l] msg in
