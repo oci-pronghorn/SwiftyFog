@@ -1,11 +1,9 @@
 package com.ociweb;
 
 import com.ociweb.behaviors.*;
-import com.ociweb.gl.api.Behavior;
 import com.ociweb.gl.api.MQTTBridge;
+import com.ociweb.gl.api.MQTTQoS;
 import com.ociweb.gl.api.PubSubListener;
-import com.ociweb.gl.api.StartupListener;
-import com.ociweb.gl.impl.MQTTQOS;
 import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometerTwig;
 import com.ociweb.iot.maker.*;
 import com.ociweb.pronghorn.pipe.BlobReader;
@@ -82,7 +80,7 @@ public class TheJoveExpress implements FogApp
 
         if (false && config.mqttEnabled) {
 			// TODO: put this pattern in FogLight
-            this.mqttBridge.lastWill(true, MQTTQOS.atLeastOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
+            this.mqttBridge.lastWill(true, MQTTQoS.atLeastOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
             runtime.registerListener(new PubSubListener() {
                 private final FogCommandChannel channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
                 @Override
@@ -98,12 +96,12 @@ public class TheJoveExpress implements FogApp
                 }
             }).addSubscription("$/MQTT/Connection");
             // TODO: this makes bridge immutable - lastWill has to go before
-            runtime.bridgeTransmission(trainAliveFeedback, prefix + enginePowerControl, mqttBridge).setRetain(true).setQoS(MQTTQOS.atLeastOnce);
+            runtime.bridgeTransmission(trainAliveFeedback, prefix + enginePowerControl, mqttBridge).setRetain(true).setQoS(MQTTQoS.atLeastOnce);
         }
 
         final String allFeedback = "feedback";
         if (config.mqttEnabled) {
-            runtime.bridgeSubscription(allFeedback, prefix + allFeedback, mqttBridge).setQoS(MQTTQOS.atLeastOnce);
+            runtime.bridgeSubscription(allFeedback, prefix + allFeedback, mqttBridge).setQoS(MQTTQoS.atLeastOnce);
         }
 
         // TODO: all inbound have the train name wildcard topic
@@ -123,10 +121,10 @@ public class TheJoveExpress implements FogApp
 
         if (config.engineEnabled) {
             if (config.mqttEnabled) {
-                runtime.bridgeSubscription(enginePowerControl, prefix + enginePowerControl, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeSubscription(engineCalibrationControl, prefix + engineCalibrationControl, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(enginePowerFeedback, prefix + enginePowerFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(engineCalibrationFeedback, prefix + engineCalibrationFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeSubscription(enginePowerControl, prefix + enginePowerControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
+                runtime.bridgeSubscription(engineCalibrationControl, prefix + engineCalibrationControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
+                runtime.bridgeTransmission(enginePowerFeedback, prefix + enginePowerFeedback, mqttBridge).setQoS(MQTTQoS.atMostOnce);
+                runtime.bridgeTransmission(engineCalibrationFeedback, prefix + engineCalibrationFeedback, mqttBridge).setQoS(MQTTQoS.atMostOnce);
             }
             final EngineBehavior engine = new EngineBehavior(runtime, actuatorPowerInternal, config.engineAccuatorPort, enginePowerFeedback, engineCalibrationFeedback);
             runtime.registerListener(engine)
@@ -137,12 +135,12 @@ public class TheJoveExpress implements FogApp
 
         if (config.lightsEnabled) {
             if (config.mqttEnabled) {
-                runtime.bridgeSubscription(lightsOverrideControl, prefix + lightsOverrideControl, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeSubscription(lightsCalibrationControl, prefix + lightsCalibrationControl, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(lightsOverrideFeedback, prefix + lightsOverrideFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(lightsPowerFeedback, prefix + lightsPowerFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(lightsCalibrationFeedback, prefix + lightsCalibrationFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(lightsAmbientFeedback, prefix + lightsAmbientFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeSubscription(lightsOverrideControl, prefix + lightsOverrideControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
+                runtime.bridgeSubscription(lightsCalibrationControl, prefix + lightsCalibrationControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
+                runtime.bridgeTransmission(lightsOverrideFeedback, prefix + lightsOverrideFeedback, mqttBridge).setQoS(MQTTQoS.atMostOnce);
+                runtime.bridgeTransmission(lightsPowerFeedback, prefix + lightsPowerFeedback, mqttBridge).setQoS(MQTTQoS.atMostOnce);
+                runtime.bridgeTransmission(lightsCalibrationFeedback, prefix + lightsCalibrationFeedback, mqttBridge).setQoS(MQTTQoS.atMostOnce);
+                runtime.bridgeTransmission(lightsAmbientFeedback, prefix + lightsAmbientFeedback, mqttBridge).setQoS(MQTTQoS.atMostOnce);
             }
             final AmbientLightBroadcast ambientLight = new AmbientLightBroadcast(runtime, config.lightSensorPort, lightsAmbientFeedback);
             runtime.registerListener(ambientLight)
@@ -157,7 +155,7 @@ public class TheJoveExpress implements FogApp
 
         if (config.speedometerEnabled) {
             if (config.mqttEnabled) {
-                runtime.bridgeTransmission(accelerometerPublishTopic, prefix + accelerometerPublishTopic, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeTransmission(accelerometerPublishTopic, prefix + accelerometerPublishTopic, mqttBridge).setQoS(MQTTQoS.atMostOnce);
             }
             final AccelerometerBehavior accelerometer = new AccelerometerBehavior(runtime, accelerometerPublishTopic);
             runtime.registerListener(accelerometer);
@@ -166,8 +164,8 @@ public class TheJoveExpress implements FogApp
 
         if (config.billboardEnabled) {
             if (config.mqttEnabled) {
-                runtime.bridgeSubscription(billboardImageControl, prefix + billboardImageControl, mqttBridge).setQoS(MQTTQOS.atMostOnce);
-                runtime.bridgeTransmission(billboardSpecFeedback, prefix + billboardSpecFeedback, mqttBridge).setQoS(MQTTQOS.atMostOnce);
+                runtime.bridgeSubscription(billboardImageControl, prefix + billboardImageControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
+                runtime.bridgeTransmission(billboardSpecFeedback, prefix + billboardSpecFeedback, mqttBridge).setQoS(MQTTQoS.atMostOnce);
             }
             final BillboardBehavior billboard = new BillboardBehavior(runtime, billboardSpecFeedback);
             runtime.registerListener(billboard)
