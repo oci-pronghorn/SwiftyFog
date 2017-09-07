@@ -1,11 +1,14 @@
 package com.ociweb;
 
 import com.ociweb.behaviors.*;
+import com.ociweb.gl.api.Behavior;
 import com.ociweb.gl.api.MQTTBridge;
+import com.ociweb.gl.api.PubSubListener;
 import com.ociweb.gl.api.StartupListener;
 import com.ociweb.gl.impl.MQTTQOS;
 import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometerTwig;
 import com.ociweb.iot.maker.*;
+import com.ociweb.pronghorn.pipe.BlobReader;
 
 import static com.ociweb.iot.grove.simple_analog.SimpleAnalogTwig.*;
 import static com.ociweb.iot.grove.motor_driver.MotorDriverTwig.MotorDriver;
@@ -76,6 +79,27 @@ public class TheJoveExpress implements FogApp
         final String billboardSpecFeedback = "billboard/spec/feedback";
 
         final String accelerometerPublishTopic = "accelerometer";
+
+        if (false && config.mqttEnabled) {
+			// TODO: put this pattern in FogLight
+            this.mqttBridge.lastWill(true, MQTTQOS.atLeastOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
+            runtime.registerListener(new PubSubListener() {
+                private final FogCommandChannel channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
+                @Override
+                public boolean message(CharSequence topic, BlobReader payload) {
+                    int code = payload.readInt();
+                    int sessionPresent = payload.readInt();
+                    if (code == 0) {
+                        channel.publishTopic(trainAliveFeedback, writer -> {
+                            writer.writeBoolean(true);
+                        });
+                    }
+                    return true;
+                }
+            }).addSubscription("$/MQTT/Connection");
+            // TODO: this makes bridge immutable - lastWill has to go before
+            runtime.bridgeTransmission(trainAliveFeedback, prefix + enginePowerControl, mqttBridge).setRetain(true).setQoS(MQTTQOS.atLeastOnce);
+        }
 
         final String allFeedback = "feedback";
         if (config.mqttEnabled) {
@@ -162,11 +186,6 @@ public class TheJoveExpress implements FogApp
             // MQTT outbound with play status
             // MQTT inbound with play/stop/pause commands
             // runtime.registerListener(new SoundBehavior(runtime));
-        }
-
-        if (config.mqttEnabled) {
-            //this.mqttBridge.firstWill(true, MQTTQOS.atLeastOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(true);});
-            //this.mqttBridge.lastWill(true, MQTTQOS.atLeastOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
         }
     }
 }
