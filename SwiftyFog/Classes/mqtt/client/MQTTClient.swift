@@ -11,7 +11,7 @@ import Foundation
 public protocol MQTTClientDelegate: class {
 	func mqtt(client: MQTTClient, connected: MQTTConnectedState)
 	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage)
-	//func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription])
+	func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription])
 }
 
 public final class MQTTClient {
@@ -195,8 +195,10 @@ extension MQTTClient: MQTTConnectionDelegate {
 		idSource.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
 		durability.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
 		publisher.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
-		subscriber.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
+		let recreatedSubscriptions = subscriber.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
 		distributer.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
+		
+		delegate?.mqtt(client: self, recreatedSubscriptions: recreatedSubscriptions)
 	}
 	
 	func mqtt(connection: MQTTConnection, pinged status: MQTTPingStatus) {

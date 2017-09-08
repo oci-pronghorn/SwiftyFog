@@ -70,8 +70,8 @@ final class MQTTSubscriber {
 		self.issuer = issuer
 	}
 	
-	func connected(cleanSession: Bool, present: Bool, initial: Bool) {
-		mutex.writing {
+	func connected(cleanSession: Bool, present: Bool, initial: Bool) -> [MQTTSubscription] {
+		return mutex.writing {
 			// If we are reconnecting then start subscriptions over
 			// If we have not connected yet subscriptions should be queued in issuer
 			if initial == false {
@@ -87,6 +87,7 @@ final class MQTTSubscriber {
 			else if cleanSession == false && present == true {
 				// TODO: return recreated last known subscriptions from file
 			}
+			return []
 		}
 	}
 	
@@ -94,8 +95,8 @@ final class MQTTSubscriber {
 		mutex.writing {
 			// Inform ack callbacks
 			for token in knownSubscriptions.keys.sorted().reversed() {
-				if let subscription = knownSubscriptions[token]?.ack {
-					subscription(.suspended)
+				if let subscription = knownSubscriptions[token] {
+					subscription.ack?(.suspended)
 				}
 				// cleanup if we can
 				else {
@@ -123,6 +124,7 @@ final class MQTTSubscriber {
 			if (s) {
 				self?.mutex.writing { self?.deferredSubscriptions[p.messageID] = subscription }
 			}
+			// TODO
 		}
 	}
 	
@@ -135,6 +137,7 @@ final class MQTTSubscriber {
 				if (s) {
 					self?.mutex.writing { self?.deferredUnSubscriptions[p.messageID] = subscription }
 				}
+				// TODO
 			}
 		}
 	}
@@ -145,7 +148,6 @@ final class MQTTSubscriber {
 				if let element = mutex.writing({deferredSubscriptions.removeValue(forKey:packet.messageID)}) {
 					if let ack = element.ack {
 						let result = zip(element.topics, packet.maxQoS).map { ($0.0.0, $0.0.1, $0.1) }
-						// TODO return # of times been acknowledged
 						ack(.subscribed(result))
 					}
 				}
