@@ -31,8 +31,8 @@ public class TrainConfiguration  {
 
     TrainConfiguration(ArgumentProvider args) {
         this.trainName = args.getArgumentValue("--name", "-n", "thejoveexpress");
-        //this.mqttBroker = args.getArgumentValue("--broker", "-b", this.trainName + ".local");
-        this.mqttBroker = "localhost";
+        this.mqttBroker = args.getArgumentValue("--broker", "-b", this.trainName + ".local");
+        //this.mqttBroker = "localhost";
         this.mqttClientName = trainName;
     }
 }
