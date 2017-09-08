@@ -40,7 +40,7 @@ public class BillboardBehavior implements PubSubMethodListener {
                 bmp.setValue(x, y, 0, ((double)(x * y) / scale));
             }
         }
-        bufferChannel.publishTopic("billboard/image", writer->{writer.write(bmp);});
+        bufferChannel.publishTopic("billboard/image/control", writer->{writer.write(bmp);});
     }
 
     public boolean onImage(CharSequence charSequence, BlobReader blobReader) {

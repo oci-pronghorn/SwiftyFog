@@ -82,7 +82,7 @@ public class TheJoveExpress implements FogApp
 			// TODO: put this pattern in GreenLightning
             //this.mqttBridge.lastWill(true, MQTTQoS.atLeastOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
             // TODO: this makes bridge immutable - lastWill has to go before
-            runtime.bridgeTransmission(trainAliveFeedback, prefix + enginePowerControl, mqttBridge).setRetain(true).setQoS(MQTTQoS.atLeastOnce);
+            runtime.bridgeTransmission(trainAliveFeedback, prefix + trainAliveFeedback, mqttBridge).setRetain(true).setQoS(MQTTQoS.atLeastOnce);
             runtime.registerListener(new PubSubListener() {
                 private final FogCommandChannel channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
                 @Override
