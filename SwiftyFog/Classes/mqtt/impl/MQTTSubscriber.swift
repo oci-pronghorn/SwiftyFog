@@ -125,7 +125,9 @@ final class MQTTSubscriber {
 			let topicStrings = subscription.topics.map({$0.0})
 			delegate?.mqtt(subscription: subscription, changed: .unsubPending)
 			issuer.send(packet: {MQTTUnsubPacket(topics: topicStrings, messageID: $0)}, expecting: .subAck) { [weak self] p, s in
-				if (s) { self?.deferredUnSubscriptions[p.messageID] = (subscription, nil) }
+				if (s) {
+					self?.mutex.writing { self?.deferredUnSubscriptions[p.messageID] = (subscription, nil) }
+				}
 			}
 		}
 	}
