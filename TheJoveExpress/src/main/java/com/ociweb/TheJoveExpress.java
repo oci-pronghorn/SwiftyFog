@@ -79,12 +79,15 @@ public class TheJoveExpress implements FogApp
         final String accelerometerPublishTopic = "accelerometer";
 
         if (config.mqttEnabled) {
-			// TODO: put this pattern in FogLight
+			// TODO: put this pattern in GreenLightning
             //this.mqttBridge.lastWill(true, MQTTQoS.atLeastOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
- /*           runtime.registerListener(new PubSubListener() {
+            // TODO: this makes bridge immutable - lastWill has to go before
+            runtime.bridgeTransmission(trainAliveFeedback, prefix + enginePowerControl, mqttBridge).setRetain(true).setQoS(MQTTQoS.atLeastOnce);
+            runtime.registerListener(new PubSubListener() {
                 private final FogCommandChannel channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
                 @Override
                 public boolean message(CharSequence topic, BlobReader payload) {
+                    System.out.print("********* Alive ********\n");
                     int code = payload.readInt();
                     int sessionPresent = payload.readInt();
                     if (code == 0) {
@@ -95,8 +98,6 @@ public class TheJoveExpress implements FogApp
                     return true;
                 }
             }).addSubscription("$/MQTT/Connection");
-            // TODO: this makes bridge immutable - lastWill has to go before
-            runtime.bridgeTransmission(trainAliveFeedback, prefix + enginePowerControl, mqttBridge).setRetain(true).setQoS(MQTTQoS.atLeastOnce);*/
         }
 
         final String allFeedback = "feedback";

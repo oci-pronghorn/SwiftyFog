@@ -28,8 +28,7 @@ public class AmbientLightBroadcast implements PubSubMethodListener, AnalogListen
 
     @Override
     public void analogEvent(Port port, long time, long durationMillis, int average, int value) {
-       // System.out.print(String.format("p: %d t:%d d:%d a:%d v:%d\n",
-                //port.port, time, durationMillis, average, value));
+        System.out.print(String.format("p: %d t:%d d:%d a:%d v:%d\n", port.port, time, durationMillis, average, value));
         if (port == lightSensorPort) {
             if (value != oldValue.num) {
                 oldValue.num = value;
