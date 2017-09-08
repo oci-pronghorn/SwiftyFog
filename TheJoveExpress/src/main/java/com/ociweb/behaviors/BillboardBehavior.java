@@ -29,7 +29,7 @@ public class BillboardBehavior implements PubSubMethodListener {
 
     public boolean onAllFeedback(CharSequence charSequence, BlobReader messageReader) {
         bufferChannel.publishTopic(publishTopic, writer->{writer.write(display.newBmpLayout());});
-        //sendTestImage();
+        sendTestImage();
         return true;
     }
 

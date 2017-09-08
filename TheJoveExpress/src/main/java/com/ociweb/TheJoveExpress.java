@@ -77,7 +77,7 @@ public class TheJoveExpress implements FogApp
         final String billboardSpecFeedback = "billboard/spec/feedback";
 
         final String accelerometerPublishTopic = "accelerometer";
-
+/*
         if (config.mqttEnabled) {
 			// TODO: put this pattern in GreenLightning
             //this.mqttBridge.lastWill(true, MQTTQoS.atLeastOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
@@ -99,7 +99,7 @@ public class TheJoveExpress implements FogApp
                 }
             }).addSubscription("$/MQTT/Connection");
         }
-
+*/
         final String allFeedback = "feedback";
         if (config.mqttEnabled) {
             runtime.bridgeSubscription(allFeedback, prefix + allFeedback, mqttBridge).setQoS(MQTTQoS.atLeastOnce);
