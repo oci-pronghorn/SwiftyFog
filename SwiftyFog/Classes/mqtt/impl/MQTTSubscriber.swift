@@ -60,7 +60,7 @@ final class MQTTSubscriber {
 	
 	private let mutex = ReadWriteMutex()
 	private var token: UInt64 = 0
-	private var knownSubscriptions = [UInt64 : MQTTSubscriptionDetail]()
+	private var knownSubscriptions = [UInt64 : (MQTTSubscriptionDetail, SubscriptionAcknowledged?)]()
 	private var deferredSubscriptions = [UInt16 : (MQTTSubscriptionDetail, SubscriptionAcknowledged?)]()
 	private var deferredUnSubscriptions = [UInt16 : (MQTTSubscriptionDetail, ((Bool)->())?)]()
 	
@@ -71,28 +71,33 @@ final class MQTTSubscriber {
 	}
 	
 	func connected(cleanSession: Bool, present: Bool, initial: Bool) {
-		// TODO on clean == false return recreated last known subscriptions from file
 		mutex.writing {
+			// If we are reconnecting then start subscriptions over
+			// If we have not connected yet subscriptions should be queued in issuer
 			if initial == false {
 				for token in knownSubscriptions.keys.sorted() {
 					if let subscription = knownSubscriptions[token] {
-						startSubscription(subscription, nil)
+						startSubscription(subscription.0, subscription.1)
 					}
 					else {
 						knownSubscriptions.removeValue(forKey: token)
 					}
 				}
 			}
+			else if cleanSession == false && present == true {
+				// TODO: return recreated last known subscriptions from file
+			}
 		}
 	}
 	
 	func disconnected(cleanSession: Bool, stopped: Bool) {
 		mutex.writing {
-			// Do not remove completion blocks
+			// Inform delegate the subscriptions have been suspended
 			for token in knownSubscriptions.keys.sorted().reversed() {
 				if let subscription = knownSubscriptions[token] {
-					delegate?.mqtt(subscription: subscription, changed: .suspended)
+					delegate?.mqtt(subscription: subscription.0, changed: .suspended)
 				}
+				// cleanup if we can
 				else {
 					knownSubscriptions.removeValue(forKey: token)
 				}
@@ -105,7 +110,7 @@ final class MQTTSubscriber {
 			token += 1
 			let subscription = MQTTSubscription(token: token, topics: topics)
 			subscription.subscriber = self
-			knownSubscriptions[token] = subscription.detail
+			knownSubscriptions[token] = (subscription.detail, acknowledged)
 			startSubscription(subscription.detail, acknowledged)
 			return subscription
 		}
@@ -141,7 +146,8 @@ final class MQTTSubscriber {
 					delegate?.mqtt(subscription: element.0, changed: .subscribed)
 					if let completion = element.1 {
 						let result = zip(element.0.topics, packet.maxQoS).map { ($0.0.0, $0.0.1, $0.1) }
-						completion(0, result)
+						// TODO return # of times been acknowledged
+						completion(1, result)
 					}
 				}
 				issuer.received(acknolwedgment: packet, releaseId: true)

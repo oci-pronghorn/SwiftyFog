@@ -37,7 +37,12 @@ public extension MQTTBridge {
 		let subAcknowledged: SubscriptionAcknowledged? = acknowledged == nil ? nil :
 			{ [weak l] iter, success in
 				if let l = l {
-					acknowledged!(l, iter, success)
+					if let q = queue {
+						q.async{ acknowledged!(l, iter, success)}
+					}
+					else {
+						acknowledged!(l, iter, success)
+					}
 				}
 			}
 	
