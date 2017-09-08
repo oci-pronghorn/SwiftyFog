@@ -163,6 +163,7 @@ extension TrainViewController {
 			case .discconnected(_, _):
 				self.connectedImage?.isHighlighted = false
 				self.stopStartButton.isSelected = mqttControl.started
+				self.trainAlive.isHighlighted = false
 				feedbackCut()
 				break
 		}

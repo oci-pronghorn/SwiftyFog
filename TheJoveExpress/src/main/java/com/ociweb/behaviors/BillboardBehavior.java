@@ -22,6 +22,7 @@ public class BillboardBehavior implements PubSubMethodListener {
 
         displayChannel = rt.newCommandChannel();
         display = OLED_96x96.newTransducer(displayChannel);
+        //display.setChip(0);
 
         bmp = display.newEmptyBmp();
         bufferChannel.ensureDynamicMessaging(5, bmp.messageSize());

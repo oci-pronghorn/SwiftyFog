@@ -77,17 +77,16 @@ public class TheJoveExpress implements FogApp
         final String billboardSpecFeedback = "billboard/spec/feedback";
 
         final String accelerometerPublishTopic = "accelerometer";
-/*
+
         if (config.mqttEnabled) {
 			// TODO: put this pattern in GreenLightning
-            //this.mqttBridge.lastWill(true, MQTTQoS.atLeastOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
+            this.mqttBridge.lastWill(true, MQTTQoS.atLeastOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
             // TODO: this makes bridge immutable - lastWill has to go before
             runtime.bridgeTransmission(trainAliveFeedback, prefix + trainAliveFeedback, mqttBridge).setRetain(true).setQoS(MQTTQoS.atLeastOnce);
             runtime.registerListener(new PubSubListener() {
                 private final FogCommandChannel channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
                 @Override
                 public boolean message(CharSequence topic, BlobReader payload) {
-                    System.out.print("********* Alive ********\n");
                     int code = payload.readInt();
                     int sessionPresent = payload.readInt();
                     if (code == 0) {
@@ -99,7 +98,7 @@ public class TheJoveExpress implements FogApp
                 }
             }).addSubscription("$/MQTT/Connection");
         }
-*/
+
         final String allFeedback = "feedback";
         if (config.mqttEnabled) {
             runtime.bridgeSubscription(allFeedback, prefix + allFeedback, mqttBridge).setQoS(MQTTQoS.atLeastOnce);
