@@ -18,6 +18,8 @@ public enum MQTTSubscriptionStatus: String {
 	case suspended
 }
 
+public typealias SubscriptionAcknowledged = (Int, [(String, MQTTQoS, MQTTQoS?)])->()
+
 public struct MQTTSubscriptionDetail: CustomStringConvertible  {
 	public let token: UInt64
 	public let topics: [(String, MQTTQoS)]
@@ -59,7 +61,7 @@ final class MQTTSubscriber {
 	private let mutex = ReadWriteMutex()
 	private var token: UInt64 = 0
 	private var knownSubscriptions = [UInt64 : MQTTSubscriptionDetail]()
-	private var deferredSubscriptions = [UInt16 : (MQTTSubscriptionDetail, (([(String, MQTTQoS, MQTTQoS?)])->())?)]()
+	private var deferredSubscriptions = [UInt16 : (MQTTSubscriptionDetail, SubscriptionAcknowledged?)]()
 	private var deferredUnSubscriptions = [UInt16 : (MQTTSubscriptionDetail, ((Bool)->())?)]()
 	
 	weak var delegate: MQTTSubscriptionDelegate?
@@ -98,23 +100,23 @@ final class MQTTSubscriber {
 		}
 	}
 
-	func subscribe(topics: [(String, MQTTQoS)], completion: (([(String, MQTTQoS, MQTTQoS?)])->())?) -> MQTTSubscription {
+	func subscribe(topics: [(String, MQTTQoS)], acknowledged: SubscriptionAcknowledged?) -> MQTTSubscription {
 		return mutex.writing {
 			token += 1
 			let subscription = MQTTSubscription(token: token, topics: topics)
 			subscription.subscriber = self
 			knownSubscriptions[token] = subscription.detail
-			startSubscription(subscription.detail, completion)
+			startSubscription(subscription.detail, acknowledged)
 			return subscription
 		}
 	}
 	
-	private func startSubscription(_ subscription: MQTTSubscriptionDetail, _ completion: (([(String, MQTTQoS, MQTTQoS?)])->())?) {
+	private func startSubscription(_ subscription: MQTTSubscriptionDetail, _ acknowledged: SubscriptionAcknowledged?) {
 		// In Mutex already
 		delegate?.mqtt(subscription: subscription, changed: .subPending)
 		issuer.send(packet: {MQTTSubPacket(topics: subscription.topics, messageID: $0)}, expecting: .subAck)  { [weak self] p, s in
 			if (s) {
-				self?.mutex.writing { self?.deferredSubscriptions[p.messageID] = (subscription, completion) }
+				self?.mutex.writing { self?.deferredSubscriptions[p.messageID] = (subscription, acknowledged) }
 			}
 		}
 	}
@@ -139,7 +141,7 @@ final class MQTTSubscriber {
 					delegate?.mqtt(subscription: element.0, changed: .subscribed)
 					if let completion = element.1 {
 						let result = zip(element.0.topics, packet.maxQoS).map { ($0.0.0, $0.0.1, $0.1) }
-						completion(result)
+						completion(0, result)
 					}
 				}
 				issuer.received(acknolwedgment: packet, releaseId: true)

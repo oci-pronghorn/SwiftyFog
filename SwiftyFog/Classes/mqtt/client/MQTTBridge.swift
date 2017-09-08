@@ -24,7 +24,7 @@ public protocol MQTTBridge {
 	// If topic.0 begins with '$' it will be used as an absolute path
 	// Otherwise fullpath is built from the bridge chain
 	// All MQTT wildcards work according to specifications
-	func subscribe(topics: [(String, MQTTQoS)], completion: (([(String, MQTTQoS, MQTTQoS?)])->())?) -> MQTTSubscription
+	func subscribe(topics: [(String, MQTTQoS)], acknowledged: SubscriptionAcknowledged?) -> MQTTSubscription
 	
 	// If path begins with '$' it will be used as an absolute path
 	// Otherwise fullpath is built from the bridge chain
@@ -41,7 +41,7 @@ public extension MQTTBridge {
 	}
 	
 	public func subscribe(topics: [(String, MQTTQoS)]) -> MQTTSubscription {
-		return subscribe(topics: topics, completion: nil)
+		return subscribe(topics: topics, acknowledged: nil)
 	}
 	
 	public func register(topics: [(String, (MQTTMessage)->())]) -> [MQTTRegistration] {

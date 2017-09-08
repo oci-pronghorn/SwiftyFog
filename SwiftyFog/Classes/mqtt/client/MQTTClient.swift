@@ -141,12 +141,12 @@ extension MQTTClient: MQTTBridge {
 		publisher.publish(pubMsg: newMessage, completion: completion)
 	}
 	
-	public func subscribe(topics: [(String, MQTTQoS)], completion: (([(String, MQTTQoS, MQTTQoS?)])->())?) -> MQTTSubscription {
+	public func subscribe(topics: [(String, MQTTQoS)], acknowledged: SubscriptionAcknowledged?) -> MQTTSubscription {
 		let resolved = topics.map { (
 			$0.0.hasPrefix("$") ? String($0.0.dropFirst()) : $0.0,
 			$0.1
 		)}
-		return subscriber.subscribe(topics: resolved, completion: completion)
+		return subscriber.subscribe(topics: resolved, acknowledged: acknowledged)
 	}
 	
 	public func register(topic: String, action: @escaping (MQTTMessage)->()) -> MQTTRegistration {
