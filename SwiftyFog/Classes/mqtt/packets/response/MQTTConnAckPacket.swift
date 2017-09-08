@@ -14,9 +14,8 @@ class MQTTConnAckPacket: MQTTPacket {
     
     init?(header: MQTTPacketFixedHeader, networkData: Data) {
 		guard networkData.count >= (MQTTConnAckResponse.fogSize + Bool.fogSize) else { return nil }
-		guard let response = MQTTConnAckResponse(rawValue: networkData[1]) else { return nil }
         self.sessionPresent = (networkData[0] & 0x01) == 0x01
-        self.response = response
+        self.response = MQTTConnAckResponse(specValue: networkData[1])
         super.init(header: header)
     }
 	

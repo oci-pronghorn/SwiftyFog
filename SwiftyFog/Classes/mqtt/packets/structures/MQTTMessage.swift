@@ -20,7 +20,8 @@ public struct MQTTMessage: CustomStringConvertible {
 		self.retain = publishPacket.message.retain
 		self.qos = publishPacket.message.qos
 	}
-    
+	
+    // If retain is true and payload is empty, it erases the value from the server
     public init(topic: String, payload: Data = Data(), retain: Bool = false, qos: MQTTQoS = .atMostOnce) {
         self.topic = topic.utf8
         self.payload = payload

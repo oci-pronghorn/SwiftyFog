@@ -15,9 +15,11 @@ public enum MQTTConnAckResponse: UInt8, Error {
     case serverUnavailable      = 0x03
     case badUsernameOrPassword  = 0x04
     case notAuthorized          = 0x05
+    case other          		= 0xFF
 	
-    case timeout				= 0xFF
-	
+	init(specValue: UInt8) {
+		self = MQTTConnAckResponse(rawValue: specValue) ?? .other
+	}
     public var retries: Bool {
 		switch self {
 			case .serverUnavailable:

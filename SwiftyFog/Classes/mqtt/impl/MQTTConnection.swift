@@ -27,6 +27,7 @@ final class MQTTConnection {
     private weak var delegate: MQTTConnectionDelegate?
 	
 	private let mutex = ReadWriteMutex()
+	// The spec says we can send packets before the ack - but that gets ugly if failed
     private(set) var isFullConnected: Bool = false
     private var lastPingPacketSent: Int64 = 0
     private var lastPingPacketReceived: Int64 = 0

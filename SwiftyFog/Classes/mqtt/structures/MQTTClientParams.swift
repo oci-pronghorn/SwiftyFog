@@ -33,6 +33,12 @@ public struct MQTTClientParams {
 	// TODO: not working yet - has to be > 0.0 and works with queuePubOnDisconnect
     public var resendPulseInterval: TimeInterval = 5.0
 	
+    public init(keepAlive: UInt16) {
+		self.clientID = ""
+		self.cleanSession = true
+		self.keepAlive = keepAlive
+    }
+	
     public init(clientID: String, cleanSession: Bool = true, keepAlive: UInt16 = 15) {
 		self.clientID = clientID
 		self.cleanSession = cleanSession
