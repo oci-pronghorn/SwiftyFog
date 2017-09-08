@@ -43,22 +43,22 @@ class TrainSelectViewController: UIViewController {
 		// Since we are possibly resubscribing to the same topic we force the unsubscribe first.
 		// Otherwide we redundantly subscribe and then unsubscribe
 		subscription = nil
-		subscription = mqtt.subscribe(topics: [("Bobs/#", .atMostOnce)]) { (iter, success) in
-			print("\(Date.nowInSeconds()) subAll0: \(iter) \(success)")
+		subscription = mqtt.subscribe(topics: [("Bobs/#", .atMostOnce)]) { status in
+			print("\(Date.nowInSeconds()) subAll0: \(status)")
 		}
 	}
 
 	@IBAction func subAll1() {
 		subscription = nil
-		subscription = mqtt.subscribe(topics: [("Bobs/#", .atLeastOnce)]) { (iter, success) in
-			print("\(Date.nowInSeconds()) subAll1: \(iter) \(success)")
+		subscription = mqtt.subscribe(topics: [("Bobs/#", .atLeastOnce)]) { status in
+			print("\(Date.nowInSeconds()) subAll1: \(status)")
 		}
 	}
 
 	@IBAction func subAll2() {
 		subscription = nil
-		subscription = mqtt.subscribe(topics: [("Bobs/#", .exactlyOnce)]) { (iter, success) in
-			print("\(Date.nowInSeconds()) subAll2: \(iter) \(success)")
+		subscription = mqtt.subscribe(topics: [("Bobs/#", .exactlyOnce)]) { status in
+			print("\(Date.nowInSeconds()) subAll2: \(status)")
 		}
 	}
 

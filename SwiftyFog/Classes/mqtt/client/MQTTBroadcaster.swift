@@ -24,24 +24,26 @@ public final class MQTTBroadcaster {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("power/feedback", .atMostOnce, Engine.feedbackPower),
 				("calibration/feedback", .atMostOnce, Engine.feedbackCalibration)
-			]) { listener, _, _ in
-				listener.askForFeedback()
+			]) { listener, status in
+				if case .subscribed(_) = status {
+					listener.askForFeedback()
+				}
 			}
 */
 
-public typealias MQTTBroadcastAcknowledged<T: AnyObject> = (T, Int, [(String, MQTTQoS, MQTTQoS?)])->()
+public typealias MQTTBroadcastAcknowledged<T: AnyObject> = (T, MQTTSubscriptionStatus)->()
 
 public extension MQTTBridge {
 	public func broadcast<T: AnyObject>(to l: T, queue: DispatchQueue? = nil, topics: [(String, MQTTQoS, (T)->((MQTTMessage)->()))], acknowledged: MQTTBroadcastAcknowledged<T>? = nil) -> MQTTBroadcaster {
 	
 		let subAcknowledged: SubscriptionAcknowledged? = acknowledged == nil ? nil :
-			{ [weak l] iter, success in
+			{ [weak l] status in
 				if let l = l {
 					if let q = queue {
-						q.async{ acknowledged!(l, iter, success)}
+						q.async{ acknowledged!(l, status)}
 					}
 					else {
-						acknowledged!(l, iter, success)
+						acknowledged!(l, status)
 					}
 				}
 			}

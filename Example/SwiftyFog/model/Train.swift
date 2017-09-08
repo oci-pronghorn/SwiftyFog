@@ -22,9 +22,10 @@ public class Train: FogFeedbackModel {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("alive/feedback", .atLeastOnce, Train.feedbackAlive)
-			]) { _ in
-				// TODO: this is too early - we need a completion aggreagation mechanism
-				self.askForFeedback()
+			]) { listener, status in
+				if case .subscribed(_) = status {
+					listener.askForFeedback()
+				}
 			}
 		}
     }

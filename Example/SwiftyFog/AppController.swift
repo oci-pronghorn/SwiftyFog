@@ -85,12 +85,6 @@ extension AppController: MQTTClientDelegate {
 		}
 	}
 	
-	func mqtt(client: MQTTClient, subscription: MQTTSubscriptionDetail, changed: MQTTSubscriptionStatus) {
-		DispatchQueue.main.async {
-			self.delegate?.on(log: "Subscription \(subscription) \(changed)")
-		}
-	}
-	
 	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage) {
 		DispatchQueue.main.async {
 			self.delegate?.on(log: "Unhandled \(unhandledMessage)")

@@ -10,7 +10,6 @@ import Foundation
 
 public protocol MQTTClientDelegate: class {
 	func mqtt(client: MQTTClient, connected: MQTTConnectedState)
-	func mqtt(client: MQTTClient, subscription: MQTTSubscriptionDetail, changed: MQTTSubscriptionStatus)
 	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage)
 	//func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription])
 }
@@ -243,9 +242,5 @@ extension MQTTClient:
 	
 	func mqtt(unhandledMessage: MQTTMessage) {
 		delegate?.mqtt(client: self, unhandledMessage: unhandledMessage)
-	}
-	
-	func mqtt(subscription: MQTTSubscriptionDetail, changed: MQTTSubscriptionStatus) {
-		delegate?.mqtt(client: self, subscription: subscription, changed: changed)
 	}
 }
