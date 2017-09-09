@@ -27,6 +27,7 @@ public class AccelerometerBehavior implements Behavior, AccelValsListener, MagVa
 
     @Override
     public void accelerationValues(int x, int y, int z) {
+        System.out.print(String.format("accel %d %d %d\n", x, y, z));
      //   this.channel.publishTopic(headingTopic, writer -> {
      //       writer.writeInt(x);
      //       writer.writeInt(y);
@@ -39,6 +40,7 @@ public class AccelerometerBehavior implements Behavior, AccelValsListener, MagVa
         double heading = 180.0 * Math.atan2(y, x) / Math.PI;
         if (heading < 0) heading += 360.0;
         final double finalHeading = heading;
+        System.out.print(String.format("heading %f\n", finalHeading));
         // this.channel.publishTopic(accelerateTopic, writer -> {
         //     writer.writeDouble(finalHeading);
         // });

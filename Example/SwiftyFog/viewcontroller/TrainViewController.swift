@@ -204,6 +204,11 @@ extension TrainViewController {
 	}
 	
 	@IBAction
+	func shutdownTrain(sender: UILongPressGestureRecognizer) {
+		train.controlShutdown()
+	}
+	
+	@IBAction
 	func doEnginePower(sender: ScrubControl?) {
 		engine.control(power: sender!.rational)
 	}

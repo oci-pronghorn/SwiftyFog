@@ -43,6 +43,10 @@ public class Train: FogFeedbackModel {
 	public func assertValues() {
 	}
 	
+	public func controlShutdown() {
+		mqtt.publish(MQTTMessage(topic: "shutdown", qos: .atMostOnce))
+	}
+	
 	private func askForFeedback() {
 		mqtt.publish(MQTTMessage(topic: "feedback", qos: .atLeastOnce))
 	}

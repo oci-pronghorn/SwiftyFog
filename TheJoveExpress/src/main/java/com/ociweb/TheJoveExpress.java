@@ -4,6 +4,7 @@ import com.ociweb.behaviors.*;
 import com.ociweb.gl.api.MQTTBridge;
 import com.ociweb.gl.api.MQTTQoS;
 import com.ociweb.gl.api.PubSubListener;
+import com.ociweb.gl.api.ShutdownListener;
 import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometerTwig;
 import com.ociweb.iot.maker.*;
 import com.ociweb.pronghorn.pipe.BlobReader;
@@ -57,6 +58,8 @@ public class TheJoveExpress implements FogApp
         // Topics
         final String prefix = config.trainName + "/";
 
+        final String allFeedback = "feedback";
+        final String shutdownControl = "shutdown";
         final String trainAliveFeedback = "alive/feedback";
 
         final String actuatorPowerInternal = "actuator/power/internal";
@@ -83,23 +86,13 @@ public class TheJoveExpress implements FogApp
             this.mqttBridge.lastWill(true, MQTTQoS.atLeastOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
             // TODO: this makes bridge immutable - lastWill has to go before
             runtime.bridgeTransmission(trainAliveFeedback, prefix + trainAliveFeedback, mqttBridge).setRetain(true).setQoS(MQTTQoS.atLeastOnce);
-            runtime.registerListener(new PubSubListener() {
-                private final FogCommandChannel channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
-                @Override
-                public boolean message(CharSequence topic, BlobReader payload) {
-                    int code = payload.readInt();
-                    int sessionPresent = payload.readInt();
-                    if (code == 0) {
-                        channel.publishTopic(trainAliveFeedback, writer -> {
-                            writer.writeBoolean(true);
-                        });
-                    }
-                    return true;
-                }
-            }).addSubscription("$/MQTT/Connection");
+            runtime.bridgeSubscription(shutdownControl, prefix + shutdownControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
+            LifeCycleBehavior lifeCycle = new LifeCycleBehavior(runtime, trainAliveFeedback);
+            runtime.registerListener(lifeCycle)
+                    .addSubscription("$/MQTT/Connection", lifeCycle::onMQTTConnect)
+                    .addSubscription(shutdownControl, lifeCycle::onShutdown);
         }
 
-        final String allFeedback = "feedback";
         if (config.mqttEnabled) {
             runtime.bridgeSubscription(allFeedback, prefix + allFeedback, mqttBridge).setQoS(MQTTQoS.atLeastOnce);
         }
@@ -159,7 +152,6 @@ public class TheJoveExpress implements FogApp
             }
             final AccelerometerBehavior accelerometer = new AccelerometerBehavior(runtime, accelerometerPublishTopic);
             runtime.registerListener(accelerometer);
-            //runtime.registerListener(new RailTieSensingBehavior(runtime));
         }
 
         if (config.billboardEnabled) {
