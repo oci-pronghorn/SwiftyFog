@@ -8,24 +8,6 @@
 
 import Foundation
 
-extension Date {
-	public static func nowInSeconds() -> Int64 {
-		return Int64(Date().timeIntervalSince1970.rounded())
-	}
-}
-
-extension Dictionary {
-	public mutating func computeIfAbsent(_ key: Key, _ compute: (Key)->(Value), _ update: (Key, inout Value)->()) {
-		if self[key] != nil {
-			update(key, &(self[key]!))
-		}
-		else {
-			let value = compute(key)
-			self[key] = value
-		}
-	}
-}
-
 public extension Data {
     public var fogHexDescription: String {
 		var desc = (reduce("") {$0 + String(format: "%02x.", $1)})
@@ -34,7 +16,9 @@ public extension Data {
 		}
         return desc
     }
-	
+}
+
+public extension Data {
 	private func fogExtractRaw<T>(_ cursor: inout Int) -> T {
 		return self.withUnsafeBytes { (u8Ptr: UnsafePointer<UInt8>) in
 			let pos = u8Ptr.advanced(by: cursor)
@@ -148,16 +132,16 @@ public extension Data {
 }
 
 public extension Data {
-	public mutating func fogAppend<T: FogExternalizable>(_ rhs: T) {
+	public mutating func fogAppend<T: FogWritingExternalizable>(_ rhs: T) {
 		rhs.writeTo(data: &self)
 	}
 	
-	public func fogExtract<T: FogExternalizable>() -> T? {
+	public func fogExtract<T: FogReadingExternalizable>() -> T? {
 		var cursor = 0
 		return T(data: self, cursor: &cursor)
 	}
 	
-	public func fogExtract<T: FogExternalizable>(_ cursor: inout Int) -> T? {
+	public func fogExtract<T: FogReadingExternalizable>(_ cursor: inout Int) -> T? {
 		return T(data: self, cursor: &cursor)
 	}
 }

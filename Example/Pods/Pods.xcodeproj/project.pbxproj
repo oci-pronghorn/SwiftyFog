@@ -40,6 +40,7 @@
 		55BC94511F618737007DD370 /* MQTTPingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BC944D1F6186FA007DD370 /* MQTTPingStatus.swift */; };
 		55BC94521F61873B007DD370 /* MQTTConnectionDisconnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BC944F1F618718007DD370 /* MQTTConnectionDisconnect.swift */; };
 		55BC94551F61887A007DD370 /* MQTTConnectedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BC94531F618855007DD370 /* MQTTConnectedState.swift */; };
+		55CFD6B01F6391CB00B6173F /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CFD6AE1F6391C700B6173F /* Other.swift */; };
 		55DE21861F55B7AC0005B0E2 /* FogFeedbackValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DE21841F55AC450005B0E2 /* FogFeedbackValue.swift */; };
 		55E5CB521F5992B0003091A7 /* MQTTControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E5CB501F5992A3003091A7 /* MQTTControl.swift */; };
 		5E03D2D0A5DA00876E3F763A5F390E3E /* MQTTPackedLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AD10A32005FD03C2A429034A663F27 /* MQTTPackedLength.swift */; };
@@ -128,6 +129,7 @@
 		55BC944D1F6186FA007DD370 /* MQTTPingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTPingStatus.swift; sourceTree = "<group>"; };
 		55BC944F1F618718007DD370 /* MQTTConnectionDisconnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTConnectionDisconnect.swift; sourceTree = "<group>"; };
 		55BC94531F618855007DD370 /* MQTTConnectedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTConnectedState.swift; sourceTree = "<group>"; };
+		55CFD6AE1F6391C700B6173F /* Other.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Other.swift; sourceTree = "<group>"; };
 		55DE21841F55AC450005B0E2 /* FogFeedbackValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FogFeedbackValue.swift; sourceTree = "<group>"; };
 		55E5CB501F5992A3003091A7 /* MQTTControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTControl.swift; sourceTree = "<group>"; };
 		585B2B78D1B842245A377C694EB120CE /* Pods-SwiftyFog_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SwiftyFog_Example-dummy.m"; sourceTree = "<group>"; };
@@ -505,6 +507,7 @@
 			children = (
 				B7C7147191590F00095D1F471BB5A617 /* FogRational.swift */,
 				55DE21841F55AC450005B0E2 /* FogFeedbackValue.swift */,
+				55CFD6AE1F6391C700B6173F /* Other.swift */,
 			);
 			name = types;
 			path = SwiftyFog/Classes/types;
@@ -652,6 +655,7 @@
 				9D77C9FF1C802F8300637BBE21E7CD72 /* FogPixel.swift in Sources */,
 				90CDD450A6BAAB42F5E4118F1F4271D7 /* FogRational.swift in Sources */,
 				E5C9FE5B9E4F9AECB533BE35A42A097C /* fogSize.swift in Sources */,
+				55CFD6B01F6391CB00B6173F /* Other.swift in Sources */,
 				766A9159EC6521EC977D86156DC53662 /* MQTTBridge.swift in Sources */,
 				F985B3D0BCC08996EE11AD924070FAFE /* MQTTBroadcaster.swift in Sources */,
 				9B63048FB14B84B9071898F31364827F /* MQTTClient.swift in Sources */,

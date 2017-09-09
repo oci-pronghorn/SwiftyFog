@@ -12,6 +12,9 @@ public protocol FogWritingExternalizable {
 	func writeTo(data: inout Data)
 }
 
-public protocol FogExternalizable: FogWritingExternalizable {
+public protocol FogReadingExternalizable {
 	init?(data: Data, cursor: inout Int)
+}
+
+public protocol FogExternalizable: FogReadingExternalizable, FogWritingExternalizable {
 }
