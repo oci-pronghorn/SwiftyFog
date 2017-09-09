@@ -3,11 +3,8 @@ package com.ociweb;
 import com.ociweb.behaviors.*;
 import com.ociweb.gl.api.MQTTBridge;
 import com.ociweb.gl.api.MQTTQoS;
-import com.ociweb.gl.api.PubSubListener;
-import com.ociweb.gl.api.ShutdownListener;
 import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometerTwig;
 import com.ociweb.iot.maker.*;
-import com.ociweb.pronghorn.pipe.BlobReader;
 
 import static com.ociweb.iot.grove.simple_analog.SimpleAnalogTwig.*;
 import static com.ociweb.iot.grove.motor_driver.MotorDriverTwig.MotorDriver;
@@ -57,50 +54,31 @@ public class TheJoveExpress implements FogApp
     public void declareBehavior(FogRuntime runtime) {
         // Topics
         final String prefix = config.trainName + "/";
-
         final String allFeedback = "feedback";
-        final String shutdownControl = "shutdown";
-        final String trainAliveFeedback = "alive/feedback";
-
         final String actuatorPowerInternal = "actuator/power/internal";
 
-        final String enginePowerControl = "engine/power/control";
-        final String engineCalibrationControl = "engine/calibration/control";
-        final String enginePowerFeedback = "engine/power/feedback";
-        final String engineCalibrationFeedback = "engine/calibration/feedback";
-
-        final String lightsOverrideControl = "lights/override/control";
-        final String lightsCalibrationControl = "lights/calibration/control";
-        final String lightsOverrideFeedback = "lights/override/feedback";
-        final String lightsPowerFeedback = "lights/power/feedback";
-        final String lightsCalibrationFeedback = "lights/calibration/feedback";
-        final String lightsAmbientFeedback = "lights/ambient/feedback";
-
-        final String billboardImageControl = "billboard/image/control";
-        final String billboardSpecFeedback = "billboard/spec/feedback";
-
-        final String accelerometerPublishTopic = "accelerometer";
-
-        if (config.mqttEnabled) {
-			// TODO: put this pattern in GreenLightning
-            this.mqttBridge.lastWill(true, MQTTQoS.atLeastOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
-            // TODO: this makes bridge immutable - lastWill has to go before
-            runtime.bridgeTransmission(trainAliveFeedback, prefix + trainAliveFeedback, mqttBridge).setRetain(true).setQoS(MQTTQoS.atLeastOnce);
-            runtime.bridgeSubscription(shutdownControl, prefix + shutdownControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
-            LifeCycleBehavior lifeCycle = new LifeCycleBehavior(runtime, trainAliveFeedback);
-            runtime.registerListener(lifeCycle)
-                    .addSubscription("$/MQTT/Connection", lifeCycle::onMQTTConnect)
-                    .addSubscription(shutdownControl, lifeCycle::onShutdown);
-        }
+        // All transient transmissions should have retain no retain to enforce feedbackloop with UI
+        // Schema defining transmissions should have retain
 
         if (config.mqttEnabled) {
             runtime.bridgeSubscription(allFeedback, prefix + allFeedback, mqttBridge).setQoS(MQTTQoS.atLeastOnce);
         }
 
-        // TODO: all inbound have the train name wildcard topic
+        if (config.mqttEnabled) {
+            final String shutdownControl = "shutdown";
+            final String trainAliveFeedback = "alive/feedback";
+            final String internalMqttConnect = "$/MQTT/Connection";
 
-        // All transient transmissions should have retain no retain to enforce feedbackloop with UI
-        // Schema defining transmissions should have retain
+			// TODO: put this pattern in GreenLightning
+            this.mqttBridge.lastWill(true, MQTTQoS.atLeastOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
+            // TODO: this makes bridge immutable - lastWill has to go before this line
+            runtime.bridgeTransmission(trainAliveFeedback, prefix + trainAliveFeedback, mqttBridge).setRetain(true).setQoS(MQTTQoS.atLeastOnce);
+            runtime.bridgeSubscription(shutdownControl, prefix + shutdownControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
+            LifeCycleBehavior lifeCycle = new LifeCycleBehavior(runtime, trainAliveFeedback);
+            runtime.registerListener(lifeCycle)
+                    .addSubscription(internalMqttConnect, lifeCycle::onMQTTConnect)
+                    .addSubscription(shutdownControl, lifeCycle::onShutdown);
+        }
 
         if (config.appServerEnabled) {
             runtime.addFileServer("").includeAllRoutes(); // TODO: use resource folder
@@ -113,6 +91,11 @@ public class TheJoveExpress implements FogApp
         }
 
         if (config.engineEnabled) {
+            final String enginePowerControl = "engine/power/control";
+            final String engineCalibrationControl = "engine/calibration/control";
+            final String enginePowerFeedback = "engine/power/feedback";
+            final String engineCalibrationFeedback = "engine/calibration/feedback";
+
             if (config.mqttEnabled) {
                 runtime.bridgeSubscription(enginePowerControl, prefix + enginePowerControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
                 runtime.bridgeSubscription(engineCalibrationControl, prefix + engineCalibrationControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
@@ -127,6 +110,13 @@ public class TheJoveExpress implements FogApp
         }
 
         if (config.lightsEnabled) {
+            final String lightsOverrideControl = "lights/override/control";
+            final String lightsCalibrationControl = "lights/calibration/control";
+            final String lightsOverrideFeedback = "lights/override/feedback";
+            final String lightsPowerFeedback = "lights/power/feedback";
+            final String lightsCalibrationFeedback = "lights/calibration/feedback";
+            final String lightsAmbientFeedback = "lights/ambient/feedback";
+
             if (config.mqttEnabled) {
                 runtime.bridgeSubscription(lightsOverrideControl, prefix + lightsOverrideControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
                 runtime.bridgeSubscription(lightsCalibrationControl, prefix + lightsCalibrationControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
@@ -147,6 +137,8 @@ public class TheJoveExpress implements FogApp
         }
 
         if (config.speedometerEnabled) {
+            final String accelerometerPublishTopic = "accelerometer";
+
             if (config.mqttEnabled) {
                 runtime.bridgeTransmission(accelerometerPublishTopic, prefix + accelerometerPublishTopic, mqttBridge).setQoS(MQTTQoS.atMostOnce);
             }
@@ -155,6 +147,9 @@ public class TheJoveExpress implements FogApp
         }
 
         if (config.billboardEnabled) {
+            final String billboardImageControl = "billboard/image/control";
+            final String billboardSpecFeedback = "billboard/spec/feedback";
+
             if (config.mqttEnabled) {
                 runtime.bridgeSubscription(billboardImageControl, prefix + billboardImageControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
                 runtime.bridgeTransmission(billboardSpecFeedback, prefix + billboardSpecFeedback, mqttBridge).setQoS(MQTTQoS.atMostOnce);

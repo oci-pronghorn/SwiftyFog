@@ -10,6 +10,7 @@ import static com.ociweb.iot.maker.Port.A0;
 public class TrainConfiguration  {
 
     final String trainName;
+    final boolean mqttDefaultLocal = false;
     final boolean mqttEnabled = true;
     final String mqttBroker;
     final String mqttClientName;
@@ -31,8 +32,8 @@ public class TrainConfiguration  {
 
     TrainConfiguration(ArgumentProvider args) {
         this.trainName = args.getArgumentValue("--name", "-n", "thejoveexpress");
-        this.mqttBroker = args.getArgumentValue("--broker", "-b", this.trainName + ".local");
-        //this.mqttBroker = "localhost";
+        String defaultBroker = mqttDefaultLocal ? "localhost" : this.trainName + ".local";
+        this.mqttBroker = args.getArgumentValue("--broker", "-b", defaultBroker);
         this.mqttClientName = trainName;
     }
 }
