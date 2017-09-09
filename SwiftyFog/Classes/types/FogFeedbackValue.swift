@@ -25,7 +25,7 @@ public struct FogFeedbackValue<T: Equatable> {
 		self.controlled = defaultValue
 	}
 	
-	// Have we received any feedback
+	// Have we received any feedback?
 	public var hasFeedback: Bool {
 		return detected != nil
 	}
@@ -42,14 +42,17 @@ public struct FogFeedbackValue<T: Equatable> {
 	}
 	
 	// If control changed then invoke lambda
-	public mutating func control(_ value: T, _ change: (T)->()) {
+	@discardableResult
+	public mutating func control(_ value: T, _ change: (T)->()) -> Bool {
 		if !(value == controlled) {
 			controlled = value
 			change(value)
+			return true
 		}
+		return false
 	}
 	
-	public enum ReceiveAppled {
+	public enum ReceiveApplied {
 		case no
 		case failed
 		case asserted
@@ -60,7 +63,7 @@ public struct FogFeedbackValue<T: Equatable> {
 	
 	// If detected changed then invoke lambda
 	@discardableResult
-	public mutating func receive(_ value: T?, _ change: (T, Bool)->()) -> ReceiveAppled {
+	public mutating func receive(_ value: T?, _ change: (T, Bool)->()) -> ReceiveApplied {
 		guard let value = value else { return .failed }
 		let wasNil = detected == nil
 		if wasNil || !(value == detected) {

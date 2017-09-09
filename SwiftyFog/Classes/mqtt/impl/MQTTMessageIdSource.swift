@@ -10,13 +10,13 @@ import Foundation
 
 final class MQTTMessageIdSource {
 	private let mutex = ReadWriteMutex()
-	private let metrics: MQTTMetrics?
+	private let metrics: MQTTIdMetrics?
 	private var chart = [UInt8](repeating: 0xFF, count: Int(UInt16.max / 8))
 	private var hint = UInt16(0)
 	
 	private(set) var inuse: Int = 0
 	
-	init(metrics: MQTTMetrics?) {
+	init(metrics: MQTTIdMetrics?) {
 		self.metrics = metrics
 	}
 	

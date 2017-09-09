@@ -8,6 +8,39 @@
 
 import Foundation
 
+enum UnmarshalState {
+	case failedReadHeader
+	case failedReadLength
+	case failedReadPayload(Int)
+	case unknownPacketType(UInt8)
+	case cannotConstruct(MQTTPacketType)
+	case success(MQTTPacket)
+	
+	var isClosedStream: Bool {
+		if case .failedReadHeader = self {
+			return true
+		}
+		return false
+	}
+	
+	var isPartialFailure: Bool {
+		switch self {
+			case .success(_):
+				return false
+			case .failedReadHeader:
+				return false
+			case .failedReadLength:
+				return true
+			case .failedReadPayload:
+				return true
+			case .cannotConstruct(_):
+				return true
+			case .unknownPacketType:
+				return true
+		}
+	}
+}
+
 struct MQTTPacketFactory {
     private let constructors: [MQTTPacketType : (MQTTPacketFixedHeader, Data)->MQTTPacket?] = [
         .connAck : MQTTConnAckPacket.init,
@@ -21,9 +54,9 @@ struct MQTTPacketFactory {
         .unSubAck : MQTTUnsubAckPacket.init,
     ]
 	
-	private let metrics: MQTTMetrics?
+	private let metrics: MQTTWireMetrics?
 	
-	init( metrics: MQTTMetrics?) {
+	init( metrics: MQTTWireMetrics?) {
 		self.metrics = metrics
 	}
 	
@@ -40,10 +73,10 @@ struct MQTTPacketFactory {
 		return success
     }
 	
-    func receive(_ read: StreamReader) -> (Bool, MQTTPacket?) {
+    func receive(_ read: StreamReader) -> UnmarshalState {
 		metrics?.receivedMessage()
 		let result = unmarshal(read)
-		if result.1 == nil && result.0 == true {
+		if result.isPartialFailure {
 			metrics?.failedToCreatePacket()
 		}
 		return result
@@ -67,7 +100,7 @@ struct MQTTPacketFactory {
 		let remainder = fsl - lengthSize
 		data[remainder] = packet.header.memento
 		data = data.subdata(in: remainder..<data.count)
-		if let metrics = metrics, metrics.debugOut != nil, metrics.printWireData {
+		if let metrics = metrics, metrics.printWireData {
 			let realCapacity = capacity - remainder
 			if realCapacity < data.count {
 				metrics.debug("Underallocated: \(type(of:packet)) \(data.count) > \(realCapacity)")
@@ -75,29 +108,66 @@ struct MQTTPacketFactory {
 			else if realCapacity > data.count {
 				metrics.debug("Overallocated: \(type(of:packet)) \(data.count) < \(realCapacity)")
 			}
-			metrics.debug("Wire->: \(type(of:packet)) [\(data.count)] \(data.fogHexDescription)")
+			metrics.debug("Wire -> \(packet.header.packetType) [\(data.count)] \(data.fogHexDescription)")
 		}
 		return data
     }
 
-    private func unmarshal(_ read: StreamReader) -> (Bool, MQTTPacket?) {
+    private func unmarshal(_ read: StreamReader) -> UnmarshalState {
         var headerByte: UInt8 = 0
         let headerReadLen = read(&headerByte, MQTTPacket.fixedHeaderLength)
-		guard headerReadLen > 0 else { return (true, nil) }
-		if let len = MQTTPackedLength.read(from: read) {
-			if let data = Data(len: len, from: read) {
-				if let header = MQTTPacketFixedHeader(memento: headerByte) {
-					if let metrics = metrics, metrics.debugOut != nil, metrics.printWireData {
-						let lenSize = MQTTPackedLength.bytesRquired(for: len)
-						let len = data.count + MQTTPacket.fixedHeaderLength + lenSize
-						let headerStr = String(format: "%02x.", headerByte)
-						let lenStr = (0..<lenSize).reduce("", { r, _ in return r + "##." })
-						metrics.debug("Wire<-: \(header.packetType) [\(len)] \(headerStr)\(lenStr)\(data.fogHexDescription)")
+        if headerReadLen > 0 {
+			if let len = MQTTPackedLength.read(from: read) {
+				if let data = Data(len: len, from: read) {
+					let constructResult: UnmarshalState
+					if let header = MQTTPacketFixedHeader(memento: headerByte) {
+						if let packet = constructors[header.packetType]?(header, data) {
+							constructResult = .success(packet)
+						}
+						else {
+							constructResult = .cannotConstruct(header.packetType)
+						}
 					}
-					return (false, constructors[header.packetType]?(header, data))
+					else {
+						constructResult = .unknownPacketType(headerByte & 0x0F)
+					}
+					if let metrics = metrics, metrics.printWireData {
+						let constructed: String
+						switch constructResult {
+						case .success(let packet):
+							constructed = "\(packet.header.packetType)"
+							break
+						case .unknownPacketType(let packetType):
+							constructed = "unknown:\(packetType)"
+							break
+						case .cannotConstruct(let packetType):
+							constructed = "init?(\(packetType))"
+							break
+						case .failedReadHeader:
+							fallthrough
+						case .failedReadPayload:
+							fallthrough
+						case .failedReadLength:
+							constructed = "Fail"
+							break
+						}
+						let headerStr = String(format: "%02x.", headerByte)
+						let lenSize = MQTTPackedLength.bytesRquired(for: len)
+						var lenStr = (0..<lenSize).reduce("", { r, _ in return r + "##." })
+						lenStr.removeLast()
+						let len = data.count
+						let fullLen = MQTTPacket.fixedHeaderLength + lenSize + len
+						metrics.debug("Wire <- \(constructed) [\(fullLen)]\n\t\(headerStr)\(lenStr) [\(len)]\(data.fogHexDescription)")
+					}
+					return constructResult
 				}
+				metrics?.debug("Wire <- Failed to read [\(len)]")
+				return .failedReadPayload(len)
 			}
+			metrics?.debug("Wire <- Invalid Length")
+			return .failedReadLength
 		}
-        return (false, nil)
+		metrics?.debug("Wire <- End of Stream")
+		return .failedReadHeader
 	}
 }

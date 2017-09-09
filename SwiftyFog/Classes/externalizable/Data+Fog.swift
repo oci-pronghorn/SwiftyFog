@@ -10,11 +10,24 @@ import Foundation
 
 public extension Data {
     public var fogHexDescription: String {
-		var desc = (reduce("") {$0 + String(format: "%02x.", $1)})
-		if desc.isEmpty == false {
-			desc.removeLast()
+        return "\n\(fogHexFormat(bytesPerRow: 16, indent: "\t"))\n"
+    }
+	
+    public func fogHexFormat(bytesPerRow: Int = Int.max, indent: String = "") -> String {
+		if self.count == 0 {
+			return ""
 		}
-        return desc
+		var desc = reduce(("", 1)) { a, e in
+			var iter = a
+			let i = (iter.1-1) % bytesPerRow == 0 ? indent : ""
+			let val = String(format: "%02x", e)
+			let term = iter.1 % bytesPerRow == 0 ? "\n" : iter.1 % 2  == 0 ? " " :  "."
+			iter.0 = iter.0 + "\(i)\(val)\(term)"
+			iter.1 += 1
+			return iter
+		}
+		desc.0.removeLast()
+		return desc.0
     }
 }
 

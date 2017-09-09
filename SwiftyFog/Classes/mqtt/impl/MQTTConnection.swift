@@ -201,11 +201,7 @@ extension MQTTConnection: FogSocketStreamDelegate {
 
 	func fog(stream: FogSocketStream, received: StreamReader) {
 		let parsed = factory.receive(received)
-		if parsed.0 {
-			self.didDisconnect(reason: .serverDisconnectedUs, error: nil)
-			return
-		}
-        if let packet = parsed.1 {
+        if case .success(let packet) = parsed {
 			if clientPrams.detectServerDeath {
 				mutex.writing {
 					lastPingPacketReceived = Date.nowInSeconds()
@@ -226,6 +222,9 @@ extension MQTTConnection: FogSocketStreamDelegate {
 					break
 			}
         }
+		else if parsed.isClosedStream {
+			self.didDisconnect(reason: .serverDisconnectedUs, error: nil)
+		}
         else {
 			self.didDisconnect(reason: .failedRead, error: nil)
         }

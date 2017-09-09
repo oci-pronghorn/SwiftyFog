@@ -18,7 +18,7 @@ public typealias FogSocketStreamWrite = ((StreamWriter)->())->()
 /*
 	Important Note:
 		A disconnect is not reported until approximately 30 seconds
-		after a failed write that is reported as success.
+		after a failed write that is actually reported as success.
 
 		There appears to be no way to change this behavior in the stream
 		objects. You business logic will have to assume this responsibility
