@@ -6,7 +6,6 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
 public class ActuatorDriverPayload implements Externalizable {
-
     public ActuatorDriverPort port;
     public double power;
 

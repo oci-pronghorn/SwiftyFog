@@ -61,23 +61,24 @@ public class TheJoveExpress implements FogApp
         // Schema defining transmissions should have retain
 
         if (config.mqttEnabled) {
-            runtime.bridgeSubscription(allFeedback, prefix + allFeedback, mqttBridge).setQoS(MQTTQoS.atLeastOnce);
-        }
-
-        if (config.mqttEnabled) {
-            final String shutdownControl = "shutdown";
-            final String trainAliveFeedback = "alive/feedback";
+            final String shutdownControl = "lifecycle/control/shutdown";
+            final String lifeCycleFeedback = "lifecycle/feedback";
             final String internalMqttConnect = "$/MQTT/Connection";
 
 			// TODO: put this pattern in GreenLightning
-            this.mqttBridge.lastWill(true, MQTTQoS.atLeastOnce, prefix + trainAliveFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
-            // TODO: this makes bridge immutable - lastWill has to go before this line
-            runtime.bridgeTransmission(trainAliveFeedback, prefix + trainAliveFeedback, mqttBridge).setRetain(true).setQoS(MQTTQoS.atLeastOnce);
+            // Last will must be called befor the first bridge call - the make it immutable
+            this.mqttBridge.lastWill(true, MQTTQoS.atLeastOnce, prefix + lifeCycleFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
+
+            runtime.bridgeTransmission(lifeCycleFeedback, prefix + lifeCycleFeedback, mqttBridge).setRetain(true).setQoS(MQTTQoS.atLeastOnce);
             runtime.bridgeSubscription(shutdownControl, prefix + shutdownControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
-            LifeCycleBehavior lifeCycle = new LifeCycleBehavior(runtime, trainAliveFeedback);
+            LifeCycleBehavior lifeCycle = new LifeCycleBehavior(runtime, lifeCycleFeedback);
             runtime.registerListener(lifeCycle)
                     .addSubscription(internalMqttConnect, lifeCycle::onMQTTConnect)
                     .addSubscription(shutdownControl, lifeCycle::onShutdown);
+        }
+
+        if (config.mqttEnabled) {
+            runtime.bridgeSubscription(allFeedback, prefix + allFeedback, mqttBridge).setQoS(MQTTQoS.atLeastOnce);
         }
 
         if (config.appServerEnabled) {
@@ -125,7 +126,7 @@ public class TheJoveExpress implements FogApp
                 runtime.bridgeTransmission(lightsCalibrationFeedback, prefix + lightsCalibrationFeedback, mqttBridge).setQoS(MQTTQoS.atMostOnce);
                 runtime.bridgeTransmission(lightsAmbientFeedback, prefix + lightsAmbientFeedback, mqttBridge).setQoS(MQTTQoS.atMostOnce);
             }
-            final AmbientLightBroadcast ambientLight = new AmbientLightBroadcast(runtime, config.lightSensorPort, lightsAmbientFeedback);
+            final AmbientLightBehavior ambientLight = new AmbientLightBehavior(runtime, config.lightSensorPort, lightsAmbientFeedback);
             runtime.registerListener(ambientLight)
                     .addSubscription(allFeedback, ambientLight::onAllFeedback);
             final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerInternal, config.lightAccuatorPort, lightsOverrideFeedback, lightsPowerFeedback, lightsCalibrationFeedback);

@@ -7,7 +7,7 @@ import com.ociweb.model.ActuatorDriverPort;
 import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.BlobReader;
 
-import static com.ociweb.behaviors.AmbientLightBroadcast.maxSensorReading;
+import static com.ociweb.behaviors.AmbientLightBehavior.maxSensorReading;
 
 public class LightingBehavior implements PubSubMethodListener {
     private final FogCommandChannel channel;

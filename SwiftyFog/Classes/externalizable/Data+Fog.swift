@@ -10,7 +10,10 @@ import Foundation
 
 public extension Data {
     public var fogHexDescription: String {
-        return "\n\(fogHexFormat(bytesPerRow: 16, indent: "\t"))\n"
+		if self.count == 0 {
+			return ""
+		}
+        return "\n\(fogHexFormat(bytesPerRow: 16, indent: "\t"))"
     }
 	
     public func fogHexFormat(bytesPerRow: Int = Int.max, indent: String = "") -> String {

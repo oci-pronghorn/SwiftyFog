@@ -21,7 +21,7 @@ public class Train: FogFeedbackModel {
     public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				("alive/feedback", .atLeastOnce, Train.feedbackAlive)
+				("lifecycle/feedback", .atLeastOnce, Train.feedbackLifecycle)
 			]) { listener, status in
 				if case .subscribed(_) = status {
 					listener.askForFeedback()
@@ -44,14 +44,14 @@ public class Train: FogFeedbackModel {
 	}
 	
 	public func controlShutdown() {
-		mqtt.publish(MQTTMessage(topic: "shutdown", qos: .atMostOnce))
+		mqtt.publish(MQTTMessage(topic: "lifecycle/control/shutdown", qos: .atMostOnce))
 	}
 	
 	private func askForFeedback() {
 		mqtt.publish(MQTTMessage(topic: "feedback", qos: .atLeastOnce))
 	}
 	
-	private func feedbackAlive(msg: MQTTMessage) {
+	private func feedbackLifecycle(msg: MQTTMessage) {
 		let alive: Bool = msg.payload.fogExtract()
 		delegate?.train(alive: alive)
 		if alive {
