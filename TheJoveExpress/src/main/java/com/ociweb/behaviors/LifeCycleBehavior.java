@@ -1,18 +1,18 @@
 package com.ociweb.behaviors;
 
+import com.ociweb.gl.api.MQTTConnectionFeedback;
 import com.ociweb.gl.api.MQTTConnectionStatus;
 import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.gl.api.ShutdownListener;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
-import com.ociweb.model.MQTTConnectResult;
 import com.ociweb.pronghorn.pipe.BlobReader;
 
 public class LifeCycleBehavior implements PubSubMethodListener, ShutdownListener {
     private final FogRuntime runtime;
     private final FogCommandChannel channel;
     private final String trainAliveFeedback;
-    private final MQTTConnectResult connected = new MQTTConnectResult();
+    private final MQTTConnectionFeedback connected = new MQTTConnectionFeedback();
 
     public LifeCycleBehavior(FogRuntime runtime, String trainAliveFeedback) {
         this.runtime = runtime;

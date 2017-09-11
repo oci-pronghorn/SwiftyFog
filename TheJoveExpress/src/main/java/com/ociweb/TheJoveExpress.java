@@ -2,6 +2,7 @@ package com.ociweb;
 
 import com.ociweb.behaviors.*;
 import com.ociweb.gl.api.MQTTBridge;
+import com.ociweb.gl.api.MQTTConnectionWill;
 import com.ociweb.gl.api.MQTTQoS;
 import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometerTwig;
 import com.ociweb.iot.maker.*;
@@ -48,6 +49,8 @@ public class TheJoveExpress implements FogApp
         }
 
         //c.setTimerPulseRate(1000);
+        // TODO: Thread schedule ias not quite right yet
+        c.limitThreads(4);
     }
 
     @Override
@@ -65,9 +68,14 @@ public class TheJoveExpress implements FogApp
             final String lifeCycleFeedback = "lifecycle/feedback";
             final String internalMqttConnect = "$/MQTT/Connection";
 
-			// TODO: put this pattern in GreenLightning
-            // Last will must be called befor the first bridge call - the make it immutable
-            this.mqttBridge.lastWill(true, MQTTQoS.atLeastOnce, prefix + lifeCycleFeedback, blobWriter -> {blobWriter.writeBoolean(false);});
+            // TODO Last will must be called befor the first bridge call - the make it immutable
+            MQTTConnectionWill will = new MQTTConnectionWill();
+            will.lastWillQoS = MQTTQoS.atLeastOnce;
+            will.latWillRetain = true;
+            will.lastWillTopic = lifeCycleFeedback;
+            will.lastWillPayload = blobWriter -> {blobWriter.writeBoolean(false);};
+            will.connectFeedbackTopic = internalMqttConnect;
+            this.mqttBridge.connectionWill(will);
 
             runtime.bridgeTransmission(lifeCycleFeedback, prefix + lifeCycleFeedback, mqttBridge).setRetain(true).setQoS(MQTTQoS.atLeastOnce);
             runtime.bridgeSubscription(shutdownControl, prefix + shutdownControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
