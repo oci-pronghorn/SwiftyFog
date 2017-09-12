@@ -10,9 +10,9 @@ import Foundation
 
 public enum MQTTSubscriptionStatus {
 	case subPending
-	case subscribed([(String, MQTTQoS, MQTTQoS?)]) // TODO fail due to network
+	case subscribed([(String, MQTTQoS, MQTTQoS?)])
 	case unsubPending
-	case unsubFailed // TODO fail due to network
+	case unsubFailed
 	case unsubscribed
 	case suspended
 }
@@ -124,7 +124,12 @@ final class MQTTSubscriber {
 			if (s) {
 				self?.mutex.writing { self?.deferredSubscriptions[p.messageID] = subscription }
 			}
-			// TODO
+			else {
+				if let ack = subscription.ack {
+					let result = subscription.topics.map { ($0.0, $0.1, nil as MQTTQoS?) }
+					ack(.subscribed(result))
+				}
+			}
 		}
 	}
 	
@@ -137,7 +142,11 @@ final class MQTTSubscriber {
 				if (s) {
 					self?.mutex.writing { self?.deferredUnSubscriptions[p.messageID] = subscription }
 				}
-				// TODO
+				else {
+					if let ack = subscription.ack {
+						ack(.unsubFailed)
+					}
+				}
 			}
 		}
 	}
