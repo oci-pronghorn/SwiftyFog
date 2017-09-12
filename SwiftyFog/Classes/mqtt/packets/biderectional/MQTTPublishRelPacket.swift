@@ -24,7 +24,7 @@ final class MQTTPublishRelPacket: MQTTPacket, MQTTIdentifiedPacket {
     }
 	
     override var expectsAcknowledgement: Bool {
-		return false
+		return true
     }
 	
     override var description: String {

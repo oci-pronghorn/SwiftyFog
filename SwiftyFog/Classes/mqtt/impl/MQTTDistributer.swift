@@ -102,7 +102,7 @@ final class MQTTDistributor {
 					case .atLeastOnce:
 						issue(packet: packet)
 						let ack = MQTTPublishAckPacket(messageID: packet.messageID)
-						issuer.send(packet: ack, expecting: nil, sent: nil)
+						issuer.send(packet: ack, sent: nil)
 						break
 					case .exactlyOnce:
 						if qos2Mode == .lowLatency {
@@ -112,14 +112,14 @@ final class MQTTDistributor {
 							mutex.writing {deferredPacket[packet.messageID] = packet}
 						}
 						let rec = MQTTPublishRecPacket(messageID: packet.messageID)
-						issuer.send(packet: rec, expecting: .pubRel, sent: nil)
+						issuer.send(packet: rec, sent: nil)
 						break
 				}
 				return true
 			case let rel as MQTTPublishRelPacket:
 				let comp = MQTTPublishCompPacket(messageID: rel.messageID)
 				issuer.received(acknolwedgment: rel, releaseId: false)
-				issuer.send(packet: comp, expecting: nil, sent: nil)
+				issuer.send(packet: comp, sent: nil)
 				if qos2Mode == .assured {
 					if let element = mutex.writing({deferredPacket.removeValue(forKey:rel.messageID)}) {
 						issue(packet: element)

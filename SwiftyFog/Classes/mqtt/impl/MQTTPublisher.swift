@@ -36,18 +36,6 @@ final class MQTTPublisher {
 	func publish(pubMsg: MQTTMessage, completion: ((Bool)->())?) {
 		let qos = pubMsg.qos
 		
-		let expecting: MQTTPacketType?
-		switch qos {
-			case .atMostOnce:
-				expecting = nil
-				break
-			case .atLeastOnce:
-				expecting = .pubAck
-				break
-			case .exactlyOnce:
-				expecting = .pubRec
-		}
-		
 		if qos == .atMostOnce {
 			let packet = MQTTPublishPacket(messageID: 0, message: pubMsg, isRedelivery: false)
 			issuer.send(packet: packet) { packet, success in
@@ -58,7 +46,7 @@ final class MQTTPublisher {
 			let sent: ((MQTTPublishPacket, Bool)->())? = completion == nil ? nil : { [weak self] p, s in
 				if (s) { self?.deferredCompletion[p.messageID] = completion }
 			}
-			issuer.send(packet: {MQTTPublishPacket(messageID: $0, message: pubMsg, isRedelivery: false)}, expecting: expecting, sent: sent)
+			issuer.send(packet: {MQTTPublishPacket(messageID: $0, message: pubMsg, isRedelivery: false)}, sent: sent)
 		}
 	}
 	
@@ -78,7 +66,7 @@ final class MQTTPublisher {
 				}
 				let rel = MQTTPublishRelPacket(messageID: rec.messageID)
 				issuer.received(acknolwedgment: rec, releaseId: false)
-				issuer.send(packet: rel, expecting: .pubComp, sent: nil)
+				issuer.send(packet: rel, sent: nil)
 				return true
 			case let comp as MQTTPublishCompPacket: // received for Qos 2 step 2
 				if qos2Mode == .assured {

@@ -120,7 +120,7 @@ final class MQTTSubscriber {
 	private func startSubscription(_ subscription: MQTTSubscriptionDetail) {
 		// In Mutex already
 		subscription.ack?(.subPending)
-		issuer.send(packet: {MQTTSubPacket(topics: subscription.topics, messageID: $0)}, expecting: .subAck)  { [weak self] p, s in
+		issuer.send(packet: {MQTTSubPacket(topics: subscription.topics, messageID: $0)})  { [weak self] p, s in
 			if (s) {
 				self?.mutex.writing { self?.deferredSubscriptions[p.messageID] = subscription }
 			}
@@ -133,7 +133,7 @@ final class MQTTSubscriber {
 			knownSubscriptions[subscription.token] = nil
 			let topicStrings = subscription.topics.map({$0.0})
 			subscription.ack?(.unsubPending)
-			issuer.send(packet: {MQTTUnsubPacket(topics: topicStrings, messageID: $0)}, expecting: .subAck) { [weak self] p, s in
+			issuer.send(packet: {MQTTUnsubPacket(topics: topicStrings, messageID: $0)}) { [weak self] p, s in
 				if (s) {
 					self?.mutex.writing { self?.deferredUnSubscriptions[p.messageID] = subscription }
 				}
