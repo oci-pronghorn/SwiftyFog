@@ -54,7 +54,7 @@ public final class MQTTClient {
 		self.metrics = metrics
 		
 		idSource = MQTTMessageIdSource(metrics: metrics)
-		self.durability = MQTTPacketDurability(idSource: idSource, queuePubOnDisconnect: client.queuePubOnDisconnect, resendInterval: client.resendPulseInterval)
+		self.durability = MQTTPacketDurability(idSource: idSource, queuePubOnDisconnect: client.queuePubOnDisconnect, resendInterval: client.resendPulseInterval, resendLimit: client.resendLimit)
 		self.publisher = MQTTPublisher(issuer: durability, queuePubOnDisconnect: client.queuePubOnDisconnect, qos2Mode: client.qos2Mode)
 		self.subscriber = MQTTSubscriber(issuer: durability)
 		self.distributer = MQTTDistributor(issuer: durability, qos2Mode: client.qos2Mode)
