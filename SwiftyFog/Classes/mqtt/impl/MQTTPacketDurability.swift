@@ -20,6 +20,7 @@ protocol MQTTPacketIssuer {
 
 final class MQTTPacketDurability: MQTTPacketIssuer {
 	private let idSource: MQTTMessageIdSource
+	// TODO: not implemented yet
 	private let queuePubOnDisconnect: MQTTQoS?
 	private let mutex = ReadWriteMutex()
     private let resendTimer: DispatchSourceTimer
@@ -39,6 +40,9 @@ final class MQTTPacketDurability: MQTTPacketIssuer {
 			self?.resendPulse()
 		}
 	}
+	
+	
+	// TODO: not working yet - has to be > 0.0 and works with queuePubOnDisconnect
 
 	// TODO: spec says retry must be on reconnect but not necessarely timer while connected
 	func connected(cleanSession: Bool, present: Bool, initial: Bool) {
@@ -105,6 +109,7 @@ final class MQTTPacketDurability: MQTTPacketIssuer {
 		}
 	}
 	
+	// TODO: use packet's expect's Ack for last param
 	private func didFailToSend<T>(_ instance: T, _ ownership: IdOwnerShip<T>, _ messageId: UInt16, _ expecting: MQTTPacketType?, _ sent: ((T, Bool)->())?) {
 		if case .ours(_) = ownership {
 			idSource.free(id: messageId)

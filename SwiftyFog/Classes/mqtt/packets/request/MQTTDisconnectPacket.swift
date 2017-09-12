@@ -8,8 +8,12 @@
 
 import Foundation
 
-class MQTTDisconnectPacket: MQTTPacket {
+final class MQTTDisconnectPacket: MQTTPacket {
     init() {
         super.init(header: MQTTPacketFixedHeader(packetType: .disconnect, flags: 0))
+    }
+	
+    override var expectsAcknowledgement: Bool {
+		return false
     }
 }

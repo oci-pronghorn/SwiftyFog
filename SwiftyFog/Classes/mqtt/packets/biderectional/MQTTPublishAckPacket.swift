@@ -9,7 +9,7 @@
 import Foundation
 
 // Publish acknowledged (QoS 1 publish received, final)
-class MQTTPublishAckPacket: MQTTPacket, MQTTIdentifiedPacket {
+final class MQTTPublishAckPacket: MQTTPacket, MQTTIdentifiedPacket {
     let messageID: UInt16
     
     init(messageID: UInt16) {
@@ -21,6 +21,10 @@ class MQTTPublishAckPacket: MQTTPacket, MQTTIdentifiedPacket {
 		guard networkData.count >= UInt16.fogSize else { return nil }
 		self.messageID = networkData.fogExtract()
         super.init(header: header)
+    }
+	
+    override var expectsAcknowledgement: Bool {
+		return false
     }
 	
     override var description: String {

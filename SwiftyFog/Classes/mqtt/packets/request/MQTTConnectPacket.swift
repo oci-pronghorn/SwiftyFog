@@ -8,7 +8,7 @@
 
 import Foundation
 
-class MQTTConnectPacket: MQTTPacket {
+final class MQTTConnectPacket: MQTTPacket {
     let protocolName: String.UTF8View
     let protocolLevel: UInt8
     let cleanSession: Bool
@@ -26,6 +26,10 @@ class MQTTConnectPacket: MQTTPacket {
         self.keepAlive = keepAlive
         self.clientID = clientID.utf8
         super.init(header: MQTTPacketFixedHeader(packetType: .connect, flags: 0))
+    }
+	
+    override var expectsAcknowledgement: Bool {
+		return true
     }
 	
     override var description: String {

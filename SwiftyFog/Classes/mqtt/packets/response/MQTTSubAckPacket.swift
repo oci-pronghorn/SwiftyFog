@@ -8,7 +8,7 @@
 
 import Foundation
 
-class MQTTSubAckPacket: MQTTPacket, MQTTIdentifiedPacket {
+final class MQTTSubAckPacket: MQTTPacket, MQTTIdentifiedPacket {
     let messageID: UInt16
     let maxQoS: [MQTTQoS?]
     
@@ -24,6 +24,10 @@ class MQTTSubAckPacket: MQTTPacket, MQTTIdentifiedPacket {
         }
         self.maxQoS = maxQoS
         super.init(header: header)
+    }
+	
+    override var expectsAcknowledgement: Bool {
+		return false
     }
 	
     override var description: String {

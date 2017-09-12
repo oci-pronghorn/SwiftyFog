@@ -8,7 +8,7 @@
 
 import Foundation
 
-class MQTTSubPacket: MQTTPacket, MQTTIdentifiedPacket {
+final class MQTTSubPacket: MQTTPacket, MQTTIdentifiedPacket {
     let topics: [(String.UTF8View, MQTTQoS)]
     let messageID: UInt16
     
@@ -16,6 +16,10 @@ class MQTTSubPacket: MQTTPacket, MQTTIdentifiedPacket {
         self.topics = topics.map { ($0.0.utf8, $0.1) }
         self.messageID = messageID
         super.init(header: MQTTPacketFixedHeader(packetType: .subscribe, flags: 0x02))
+    }
+	
+    override var expectsAcknowledgement: Bool {
+		return true
     }
 	
     override var description: String {

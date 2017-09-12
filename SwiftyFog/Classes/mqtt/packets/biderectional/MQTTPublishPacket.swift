@@ -9,7 +9,7 @@
 import Foundation
 
 // Publish payload (QoS 0 final)
-class MQTTPublishPacket: MQTTPacket, MQTTIdentifiedPacket {
+final class MQTTPublishPacket: MQTTPacket, MQTTIdentifiedPacket {
     let messageID: UInt16
     let message: MQTTMessage
     
@@ -17,6 +17,10 @@ class MQTTPublishPacket: MQTTPacket, MQTTIdentifiedPacket {
         self.messageID = messageID
         self.message = message
         super.init(header: MQTTPacketFixedHeader(packetType: .publish, flags: MQTTPublishPacket.fixedHeaderFlags(for: message, isRedelivery: isRedelivery)))
+    }
+	
+    override var expectsAcknowledgement: Bool {
+		return message.qos != .atMostOnce
     }
 	
     override var description: String {

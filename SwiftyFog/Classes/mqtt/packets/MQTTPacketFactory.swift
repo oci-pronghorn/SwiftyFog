@@ -129,7 +129,7 @@ struct MQTTPacketFactory {
 						}
 					}
 					else {
-						constructResult = .unknownPacketType(headerByte & 0x0F)
+						constructResult = .unknownPacketType(headerByte & 0xF0)
 					}
 					if let metrics = metrics, metrics.printWireData {
 						let constructed: String
@@ -137,8 +137,8 @@ struct MQTTPacketFactory {
 						case .success(let packet):
 							constructed = "\(packet.header.packetType)"
 							break
-						case .unknownPacketType(let packetType):
-							constructed = "unknown:\(packetType)"
+						case .unknownPacketType(let packetTypeByte):
+							constructed = "unknown:\(packetTypeByte)"
 							break
 						case .cannotConstruct(let packetType):
 							constructed = "init?(\(packetType))"
@@ -148,7 +148,7 @@ struct MQTTPacketFactory {
 						case .failedReadPayload:
 							fallthrough
 						case .failedReadLength:
-							constructed = "Fail"
+							constructed = "failed"
 							break
 						}
 						let headerStr = String(format: "%02x.", headerByte)
@@ -161,13 +161,13 @@ struct MQTTPacketFactory {
 					}
 					return constructResult
 				}
-				metrics?.debug("Wire <- Failed to read [\(len)]")
+				metrics?.debug("Wire <- Failed to read data of length [\(len)]")
 				return .failedReadPayload(len)
 			}
-			metrics?.debug("Wire <- Invalid Length")
+			metrics?.debug("Wire <- Invalid length field")
 			return .failedReadLength
 		}
-		metrics?.debug("Wire <- End of Stream")
+		metrics?.debug("Wire <- End of stream")
 		return .failedReadHeader
 	}
 }

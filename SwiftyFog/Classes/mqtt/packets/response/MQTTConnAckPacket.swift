@@ -8,7 +8,7 @@
 
 import Foundation
 
-class MQTTConnAckPacket: MQTTPacket {
+final class MQTTConnAckPacket: MQTTPacket {
     let sessionPresent: Bool
     let response: MQTTConnAckResponse
     
@@ -17,6 +17,10 @@ class MQTTConnAckPacket: MQTTPacket {
         self.sessionPresent = (networkData[0] & 0x01) == 0x01
         self.response = MQTTConnAckResponse(specValue: networkData[1])
         super.init(header: header)
+    }
+	
+    override var expectsAcknowledgement: Bool {
+		return false
     }
 	
     override var description: String {

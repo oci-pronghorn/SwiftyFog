@@ -15,6 +15,10 @@ class MQTTPacket: CustomStringConvertible {
         self.header = header
     }
 	
+    var expectsAcknowledgement: Bool {
+		return false
+    }
+	
     static let fixedHeaderLength: Int = 1
 	
     var description: String {

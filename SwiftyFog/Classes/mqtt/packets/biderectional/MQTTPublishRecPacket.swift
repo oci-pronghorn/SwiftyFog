@@ -9,12 +9,16 @@
 import Foundation
 
 // Publish received (QoS 2 publish received, part 1)
-class MQTTPublishRecPacket: MQTTPacket, MQTTIdentifiedPacket {
+final class MQTTPublishRecPacket: MQTTPacket, MQTTIdentifiedPacket {
     let messageID: UInt16
 	
     init(messageID: UInt16) {
         self.messageID = messageID
         super.init(header: MQTTPacketFixedHeader(packetType: MQTTPacketType.pubRec, flags: 0))
+    }
+	
+    override var expectsAcknowledgement: Bool {
+		return true
     }
 	
     init?(header: MQTTPacketFixedHeader, networkData: Data) {

@@ -8,8 +8,12 @@
 
 import Foundation
 
-class MQTTPingPacket: MQTTPacket {
+final class MQTTPingPacket: MQTTPacket {
     init() {
         super.init(header: MQTTPacketFixedHeader(packetType: MQTTPacketType.pingReq, flags: 0))
+    }
+	
+    override var expectsAcknowledgement: Bool {
+		return true
     }
 }

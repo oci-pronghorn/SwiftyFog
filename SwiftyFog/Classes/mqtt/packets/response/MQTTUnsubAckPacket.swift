@@ -8,13 +8,17 @@
 
 import Foundation
 
-class MQTTUnsubAckPacket: MQTTPacket, MQTTIdentifiedPacket {
+final class MQTTUnsubAckPacket: MQTTPacket, MQTTIdentifiedPacket {
     let messageID: UInt16
     
     init?(header: MQTTPacketFixedHeader, networkData: Data) {
 		guard networkData.count >= UInt16.fogSize else { return nil }
         self.messageID = networkData.fogExtract()
         super.init(header: header)
+    }
+	
+    override var expectsAcknowledgement: Bool {
+		return false
     }
 	
     override var description: String {

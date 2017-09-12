@@ -20,6 +20,7 @@ public enum MQTTConnAckResponse: UInt8, Error {
 	init(specValue: UInt8) {
 		self = MQTTConnAckResponse(rawValue: specValue) ?? .other
 	}
+	
     public var retries: Bool {
 		switch self {
 			case .serverUnavailable:
