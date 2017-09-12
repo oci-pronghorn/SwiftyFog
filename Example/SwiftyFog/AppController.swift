@@ -30,7 +30,10 @@ class AppController {
 		metrics?.debugOut = {print($0)}
 
 		// Create the concrete MQTTClient to connect to a specific broker
+		var client = MQTTClientParams()
+		client.detectServerDeath = 2
 		let mqtt = MQTTClient(
+			client: client,
 			host: MQTTHostParams(host: trainName + ".local", port: .standard),
 			auth: MQTTAuthentication(username: "dsjove", password: "password"),
 			reconnect: MQTTReconnectParams(),

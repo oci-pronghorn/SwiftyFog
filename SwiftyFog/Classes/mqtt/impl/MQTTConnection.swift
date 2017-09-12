@@ -30,7 +30,7 @@ final class MQTTConnection {
 	// The spec says we can send packets before the ack - but that gets ugly if failed
     private(set) var isFullConnected: Bool = false
     private var lastPingPacketSent: Int64 = 0
-    private var lastPingPacketReceived: Int64 = 0
+    private var expectPingPacketStart: Int64 = Int64.max
 	
     init(
 			hostParams: MQTTHostParams,
@@ -83,9 +83,13 @@ final class MQTTConnection {
 				metrics.debug("Send: \(packet)")
 			}
 			if factory.send(packet, writer) {
-				if clientPrams.treatControlPacketsAsPings || packet.header.packetType == .pingReq {
-					mutex.writing {
-						lastPingPacketSent = Date.nowInSeconds()
+				let now = Date.nowInSeconds()
+				mutex.writing {
+					if clientPrams.treatControlPacketsAsPings || packet.header.packetType == .pingReq {
+						lastPingPacketSent = now
+					}
+					if clientPrams.detectServerDeath > 0 && packet.expectsAcknowledgement {
+						expectPingPacketStart = now
 					}
 				}
 				return true
@@ -128,9 +132,17 @@ extension MQTTConnection {
 
 extension MQTTConnection {
     private func startPing() {
+		var interval = 0
 		if clientPrams.keepAlive > 0 {
+			interval = Int(clientPrams.keepAlive) / 3
+		}
+		if clientPrams.detectServerDeath > 0 && clientPrams.detectServerDeath < interval {
+			interval = Int(clientPrams.detectServerDeath)
+		}
+	
+		if interval > 0 {
 			let keepAliveTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
-			keepAliveTimer.schedule(deadline: .now() + .seconds(Int(clientPrams.keepAlive)), repeating: .seconds(Int(clientPrams.keepAlive / 3)), leeway: .seconds(1))
+			keepAliveTimer.schedule(deadline: .now() + .seconds(interval), repeating: .seconds(interval), leeway: .seconds(1))
 			keepAliveTimer.setEventHandler { [weak self] in
 				self?.pingFired()
 			}
@@ -147,12 +159,10 @@ extension MQTTConnection {
 				status = .notConnected
 			}
 			else {
-				if clientPrams.detectServerDeath {
-					// The spec says we should receive a a ping ack after a "reasonable amount of time"
-					let secondsSinceLastPing = now - lastPingPacketReceived
-					// The keep alive range on server is 1.5 * keepAlive
-					let limit = UInt64(clientPrams.keepAlive + (clientPrams.keepAlive / 2))
-					if secondsSinceLastPing > limit {
+				if clientPrams.detectServerDeath > 0 && expectPingPacketStart != Int64.max {
+					let secondsSinceLastPingExpectation = now - expectPingPacketStart
+					let limit = UInt64(clientPrams.detectServerDeath)
+					if secondsSinceLastPingExpectation > limit {
 						status = .serverDied
 					}
 				}
@@ -202,9 +212,9 @@ extension MQTTConnection: FogSocketStreamDelegate {
 	func fog(stream: FogSocketStream, received: StreamReader) {
 		let parsed = factory.receive(received)
         if case .success(let packet) = parsed {
-			if clientPrams.detectServerDeath {
+			if clientPrams.detectServerDeath > 0 {
 				mutex.writing {
-					lastPingPacketReceived = Date.nowInSeconds()
+					expectPingPacketStart = Int64.max
 				}
 			}
 			if let metrics = metrics, metrics.printReceivePackets {
