@@ -60,9 +60,8 @@ public  class ScrubControl : UIControl {
 		}
 	}
 	
-	// TODO: adjust based on width and max-min
 	@IBInspectable
-	public var velocityAdjust: CGFloat = 10000.0 {
+	public var velocityAdjustWidthFactor: CGFloat = 10 {
 		didSet {
 			self.setNeedsDisplay()
 		}
@@ -194,7 +193,7 @@ extension ScrubControl: UIGestureRecognizerDelegate {
 	@objc private func scrubPanned(_ gestureRecognizer: UIPanGestureRecognizer) {
 		let vp = gestureRecognizer.velocity(in: self)
 		let v = vp.x
-		let d = Float(v / self.velocityAdjust)
+		let d = Float(v / (self.velocityAdjustWidthFactor * self.bounds.width))
 		let start = self.normValue
 		let m = start + d
 		self.normValue = min(max(m, 0.0), 1.0)

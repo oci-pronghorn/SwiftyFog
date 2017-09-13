@@ -86,6 +86,9 @@ final class MQTTSubscriber {
 			}
 			else if cleanSession == false && present == true {
 				// TODO: return recreated last known subscriptions from file
+				// if not clean and session present then likely we will need to
+				// recreated RAII subscription objects that unless dealt with will
+				// unsubscribe.
 			}
 			return []
 		}

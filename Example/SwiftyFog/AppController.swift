@@ -96,9 +96,6 @@ extension AppController: MQTTClientDelegate {
 	
 	func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription]) {
 		DispatchQueue.main.async {
-			// TODO if not clean and session present then likely we will have
-			// recreated RAII subscription objects that unless dealt with will
-			// unsubscribe
 		}
 	}
 }

@@ -29,7 +29,6 @@ struct MQTTPackedLength {
 		return 4
     }
 	
-	// TODO: make native endian aware
 	static func replace(in data: inout Data, at: Int, length: Int) {
         var lengthOfRemainingData = length
         var cursor = at
@@ -44,7 +43,6 @@ struct MQTTPackedLength {
         } while lengthOfRemainingData > 0
     }
 	
-	// TODO: make native endian aware
 	static func read(from read: StreamReader) -> Int? {
 		var multiplier = 1
 		var value = 0

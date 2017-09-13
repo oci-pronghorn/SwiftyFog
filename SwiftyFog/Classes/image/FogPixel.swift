@@ -109,7 +109,7 @@ public struct RGB: PixelKind {
 			return
 		} // Achromatic gray
 		
-        let angle = (h >= 360 ? 0 : h) // todo make [0,1] of 2π
+        let angle = (h >= 360 ? 0 : h) // TODO make [0,1] of 2π
         let sector = angle / 60 // Sector
         let i = floor(sector)
         let f = sector - i // Factorial part of h
@@ -200,7 +200,7 @@ public struct HSV: PixelKind {
             else { return 4 + (r-g)/delta } // between magenta & cyan
         }
 		
-        let h = hue(max, delta) * 60 // In degrees todo make [0,1] of 2π
+        let h = hue(max, delta) * 60 // // TODO In degrees - make [0,1] of 2π
 		
         self.init(h: (h < 0 ? h+360 : h) , s: s, v: v, a: a)
     }

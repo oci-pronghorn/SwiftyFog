@@ -8,6 +8,21 @@
 
 import Foundation
 
+/*
+// TODO impl Proghorn compat packed ints
+public extension FixedWidthInteger {
+	public var fogPackedSize: Int {
+		return 0
+	}
+	
+	public init(fogPackedData: Data, _ cursor: inout Int) {
+	}
+	
+	public func writeFogPacked(data: inout Data) {
+	}
+}
+*/
+
 public struct FogRational<T: FixedWidthInteger> : Equatable, FogExternalizable, CustomStringConvertible {
 	public var num: T = 0
 	public var den: T = 1

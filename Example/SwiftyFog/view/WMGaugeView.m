@@ -270,7 +270,7 @@
  */
 - (void)drawRim:(CGContextRef)context
 {
-    // TODO
+    // TODO: reimpl in Swift with autolayout and better CALayer management
 }
 
 /**

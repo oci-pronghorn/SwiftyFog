@@ -1,18 +1,20 @@
 # SwiftyFog
 
-SwiftyFog is a specification compliant robust and performant MQTT client implementation. It is entirely written in Swift with the following design principles
+SwiftyFog is a specification compliant robust and performant MQTT client implementation. It is entirely written in Swift with the following design considerations.
 * Idiomatic Swift
-* Unhappy-path driven design; every failure point captured and propagated to the business layer.
+* Unhappy-path driven design; every failure point captured and propagated to the business layer
 * Mobile and MVC friendly interfaces
 * Optional behaviors in specification exposed
-* Resource conscious.
-* Non-trivial example
+* Resource conscious
+* Non-trivial example demonstrating usage and patterns
 
 There are couple remaining TODOs.
 * Better packet retry configuration
 * File persisted packets for clean session false and relaunch of application
 * MacOS build and example
 * Not fighting the framework in the iOS Stream wrapper
+* Continue to improve Metrics information
+* Rewrite 4 year old Obj-C code in example custom controls
 
 [![CI Status](http://img.shields.io/travis/dsjove/SwiftyFog.svg?style=flat)](https://travis-ci.org/dsjove/SwiftyFog)
 [![Version](https://img.shields.io/cocoapods/v/SwiftyFog.svg?style=flat)](http://cocoapods.org/pods/SwiftyFog)
