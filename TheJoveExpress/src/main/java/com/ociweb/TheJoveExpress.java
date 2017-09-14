@@ -69,13 +69,8 @@ public class TheJoveExpress implements FogApp
             final String internalMqttConnect = "$/MQTT/Connection";
 
             // TODO Last will must be called befor the first bridge call - the make it immutable
-            MQTTConnectionWill will = new MQTTConnectionWill();
-            will.lastWillQoS = MQTTQoS.atLeastOnce;
-            will.latWillRetain = true;
-            will.lastWillTopic = lifeCycleFeedback;
-            will.lastWillPayload = blobWriter -> {blobWriter.writeBoolean(false);};
-            will.connectFeedbackTopic = internalMqttConnect;
-            this.mqttBridge.connectionWill(will);
+            this.mqttBridge.lastWill(prefix + lifeCycleFeedback, true, MQTTQoS.atLeastOnce,  blobWriter -> {blobWriter.writeBoolean(false);});
+            this.mqttBridge.connectionFeedbackTopic(internalMqttConnect);
 
             runtime.bridgeTransmission(lifeCycleFeedback, prefix + lifeCycleFeedback, mqttBridge).setRetain(true).setQoS(MQTTQoS.atLeastOnce);
             runtime.bridgeSubscription(shutdownControl, prefix + shutdownControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
