@@ -1,6 +1,7 @@
 package com.ociweb.behaviors;
 
 import com.ociweb.gl.api.PubSubMethodListener;
+import com.ociweb.gl.api.WaitFor;
 import com.ociweb.iot.maker.AnalogListener;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
@@ -16,6 +17,8 @@ public class AmbientLightBehavior implements PubSubMethodListener, AnalogListene
     public static final long maxSensorReading = 255;
     private final RationalPayload oldValue = new RationalPayload(-1, maxSensorReading);
 
+    private boolean endOfTheWorld = false;
+
     public AmbientLightBehavior(FogRuntime runtime, Port lightSensorPort, String publishTopic) {
         this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
         this.lightSensorPort = lightSensorPort;
@@ -29,11 +32,15 @@ public class AmbientLightBehavior implements PubSubMethodListener, AnalogListene
 
     @Override
     public void analogEvent(Port port, long time, long durationMillis, int average, int value) {
+        //if (endOfTheWorld) return;
         //System.out.print(String.format("p: %d t:%d d:%d a:%d v:%d\n", port.port, time, durationMillis, average, value));
         if (port == lightSensorPort) {
             if (value != oldValue.num) {
                 oldValue.num = value;
-                channel.publishTopic(publishTopic, writer -> writer.write(oldValue));
+                if (!channel.publishTopic(publishTopic, writer -> writer.write(oldValue), WaitFor.None)) {
+                    endOfTheWorld = true;
+                    System.out.print("**** reached the end of the world ****");
+                }
             }
         }
     }

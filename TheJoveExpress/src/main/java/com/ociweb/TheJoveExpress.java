@@ -23,7 +23,7 @@ public class TheJoveExpress implements FogApp
         // TODO: calculating maxMessageLength anf maxinFlight given the private channel definitions and arbitrary bridging
         // is too difficult. And we are declaring this in connections where channel message lengths are in behavior
         if (config.mqttEnabled) {
-            this.mqttBridge = c.useMQTT(config.mqttBroker, config.mqttPort, false, config.mqttClientName, 20, 15000)
+            this.mqttBridge = c.useMQTT(config.mqttBroker, config.mqttPort, false, config.mqttClientName, 40, 10000)
                     .cleanSession(true)
                     .authentication("dsjove", "password")
                     .keepAliveSeconds(10);
@@ -50,7 +50,7 @@ public class TheJoveExpress implements FogApp
 
         //c.setTimerPulseRate(1000);
         // TODO: Thread schedule ias not quite right yet
-        c.limitThreads(4);
+        //c.limitThreads(4);
     }
 
     @Override

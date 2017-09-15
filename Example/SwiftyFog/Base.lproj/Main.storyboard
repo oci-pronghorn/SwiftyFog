@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13189.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Xjm-3A-yj3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Xjm-3A-yj3">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13165.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -77,13 +77,13 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="0P7-i3-PrJ" userLabel="Power">
-                                <rect key="frame" x="8" y="60" width="359" height="255.5"/>
+                                <rect key="frame" x="8" y="60" width="359" height="316.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="jch-e0-4v6" userLabel="Engine">
-                                        <rect key="frame" x="0.0" y="0.0" width="175.5" height="255.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="170.5" height="316.5"/>
                                         <subviews>
                                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i1b-Ey-Udf" customClass="WMGaugeView">
-                                                <rect key="frame" x="0.0" y="0.0" width="175.5" height="175.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="170.5" height="170.5"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="i1b-Ey-Udf" secondAttribute="height" multiplier="1:1" id="KWR-sZ-BOP"/>
@@ -114,7 +114,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="frG-rd-tNm" customClass="ScrubControl" customModule="SwiftyFog_Example" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="185.5" width="175.5" height="29"/>
+                                                <rect key="frame" x="0.0" y="180.5" width="170.5" height="29"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="29" id="sbe-2N-IEB"/>
@@ -146,8 +146,14 @@
                                                     <action selector="doEnginePowerWithSender:" destination="BYZ-38-t0r" eventType="valueChanged" id="QjT-qF-IX1"/>
                                                 </connections>
                                             </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Speed" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nVf-wt-Idx">
+                                                <rect key="frame" x="0.0" y="219.5" width="170.5" height="28"/>
+                                                <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="15" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="5SJ-Xc-cNf" userLabel="Calibrate Power">
-                                                <rect key="frame" x="-2" y="224.5" width="179.5" height="32"/>
+                                                <rect key="frame" x="-2" y="257.5" width="174.5" height="32"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="31" id="SLG-Ty-MMt"/>
                                                 </constraints>
@@ -158,16 +164,22 @@
                                                     <action selector="doEngineCalibrationWithSender:" destination="BYZ-38-t0r" eventType="valueChanged" id="Zjw-vy-lkf"/>
                                                 </connections>
                                             </slider>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Calibrate Idle" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wDB-dE-Erh" userLabel="Calibrate Amps">
+                                                <rect key="frame" x="0.0" y="298.5" width="170.5" height="18"/>
+                                                <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="fI1-eS-yQm" userLabel="Lights">
-                                        <rect key="frame" x="183.5" y="0.0" width="175.5" height="255.5"/>
+                                        <rect key="frame" x="178.5" y="0.0" width="180.5" height="316.5"/>
                                         <subviews>
                                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YEQ-Tl-lGJ" customClass="WMGaugeView">
-                                                <rect key="frame" x="0.0" y="0.0" width="175.5" height="175.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="180.5" height="180.5"/>
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TorchOff" highlightedImage="TorchOn" translatesAutoresizingMaskIntoConstraints="NO" id="I8S-Am-1OA" userLabel="Light Indicator">
-                                                        <rect key="frame" x="72" y="36.5" width="32" height="32"/>
+                                                        <rect key="frame" x="74.5" y="38" width="32" height="32"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="32" id="IjV-V4-2na"/>
                                                             <constraint firstAttribute="height" constant="32" id="Od5-Bj-c1S"/>
@@ -209,7 +221,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="2" translatesAutoresizingMaskIntoConstraints="NO" id="N5j-RN-YrA">
-                                                <rect key="frame" x="0.0" y="185.5" width="175.5" height="30"/>
+                                                <rect key="frame" x="0.0" y="190.5" width="180.5" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="29" id="WfO-HG-Z4m"/>
                                                 </constraints>
@@ -223,8 +235,14 @@
                                                     <action selector="doLightOverrideWithSender:" destination="BYZ-38-t0r" eventType="valueChanged" id="b9T-7d-x40"/>
                                                 </connections>
                                             </segmentedControl>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lights" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o3U-1e-7NP">
+                                                <rect key="frame" x="0.0" y="229.5" width="180.5" height="18"/>
+                                                <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="128" minValue="0.0" maxValue="256" translatesAutoresizingMaskIntoConstraints="NO" id="Ulu-J2-pss" userLabel="Light Calibration">
-                                                <rect key="frame" x="-2" y="224.5" width="179.5" height="32"/>
+                                                <rect key="frame" x="-2" y="257.5" width="184.5" height="32"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="31" id="hzN-xz-WJS"/>
                                                 </constraints>
@@ -235,12 +253,18 @@
                                                     <action selector="doLightCalibrationWithSender:" destination="BYZ-38-t0r" eventType="valueChanged" id="SFj-Z3-aTg"/>
                                                 </connections>
                                             </slider>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Calibrate Ambient Light" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fO5-SL-NbC" userLabel="Calibrate Amps">
+                                                <rect key="frame" x="0.0" y="298.5" width="180.5" height="18"/>
+                                                <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                     </stackView>
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="HPE-xF-BzU">
-                                <rect key="frame" x="151" y="332.5" width="72" height="96"/>
+                                <rect key="frame" x="151" y="393.5" width="72" height="96"/>
                                 <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="Selfie Board">
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -250,7 +274,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yOF-aF-Ux5">
-                                <rect key="frame" x="139" y="332.5" width="96" height="96"/>
+                                <rect key="frame" x="139" y="393.5" width="96" height="96"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="96" id="DPC-qZ-v9n"/>
                                     <constraint firstAttribute="width" constant="96" id="uDI-6J-OYM"/>

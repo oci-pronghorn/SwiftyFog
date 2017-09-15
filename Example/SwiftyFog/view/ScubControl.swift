@@ -61,7 +61,7 @@ public  class ScrubControl : UIControl {
 	}
 	
 	@IBInspectable
-	public var velocityAdjustWidthFactor: CGFloat = 10 {
+	public var velocityAdjustWidthFactor: CGFloat = 20 {
 		didSet {
 			self.setNeedsDisplay()
 		}
