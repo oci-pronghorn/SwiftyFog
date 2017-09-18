@@ -42,7 +42,7 @@ class PubSub {
     void subscribe(PubSubMethodListener listener, String topic, CallableMethod method) {
         ListenerFilter filter = registeredListeners.computeIfAbsent(listener, (k) -> runtime.registerListener(k));
         registeredListeners.put(listener, filter.addSubscription(topic, method));
-    };
+    }
 
     void subscribe(PubSubMethodListener listener, String topic, MQTTQoS qos, CallableMethod method) {
         ListenerFilter filter = registeredListeners.computeIfAbsent(listener, (k) -> runtime.registerListener(k));
@@ -50,5 +50,5 @@ class PubSub {
         if (mqttBridge != null) {
             runtime.bridgeSubscription(topic, externalScope + topic, mqttBridge).setQoS(qos);
         }
-    };
+    }
 }

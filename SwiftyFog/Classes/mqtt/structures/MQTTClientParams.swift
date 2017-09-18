@@ -14,6 +14,7 @@ public struct MQTTClientParams {
     public let keepAlive: UInt16
 
     public var lastWill: MQTTMessage? = nil
+    public var alwaysSendLastWill: Bool = true // If will is set, do not send Dosconnect (cancels last will on server)
 	
     // Some brokers are not good about treating any packet as a ping
     // Set to false to remove this optimization

@@ -24,7 +24,7 @@ public class Train: FogFeedbackModel {
 				("lifecycle/feedback", .atLeastOnce, Train.feedbackLifecycle)
 			]) { listener, status in
 				if case .subscribed(_) = status {
-					listener.askForFeedback()
+					// listener.askForFeedback() should now happen with feedbackLifecycle
 				}
 			}
 		}
