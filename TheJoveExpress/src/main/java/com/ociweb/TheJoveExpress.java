@@ -63,17 +63,18 @@ public class TheJoveExpress implements FogApp
         // All transient transmissions should have retain no retain to enforce feedbackloop with UI
         // Schema defining transmissions should have retain
 
-        if (config.mqttEnabled) {
+        if (config.lifecycleEnabled) {
             final String shutdownControl = "lifecycle/control/shutdown";
             final String lifeCycleFeedback = "lifecycle/feedback";
-            final String internalMqttConnect = "$/MQTT/Connection";
+            final String internalMqttConnect = "MQTT/Connection";
 
             // TODO Last will must be called befor the first bridge call - the make it immutable
-            this.mqttBridge.lastWill(prefix + lifeCycleFeedback, true, MQTTQoS.atLeastOnce,  blobWriter -> {blobWriter.writeBoolean(false);});
-            this.mqttBridge.connectionFeedbackTopic(internalMqttConnect);
-
-            runtime.bridgeTransmission(lifeCycleFeedback, prefix + lifeCycleFeedback, mqttBridge).setRetain(true).setQoS(MQTTQoS.atLeastOnce);
-            runtime.bridgeSubscription(shutdownControl, prefix + shutdownControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
+            if (config.mqttEnabled) {
+                this.mqttBridge.lastWill(prefix + lifeCycleFeedback, true, MQTTQoS.atLeastOnce, blobWriter -> { blobWriter.writeBoolean(false); });
+                this.mqttBridge.connectionFeedbackTopic(internalMqttConnect);
+                runtime.bridgeTransmission(lifeCycleFeedback, prefix + lifeCycleFeedback, mqttBridge).setRetain(true).setQoS(MQTTQoS.atLeastOnce);
+                runtime.bridgeSubscription(shutdownControl, prefix + shutdownControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
+            }
             LifeCycleBehavior lifeCycle = new LifeCycleBehavior(runtime, lifeCycleFeedback);
             runtime.registerListener(lifeCycle)
                     .addSubscription(internalMqttConnect, lifeCycle::onMQTTConnect)
