@@ -12,16 +12,16 @@ public struct MQTTClientParams {
     public let clientID: String
     public let cleanSession: Bool
     public let keepAlive: UInt16
-
     public var lastWill: MQTTMessage? = nil
-    public var alwaysSendLastWill: Bool = true // If will is set, do not send Dosconnect (cancels last will on server)
 	
     // Some brokers are not good about treating any packet as a ping
     // Set to false to remove this optimization
     public var treatControlPacketsAsPings = true
-    // We can detect server death if we have not received a control packet
-    // after a packet that expects an ack. This defaults to keepAlive * 1.5.
+    // We can detect server death if we have not received an ack packet
+    // after a packet that expects one. This defaults to keepAlive * 1.5.
     public var detectServerDeath: UInt16
+    // If will is set, do not send DisconnectPacket. DisconnectPacket will cancel last will on server.
+    public var alwaysSendLastWill: Bool = true
 	
 	// The spec states that business logic may be invoked on either the 1st or 2nd ack
     public var qos2Mode: Qos2Mode = .lowLatency

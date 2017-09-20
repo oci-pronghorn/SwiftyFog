@@ -15,7 +15,7 @@ public class TrainConfiguration  {
     final String mqttBroker;
     final String mqttClientName;
     final int mqttPort = 1883;
-    final TriState telemetryEnabled = TriState.on;
+    final TriState telemetryEnabled = TriState.latent;
     final boolean lifecycleEnabled = true;
     final boolean engineEnabled = true;
     final boolean lightsEnabled = true;

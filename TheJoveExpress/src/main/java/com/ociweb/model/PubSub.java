@@ -4,6 +4,7 @@ import com.ociweb.gl.api.*;
 import com.ociweb.gl.impl.stage.CallableMethod;
 import com.ociweb.iot.maker.FogRuntime;
 
+import java.io.Externalizable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,16 +40,31 @@ class PubSub {
         return topic;
     }
 
-    void subscribe(PubSubMethodListener listener, String topic, CallableMethod method) {
-        ListenerFilter filter = registeredListeners.computeIfAbsent(listener, (k) -> runtime.registerListener(k));
-        registeredListeners.put(listener, filter.addSubscription(topic, method));
+    <T extends Externalizable> void subscribe(PubSubMethodListener listener, String topic, T backstore, CallableExternalizedMethod<T> method) {
+        CallableMethod method2 = (t, r) -> {
+            r.readInto(backstore);
+            return method.method(t, backstore);
+        };
+        this.subscribe(listener, topic, method2);
+    }
+
+    <T extends Externalizable> void subscribe(PubSubMethodListener listener, String topic, T backstore, MQTTQoS qos, CallableExternalizedMethod<T> method) {
+        CallableMethod method2 = (t, r) -> {
+            r.readInto(backstore);
+            return method.method(t, backstore);
+        };
+        this.subscribe(listener, topic, qos, method2);
     }
 
     void subscribe(PubSubMethodListener listener, String topic, MQTTQoS qos, CallableMethod method) {
-        ListenerFilter filter = registeredListeners.computeIfAbsent(listener, (k) -> runtime.registerListener(k));
-        registeredListeners.put(listener, filter.addSubscription(topic, method));
+        this.subscribe(listener, topic, method);
         if (mqttBridge != null) {
             runtime.bridgeSubscription(topic, externalScope + topic, mqttBridge).setQoS(qos);
         }
+    }
+
+    void subscribe(PubSubMethodListener listener, String topic, CallableMethod method) {
+        ListenerFilter filter = registeredListeners.computeIfAbsent(listener, (k) -> runtime.registerListener(k));
+        registeredListeners.put(listener, filter.addSubscription(topic, method));
     }
 }
