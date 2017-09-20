@@ -280,12 +280,22 @@
                                     <constraint firstAttribute="width" constant="96" id="uDI-6J-OYM"/>
                                 </constraints>
                             </imageView>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="NOS-K5-A9v">
+                                <rect key="frame" x="85" y="518" width="204" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="cUi-hO-owO"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="doSoundPiezoWithSender:" destination="BYZ-38-t0r" eventType="valueChanged" id="YW3-Ih-jk3"/>
+                                </connections>
+                            </slider>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="height" secondItem="yOF-aF-Ux5" secondAttribute="height" id="7aO-DK-CQq"/>
                             <constraint firstItem="yOF-aF-Ux5" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="95U-ZV-7hR"/>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="centerX" secondItem="yOF-aF-Ux5" secondAttribute="centerX" id="L16-OZ-Wcb"/>
+                            <constraint firstItem="NOS-K5-A9v" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="biJ-Eu-I2M"/>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="centerY" secondItem="yOF-aF-Ux5" secondAttribute="centerY" id="c2a-8f-3nQ"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="eBe-4Q-Ytg"/>
                             <constraint firstItem="yOF-aF-Ux5" firstAttribute="top" secondItem="0P7-i3-PrJ" secondAttribute="bottom" constant="17" id="eMJ-EH-bod"/>
@@ -294,6 +304,7 @@
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" constant="-16" id="hfn-cg-vmm"/>
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="kwp-cM-kPw"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" constant="-16" id="pwc-xu-es9"/>
+                            <constraint firstItem="NOS-K5-A9v" firstAttribute="top" secondItem="yOF-aF-Ux5" secondAttribute="bottom" constant="23.5" id="u9C-7n-ZfH"/>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="width" secondItem="yOF-aF-Ux5" secondAttribute="width" multiplier="0.75" id="v15-Jg-PZJ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -310,6 +321,7 @@
                         <outlet property="lightIndicatorImage" destination="I8S-Am-1OA" id="oTj-7e-Fp7"/>
                         <outlet property="lightOverride" destination="N5j-RN-YrA" id="V9s-s2-1wZ"/>
                         <outlet property="lightingGauge" destination="YEQ-Tl-lGJ" id="XdX-qt-wSf"/>
+                        <outlet property="soundControl" destination="NOS-K5-A9v" id="ebE-BR-wXT"/>
                         <outlet property="stopStartButton" destination="Wpe-Ny-YbN" id="GnV-Hl-k0c"/>
                         <outlet property="trainAlive" destination="28I-X8-rcw" id="Zsa-74-W0S"/>
                         <outlet property="trainName" destination="Qsm-zT-BQc" id="c4R-Xn-e7q"/>

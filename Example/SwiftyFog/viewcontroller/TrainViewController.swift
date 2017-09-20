@@ -45,6 +45,7 @@ class TrainViewController: UIViewController {
 	let train = Train()
 	let engine = Engine()
 	let lights = Lights()
+	let sound = Sound()
 	let billboard = Billboard()
 	
 	@IBOutlet weak var trainAlive: UIImageView!
@@ -64,6 +65,8 @@ class TrainViewController: UIViewController {
 	@IBOutlet weak var engineCalibration: UISlider!
 	@IBOutlet weak var engineGauge: WMGaugeView!
 	
+	@IBOutlet weak var soundControl: UISlider!
+	
 	let pulsator = Pulsator()
 	
 	var mqttControl: MQTTControl! {
@@ -82,6 +85,8 @@ class TrainViewController: UIViewController {
 			
 			billboard.delegate = self
 			billboard.mqtt = mqtt.createBridge(subPath: "billboard")
+			
+			sound.mqtt = mqtt.createBridge(subPath: "sound")
 			
 			train.delegate = self
 			train.mqtt = mqtt
@@ -227,6 +232,11 @@ extension TrainViewController {
 	@IBAction
 	func doLightCalibration(sender: UISlider?) {
 		lights.control(calibration: sender!.rational)
+	}
+	
+	@IBAction
+	func doSoundPiezo(sender: UISlider?) {
+		sound.control(piezo: sender!.rational)
 	}
 	
 	@IBAction

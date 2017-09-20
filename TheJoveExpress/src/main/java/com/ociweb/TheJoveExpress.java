@@ -2,12 +2,11 @@ package com.ociweb;
 
 import com.ociweb.behaviors.*;
 import com.ociweb.gl.api.MQTTBridge;
-import com.ociweb.gl.api.MQTTConnectionWill;
 import com.ociweb.gl.api.MQTTQoS;
+import com.ociweb.iot.grove.simple_analog.SimpleAnalogTwig;
 import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometerTwig;
 import com.ociweb.iot.maker.*;
 
-import static com.ociweb.iot.grove.simple_analog.SimpleAnalogTwig.*;
 import static com.ociweb.iot.grove.motor_driver.MotorDriverTwig.MotorDriver;
 import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_96x96;
 
@@ -29,7 +28,8 @@ public class TheJoveExpress implements FogApp
                     .keepAliveSeconds(10);
         }
         if (config.appServerEnabled) c.enableServer(false, config.appServerPort); // TODO: heap problem on Pi0
-        if (config.lightsEnabled) c.connect(LightSensor, config.lightSensorPort, config.lightDetectFreq);
+        if (config.lightsEnabled) c.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);
+        if (config.soundEnabled) c.connect(SimpleAnalogTwig.Buzzer, config.piezoPort);
         if (config.engineEnabled || config.lightsEnabled) c.connect(MotorDriver);
         if (config.billboardEnabled) c.connect(OLED_96x96);
         if (config.speedometerEnabled) {
@@ -172,6 +172,15 @@ public class TheJoveExpress implements FogApp
         }
 
         if (config.soundEnabled) {
+            final String soundPiezoControl = "sound/piezo/control";
+
+            final SoundBehavior sound = new SoundBehavior(runtime, config.piezoPort);
+            if (config.mqttEnabled) {
+                runtime.bridgeSubscription(soundPiezoControl, prefix + soundPiezoControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
+            }
+            runtime.registerListener(sound)
+                    .addSubscription(soundPiezoControl, sound::onLevel);
+
             // MQTT outbound with sound file listing
             // MQTT outbound with play status
             // MQTT inbound with play/stop/pause commands

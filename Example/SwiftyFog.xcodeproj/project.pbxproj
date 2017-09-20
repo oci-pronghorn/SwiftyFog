@@ -16,6 +16,7 @@
 		553F97341F434D2000CBF725 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F972D1F434C6800CBF725 /* Engine.swift */; };
 		553F97351F434D2000CBF725 /* Lights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F972E1F434C6800CBF725 /* Lights.swift */; };
 		55B27CA11F51C778008ED56E /* FSDAirportFlipLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B27CA01F51C778008ED56E /* FSDAirportFlipLabel.m */; };
+		55D6DD7E1F72CE950032FB88 /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D6DD7D1F72CE950032FB88 /* Sound.swift */; };
 		55E4C6DD1F544E7F0060A230 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E4C6DC1F544E7F0060A230 /* LogViewController.swift */; };
 		55E729921F538C26008646AB /* Pulsator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E729911F538C26008646AB /* Pulsator.swift */; };
 		55F2285F1F4E1048001CC21B /* ScubControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F2285E1F4E1048001CC21B /* ScubControl.swift */; };
@@ -54,6 +55,7 @@
 		553F972E1F434C6800CBF725 /* Lights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lights.swift; sourceTree = "<group>"; };
 		55B27C9F1F51C778008ED56E /* FSDAirportFlipLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSDAirportFlipLabel.h; sourceTree = "<group>"; };
 		55B27CA01F51C778008ED56E /* FSDAirportFlipLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSDAirportFlipLabel.m; sourceTree = "<group>"; };
+		55D6DD7D1F72CE950032FB88 /* Sound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sound.swift; sourceTree = "<group>"; };
 		55DE21821F54D6AC0005B0E2 /* Train.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Train.swift; sourceTree = "<group>"; };
 		55E4C6DC1F544E7F0060A230 /* LogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		55E729911F538C26008646AB /* Pulsator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pulsator.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				553F972D1F434C6800CBF725 /* Engine.swift */,
 				553F972E1F434C6800CBF725 /* Lights.swift */,
 				55DE21821F54D6AC0005B0E2 /* Train.swift */,
+				55D6DD7D1F72CE950032FB88 /* Sound.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -448,6 +451,7 @@
 				552202FD1F574CCC00575DCD /* Train.swift in Sources */,
 				55E729921F538C26008646AB /* Pulsator.swift in Sources */,
 				550414BC1F4DAC2600226A1C /* TrainSelectViewController.swift in Sources */,
+				55D6DD7E1F72CE950032FB88 /* Sound.swift in Sources */,
 				553F97331F434D2000CBF725 /* Billboard.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				550414BD1F4DAC2600226A1C /* TrainViewController.swift in Sources */,

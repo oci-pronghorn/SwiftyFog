@@ -26,6 +26,11 @@ public class RationalPayload implements Externalizable {
 
     public double ratio() { return (double)num / (double)den; }
 
+    public long getNumForDen(long den) {
+        double r = ratio();
+        return (long)(r * den);
+    }
+
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeLong(num);

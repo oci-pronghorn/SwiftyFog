@@ -5,7 +5,7 @@ import com.ociweb.iot.maker.TriState;
 import com.ociweb.model.ActuatorDriverPort;
 import com.ociweb.iot.maker.Port;
 
-import static com.ociweb.iot.maker.Port.A0;
+import static com.ociweb.iot.maker.Port.*;
 
 public class TrainConfiguration  {
 
@@ -27,6 +27,7 @@ public class TrainConfiguration  {
     final boolean appServerEnabled = false;
     final int appServerPort = 8089;
 
+    final Port piezoPort = A1;
     final Port lightSensorPort = A0;
     final ActuatorDriverPort engineAccuatorPort = ActuatorDriverPort.A;
     final ActuatorDriverPort lightAccuatorPort = ActuatorDriverPort.B;
