@@ -11,7 +11,7 @@ import com.ociweb.pronghorn.pipe.BlobReader;
 public class SoundBehavior implements PubSubMethodListener {
     private final FogCommandChannel channel;
     private final Port port;
-    private final RationalPayload level = new RationalPayload(0, SimpleAnalogTwig.Buzzer.range());
+   // private final RationalPayload level = new RationalPayload(0, SimpleAnalogTwig.Buzzer.range());
 
     public SoundBehavior(FogRuntime runtime, Port port) {
         this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
@@ -20,8 +20,8 @@ public class SoundBehavior implements PubSubMethodListener {
     }
 
     public boolean onLevel(CharSequence charSequence, BlobReader messageReader) {
-        messageReader.readInto(level);
-        channel.setValue(port, (int)level.getNumForDen(SimpleAnalogTwig.Buzzer.range()));
+        //messageReader.readInto(level);
+       // channel.setValue(port, (int)level.getNumForDen(SimpleAnalogTwig.Buzzer.range()));
         return true;
     }
 }

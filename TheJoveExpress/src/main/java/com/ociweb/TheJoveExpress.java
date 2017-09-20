@@ -22,14 +22,14 @@ public class TheJoveExpress implements FogApp
         // TODO: calculating maxMessageLength anf maxinFlight given the private channel definitions and arbitrary bridging
         // is too difficult. And we are declaring this in connections where channel message lengths are in behavior
         if (config.mqttEnabled) {
-            this.mqttBridge = c.useMQTT(config.mqttBroker, config.mqttPort, false, config.mqttClientName, 40, 10000)
+            this.mqttBridge = c.useMQTT(config.mqttBroker, config.mqttPort, false, config.mqttClientName, 40, 20000)
                     .cleanSession(true)
                     .authentication("dsjove", "password")
                     .keepAliveSeconds(10);
         }
         if (config.appServerEnabled) c.enableServer(false, config.appServerPort); // TODO: heap problem on Pi0
         if (config.lightsEnabled) c.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);
-        if (config.soundEnabled) c.connect(SimpleAnalogTwig.Buzzer, config.piezoPort);
+        //if (config.soundEnabled) c.connect(SimpleAnalogTwig.Buzzer, config.piezoPort);
         if (config.engineEnabled || config.lightsEnabled) c.connect(MotorDriver);
         if (config.billboardEnabled) c.connect(OLED_96x96);
         if (config.speedometerEnabled) {
