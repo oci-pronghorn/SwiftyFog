@@ -242,7 +242,7 @@ extension TrainViewController {
 	@IBAction
 	func onPicture(sender: UIButton?) {
 		let photos = PhotosAccess(title: nil, root: self);
-		photos.selectImage(hasCamera: true, hasClear: false) { (image, access) in
+		photos.selectImage(hasCamera: true, hasLibrary: false, hasClear: false) { (image, access) in
 			if access {
 				if let image = image {
 					DispatchQueue.main.async {

@@ -39,28 +39,45 @@ public class PhotosAccess : NSObject, UIImagePickerControllerDelegate {
 		super.init()
 	}
 
-	public func selectImage(hasCamera: Bool = false, hasClear: Bool = false, completion: @escaping (UIImage?, Bool)->()) {
+	public func selectImage(hasCamera: Bool = false, hasLibrary: Bool = true, hasClear: Bool = false, completion: @escaping (UIImage?, Bool)->()) {
 		let alert = UIAlertController(title: title?.localized, message: nil, preferredStyle: .alert)
-		if UIImagePickerController.isSourceTypeAvailable( .photoLibrary) {
-			let photosAction = UIAlertAction(title: "Library".localized, style: .default) { (action) in
-				self.selectImage(sourceType: .photoLibrary, completion: completion)
+		var handler: ((UIAlertAction) -> Swift.Void)? = nil
+		if hasLibrary || UIImagePickerController.isSourceTypeAvailable( .camera) == false {
+			if UIImagePickerController.isSourceTypeAvailable( .photoLibrary) {
+				handler = { (action) in
+					self.selectImage(sourceType: .photoLibrary, completion: completion)
+				}
+				let photosAction = UIAlertAction(title: "Library".localized, style: .default, handler: handler)
+				alert.addAction(photosAction)
 			}
-			alert.addAction(photosAction)
 		}
 		if hasCamera {
 			if UIImagePickerController.isSourceTypeAvailable( .camera) {
-				let cameraAction = UIAlertAction(title: "Camera".localized, style: .default) { (action) in
+				handler = { (action) in
 					self.selectImage(sourceType: .camera, completion: completion)
 				}
+				let cameraAction = UIAlertAction(title: "Camera".localized, style: .default, handler: handler)
 				alert.addAction(cameraAction)
 			}
 		}
 		if hasClear {
-			let removeAction = UIAlertAction(title: "Clear".localized, style: .destructive) { (action) in
+			handler = { (action) in
 				completion(.none, true)
 			}
+			let removeAction = UIAlertAction(title: "Clear".localized, style: .destructive, handler: handler)
 			alert.addAction(removeAction)
 		}
+		
+		if alert.actions.count == 0 {
+			completion(.none, false)
+			return
+		}
+		
+		if alert.actions.count == 1 {
+			handler?(alert.actions[0])
+			return
+		}
+		
 		let cancelAction = UIAlertAction(title: "Cancel".localized, style: .cancel) { (action) in
 			completion(.none, false)
 		}
@@ -80,6 +97,8 @@ public class PhotosAccess : NSObject, UIImagePickerControllerDelegate {
 				imagePicker.modalPresentationStyle = .fullScreen
 				imagePicker.sourceType = sourceType
 				imagePicker.mediaTypes = [kUTTypeImage as String]
+				// TODO: make variable
+				imagePicker.cameraDevice = .front
 				self.root.present(imagePicker, animated: true, completion: nil)
 			}
 			else {
