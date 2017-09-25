@@ -6,7 +6,7 @@ import com.ociweb.iot.grove.oled.oled2.OLED96x96Transducer;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.image.FogBitmap;
-import com.ociweb.pronghorn.pipe.BlobReader;
+import com.ociweb.pronghorn.pipe.ChannelReader;
 
 import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_96x96_2;
 
@@ -40,7 +40,7 @@ public class BillboardBehavior implements PubSubMethodListener, StartupListener 
         sendTestImage();
     }
 
-    public boolean onAllFeedback(CharSequence charSequence, BlobReader messageReader) {
+    public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
         bufferChannel.publishTopic(publishTopic, writer->{writer.write(display.newBmpLayout());});
         return true;
     }
@@ -49,8 +49,8 @@ public class BillboardBehavior implements PubSubMethodListener, StartupListener 
         bufferChannel.publishTopic("billboard/image/control", writer->{writer.write(bmp);});
     }
 
-    public boolean onImage(CharSequence charSequence, BlobReader blobReader) {
-        blobReader.readInto(bmp);
+    public boolean onImage(CharSequence charSequence, ChannelReader ChannelReader) {
+        ChannelReader.readInto(bmp);
         display.display(display.newPreferredBmpScanner(bmp));
         return true;
     }

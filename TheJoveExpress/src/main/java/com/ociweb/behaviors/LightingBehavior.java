@@ -5,7 +5,7 @@ import com.ociweb.iot.maker.*;
 import com.ociweb.model.ActuatorDriverPayload;
 import com.ociweb.model.ActuatorDriverPort;
 import com.ociweb.model.RationalPayload;
-import com.ociweb.pronghorn.pipe.BlobReader;
+import com.ociweb.pronghorn.pipe.ChannelReader;
 
 import static com.ociweb.behaviors.AmbientLightBehavior.maxSensorReading;
 
@@ -33,7 +33,7 @@ public class LightingBehavior implements PubSubMethodListener {
         this.actuatorPayload.power = -1.0;
     }
 
-    public boolean onAllFeedback(CharSequence charSequence, BlobReader messageReader) {
+    public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
         boolean isOn = this.actuatorPayload.power > 0.0;
         TriState lightsOn = overridePower == null ? TriState.latent : overridePower == 0.0 ? TriState.on : TriState.off;
         this.channel.publishTopic(overrideTopic, writer -> writer.writeInt(lightsOn.ordinal()));
@@ -42,7 +42,7 @@ public class LightingBehavior implements PubSubMethodListener {
         return true;
     }
 
-    public boolean onOverride(CharSequence charSequence, BlobReader messageReader) {
+    public boolean onOverride(CharSequence charSequence, ChannelReader messageReader) {
         int state = messageReader.readInt();
         TriState lightsOn = TriState.values()[state];
         Double newPower;
@@ -61,7 +61,7 @@ public class LightingBehavior implements PubSubMethodListener {
         return true;
     }
 
-    public boolean onCalibration(CharSequence charSequence, BlobReader messageReader) {
+    public boolean onCalibration(CharSequence charSequence, ChannelReader messageReader) {
         messageReader.readInto(this.calibration);
         this.channel.publishTopic(calibrationTopic, writer -> writer.write(calibration));
         if (ambient.num >= calibration.num) {
@@ -73,7 +73,7 @@ public class LightingBehavior implements PubSubMethodListener {
         return true;
     }
 
-    public boolean onDetected(CharSequence charSequence, BlobReader messageReader) {
+    public boolean onDetected(CharSequence charSequence, ChannelReader messageReader) {
         messageReader.readInto(ambient);
 
         Double newPower;

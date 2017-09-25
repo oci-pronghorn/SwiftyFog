@@ -6,7 +6,7 @@ import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.model.ActuatorDriverPayload;
 import com.ociweb.model.ActuatorDriverPort;
 import com.ociweb.model.RationalPayload;
-import com.ociweb.pronghorn.pipe.BlobReader;
+import com.ociweb.pronghorn.pipe.ChannelReader;
 
 public class EngineBehavior implements PubSubMethodListener {
     private final FogCommandChannel channel;
@@ -26,20 +26,20 @@ public class EngineBehavior implements PubSubMethodListener {
         this.calibrationTopic = engineCalibratedTopic;
     }
 
-    public boolean onAllFeedback(CharSequence charSequence, BlobReader messageReader) {
+    public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
         this.channel.publishTopic(calibrationTopic, writer -> writer.write(calibration));
         this.channel.publishTopic(powerTopic, writer -> writer.write(actuatorPayload));
         return true;
     }
 
-    public boolean onPower(CharSequence charSequence, BlobReader messageReader) {
+    public boolean onPower(CharSequence charSequence, ChannelReader messageReader) {
         messageReader.readInto(enginePower);
         actuate();
         this.channel.publishTopic(powerTopic, writer -> writer.write(enginePower));
         return true;
     }
 
-    public boolean onCalibration(CharSequence charSequence, BlobReader messageReader) {
+    public boolean onCalibration(CharSequence charSequence, ChannelReader messageReader) {
         messageReader.readInto(this.calibration);
         this.channel.publishTopic(calibrationTopic, writer -> writer.write(calibration));
         actuate();

@@ -6,7 +6,7 @@ import com.ociweb.iot.grove.motor_driver.MotorDriver_Transducer;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.model.ActuatorDriverPayload;
-import com.ociweb.pronghorn.pipe.BlobReader;
+import com.ociweb.pronghorn.pipe.ChannelReader;
 
 import static com.ociweb.iot.grove.motor_driver.MotorDriverTwig.MotorDriver;
 
@@ -21,8 +21,8 @@ public class ActuatorDriverBehavior implements PubSubMethodListener, ShutdownLis
         motorControl = MotorDriver.newTransducer(channel);
     }
 
-    public boolean setPower(CharSequence charSequence, BlobReader blobReader) {
-        blobReader.readInto(payload);
+    public boolean setPower(CharSequence charSequence, ChannelReader ChannelReader) {
+        ChannelReader.readInto(payload);
         int ranged = (int)(payload.power * motorControl.getMaxVelocity());
         switch (payload.port) {
             case A:

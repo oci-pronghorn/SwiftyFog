@@ -6,7 +6,7 @@ import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.Port;
 import com.ociweb.model.RationalPayload;
-import com.ociweb.pronghorn.pipe.BlobReader;
+import com.ociweb.pronghorn.pipe.ChannelReader;
 
 public class SoundBehavior implements PubSubMethodListener {
     private final FogCommandChannel channel;
@@ -19,7 +19,7 @@ public class SoundBehavior implements PubSubMethodListener {
         channel.ensurePinWriting();
     }
 
-    public boolean onLevel(CharSequence charSequence, BlobReader messageReader) {
+    public boolean onLevel(CharSequence charSequence, ChannelReader messageReader) {
         //messageReader.readInto(level);
        // channel.setValue(port, (int)level.getNumForDen(SimpleAnalogTwig.Buzzer.range()));
         return true;

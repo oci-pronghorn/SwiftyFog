@@ -7,7 +7,7 @@ import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.Port;
 import com.ociweb.model.RationalPayload;
-import com.ociweb.pronghorn.pipe.BlobReader;
+import com.ociweb.pronghorn.pipe.ChannelReader;
 
 public class AmbientLightBehavior implements PubSubMethodListener, AnalogListener {
     private final FogCommandChannel channel;
@@ -25,7 +25,7 @@ public class AmbientLightBehavior implements PubSubMethodListener, AnalogListene
         this.publishTopic = publishTopic;
     }
 
-    public boolean onAllFeedback(CharSequence charSequence, BlobReader messageReader) {
+    public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
         channel.publishTopic(publishTopic, writer -> writer.write(oldValue));
         return true;
     }

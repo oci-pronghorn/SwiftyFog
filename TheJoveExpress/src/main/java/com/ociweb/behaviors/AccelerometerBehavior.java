@@ -6,7 +6,7 @@ import com.ociweb.iot.grove.six_axis_accelerometer.MagValsListener;
 import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometer_Transducer;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
-import com.ociweb.pronghorn.pipe.BlobReader;
+import com.ociweb.pronghorn.pipe.ChannelReader;
 
 public class AccelerometerBehavior implements Behavior, AccelValsListener, MagValsListener {
     private final FogCommandChannel channel;
@@ -21,7 +21,7 @@ public class AccelerometerBehavior implements Behavior, AccelValsListener, MagVa
         accelerateTopic = publishTopic + "/" + "accelerate";
     }
 
-    public boolean onMqttConnected(CharSequence charSequence, BlobReader messageReader) {
+    public boolean onMqttConnected(CharSequence charSequence, ChannelReader messageReader) {
         return true;
     }
 

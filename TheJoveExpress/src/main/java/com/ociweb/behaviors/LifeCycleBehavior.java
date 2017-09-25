@@ -6,7 +6,7 @@ import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.gl.api.ShutdownListener;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
-import com.ociweb.pronghorn.pipe.BlobReader;
+import com.ociweb.pronghorn.pipe.ChannelReader;
 
 public class LifeCycleBehavior implements PubSubMethodListener, ShutdownListener {
     private final FogRuntime runtime;
@@ -20,7 +20,7 @@ public class LifeCycleBehavior implements PubSubMethodListener, ShutdownListener
         this.trainAliveFeedback = trainAliveFeedback;
     }
 
-    public boolean onShutdown(CharSequence topic, BlobReader payload) {
+    public boolean onShutdown(CharSequence topic, ChannelReader payload) {
         runtime.shutdownRuntime();
         return true;
     }
@@ -30,7 +30,7 @@ public class LifeCycleBehavior implements PubSubMethodListener, ShutdownListener
         return true;
     }
 
-    public boolean onMQTTConnect(CharSequence topic, BlobReader payload) {
+    public boolean onMQTTConnect(CharSequence topic, ChannelReader payload) {
         payload.readInto(connected);
         if (connected.status == MQTTConnectionStatus.connected) {
             channel.publishTopic(trainAliveFeedback, writer -> {

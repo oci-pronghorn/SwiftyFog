@@ -4,7 +4,7 @@ import com.ociweb.gl.api.PubSubListener;
 import com.ociweb.iot.maker.FogApp;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
-import com.ociweb.pronghorn.pipe.BlobReader;
+import com.ociweb.pronghorn.pipe.ChannelReader;
 
 /**
  * Determine speed by sensing rail tie changes
@@ -18,7 +18,7 @@ public class RailTieSensingBehavior implements PubSubListener {
     }
 
     @Override
-    public boolean message(CharSequence charSequence, BlobReader messageReader) {
+    public boolean message(CharSequence charSequence, ChannelReader messageReader) {
         return false;
     }
 }
