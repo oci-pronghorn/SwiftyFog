@@ -264,7 +264,7 @@
                                 </subviews>
                                 <variation key="heightClass=regular-widthClass=regular" spacing="16"/>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="HPE-xF-BzU">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="HPE-xF-BzU">
                                 <rect key="frame" x="171" y="441.33333333333337" width="72" height="96.000000000000114"/>
                                 <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="Selfie Board">
@@ -274,14 +274,14 @@
                                     <action selector="onPictureWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rpL-rs-x9O"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yOF-aF-Ux5">
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yOF-aF-Ux5">
                                 <rect key="frame" x="159" y="441.33333333333337" width="96" height="96.000000000000114"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="96" id="DPC-qZ-v9n"/>
                                     <constraint firstAttribute="width" constant="96" id="uDI-6J-OYM"/>
                                 </constraints>
                             </imageView>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="NOS-K5-A9v">
+                            <slider hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="NOS-K5-A9v">
                                 <rect key="frame" x="105" y="553.33333333333337" width="204" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="cUi-hO-owO"/>
@@ -293,7 +293,7 @@
                                     <action selector="doSoundPiezoWithSender:" destination="BYZ-38-t0r" eventType="valueChanged" id="YW3-Ih-jk3"/>
                                 </connections>
                             </slider>
-                            <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Horn" translatesAutoresizingMaskIntoConstraints="NO" id="OT4-KI-nuf">
+                            <imageView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Horn" translatesAutoresizingMaskIntoConstraints="NO" id="OT4-KI-nuf">
                                 <rect key="frame" x="315" y="545" width="48" height="48"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>

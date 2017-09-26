@@ -29,7 +29,7 @@ public class TheJoveExpress implements FogApp
         }
         if (config.appServerEnabled) c.enableServer(false, config.appServerPort); // TODO: heap problem on Pi0
         if (config.lightsEnabled) c.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);
-        //if (config.soundEnabled) c.connect(SimpleAnalogTwig.Buzzer, config.piezoPort);
+        if (config.soundEnabled) c.useSerial(Baud.B_____9600);
         if (config.engineEnabled || config.lightsEnabled) c.connect(MotorDriver);
         if (config.billboardEnabled) c.connect(OLED_96x96);
         if (config.speedometerEnabled) {
@@ -41,10 +41,22 @@ public class TheJoveExpress implements FogApp
 
         switch (config.telemetryEnabled) {
             case on:
-                c.enableTelemetry();
+                if (config.telemetryHost != null) {
+                    c.enableTelemetry(config.telemetryHost, Hardware.defaultTelemetryPort);
+                }
+                else {
+                    c.enableTelemetry();
+                }
                 break;
             case latent:
-                if (c.isTestHardware()) c.enableTelemetry();
+                if (c.isTestHardware()) {
+                    if (config.telemetryHost != null) {
+                        c.enableTelemetry(config.telemetryHost, Hardware.defaultTelemetryPort);
+                    }
+                    else {
+                        c.enableTelemetry();
+                    }
+                }
                 break;
         }
 
