@@ -21,6 +21,12 @@ public class ActuatorDriverBehavior implements PubSubMethodListener, ShutdownLis
         motorControl = MotorDriver.newTransducer(channel);
     }
 
+    @Override
+    public boolean acceptShutdown() {
+        motorControl.setPower(0, 0);
+        return true;
+    }
+
     public boolean setPower(CharSequence charSequence, ChannelReader ChannelReader) {
         ChannelReader.readInto(payload);
         int ranged = (int)(payload.power * motorControl.getMaxVelocity());
@@ -34,13 +40,6 @@ public class ActuatorDriverBehavior implements PubSubMethodListener, ShutdownLis
                 portBPower = ranged;
                 break;
         }
-        motorControl.setPower(portAPower, portBPower);
-        return true;
-    }
-
-    @Override
-    public boolean acceptShutdown() {
-        motorControl.setPower(0, 0);
-        return true;
+        return motorControl.setPower(portAPower, portBPower);
     }
 }

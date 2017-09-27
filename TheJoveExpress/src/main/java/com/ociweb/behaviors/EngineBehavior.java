@@ -15,8 +15,8 @@ public class EngineBehavior implements PubSubMethodListener {
     private final String calibrationTopic;
 
     private final ActuatorDriverPayload actuatorPayload = new ActuatorDriverPayload();
-    private final RationalPayload calibration = new RationalPayload(15, 100);
     private final RationalPayload enginePower = new RationalPayload(0, 100);
+    private final RationalPayload calibration = new RationalPayload(15, 100);
 
     public EngineBehavior(FogRuntime runtime, String actuatorTopic, ActuatorDriverPort port, String enginePoweredTopic, String engineCalibratedTopic) {
         this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
@@ -27,8 +27,8 @@ public class EngineBehavior implements PubSubMethodListener {
     }
 
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
+        this.channel.publishTopic(powerTopic, writer -> writer.write(enginePower));
         this.channel.publishTopic(calibrationTopic, writer -> writer.write(calibration));
-        this.channel.publishTopic(powerTopic, writer -> writer.write(actuatorPayload));
         return true;
     }
 
@@ -41,14 +41,17 @@ public class EngineBehavior implements PubSubMethodListener {
 
     public boolean onCalibration(CharSequence charSequence, ChannelReader messageReader) {
         messageReader.readInto(this.calibration);
-        this.channel.publishTopic(calibrationTopic, writer -> writer.write(calibration));
         actuate();
+        this.channel.publishTopic(calibrationTopic, writer -> writer.write(calibration));
         return true;
     }
 
     private void actuate() {
         double actualPower = enginePower.ratio();
-        if (Math.abs(actualPower) < calibration.ratio()) actualPower = 0.0;
+        double calibrationLimit = calibration.ratio();
+        if (Math.abs(actualPower) < calibrationLimit) {
+            actualPower = 0.0;
+        }
         if (actualPower != actuatorPayload.power) {
             actuatorPayload.power = actualPower;
             this.channel.publishTopic(actuatorTopic, writer -> writer.write(actuatorPayload));
