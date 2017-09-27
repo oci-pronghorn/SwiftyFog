@@ -116,6 +116,7 @@
                                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="frG-rd-tNm" customClass="ScrubControl" customModule="SwiftyFog_Example" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="194.66666666666669" width="182.66666666666666" height="29"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="engineControl"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="29" id="sbe-2N-IEB"/>
                                                 </constraints>
@@ -154,6 +155,7 @@
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="15" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="5SJ-Xc-cNf" userLabel="Calibrate Power">
                                                 <rect key="frame" x="-2" y="293" width="186.66666666666666" height="32"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="engineCalibrationControl"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="31" id="SLG-Ty-MMt"/>
                                                 </constraints>
@@ -243,6 +245,7 @@
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="128" minValue="0.0" maxValue="256" translatesAutoresizingMaskIntoConstraints="NO" id="Ulu-J2-pss" userLabel="Light Calibration">
                                                 <rect key="frame" x="-2" y="293" width="211.33333333333334" height="32"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="lightCalibrationControl"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="31" id="hzN-xz-WJS"/>
                                                 </constraints>

@@ -53,6 +53,16 @@
                ReferencedContainer = "container:SwiftyFog.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "55B95D211F7C0367005F6496"
+               BuildableName = "SwiftyFog_ExampleUITests.xctest"
+               BlueprintName = "SwiftyFog_ExampleUITests"
+               ReferencedContainer = "container:SwiftyFog.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

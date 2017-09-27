@@ -10,17 +10,21 @@ import static com.ociweb.iot.maker.Port.*;
 public class TrainConfiguration  {
 
     final String trainName;
+
     final boolean mqttDefaultLocal = false;
     final boolean mqttEnabled = true;
     final String mqttBroker;
     final String mqttClientName;
     final int mqttPort = 1883;
+
     final TriState telemetryEnabled = TriState.on;
     final String telemetryHost;
+
     final boolean lifecycleEnabled = true;
     final boolean engineEnabled = true;
     final boolean lightsEnabled = true;
     final int lightDetectFreq = 250;
+
     final boolean billboardEnabled = false;
     final boolean cameraEnabled = false;
     final boolean soundEnabled = false;
