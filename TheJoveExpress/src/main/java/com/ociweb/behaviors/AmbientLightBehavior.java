@@ -20,7 +20,8 @@ public class AmbientLightBehavior implements PubSubMethodListener, AnalogListene
     private boolean endOfTheWorld = false;
 
     public AmbientLightBehavior(FogRuntime runtime, Port lightSensorPort, String publishTopic) {
-        this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
+        this.channel = runtime.newCommandChannel();
+        this.channel.ensureDynamicMessaging();
         this.lightSensorPort = lightSensorPort;
         this.publishTopic = publishTopic;
     }
@@ -39,7 +40,7 @@ public class AmbientLightBehavior implements PubSubMethodListener, AnalogListene
                 oldValue.num = value;
                 if (!channel.publishTopic(publishTopic, writer -> writer.write(oldValue), WaitFor.None)) {
                     endOfTheWorld = true;
-                    System.out.print("**** reached the end of the world ****");
+                    System.out.println("**** Ambient Reading Change Failed to Publish ****");
                 }
             }
         }
