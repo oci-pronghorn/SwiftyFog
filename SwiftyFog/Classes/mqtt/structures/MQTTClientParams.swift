@@ -47,9 +47,14 @@ public struct MQTTClientParams {
     }
 	
 	public init(cleanSession: Bool = true, keepAlive: UInt16 = 15) {
-		// 1 and 23 UTF-8 encoded bytes
-		// Only "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-		let deviceID = UIDevice.current.identifierForVendor!.uuidString
+    #if os(iOS)
+      // 1 and 23 UTF-8 encoded bytes
+      // Only "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      let deviceID = UIDevice.current.identifierForVendor!.uuidString
+    #elseif os(OSX)
+      //Since we are building for macOS, no direct identifier is used. Instead use the device serial number
+      let deviceID = CurrentMac.macSerialNumber()
+    #endif
 		let appId = Bundle.main.bundleIdentifier!
 		let fullId = appId + "-" + deviceID
 		let hash = Int64(fullId.hash)

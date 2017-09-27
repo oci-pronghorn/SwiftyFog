@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:../Example_MacOS/Example_MacOS.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:SwiftyFog.xcodeproj">
    </FileRef>
    <FileRef
