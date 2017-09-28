@@ -19,14 +19,14 @@ class HelloWorldViewController : NSViewController {
 	
 	var mqtt: MQTTBridge!
 	var subscription: MQTTSubscription?
-
+	
 	@IBOutlet weak var statusTextField: NSTextField!
 	@IBOutlet weak var connectDisconnectButton: NSButton!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 	}
-
+	
 	@IBAction func connectDisconnectPressed(_ sender: Any) {
 		if mqttControl.started {
 			mqttControl.stop()
@@ -37,56 +37,70 @@ class HelloWorldViewController : NSViewController {
 	}
 	
 	@IBAction func publishFirstTestPressed(_ sender: Any) {
-		mqtt.publish(MQTTMessage(topic: "HelloWorld/SayHello", qos: .atMostOnce)) { (success) in
+		mqtt.publish(MQTTMessage(topic: "Test/SayHello", qos: .atMostOnce)) { (success) in
 			print("\(Date.nowInSeconds()) publishQos0: \(success)")
 		}
 	}
 	
-	@IBAction func unsubscribePressed(_ sender: Any) {
-		print("unsubscribe!")
+	@IBAction func subscribeAllPressed(_ sender: Any) {
+		// Since we are possibly resubscribing to the same topic we force the unsubscribe first.
+		// Otherwide we redundantly subscribe and then unsubscribe
+		subscription = nil
+		subscription = mqtt.subscribe(topics: [("Test/#", .atMostOnce)]) { status in
+			print("\(Date.nowInSeconds()) subAll0: \(status)")
+		}
 	}
 	
-	@IBAction func subscribeAllPressed(_ sender: Any) {
-		print("subscribe!")
+	@IBAction func unsubscribePressed(_ sender: Any) {
+		subscription = nil
 	}
 	
 	override var representedObject: Any? {
 		didSet {
-		// Update the view, if already loaded.
+			// Update the view, if already loaded.
 		}
 	}
-
+	
 }
 
-//TODO: Setting button title crashes the app. Presumably threading issue?
 extension HelloWorldViewController {
 	func mqtt(connected: MQTTConnectedState) {
 		switch connected {
 		case .started:
+			statusTextField.stringValue = "Starting..."
 			break
 		case .connected(_):
+			statusTextField.stringValue = "Connected"
+			connectDisconnectButton.title = "Disconnect"
 			break
 		case .pinged(let status):
 			switch status {
 			case .notConnected:
+				statusTextField.stringValue = "Not Connected"
 				break
 			case .sent:
+				statusTextField.stringValue = "Pinging..."
 				break
 			case .skipped:
 				break
 			case .ack:
+				statusTextField.stringValue = "Ping acknowledged!"
 				break
 			case .serverDied:
+				statusTextField.stringValue = "Server Died"
+				connectDisconnectButton.title = "Connect"
 				break
 			}
 			break
 		case .retry(_, _, _, _):
+			statusTextField.stringValue = "Retrying..."
 			break
 		case .retriesFailed(_, _, _):
 			break
 		case .discconnected(_, _):
+			statusTextField.stringValue = "Disconnected"
+			connectDisconnectButton.title = "Connect"
 			break
 		}
 	}
 }
-

@@ -31,9 +31,7 @@ class AppController {
 		metrics?.debugOut = {print($0)}
 		
 		// Create the concrete MQTTClient to connect to a specific broker
-		var client = MQTTClientParams()
-		
-		client.detectServerDeath = 5
+		let client = MQTTClientParams()
 		
 		let mqtt = MQTTClient(
 			client: client,
