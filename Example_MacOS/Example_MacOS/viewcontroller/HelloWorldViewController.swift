@@ -17,11 +17,11 @@ class HelloWorldViewController : NSViewController {
 		}
 	}
 	
-	@IBOutlet weak var connectDisconnectButton: NSButton!
 	var mqtt: MQTTBridge!
 	var subscription: MQTTSubscription?
 
 	@IBOutlet weak var statusTextField: NSTextField!
+	@IBOutlet weak var connectDisconnectButton: NSButton!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
