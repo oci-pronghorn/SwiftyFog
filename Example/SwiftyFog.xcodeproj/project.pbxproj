@@ -16,6 +16,8 @@
 		553F97341F434D2000CBF725 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F972D1F434C6800CBF725 /* Engine.swift */; };
 		553F97351F434D2000CBF725 /* Lights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F972E1F434C6800CBF725 /* Lights.swift */; };
 		55B27CA11F51C778008ED56E /* FSDAirportFlipLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B27CA01F51C778008ED56E /* FSDAirportFlipLabel.m */; };
+		55B95D251F7C0367005F6496 /* SwiftyFog_ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B95D241F7C0367005F6496 /* SwiftyFog_ExampleUITests.swift */; };
+		55B95D2E1F7C043F005F6496 /* ExerciseMotor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B95D2C1F7C0394005F6496 /* ExerciseMotor.swift */; };
 		55D6DD7E1F72CE950032FB88 /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D6DD7D1F72CE950032FB88 /* Sound.swift */; };
 		55E4C6DD1F544E7F0060A230 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E4C6DC1F544E7F0060A230 /* LogViewController.swift */; };
 		55E729921F538C26008646AB /* Pulsator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E729911F538C26008646AB /* Pulsator.swift */; };
@@ -31,6 +33,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		55B95D271F7C0367005F6496 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 607FACCF1AFB9204008FA782;
+			remoteInfo = SwiftyFog_Example;
+		};
 		607FACE61AFB9204008FA782 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
@@ -55,6 +64,10 @@
 		553F972E1F434C6800CBF725 /* Lights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lights.swift; sourceTree = "<group>"; };
 		55B27C9F1F51C778008ED56E /* FSDAirportFlipLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSDAirportFlipLabel.h; sourceTree = "<group>"; };
 		55B27CA01F51C778008ED56E /* FSDAirportFlipLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSDAirportFlipLabel.m; sourceTree = "<group>"; };
+		55B95D221F7C0367005F6496 /* SwiftyFog_ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftyFog_ExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		55B95D241F7C0367005F6496 /* SwiftyFog_ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyFog_ExampleUITests.swift; sourceTree = "<group>"; };
+		55B95D261F7C0367005F6496 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55B95D2C1F7C0394005F6496 /* ExerciseMotor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMotor.swift; sourceTree = "<group>"; };
 		55D6DD7D1F72CE950032FB88 /* Sound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sound.swift; sourceTree = "<group>"; };
 		55DE21821F54D6AC0005B0E2 /* Train.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Train.swift; sourceTree = "<group>"; };
 		55E4C6DC1F544E7F0060A230 /* LogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
@@ -79,6 +92,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		55B95D1F1F7C0367005F6496 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		607FACCD1AFB9204008FA782 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -144,12 +164,22 @@
 			path = model;
 			sourceTree = "<group>";
 		};
+		55B95D231F7C0367005F6496 /* SwiftyFog_ExampleUITests */ = {
+			isa = PBXGroup;
+			children = (
+				55B95D241F7C0367005F6496 /* SwiftyFog_ExampleUITests.swift */,
+				55B95D261F7C0367005F6496 /* Info.plist */,
+			);
+			path = SwiftyFog_ExampleUITests;
+			sourceTree = "<group>";
+		};
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for SwiftyFog */,
 				607FACE81AFB9204008FA782 /* Tests */,
+				55B95D231F7C0367005F6496 /* SwiftyFog_ExampleUITests */,
 				607FACD11AFB9204008FA782 /* Products */,
 				CC397630025AAE5A68269570 /* Pods */,
 				1F5C2CC8A1E8D5C59B86356B /* Frameworks */,
@@ -161,6 +191,7 @@
 			children = (
 				607FACD01AFB9204008FA782 /* SwiftyFog_Example.app */,
 				607FACE51AFB9204008FA782 /* SwiftyFog_Tests.xctest */,
+				55B95D221F7C0367005F6496 /* SwiftyFog_ExampleUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -195,6 +226,7 @@
 			children = (
 				607FACEB1AFB9204008FA782 /* Tests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
+				55B95D2C1F7C0394005F6496 /* ExerciseMotor.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -231,6 +263,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		55B95D211F7C0367005F6496 /* SwiftyFog_ExampleUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55B95D2B1F7C0367005F6496 /* Build configuration list for PBXNativeTarget "SwiftyFog_ExampleUITests" */;
+			buildPhases = (
+				55B95D1E1F7C0367005F6496 /* Sources */,
+				55B95D1F1F7C0367005F6496 /* Frameworks */,
+				55B95D201F7C0367005F6496 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				55B95D281F7C0367005F6496 /* PBXTargetDependency */,
+			);
+			name = SwiftyFog_ExampleUITests;
+			productName = SwiftyFog_ExampleUITests;
+			productReference = 55B95D221F7C0367005F6496 /* SwiftyFog_ExampleUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		607FACCF1AFB9204008FA782 /* SwiftyFog_Example */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "SwiftyFog_Example" */;
@@ -278,10 +328,16 @@
 		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 0900;
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
+					55B95D211F7C0367005F6496 = {
+						CreatedOnToolsVersion = 9.0;
+						DevelopmentTeam = 4JYR7R4Y2M;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 607FACCF1AFB9204008FA782;
+					};
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = 8VPYJWT4Q6;
@@ -310,11 +366,19 @@
 			targets = (
 				607FACCF1AFB9204008FA782 /* SwiftyFog_Example */,
 				607FACE41AFB9204008FA782 /* SwiftyFog_Tests */,
+				55B95D211F7C0367005F6496 /* SwiftyFog_ExampleUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		55B95D201F7C0367005F6496 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		607FACCE1AFB9204008FA782 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -437,6 +501,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		55B95D1E1F7C0367005F6496 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55B95D251F7C0367005F6496 /* SwiftyFog_ExampleUITests.swift in Sources */,
+				55B95D2E1F7C043F005F6496 /* ExerciseMotor.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		607FACCC1AFB9204008FA782 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -470,6 +543,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		55B95D281F7C0367005F6496 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 607FACCF1AFB9204008FA782 /* SwiftyFog_Example */;
+			targetProxy = 55B95D271F7C0367005F6496 /* PBXContainerItemProxy */;
+		};
 		607FACE71AFB9204008FA782 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 607FACCF1AFB9204008FA782 /* SwiftyFog_Example */;
@@ -497,6 +575,54 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		55B95D291F7C0367005F6496 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = SwiftyFog_ExampleUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.objectcomputing.SwiftyFog-ExampleUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SwiftyFog_Example;
+			};
+			name = Debug;
+		};
+		55B95D2A1F7C0367005F6496 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = SwiftyFog_ExampleUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.objectcomputing.SwiftyFog-ExampleUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SwiftyFog_Example;
+			};
+			name = Release;
+		};
 		607FACED1AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -674,6 +800,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		55B95D2B1F7C0367005F6496 /* Build configuration list for PBXNativeTarget "SwiftyFog_ExampleUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55B95D291F7C0367005F6496 /* Debug */,
+				55B95D2A1F7C0367005F6496 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "SwiftyFog" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

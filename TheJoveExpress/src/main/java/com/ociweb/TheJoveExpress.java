@@ -6,6 +6,7 @@ import com.ociweb.gl.api.MQTTQoS;
 import com.ociweb.iot.grove.simple_analog.SimpleAnalogTwig;
 import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometerTwig;
 import com.ociweb.iot.maker.*;
+import com.ociweb.pronghorn.iot.i2c.I2CJFFIStage;
 
 import static com.ociweb.iot.grove.motor_driver.MotorDriverTwig.MotorDriver;
 import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_96x96;
@@ -18,6 +19,8 @@ public class TheJoveExpress implements FogApp
     @Override
     public void declareConnections(Hardware c) {
         config = new TrainConfiguration(c);
+
+        I2CJFFIStage.debugCommands = false;
 
         // TODO: calculating maxMessageLength anf maxinFlight given the private channel definitions and arbitrary bridging
         // is too difficult. And we are declaring this in connections where channel message lengths are in behavior
