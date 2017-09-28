@@ -32,7 +32,6 @@
 
 /* Begin PBXFileReference section */
 		869B8BFE1F7C4B3B00E9CD4E /* SwiftyFog_Mac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyFog_Mac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		869B8C001F7C4BD700E9CD4E /* SwiftyFog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyFog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		869B8C091F7C54AA00E9CD4E /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		86E2E0321F7C474C004377E8 /* Example_MacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example_MacOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86E2E0351F7C474C004377E8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -66,7 +65,6 @@
 		869B8BFC1F7C4B3B00E9CD4E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				869B8C001F7C4BD700E9CD4E /* SwiftyFog.framework */,
 				869B8BFE1F7C4B3B00E9CD4E /* SwiftyFog_Mac.framework */,
 			);
 			name = Frameworks;

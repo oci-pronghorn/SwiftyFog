@@ -42,6 +42,14 @@ class HelloWorldViewController : NSViewController {
 		}
 	}
 	
+	@IBAction func unsubscribePressed(_ sender: Any) {
+		print("unsubscribe!")
+	}
+	
+	@IBAction func subscribeAllPressed(_ sender: Any) {
+		print("subscribe!")
+	}
+	
 	override var representedObject: Any? {
 		didSet {
 		// Update the view, if already loaded.
@@ -57,7 +65,6 @@ extension HelloWorldViewController {
 		case .started:
 			break
 		case .connected(_):
-			//connectDisconnectButton.set
 			break
 		case .pinged(let status):
 			switch status {

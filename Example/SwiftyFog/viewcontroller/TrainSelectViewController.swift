@@ -13,13 +13,13 @@ class TrainSelectViewController: UIViewController {
 	var mqtt: MQTTBridge!
 	var subscription: MQTTSubscription?
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+	override func viewDidLoad() {
+			super.viewDidLoad()
+	}
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
+	override func didReceiveMemoryWarning() {
+			super.didReceiveMemoryWarning()
+	}
 
 	@IBAction func publishQos0() {
 		mqtt.publish(MQTTMessage(topic: "Bobs/Store/1", qos: .atMostOnce)) { (success) in

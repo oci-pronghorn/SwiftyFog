@@ -21,7 +21,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		controller = AppController()
 		controller.delegate = self
 	
-		helloWorldView = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "HelloWorld")) as! HelloWorldViewController
+		helloWorldView = NSApplication.shared.mainWindow!.contentViewController as! HelloWorldViewController
 
 		let scoped = controller.mqtt.createBridge(subPath: "HelloWorld")
 		

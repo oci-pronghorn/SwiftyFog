@@ -52,8 +52,7 @@ public struct MQTTClientParams {
       // Only "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
       let deviceID = UIDevice.current.identifierForVendor!.uuidString
     #elseif os(OSX)
-      //Since we are building for macOS, no direct identifier is used. Instead use the device serial number
-      let deviceID = CurrentMac.macSerialNumber()
+      let deviceID = String.macUUID
     #endif
 		let appId = Bundle.main.bundleIdentifier!
 		let fullId = appId + "-" + deviceID
@@ -65,4 +64,18 @@ public struct MQTTClientParams {
 		self.keepAlive = keepAlive
 		self.detectServerDeath = keepAlive + (keepAlive / 2)
 	}
+}
+
+private extension String {
+	
+	static var macUUID : String {
+		get
+		{
+			var hwUUIDBytes: [UInt8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+			var ts = timespec(tv_sec: 0,tv_nsec: 0)
+			gethostuuid(&hwUUIDBytes, &ts)
+			return NSUUID(uuidBytes: hwUUIDBytes).uuidString
+		}
+	}
+	
 }

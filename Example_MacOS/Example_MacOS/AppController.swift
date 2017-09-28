@@ -27,7 +27,7 @@ class AppController {
 		metrics = MQTTMetrics(prefix: {"\(Date.nowInSeconds()) MQTT "})
 		metrics?.doPrintSendPackets = true
 		metrics?.doPrintReceivePackets = true
-		//metrics?.doPrintWireData = true
+		metrics?.doPrintWireData = true
 		metrics?.debugOut = {print($0)}
 		
 		// Create the concrete MQTTClient to connect to a specific broker
