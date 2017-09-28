@@ -8,6 +8,9 @@
 import Foundation
 import IOKit
 
+/**
+	This file can be renamed. This class is responsible for certain Mac-specific tasks.
+*/
 public class CurrentMac {
 	
 	/**
@@ -16,8 +19,8 @@ public class CurrentMac {
 	 */
   static func macSerialNumber() -> String {
     
-      //Get the platform expert
-      let platformExpert: io_service_t = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"));
+		//Get the platform expert
+		let platformExpert: io_service_t = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"));
     
       //Serial number as a CF String
 		let serialNumberAsCFString = IORegistryEntryCreateCFProperty(platformExpert, kIOPlatformSerialNumberKey as CFString, kCFAllocatorDefault, 0);
@@ -26,5 +29,5 @@ public class CurrentMac {
 		
 		return serialNumberAsCFString?.takeUnretainedValue() as! String
     
-    }
+	}
 }

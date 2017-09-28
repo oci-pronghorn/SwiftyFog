@@ -3,6 +3,7 @@
 //  Example_MacOS
 //
 //  Created by Tobias Schweiger on 9/27/17.
+//  Created by David Giovannini on 9/4/17.
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
@@ -36,24 +37,26 @@ class AppController {
 		
 		let mqtt = MQTTClient(
 			client: client,
-			host: MQTTHostParams(port: .standard),
+			host: MQTTHostParams(),
 			auth: MQTTAuthentication(username: "tobischw", password: "password"),
 			reconnect: MQTTReconnectParams(),
 			metrics: metrics)
+		
 		mqtt.delegate = self
 		
 		self.mqtt = mqtt
+		
 	}
 	
 	public func goForeground() {
-		// If want to be started, restore it
+		// If it wants to be started, restore it
 		if wasStarted {
 			mqtt.start()
 		}
 	}
 	
 	public func goBackground() {
-		// Be a good iOS citizen and shutdown the connection and timers
+		// Be a good MacOS citizen and shutdown the connection and timers
 		wasStarted = mqtt.started
 		mqtt.stop()
 	}

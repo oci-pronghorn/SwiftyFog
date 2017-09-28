@@ -13,20 +13,35 @@ import SwiftyFog_Mac
 class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	var controller: AppController!
+	
+	var helloWorldView : HelloWorldViewController!
 
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		
 		controller = AppController()
-		controller.delegate = self as? AppControllerDelegate
+		controller.delegate = self
+	
+		helloWorldView = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "HelloWorld")) as! HelloWorldViewController
+
+		let scoped = controller.mqtt.createBridge(subPath: "HelloWorld")
 		
-		helloWorldView = 
-		
+		helloWorldView.mqtt = scoped
+		helloWorldView.mqttControl = controller.mqtt
 	}
 
 	func applicationWillTerminate(_ aNotification: Notification) {
-		// Insert code here to tear down your application
+		controller.goBackground()
 	}
 
+}
 
+extension AppDelegate: AppControllerDelegate {
+	func on(log: String) {
+		print(log)
+	}
+	
+	func on(connected: MQTTConnectedState) {
+		self.helloWorldView.mqtt(connected: connected)
+	}
 }
 

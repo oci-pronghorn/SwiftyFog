@@ -11,17 +11,35 @@ import SwiftyFog_Mac
 
 class HelloWorldViewController : NSViewController {
 	
+	var mqttControl: MQTTControl! {
+		didSet {
+			mqttControl.start()
+		}
+	}
+	
+	@IBOutlet weak var connectDisconnectButton: NSButton!
 	var mqtt: MQTTBridge!
 	var subscription: MQTTSubscription?
 
+	@IBOutlet weak var statusTextField: NSTextField!
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
-		// Do any additional setup after loading the view.
 	}
 
-	@IBAction func connectButtonPressed(_ sender: Any) {
-		print("pressed!")
+	@IBAction func connectDisconnectPressed(_ sender: Any) {
+		if mqttControl.started {
+			mqttControl.stop()
+		}
+		else {
+			mqttControl.start()
+		}
+	}
+	
+	@IBAction func publishFirstTestPressed(_ sender: Any) {
+		mqtt.publish(MQTTMessage(topic: "HelloWorld/SayHello", qos: .atMostOnce)) { (success) in
+			print("\(Date.nowInSeconds()) publishQos0: \(success)")
+		}
 	}
 	
 	override var representedObject: Any? {
@@ -30,6 +48,38 @@ class HelloWorldViewController : NSViewController {
 		}
 	}
 
+}
 
+//TODO: Setting button title crashes the app. Presumably threading issue?
+extension HelloWorldViewController {
+	func mqtt(connected: MQTTConnectedState) {
+		switch connected {
+		case .started:
+			break
+		case .connected(_):
+			//connectDisconnectButton.set
+			break
+		case .pinged(let status):
+			switch status {
+			case .notConnected:
+				break
+			case .sent:
+				break
+			case .skipped:
+				break
+			case .ack:
+				break
+			case .serverDied:
+				break
+			}
+			break
+		case .retry(_, _, _, _):
+			break
+		case .retriesFailed(_, _, _):
+			break
+		case .discconnected(_, _):
+			break
+		}
+	}
 }
 
