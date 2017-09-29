@@ -9,8 +9,23 @@
 import Cocoa
 import SwiftyFog_Mac
 
-/* TODO: Maybe make the demo more interactive? i.e. actually able to receive and publish messages */
+public extension NSSlider {
+	public var rational: FogRational<Int64> {
+		get {
+			let numerator = NSNumber(value: self.intValue).int64Value
+			let denominator = NSNumber( value: self.maxValue).int64Value
+			
+			return FogRational(num: numerator, den: denominator)
+		}
+		set {
+			self.intValue = Int32(Float(self.maxValue) * Float(newValue.num) / Float(newValue.den))
+		}
+	}
+}
+
 class HelloWorldViewController : NSViewController {
+	
+	let thermometer = Thermometer()
 	
 	var mqttControl: MQTTControl! {
 		didSet {
@@ -18,12 +33,19 @@ class HelloWorldViewController : NSViewController {
 		}
 	}
 	
-	var mqtt: MQTTBridge!
+	var mqtt: MQTTBridge! {
+		didSet {
+			thermometer.delegate = self
+			thermometer.mqtt = mqtt.createBridge(subPath: "thermometer")
+		}
+	}
 	var subscription: MQTTSubscription?
 	
 	@IBOutlet weak var statusTextField: NSTextField!
 	@IBOutlet var logTextView: NSTextView!
 	@IBOutlet weak var connectDisconnectButton: NSButton!
+	@IBOutlet weak var temperatureSlider: NSSlider!
+	@IBOutlet weak var temperatureTextField: NSTextField!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -47,16 +69,14 @@ class HelloWorldViewController : NSViewController {
 	}
 	
 	@IBAction func publishFirstTestPressed(_ sender: Any) {
-		mqtt.publish(MQTTMessage(topic: "Test/SayHello", qos: .atMostOnce)) { (success) in
-			print("\(Date.nowInSeconds()) publishQos0: \(success)")
-		}
+		
 	}
 	
 	@IBAction func subscribeAllPressed(_ sender: Any) {
 		// Since we are possibly resubscribing to the same topic we force the unsubscribe first.
 		// Otherwide we redundantly subscribe and then unsubscribe
 		subscription = nil
-		subscription = mqtt.subscribe(topics: [("Test/#", .atMostOnce)]) { status in
+		subscription = mqtt.subscribe(topics: [("thermometer/#", .atMostOnce)]) { status in
 			print("\(Date.nowInSeconds()) subAll0: \(status)")
 		}
 	}
@@ -107,4 +127,27 @@ extension HelloWorldViewController {
 			break
 		}
 	}
+}
+
+extension HelloWorldViewController {
+	func feedbackCut() {
+		thermometer.reset()
+	}
+	
+	func assertValues() {
+		thermometer.assertValues()
+	}
+	
+	@IBAction func doTemperatureAdjustment(_ sender: NSSlider) {
+		thermometer.control(temperature: sender.rational)
+	}
+	
+}
+
+extension HelloWorldViewController : ThermometerDelegate {
+	func thermometer(temperature: FogRational<Int64>, _ asserted: Bool) {
+		self.temperatureTextField.stringValue = "Temperature: \(temperature.num)"
+		
+	}
+	
 }

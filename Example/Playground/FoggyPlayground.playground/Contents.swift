@@ -14,6 +14,7 @@ let controller : AppController = AppController(username: "test", password: "pass
 var mqttControl: MQTTControl! {
 	didSet {
 		mqttControl.start()
+		print("Started the MQTT controller!")
 	}
 }
 

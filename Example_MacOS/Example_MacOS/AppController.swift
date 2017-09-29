@@ -82,7 +82,7 @@ extension AppController: MQTTClientDelegate {
 			log = "Connection Failed \(counter).\(rescus)"
 			break
 		case .discconnected(let reason, let error):
-			log = "Discconnected \(reason) \(error?.localizedDescription ?? "")"
+			log = "Disconnected \(reason) \(error?.localizedDescription ?? "")"
 			break
 		}
 		DispatchQueue.main.async {
@@ -93,7 +93,7 @@ extension AppController: MQTTClientDelegate {
 	
 	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage) {
 		DispatchQueue.main.async {
-			self.delegate?.on(log: "Unhandled \(unhandledMessage)")
+			self.delegate?.on(log: "Received (unhandled): \(unhandledMessage)")
 		}
 	}
 	

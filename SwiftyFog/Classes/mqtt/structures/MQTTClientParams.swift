@@ -51,14 +51,16 @@ public struct MQTTClientParams {
       // 1 and 23 UTF-8 encoded bytes
       // Only "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
       let deviceID = UIDevice.current.identifierForVendor!.uuidString
+			let platform = "ios"
     #elseif os(OSX)
       let deviceID = String.macUUID
+			let platform = "osx"
     #endif
 		let appId = Bundle.main.bundleIdentifier!
 		let fullId = appId + "-" + deviceID
 		let hash = Int64(fullId.hash)
 		let uhash = UInt64(bitPattern: hash)
-		let asciied = String(format: "ios%20lu", uhash)
+		let asciied = String(format: "%@%20lu", platform, uhash)
 		self.clientID = asciied
 		self.cleanSession = cleanSession
 		self.keepAlive = keepAlive
