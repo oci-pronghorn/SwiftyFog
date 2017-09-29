@@ -21,10 +21,18 @@ class HelloWorldViewController : NSViewController {
 	var subscription: MQTTSubscription?
 	
 	@IBOutlet weak var statusTextField: NSTextField!
+	@IBOutlet var logTextView: NSTextView!
 	@IBOutlet weak var connectDisconnectButton: NSButton!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+	}
+	
+	func onLog(_ str: String) {
+		DispatchQueue.main.async {
+			let _ = self.view
+			self.logTextView.textStorage?.append(NSAttributedString(string: "\(str)\n"))
+		}
 	}
 	
 	@IBAction func connectDisconnectPressed(_ sender: Any) {
@@ -53,12 +61,6 @@ class HelloWorldViewController : NSViewController {
 	
 	@IBAction func unsubscribePressed(_ sender: Any) {
 		subscription = nil
-	}
-	
-	override var representedObject: Any? {
-		didSet {
-			// Update the view, if already loaded.
-		}
 	}
 	
 }

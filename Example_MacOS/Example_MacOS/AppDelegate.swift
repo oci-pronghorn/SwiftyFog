@@ -21,6 +21,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		controller = AppController()
 		controller.delegate = self
 	
+		NSApp.activate(ignoringOtherApps: true)
 		//Get the required view controller
 		helloWorldView = NSApplication.shared.mainWindow!.contentViewController as! HelloWorldViewController
 
@@ -40,6 +41,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 extension AppDelegate: AppControllerDelegate {
 	func on(log: String) {
 		print(log)
+		helloWorldView.onLog(log)
 	}
 	
 	func on(connected: MQTTConnectedState) {
