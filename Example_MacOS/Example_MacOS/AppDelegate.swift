@@ -18,18 +18,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		
-		controller = AppController()
-		controller.delegate = self
+	}
 	
-		NSApp.activate(ignoringOtherApps: true)
-		//Get the required view controller
-		helloWorldView = NSApplication.shared.mainWindow!.contentViewController as! HelloWorldViewController
-
-		let scoped = controller.mqtt.createBridge(subPath: "HelloWorld")
-		
-		helloWorldView.mqtt = scoped
-		helloWorldView.mqttControl = controller.mqtt
-		
+	func applicationDidBecomeActive(_ notification: Notification)
+	{
+		if(helloWorldView == nil)
+		{
+			NSApp.activate(ignoringOtherApps: true)
+			
+			//Setup the AppController
+			controller = AppController()
+			controller.delegate = self
+			
+			//Get the required view controller
+			helloWorldView = NSApplication.shared.mainWindow!.contentViewController as! HelloWorldViewController
+			
+			let scoped = controller.mqtt.createBridge(subPath: "HelloWorld")
+			
+			helloWorldView.mqtt = scoped
+			helloWorldView.mqttControl = controller.mqtt
+		}
 	}
 
 	func applicationWillTerminate(_ aNotification: Notification) {
