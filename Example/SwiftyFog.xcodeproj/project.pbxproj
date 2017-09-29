@@ -85,6 +85,7 @@
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		6E46EF479BFADDD35589A284 /* SwiftyFog.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SwiftyFog.podspec; path = ../SwiftyFog.podspec; sourceTree = "<group>"; };
 		795BA4F4B08841323E58F72E /* Pods_SwiftyFog_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftyFog_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8635EB101F7ED95000FEBECA /* FoggyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = FoggyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9AF14BE34FBE9C58AA89F2A6 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		9E02941130612C3C4AD003D1 /* Pods-SwiftyFog_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftyFog_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftyFog_Example/Pods-SwiftyFog_Example.release.xcconfig"; sourceTree = "<group>"; };
 		B1CDEFF6DB3CCADF643EE16C /* Pods_SwiftyFog_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftyFog_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,6 +177,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				8635EB111F7ED95200FEBECA /* Playground */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for SwiftyFog */,
 				607FACE81AFB9204008FA782 /* Tests */,
@@ -247,6 +249,14 @@
 				BB5773A5E6067FDBCF56BB2A /* LICENSE */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		8635EB111F7ED95200FEBECA /* Playground */ = {
+			isa = PBXGroup;
+			children = (
+				8635EB101F7ED95000FEBECA /* FoggyPlayground.playground */,
+			);
+			path = Playground;
 			sourceTree = "<group>";
 		};
 		CC397630025AAE5A68269570 /* Pods */ = {

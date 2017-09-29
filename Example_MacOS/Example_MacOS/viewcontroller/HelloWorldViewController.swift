@@ -9,6 +9,7 @@
 import Cocoa
 import SwiftyFog_Mac
 
+/* TODO: Maybe make the demo more interactive? i.e. actually able to receive and publish messages */
 class HelloWorldViewController : NSViewController {
 	
 	var mqttControl: MQTTControl! {
@@ -32,6 +33,7 @@ class HelloWorldViewController : NSViewController {
 		DispatchQueue.main.async {
 			let _ = self.view
 			self.logTextView.textStorage?.append(NSAttributedString(string: "\(str)\n"))
+			self.logTextView.scrollToEndOfDocument(self)
 		}
 	}
 	
