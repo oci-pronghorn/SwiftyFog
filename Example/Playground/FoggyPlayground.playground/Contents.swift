@@ -1,6 +1,21 @@
-//: Playground - noun: a place where people can play
+/*
+	Welcome to FoggyPlayground!
+	This playground attempts to introduce you to the basics of
+  FoggySwift, a Swift library for MQTT.
+*/
 
 import UIKit
 import SwiftyFog
 
-var str = "Hello, playground"
+import PlaygroundSupport
+
+let controller : AppController = AppController(username: "test", password: "password")
+
+var mqttControl: MQTTControl! {
+	didSet {
+		mqttControl.start()
+	}
+}
+
+var mqtt: MQTTBridge!
+var subscription: MQTTSubscription?
