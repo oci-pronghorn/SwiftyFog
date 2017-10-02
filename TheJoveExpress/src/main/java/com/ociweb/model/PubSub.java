@@ -9,13 +9,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 // TODO: finish and move to GL
+
+// Accumulates MQTT pubs and subs so maker does not have to reason duplicates across behaviors
+// Attempts DRY principle with topic names
+// Combines data routed MQTT pub/sub and FogLight pub/sub into one declaration
+// Allows a behavior to be registered more than once if that makes maker's code easier to read
+// Encapsulates internal/external mapping for mqtt
+// MQTT can be disabled (optional null)
+
 public class PubSub {
     private CharSequence externalScope;
     private MQTTBridge mqttBridge;
     private MsgRuntime<HardwareImpl, ListenerFilterIoT> runtime;
 
+    private static class Trans {
+        MQTTQoS qos;
+        boolean retain;
+    }
+
     private Map<Behavior, ListenerFilter> registeredListeners = new HashMap<>();
     private Map<String, MQTTQoS> accumeMQTTSubscriptions = new HashMap<>();
+    private Map<String, Trans> accumeMQTTTransmissions = new HashMap<>();
 
     public PubSub(String externalScope, MsgRuntime<HardwareImpl, ListenerFilterIoT> runtime, MQTTBridge mqttBridge) {
         this.externalScope = externalScope + "/";
@@ -42,7 +56,15 @@ public class PubSub {
 
     public String publish(String topic, boolean retain, MQTTQoS qos) {
         if (mqttBridge != null) {
-            runtime.bridgeTransmission(topic, externalScope + topic, mqttBridge).setQoS(qos).setRetain(retain);
+            accumeMQTTTransmissions.compute(topic, (key, oldValue) -> {
+                if (oldValue == null || qos.getSpecification() > oldValue.qos.getSpecification() || !oldValue.retain) {
+                    Trans tran = new Trans();
+                    tran.retain = retain;
+                    tran.qos = qos;
+                    return tran;
+                }
+                return oldValue;
+            });
         }
         return topic;
     }
@@ -65,7 +87,16 @@ public class PubSub {
     public void finish() {
         if (mqttBridge != null) {
             for (Map.Entry<String, MQTTQoS> entry : accumeMQTTSubscriptions.entrySet()) {
-                runtime.bridgeSubscription(entry.getKey(), externalScope + entry.getKey(), mqttBridge).setQoS(entry.getValue());
+                String internalTopic = entry.getKey();
+                String externalTopic = externalScope + internalTopic;
+                runtime.bridgeSubscription(internalTopic, externalTopic, mqttBridge).setQoS(entry.getValue());
+            }
+            for (Map.Entry<String, Trans> entry : accumeMQTTTransmissions.entrySet()) {
+                String internalTopic = entry.getKey();
+                String externalTopic = externalScope + internalTopic;
+                MQTTQoS qos = entry.getValue().qos;
+                boolean retain = entry.getValue().retain;
+                runtime.bridgeTransmission(internalTopic, externalTopic, mqttBridge).setQoS(qos).setRetain(retain);
             }
         }
     }
