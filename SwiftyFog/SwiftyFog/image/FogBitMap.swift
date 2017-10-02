@@ -6,7 +6,11 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
+#if os(iOS)
 import UIKit
+#else
+import Cocoa
+#endif
 
 public struct FogBitMap: FogExternalizable, CustomStringConvertible {
 	public let layout: FogBitmapLayout
@@ -46,7 +50,7 @@ public struct FogBitMap: FogExternalizable, CustomStringConvertible {
 		}
 		return str
 	}
-	
+#if os(iOS)
 	public mutating func imbue(_ source: UIImage) -> UIImage? {
 		let corrected = source.fogFixedOrientation()
 		let resized = corrected.fogResize(layout.size)
@@ -63,4 +67,5 @@ public struct FogBitMap: FogExternalizable, CustomStringConvertible {
 	public var image: UIImage? {
         return nil
     }
+#endif
 }

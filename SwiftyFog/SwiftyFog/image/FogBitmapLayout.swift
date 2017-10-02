@@ -7,7 +7,11 @@
 //
 
 import Foundation
+#if os(iOS)
 import UIKit
+#else
+import Cocoa
+#endif
 
 public struct FogBitmapLayout: FogExternalizable, Equatable, CustomStringConvertible {
     public var width: UInt32 = 1
