@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "container:"
+      name = "examples">
+      <Group
+         location = "container:"
+         name = "playground">
+         <FileRef
+            location = "group:examples/playground/FoggyPlayground.playground">
+         </FileRef>
+      </Group>
+      <Group
+         location = "container:"
+         name = "iOS">
+         <FileRef
+            location = "group:examples/ios/TrainControl/TrainControl.xcodeproj">
+         </FileRef>
+      </Group>
+      <Group
+         location = "container:"
+         name = "mac">
+         <FileRef
+            location = "group:examples/mac/Thermometer/Thermometer.xcodeproj">
+         </FileRef>
+      </Group>
+   </Group>
+   <FileRef
+      location = "group:LICENSE">
+   </FileRef>
+   <FileRef
+      location = "group:README.md">
+   </FileRef>
+   <FileRef
+      location = "group:SwiftyFog/SwiftyFog.xcodeproj">
+   </FileRef>
+</Workspace>

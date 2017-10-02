@@ -1,5 +1,0 @@
-use_frameworks!
-
-target 'Example_MacOS' do
-  pod 'SwiftyFog', :path => '../'
-end

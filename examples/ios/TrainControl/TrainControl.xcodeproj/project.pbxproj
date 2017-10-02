@@ -1,0 +1,667 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		554348391F82D3AD00C3C2CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348381F82D3AD00C3C2CB /* AppDelegate.swift */; };
+		5543483E1F82D3AD00C3C2CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5543483C1F82D3AD00C3C2CB /* Main.storyboard */; };
+		554348401F82D3AD00C3C2CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5543483F1F82D3AD00C3C2CB /* Assets.xcassets */; };
+		5543484E1F82D3AD00C3C2CB /* TrainControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543484D1F82D3AD00C3C2CB /* TrainControlTests.swift */; };
+		554348591F82D3AD00C3C2CB /* TrainControlUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348581F82D3AD00C3C2CB /* TrainControlUITests.swift */; };
+		5543487B1F82D46100C3C2CB /* Billboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348671F82D46100C3C2CB /* Billboard.swift */; };
+		5543487C1F82D46100C3C2CB /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348681F82D46100C3C2CB /* Engine.swift */; };
+		5543487D1F82D46100C3C2CB /* Lights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348691F82D46100C3C2CB /* Lights.swift */; };
+		5543487E1F82D46100C3C2CB /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486A1F82D46100C3C2CB /* Sound.swift */; };
+		5543487F1F82D46100C3C2CB /* Train.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486B1F82D46100C3C2CB /* Train.swift */; };
+		554348801F82D46100C3C2CB /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486D1F82D46100C3C2CB /* LogViewController.swift */; };
+		554348811F82D46100C3C2CB /* TrainSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486E1F82D46100C3C2CB /* TrainSelectViewController.swift */; };
+		554348821F82D46100C3C2CB /* TrainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486F1F82D46100C3C2CB /* TrainViewController.swift */; };
+		554348831F82D46100C3C2CB /* TrainAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348701F82D46100C3C2CB /* TrainAppController.swift */; };
+		554348841F82D46100C3C2CB /* FogRationalUi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348721F82D46100C3C2CB /* FogRationalUi.swift */; };
+		554348861F82D46100C3C2CB /* MetalPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348751F82D46100C3C2CB /* MetalPanelView.swift */; };
+		554348871F82D46100C3C2CB /* Pulsator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348761F82D46100C3C2CB /* Pulsator.swift */; };
+		554348881F82D46100C3C2CB /* ScubControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348771F82D46100C3C2CB /* ScubControl.swift */; };
+		5543488B1F82D48A00C3C2CB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5543488A1F82D48A00C3C2CB /* Images.xcassets */; };
+		554348941F82D4D700C3C2CB /* SwiftyFog_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554348951F82D4D700C3C2CB /* SwiftyFog_iOS.framework */; };
+		554348971F82D5B100C3C2CB /* ExerciseMotor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348961F82D5B100C3C2CB /* ExerciseMotor.swift */; };
+		5543489D1F82D65B00C3C2CB /* WMGaugeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 554348991F82D65A00C3C2CB /* WMGaugeView.m */; };
+		5543489E1F82D65B00C3C2CB /* FSDAirportFlipLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5543489C1F82D65A00C3C2CB /* FSDAirportFlipLabel.m */; };
+		554348A01F82D6FE00C3C2CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5543484A1F82D3AD00C3C2CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5543482D1F82D3AD00C3C2CB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 554348341F82D3AD00C3C2CB;
+			remoteInfo = TrainControl;
+		};
+		554348551F82D3AD00C3C2CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5543482D1F82D3AD00C3C2CB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 554348341F82D3AD00C3C2CB;
+			remoteInfo = TrainControl;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		554348351F82D3AD00C3C2CB /* TrainControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrainControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		554348381F82D3AD00C3C2CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		5543483D1F82D3AD00C3C2CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		5543483F1F82D3AD00C3C2CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		554348441F82D3AD00C3C2CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		554348491F82D3AD00C3C2CB /* TrainControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrainControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5543484D1F82D3AD00C3C2CB /* TrainControlTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainControlTests.swift; sourceTree = "<group>"; };
+		5543484F1F82D3AD00C3C2CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		554348541F82D3AD00C3C2CB /* TrainControlUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrainControlUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		554348581F82D3AD00C3C2CB /* TrainControlUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainControlUITests.swift; sourceTree = "<group>"; };
+		5543485A1F82D3AD00C3C2CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		554348671F82D46100C3C2CB /* Billboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Billboard.swift; sourceTree = "<group>"; };
+		554348681F82D46100C3C2CB /* Engine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
+		554348691F82D46100C3C2CB /* Lights.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lights.swift; sourceTree = "<group>"; };
+		5543486A1F82D46100C3C2CB /* Sound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sound.swift; sourceTree = "<group>"; };
+		5543486B1F82D46100C3C2CB /* Train.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Train.swift; sourceTree = "<group>"; };
+		5543486D1F82D46100C3C2CB /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
+		5543486E1F82D46100C3C2CB /* TrainSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainSelectViewController.swift; sourceTree = "<group>"; };
+		5543486F1F82D46100C3C2CB /* TrainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainViewController.swift; sourceTree = "<group>"; };
+		554348701F82D46100C3C2CB /* TrainAppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainAppController.swift; sourceTree = "<group>"; };
+		554348721F82D46100C3C2CB /* FogRationalUi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogRationalUi.swift; sourceTree = "<group>"; };
+		554348751F82D46100C3C2CB /* MetalPanelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalPanelView.swift; sourceTree = "<group>"; };
+		554348761F82D46100C3C2CB /* Pulsator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pulsator.swift; sourceTree = "<group>"; };
+		554348771F82D46100C3C2CB /* ScubControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScubControl.swift; sourceTree = "<group>"; };
+		5543488A1F82D48A00C3C2CB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		554348951F82D4D700C3C2CB /* SwiftyFog_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyFog_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		554348961F82D5B100C3C2CB /* ExerciseMotor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseMotor.swift; sourceTree = "<group>"; };
+		554348981F82D65900C3C2CB /* TrainControl-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TrainControl-Bridging-Header.h"; sourceTree = "<group>"; };
+		554348991F82D65A00C3C2CB /* WMGaugeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMGaugeView.m; sourceTree = "<group>"; };
+		5543489A1F82D65A00C3C2CB /* WMGaugeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMGaugeView.h; sourceTree = "<group>"; };
+		5543489B1F82D65A00C3C2CB /* FSDAirportFlipLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSDAirportFlipLabel.h; sourceTree = "<group>"; };
+		5543489C1F82D65A00C3C2CB /* FSDAirportFlipLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSDAirportFlipLabel.m; sourceTree = "<group>"; };
+		5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		554348321F82D3AD00C3C2CB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				554348941F82D4D700C3C2CB /* SwiftyFog_iOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		554348461F82D3AD00C3C2CB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		554348511F82D3AD00C3C2CB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5543482C1F82D3AD00C3C2CB = {
+			isa = PBXGroup;
+			children = (
+				554348371F82D3AD00C3C2CB /* TrainControl */,
+				5543484C1F82D3AD00C3C2CB /* TrainControlTests */,
+				554348571F82D3AD00C3C2CB /* TrainControlUITests */,
+				554348361F82D3AD00C3C2CB /* Products */,
+				554348931F82D4D700C3C2CB /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		554348361F82D3AD00C3C2CB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				554348351F82D3AD00C3C2CB /* TrainControl.app */,
+				554348491F82D3AD00C3C2CB /* TrainControlTests.xctest */,
+				554348541F82D3AD00C3C2CB /* TrainControlUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		554348371F82D3AD00C3C2CB /* TrainControl */ = {
+			isa = PBXGroup;
+			children = (
+				554348381F82D3AD00C3C2CB /* AppDelegate.swift */,
+				554348661F82D46100C3C2CB /* model */,
+				554348701F82D46100C3C2CB /* TrainAppController.swift */,
+				554348711F82D46100C3C2CB /* view */,
+				5543486C1F82D46100C3C2CB /* viewcontroller */,
+				5543483C1F82D3AD00C3C2CB /* Main.storyboard */,
+				5543483F1F82D3AD00C3C2CB /* Assets.xcassets */,
+				5543488A1F82D48A00C3C2CB /* Images.xcassets */,
+				5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */,
+				554348441F82D3AD00C3C2CB /* Info.plist */,
+			);
+			path = TrainControl;
+			sourceTree = "<group>";
+		};
+		5543484C1F82D3AD00C3C2CB /* TrainControlTests */ = {
+			isa = PBXGroup;
+			children = (
+				5543484D1F82D3AD00C3C2CB /* TrainControlTests.swift */,
+				5543484F1F82D3AD00C3C2CB /* Info.plist */,
+			);
+			path = TrainControlTests;
+			sourceTree = "<group>";
+		};
+		554348571F82D3AD00C3C2CB /* TrainControlUITests */ = {
+			isa = PBXGroup;
+			children = (
+				554348961F82D5B100C3C2CB /* ExerciseMotor.swift */,
+				554348581F82D3AD00C3C2CB /* TrainControlUITests.swift */,
+				5543485A1F82D3AD00C3C2CB /* Info.plist */,
+			);
+			path = TrainControlUITests;
+			sourceTree = "<group>";
+		};
+		554348661F82D46100C3C2CB /* model */ = {
+			isa = PBXGroup;
+			children = (
+				554348671F82D46100C3C2CB /* Billboard.swift */,
+				554348681F82D46100C3C2CB /* Engine.swift */,
+				554348691F82D46100C3C2CB /* Lights.swift */,
+				5543486A1F82D46100C3C2CB /* Sound.swift */,
+				5543486B1F82D46100C3C2CB /* Train.swift */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		5543486C1F82D46100C3C2CB /* viewcontroller */ = {
+			isa = PBXGroup;
+			children = (
+				5543486D1F82D46100C3C2CB /* LogViewController.swift */,
+				5543486E1F82D46100C3C2CB /* TrainSelectViewController.swift */,
+				5543486F1F82D46100C3C2CB /* TrainViewController.swift */,
+			);
+			path = viewcontroller;
+			sourceTree = "<group>";
+		};
+		554348711F82D46100C3C2CB /* view */ = {
+			isa = PBXGroup;
+			children = (
+				554348721F82D46100C3C2CB /* FogRationalUi.swift */,
+				554348751F82D46100C3C2CB /* MetalPanelView.swift */,
+				554348761F82D46100C3C2CB /* Pulsator.swift */,
+				554348771F82D46100C3C2CB /* ScubControl.swift */,
+				5543489B1F82D65A00C3C2CB /* FSDAirportFlipLabel.h */,
+				5543489C1F82D65A00C3C2CB /* FSDAirportFlipLabel.m */,
+				5543489A1F82D65A00C3C2CB /* WMGaugeView.h */,
+				554348991F82D65A00C3C2CB /* WMGaugeView.m */,
+				554348981F82D65900C3C2CB /* TrainControl-Bridging-Header.h */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		554348931F82D4D700C3C2CB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				554348951F82D4D700C3C2CB /* SwiftyFog_iOS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		554348341F82D3AD00C3C2CB /* TrainControl */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5543485D1F82D3AD00C3C2CB /* Build configuration list for PBXNativeTarget "TrainControl" */;
+			buildPhases = (
+				554348311F82D3AD00C3C2CB /* Sources */,
+				554348321F82D3AD00C3C2CB /* Frameworks */,
+				554348331F82D3AD00C3C2CB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TrainControl;
+			productName = TrainControl;
+			productReference = 554348351F82D3AD00C3C2CB /* TrainControl.app */;
+			productType = "com.apple.product-type.application";
+		};
+		554348481F82D3AD00C3C2CB /* TrainControlTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 554348601F82D3AD00C3C2CB /* Build configuration list for PBXNativeTarget "TrainControlTests" */;
+			buildPhases = (
+				554348451F82D3AD00C3C2CB /* Sources */,
+				554348461F82D3AD00C3C2CB /* Frameworks */,
+				554348471F82D3AD00C3C2CB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5543484B1F82D3AD00C3C2CB /* PBXTargetDependency */,
+			);
+			name = TrainControlTests;
+			productName = TrainControlTests;
+			productReference = 554348491F82D3AD00C3C2CB /* TrainControlTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		554348531F82D3AD00C3C2CB /* TrainControlUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 554348631F82D3AD00C3C2CB /* Build configuration list for PBXNativeTarget "TrainControlUITests" */;
+			buildPhases = (
+				554348501F82D3AD00C3C2CB /* Sources */,
+				554348511F82D3AD00C3C2CB /* Frameworks */,
+				554348521F82D3AD00C3C2CB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				554348561F82D3AD00C3C2CB /* PBXTargetDependency */,
+			);
+			name = TrainControlUITests;
+			productName = TrainControlUITests;
+			productReference = 554348541F82D3AD00C3C2CB /* TrainControlUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5543482D1F82D3AD00C3C2CB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0910;
+				LastUpgradeCheck = 0910;
+				ORGANIZATIONNAME = "Object Computing Inc";
+				TargetAttributes = {
+					554348341F82D3AD00C3C2CB = {
+						CreatedOnToolsVersion = 9.1;
+						LastSwiftMigration = 0910;
+						ProvisioningStyle = Automatic;
+					};
+					554348481F82D3AD00C3C2CB = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 554348341F82D3AD00C3C2CB;
+					};
+					554348531F82D3AD00C3C2CB = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 554348341F82D3AD00C3C2CB;
+					};
+				};
+			};
+			buildConfigurationList = 554348301F82D3AD00C3C2CB /* Build configuration list for PBXProject "TrainControl" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 5543482C1F82D3AD00C3C2CB;
+			productRefGroup = 554348361F82D3AD00C3C2CB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				554348341F82D3AD00C3C2CB /* TrainControl */,
+				554348481F82D3AD00C3C2CB /* TrainControlTests */,
+				554348531F82D3AD00C3C2CB /* TrainControlUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		554348331F82D3AD00C3C2CB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5543488B1F82D48A00C3C2CB /* Images.xcassets in Resources */,
+				554348401F82D3AD00C3C2CB /* Assets.xcassets in Resources */,
+				554348A01F82D6FE00C3C2CB /* LaunchScreen.storyboard in Resources */,
+				5543483E1F82D3AD00C3C2CB /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		554348471F82D3AD00C3C2CB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		554348521F82D3AD00C3C2CB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		554348311F82D3AD00C3C2CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				554348811F82D46100C3C2CB /* TrainSelectViewController.swift in Sources */,
+				554348841F82D46100C3C2CB /* FogRationalUi.swift in Sources */,
+				5543489D1F82D65B00C3C2CB /* WMGaugeView.m in Sources */,
+				554348831F82D46100C3C2CB /* TrainAppController.swift in Sources */,
+				5543487E1F82D46100C3C2CB /* Sound.swift in Sources */,
+				5543487F1F82D46100C3C2CB /* Train.swift in Sources */,
+				554348861F82D46100C3C2CB /* MetalPanelView.swift in Sources */,
+				554348801F82D46100C3C2CB /* LogViewController.swift in Sources */,
+				554348871F82D46100C3C2CB /* Pulsator.swift in Sources */,
+				5543489E1F82D65B00C3C2CB /* FSDAirportFlipLabel.m in Sources */,
+				554348881F82D46100C3C2CB /* ScubControl.swift in Sources */,
+				5543487C1F82D46100C3C2CB /* Engine.swift in Sources */,
+				5543487D1F82D46100C3C2CB /* Lights.swift in Sources */,
+				554348821F82D46100C3C2CB /* TrainViewController.swift in Sources */,
+				5543487B1F82D46100C3C2CB /* Billboard.swift in Sources */,
+				554348391F82D3AD00C3C2CB /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		554348451F82D3AD00C3C2CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5543484E1F82D3AD00C3C2CB /* TrainControlTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		554348501F82D3AD00C3C2CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				554348591F82D3AD00C3C2CB /* TrainControlUITests.swift in Sources */,
+				554348971F82D5B100C3C2CB /* ExerciseMotor.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5543484B1F82D3AD00C3C2CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 554348341F82D3AD00C3C2CB /* TrainControl */;
+			targetProxy = 5543484A1F82D3AD00C3C2CB /* PBXContainerItemProxy */;
+		};
+		554348561F82D3AD00C3C2CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 554348341F82D3AD00C3C2CB /* TrainControl */;
+			targetProxy = 554348551F82D3AD00C3C2CB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		5543483C1F82D3AD00C3C2CB /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5543483D1F82D3AD00C3C2CB /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		5543485B1F82D3AD00C3C2CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		5543485C1F82D3AD00C3C2CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5543485E1F82D3AD00C3C2CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
+				INFOPLIST_FILE = TrainControl/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControl;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TrainControl/view/TrainControl-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5543485F1F82D3AD00C3C2CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
+				INFOPLIST_FILE = TrainControl/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControl;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TrainControl/view/TrainControl-Bridging-Header.h";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		554348611F82D3AD00C3C2CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
+				INFOPLIST_FILE = TrainControlTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControlTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrainControl.app/TrainControl";
+			};
+			name = Debug;
+		};
+		554348621F82D3AD00C3C2CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
+				INFOPLIST_FILE = TrainControlTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControlTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrainControl.app/TrainControl";
+			};
+			name = Release;
+		};
+		554348641F82D3AD00C3C2CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
+				INFOPLIST_FILE = TrainControlUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControlUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TrainControl;
+			};
+			name = Debug;
+		};
+		554348651F82D3AD00C3C2CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
+				INFOPLIST_FILE = TrainControlUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControlUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TrainControl;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		554348301F82D3AD00C3C2CB /* Build configuration list for PBXProject "TrainControl" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5543485B1F82D3AD00C3C2CB /* Debug */,
+				5543485C1F82D3AD00C3C2CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5543485D1F82D3AD00C3C2CB /* Build configuration list for PBXNativeTarget "TrainControl" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5543485E1F82D3AD00C3C2CB /* Debug */,
+				5543485F1F82D3AD00C3C2CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		554348601F82D3AD00C3C2CB /* Build configuration list for PBXNativeTarget "TrainControlTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				554348611F82D3AD00C3C2CB /* Debug */,
+				554348621F82D3AD00C3C2CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		554348631F82D3AD00C3C2CB /* Build configuration list for PBXNativeTarget "TrainControlUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				554348641F82D3AD00C3C2CB /* Debug */,
+				554348651F82D3AD00C3C2CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5543482D1F82D3AD00C3C2CB /* Project object */;
+}
