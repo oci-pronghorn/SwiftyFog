@@ -7,7 +7,11 @@
 //
 
 import Foundation
+#if os(iOS)
 import UIKit
+#else
+import Cocoa
+#endif
 
 public protocol PixelKind: Equatable {
 	init(pixel: [CGFloat])

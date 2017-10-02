@@ -1,6 +1,6 @@
 //
 //  TrainAppController.swift
-//  SwiftyFog_Example
+//  TrainControl
 //
 //  Created by David Giovannini on 9/4/17.
 //  Copyright © 2017 Object Computing Inc. All rights reserved.

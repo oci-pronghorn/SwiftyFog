@@ -11,15 +11,10 @@ SwiftyFog is a specification compliant robust and performant MQTT client impleme
 There are couple remaining TODOs.
 * Better packet retry configuration
 * File persisted packets for clean session false and relaunch of application
-* MacOS build and example
 * Not fighting the framework in the iOS Stream wrapper
 * Continue to improve Metrics information
 * Rewrite 4 year old Obj-C code in example custom controls
-
-[![CI Status](http://img.shields.io/travis/dsjove/SwiftyFog.svg?style=flat)](https://travis-ci.org/dsjove/SwiftyFog)
-[![Version](https://img.shields.io/cocoapods/v/SwiftyFog.svg?style=flat)](http://cocoapods.org/pods/SwiftyFog)
-[![License](https://img.shields.io/cocoapods/l/SwiftyFog.svg?style=flat)](http://cocoapods.org/pods/SwiftyFog)
-[![Platform](https://img.shields.io/cocoapods/p/SwiftyFog.svg?style=flat)](http://cocoapods.org/pods/SwiftyFog)
+* SwiftPackage Manager
 
 ## Example
 
@@ -27,15 +22,6 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 There is a java example built on FogLight technology to be the smart device on the other side of the MQTT broker.
 
 ## Requirements
-
-## Installation
-
-SwiftyFog is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
-
-```ruby
-pod "SwiftyFog"
-```
 
 ## Author
 
