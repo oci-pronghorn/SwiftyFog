@@ -1,5 +1,5 @@
 import Foundation
-import SwiftyFog
+import SwiftyFog_iOS
 
 public class AppController {
 	var mqtt: (MQTTBridge & MQTTControl)!

@@ -9,6 +9,7 @@ import SwiftyFog_iOS
 
 import PlaygroundSupport
 
+//TODO: Get rid of AppController
 let controller : AppController = AppController(username: "test", password: "password")
 
 var mqttControl: MQTTControl! {
