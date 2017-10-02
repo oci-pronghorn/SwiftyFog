@@ -147,7 +147,6 @@ extension HelloWorldViewController {
 extension HelloWorldViewController : ThermometerDelegate {
 	func thermometer(temperature: FogRational<Int64>, _ asserted: Bool) {
 		self.temperatureTextField.stringValue = "Temperature: \(temperature.num)"
-		
 	}
 	
 }
