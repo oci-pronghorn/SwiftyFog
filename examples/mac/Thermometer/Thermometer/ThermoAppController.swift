@@ -1,5 +1,5 @@
 //
-//  AppController.swift
+//  ThermoAppController.swift
 //  Thermometer
 //
 //  Created by Tobias Schweiger on 9/27/17.
@@ -9,17 +9,17 @@
 import Foundation
 import SwiftyFog_mac
 
-protocol AppControllerDelegate: class {
+protocol ThermoAppControllerDelegate: class {
 	func on(log: String)
 	func on(connected: MQTTConnectedState)
 }
 
-class AppController {
+class ThermoAppController {
 	var mqtt: (MQTTBridge & MQTTControl)!
 	var metrics: MQTTMetrics?
 	var wasStarted: Bool = false
 	
-	weak var delegate: AppControllerDelegate?
+	weak var delegate: ThermoAppControllerDelegate?
 	
 	init() {
 		// Setup metrics
@@ -61,7 +61,7 @@ class AppController {
 
 // The client will broadcast important events to the application
 // can react appropriately. The invoking thread is not known.
-extension AppController: MQTTClientDelegate {
+extension ThermoAppController: MQTTClientDelegate {
 	func mqtt(client: MQTTClient, connected: MQTTConnectedState) {
 		let log: String
 		switch connected {

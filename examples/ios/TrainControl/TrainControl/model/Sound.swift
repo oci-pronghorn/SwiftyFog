@@ -1,9 +1,9 @@
 //
 //  Sound.swift
-//  SwiftyFog_Example
+//  TrainControl
 //
 //  Created by David Giovannini on 9/20/17.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
 import Foundation

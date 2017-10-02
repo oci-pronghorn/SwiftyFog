@@ -11,7 +11,7 @@
 		554348C11F82D82400C3C2CB /* ThermometerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348C01F82D82400C3C2CB /* ThermometerTests.swift */; };
 		554348CC1F82D82400C3C2CB /* ThermometerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348CB1F82D82400C3C2CB /* ThermometerUITests.swift */; };
 		554348E01F82D86700C3C2CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348D91F82D86600C3C2CB /* AppDelegate.swift */; };
-		554348E11F82D86700C3C2CB /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348DA1F82D86600C3C2CB /* AppController.swift */; };
+		554348E11F82D86700C3C2CB /* ThermoAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348DA1F82D86600C3C2CB /* ThermoAppController.swift */; };
 		554348E21F82D86700C3C2CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 554348DB1F82D86700C3C2CB /* Assets.xcassets */; };
 		554348E31F82D86700C3C2CB /* Thermometer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348DD1F82D86700C3C2CB /* Thermometer.swift */; };
 		554348E41F82D86700C3C2CB /* HelloWorldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348DF1F82D86700C3C2CB /* HelloWorldViewController.swift */; };
@@ -47,7 +47,7 @@
 		554348CB1F82D82400C3C2CB /* ThermometerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThermometerUITests.swift; sourceTree = "<group>"; };
 		554348CD1F82D82400C3C2CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		554348D91F82D86600C3C2CB /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		554348DA1F82D86600C3C2CB /* AppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
+		554348DA1F82D86600C3C2CB /* ThermoAppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThermoAppController.swift; sourceTree = "<group>"; };
 		554348DB1F82D86700C3C2CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		554348DD1F82D86700C3C2CB /* Thermometer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Thermometer.swift; sourceTree = "<group>"; };
 		554348DF1F82D86700C3C2CB /* HelloWorldViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelloWorldViewController.swift; sourceTree = "<group>"; };
@@ -105,11 +105,11 @@
 			isa = PBXGroup;
 			children = (
 				554348D91F82D86600C3C2CB /* AppDelegate.swift */,
-				554348DA1F82D86600C3C2CB /* AppController.swift */,
-				554348DB1F82D86700C3C2CB /* Assets.xcassets */,
+				554348DA1F82D86600C3C2CB /* ThermoAppController.swift */,
 				554348DC1F82D86700C3C2CB /* model */,
 				554348DE1F82D86700C3C2CB /* viewcontroller */,
 				554348B31F82D82400C3C2CB /* Main.storyboard */,
+				554348DB1F82D86700C3C2CB /* Assets.xcassets */,
 				554348B61F82D82400C3C2CB /* Info.plist */,
 				554348B71F82D82400C3C2CB /* Thermometer.entitlements */,
 			);
@@ -294,7 +294,7 @@
 				554348E31F82D86700C3C2CB /* Thermometer.swift in Sources */,
 				554348E01F82D86700C3C2CB /* AppDelegate.swift in Sources */,
 				554348E41F82D86700C3C2CB /* HelloWorldViewController.swift in Sources */,
-				554348E11F82D86700C3C2CB /* AppController.swift in Sources */,
+				554348E11F82D86700C3C2CB /* ThermoAppController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

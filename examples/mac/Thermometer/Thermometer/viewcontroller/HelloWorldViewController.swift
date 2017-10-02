@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  Example_MacOS
+//  Thermometer
 //
 //  Created by Tobias Schweiger on 9/27/17.
 //  Copyright © 2017 Object Computing Inc. All rights reserved.

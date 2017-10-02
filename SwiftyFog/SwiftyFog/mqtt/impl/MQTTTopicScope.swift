@@ -1,6 +1,6 @@
 //
 //  MQTTTopicScope.swift
-//  Pods-SwiftyFog_Example
+//  Pods-TrainControl
 //
 //  Created by David Giovannini on 8/19/17.
 //

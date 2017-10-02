@@ -137,14 +137,14 @@
 			isa = PBXGroup;
 			children = (
 				554348381F82D3AD00C3C2CB /* AppDelegate.swift */,
-				554348661F82D46100C3C2CB /* model */,
 				554348701F82D46100C3C2CB /* TrainAppController.swift */,
+				554348661F82D46100C3C2CB /* model */,
 				554348711F82D46100C3C2CB /* view */,
 				5543486C1F82D46100C3C2CB /* viewcontroller */,
 				5543483C1F82D3AD00C3C2CB /* Main.storyboard */,
+				5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */,
 				5543483F1F82D3AD00C3C2CB /* Assets.xcassets */,
 				5543488A1F82D48A00C3C2CB /* Images.xcassets */,
-				5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */,
 				554348441F82D3AD00C3C2CB /* Info.plist */,
 			);
 			path = TrainControl;

@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  Example_MacOS
+//  Thermometer
 //
 //  Created by Tobias Schweiger on 9/27/17.
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
@@ -12,7 +12,7 @@ import SwiftyFog_mac
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 	
-	var controller: AppController!
+	var controller: ThermoAppController!
 	
 	var helloWorldView : HelloWorldViewController!
 
@@ -27,7 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			NSApp.activate(ignoringOtherApps: true)
 			
 			//Setup the AppController
-			controller = AppController()
+			controller = ThermoAppController()
 			controller.delegate = self
 			
 			//Get the required view controller
@@ -46,7 +46,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 }
 
-extension AppDelegate: AppControllerDelegate {
+extension AppDelegate: ThermoAppControllerDelegate {
 	func on(log: String) {
 		print(log)
 		helloWorldView.onLog(log)
