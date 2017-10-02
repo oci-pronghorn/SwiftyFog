@@ -40,7 +40,8 @@ public class TrainConfiguration  {
     TrainConfiguration(ArgumentProvider args) {
         this.trainName = args.getArgumentValue("--name", "-n", "thejoveexpress");
         String localHostName = mqttDefaultLocal ? "localhost" : this.trainName + ".local";
-        this.telemetryHost = null; //localHostName;
+        //this.telemetryHost = localHostName;
+        this.telemetryHost = null;
         this.mqttBroker = args.getArgumentValue("--broker", "-b", localHostName);
         this.mqttClientName = trainName;
     }

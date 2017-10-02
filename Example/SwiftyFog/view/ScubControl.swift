@@ -11,7 +11,6 @@ import UIKit
 
 @IBDesignable
 public  class ScrubControl : UIControl {
-
 	fileprivate var scrubTap: UITapGestureRecognizer!
 	fileprivate var scrubPan: UIPanGestureRecognizer!
 	

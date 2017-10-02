@@ -9,12 +9,6 @@
 import UIKit
 import SwiftyFog
 
-public extension UIView {
-	func setSyncronized(_ syncronized: Bool) {
-		self.backgroundColor = syncronized ? UIColor.clear : UIColor.yellow.withAlphaComponent(0.15)
-	}
-}
-
 public extension UISlider {
 	public var rational: FogRational<Int64> {
 		get {
