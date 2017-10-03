@@ -23,11 +23,11 @@ class ThermoAppController {
 	
 	init() {
 		// Setup metrics
-		metrics = MQTTMetrics(prefix: {"\(Date.nowInSeconds()) MQTT "})
+		metrics = MQTTMetrics()
 		metrics?.doPrintSendPackets = true
 		metrics?.doPrintReceivePackets = true
 		metrics?.doPrintWireData = true
-		metrics?.debugOut = {print($0)}
+		metrics?.debugOut = {print("\(Date.nowInSeconds()) MQTT \($0)")}
 		
 		// Create the concrete MQTTClient to connect to a specific broker
 		let client = MQTTClientParams()

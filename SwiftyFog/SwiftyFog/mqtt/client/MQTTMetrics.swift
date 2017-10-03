@@ -36,8 +36,6 @@ protocol MQTTIdMetrics: MQTTDebugMetrics {
 }
 
 public final class MQTTMetrics: MQTTWireMetrics, MQTTIdMetrics, MQTTClientMetrics {
-	private let prefix: ()->(String)
-	
 	public private(set) var connectionCount: UInt64 = 0
 	
 	public private(set) var idsInUse: Int = 0
@@ -61,8 +59,7 @@ public final class MQTTMetrics: MQTTWireMetrics, MQTTIdMetrics, MQTTClientMetric
 	
 	public var debugOut: ((String)->())?
 	
-	public init(prefix: @escaping ()->(String) = {""}) {
-		self.prefix = prefix
+	public init() {
 	}
 	
 	var printDebug: Bool { return debugOut != nil }
@@ -70,7 +67,7 @@ public final class MQTTMetrics: MQTTWireMetrics, MQTTIdMetrics, MQTTClientMetric
 	func debug(_ out: @autoclosure ()->(String?)) {
 		if let debugOut = debugOut {
 			if let str = out() {
-				debugOut("\(prefix())\(str)")
+				debugOut(str)
 			}
 		}
 	}

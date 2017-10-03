@@ -31,11 +31,11 @@ class TrainAppController {
 		self.network = NetworkReachability()
 	
 		// Setup metrics
-		self.metrics = MQTTMetrics(prefix: {"\(Date.nowInSeconds()) MQTT "})
+		self.metrics = MQTTMetrics()
 		self.metrics?.doPrintSendPackets = true
 		self.metrics?.doPrintReceivePackets = true
 		//metrics?.doPrintWireData = true
-		self.metrics?.debugOut = {print($0)}
+		self.metrics?.debugOut = {print("\(Date.nowInSeconds()) MQTT \($0)")}
 
 		// Create the concrete MQTTClient to connect to a specific broker
 		var client = MQTTClientParams()

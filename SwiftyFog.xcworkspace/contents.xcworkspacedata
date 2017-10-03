@@ -8,7 +8,7 @@
          location = "container:"
          name = "playground">
          <FileRef
-            location = "group:examples/playground/FoggyPlayground.playground">
+            location = "group:/Users/dave/Downloads/FogLight/SwiftyFog/examples/playground/FoggyPlaygroundMqtt.playground">
          </FileRef>
       </Group>
       <Group
