@@ -12,6 +12,8 @@ import SwiftyFog_iOS
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
+// All connection events are optioanlly broadcasted from the client
+// given a delegate
 class Delegate: MQTTClientDelegate {
 	func mqtt(client: MQTTClient, connected: MQTTConnectedState) {
 		switch connected {
@@ -44,8 +46,34 @@ class Delegate: MQTTClientDelegate {
 	}
 }
 
+// Start up the default client ("localhost")
 let delegate = Delegate()
-let mqtt = MQTTClient()
+
+let metrics = MQTTMetrics(prefix: {"\(Date.nowInSeconds()) MQTT "})
+metrics.debugOut = {print($0)}
+metrics.doPrintSendPackets = true
+metrics.doPrintReceivePackets = true
+
+let mqtt = MQTTClient(metrics: metrics)
+
+
 mqtt.delegate = delegate
 mqtt.start()
+
+// Create our business logic
+// TODO: Why are this prints not being made.
+class Business {
+	let subscription = mqtt.broadcast(to: business, topics: [
+				("my/topic", .atMostOnce, Business.receive),
+			]) { listener, state in
+				print("Subscription completion" )
+			}
+	
+	func receive(_ msg: MQTTMessage) {
+		print("Received \(msg.topic)")
+	}
+}
+
+let business = Business()
+mqtt.publish(MQTTMessage(topic: "my/topic"))
 
