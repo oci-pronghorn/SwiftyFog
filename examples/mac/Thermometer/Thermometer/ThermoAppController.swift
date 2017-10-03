@@ -72,7 +72,7 @@ extension ThermoAppController: MQTTClientDelegate {
 			log = "Connected \(counter)"
 			break
 		case .pinged(let status):
-			log = "Pinged \(status)"
+			log = "Ping \(status)"
 			break
 		case .retry(_, let rescus, let attempt, _):
 			log = "Connection Attempt \(rescus).\(attempt)"

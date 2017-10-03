@@ -1,6 +1,6 @@
 //
 //  UIImagePickerController+.swift
-//  DeviceProvisioning
+//  SwiftyFog
 //
 //  Created by David Giovannini on 12/16/16.
 //  Copyright © 2016 Object Computing Inc. All rights reserved.

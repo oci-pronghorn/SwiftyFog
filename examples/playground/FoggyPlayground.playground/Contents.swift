@@ -1,23 +1,51 @@
 /*
 	Welcome to FoggyPlayground!
-	This playground attempts to introduce you to the basics of
-  FoggySwift, a Swift library for MQTT.
+	This playground introduces you to the basics of FoggySwift, a Swift library for MQTT.
+
+  	Install Mosquitto on your Mac
+  	https://mosquitto.org/download/
 */
 
 import UIKit
+import PlaygroundSupport
 import SwiftyFog_iOS
 
-import PlaygroundSupport
+PlaygroundPage.current.needsIndefiniteExecution = true
 
-//TODO: Get rid of AppController
-let controller : AppController = AppController(username: "test", password: "password")
-
-var mqttControl: MQTTControl! {
-	didSet {
-		mqttControl.start()
-		print("Started the MQTT controller!")
+class Delegate: MQTTClientDelegate {
+	func mqtt(client: MQTTClient, connected: MQTTConnectedState) {
+		switch connected {
+		case .started:
+			print("Started")
+			break
+		case .connected(let counter):
+			print("Connected \(counter)")
+			break
+		case .pinged(let status):
+			print("Ping \(status)")
+			break
+		case .retry(_, let rescus, let attempt, _):
+			print("Connection Attempt \(rescus).\(attempt)")
+			break
+		case .retriesFailed(let counter, let rescus, _):
+			print("Connection Failed \(counter).\(rescus)")
+			break
+		case .discconnected(let reason, let error):
+			print("Discconnected \(reason) \(error?.localizedDescription ?? "")")
+			break
+		}
+	}
+	
+	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage) {
+		print("Unhandled \(unhandledMessage)")
+	}
+	
+	func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription]) {
 	}
 }
 
-var mqtt: MQTTBridge!
-var subscription: MQTTSubscription?
+let delegate = Delegate()
+let mqtt = MQTTClient()
+mqtt.delegate = delegate
+mqtt.start()
+

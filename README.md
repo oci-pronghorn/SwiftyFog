@@ -16,10 +16,10 @@ There are couple remaining TODOs.
 * Rewrite 4 year old Obj-C code in example custom controls
 * SwiftPackage Manager
 
-## Example
+## Examples
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
-There is a java example built on FogLight technology to be the smart device on the other side of the MQTT broker.
+The iOS example is written to work with the FogLight Java application, also in the examples directory.
+The Mac example demonstrates similar concepts for the desktop.
 
 ## Requirements
 
