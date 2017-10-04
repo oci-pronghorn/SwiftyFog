@@ -35,7 +35,7 @@ protocol MQTTIdMetrics: MQTTDebugMetrics {
 	func setIdsInUse(idsInUse: Int)
 }
 
-public final class MQTTMetrics: MQTTWireMetrics, MQTTIdMetrics, MQTTClientMetrics {
+public final class MQTTMetrics: MQTTWireMetrics, MQTTIdMetrics, MQTTClientMetrics, CustomStringConvertible {
 	public private(set) var connectionCount: UInt64 = 0
 	
 	public private(set) var idsInUse: Int = 0
@@ -51,15 +51,31 @@ public final class MQTTMetrics: MQTTWireMetrics, MQTTIdMetrics, MQTTClientMetric
 	public var doPrintIdRetains: Bool = false
 	public var doPrintWireData: Bool = false
 	
-	public var printSendPackets: Bool { return printDebug && doPrintSendPackets }
-	public var printReceivePackets: Bool { return printDebug && doPrintReceivePackets }
-	public var printUnhandledPackets: Bool { return printDebug && doPrintUnhandledPackets }
-	public var printIdRetains: Bool { return printDebug && doPrintIdRetains }
-	public var printWireData: Bool { return printDebug && doPrintWireData }
+	var printSendPackets: Bool { return printDebug && doPrintSendPackets }
+	var printReceivePackets: Bool { return printDebug && doPrintReceivePackets }
+	var printUnhandledPackets: Bool { return printDebug && doPrintUnhandledPackets }
+	var printIdRetains: Bool { return printDebug && doPrintIdRetains }
+	var printWireData: Bool { return printDebug && doPrintWireData }
 	
 	public var debugOut: ((String)->())?
 	
 	public init() {
+	}
+	
+	public var description: String {
+		return description(indent: "\t")
+	}
+	
+	public func description(indent: String) -> String {
+		return """
+		\(indent)connectionCount=\(connectionCount)
+		\(indent)idsInUse=\(idsInUse)
+		\(indent)written=\(written)
+		\(indent)writesFailed=\(writesFailed)
+		\(indent)received=\(received)
+		\(indent)unmarshalFailed=\(unmarshalFailed)
+		\(indent)unhandled=\(unhandled)
+		"""
 	}
 	
 	var printDebug: Bool { return debugOut != nil }

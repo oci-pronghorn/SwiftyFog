@@ -4,6 +4,8 @@
 
   	Install Mosquitto on your Mac
   	https://mosquitto.org/download/
+
+  	Be certain to build SwiftyFog_iOS for simulator on any changes to library.
 */
 
 import UIKit
@@ -68,14 +70,24 @@ class Business {
 			self.subscription = mqtt?.broadcast(to: self, topics: [
 				("my/topic", .atMostOnce, Business.receive),
 			]) { listener, state in
-				print("+ Subscription completion: \(state)" )
+				print("+ Subscription: \(state)" )
 			}
 		}
+	}
+	
+	func send() {
+		let value: Int = 42
+		let topic = "my/topic"
+		var payload = Data()
+		payload.fogAppend(42)
+		print("+ Sending \(topic) \(value)")
+		mqtt?.publish(MQTTMessage(topic: topic, payload: payload))
 	}
 	
 	private func receive(_ msg: MQTTMessage) {
 		let value: Int = msg.payload.fogExtract()
 		print("+ Received \(msg.topic) \(value)")
+		print("+ Metrics\n\(metrics)")
 		// Exit page when payload received
 		PlaygroundPage.current.finishExecution()
 	}
@@ -83,7 +95,4 @@ class Business {
 
 let business = Business()
 business.mqtt = mqtt
-var payload = Data()
-payload.fogAppend(42)
-mqtt.publish(MQTTMessage(topic: "my/topic", payload: payload))
-
+business.send()
