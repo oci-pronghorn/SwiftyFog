@@ -1,42 +1,37 @@
 //
-//  TrainAppController.swift
-//  TrainControl
+//  ARAppController.swift
+//  FoggyAR
 //
-//  Created by David Giovannini on 9/4/17.
+//  Created by Tobias Schweiger on 10/4/17.
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
 import Foundation
 import SwiftyFog_iOS
 
-/*
-	The TrainAppController manages the high level business logic of the
-	application without managing the UI nor being the Cocoa AppDelegate.
-*/
-
-protocol TrainAppControllerDelegate: class {
+protocol ARAppControllerDelegate: class {
 	func on(log: String)
 	func on(connected: MQTTConnectedState)
 }
 
-class TrainAppController {
+class ARAppController {
 	var mqtt: (MQTTBridge & MQTTControl)!
 	var network: NetworkReachability
 	var metrics: MQTTMetrics?
 	var wasStarted: Bool = true
 	
-	weak var delegate: TrainAppControllerDelegate?
+	weak var delegate: ARAppControllerDelegate?
 	
 	init(_ trainName: String) {
 		self.network = NetworkReachability()
-	
+		
 		// Setup metrics
 		self.metrics = MQTTMetrics()
 		self.metrics?.doPrintSendPackets = true
 		self.metrics?.doPrintReceivePackets = true
 		//metrics?.doPrintWireData = true
 		self.metrics?.debugOut = {print("\(Date.nowInSeconds()) MQTT \($0)")}
-
+		
 		// Create the concrete MQTTClient to connect to a specific broker
 		var client = MQTTClientParams()
 		client.detectServerDeath = 2
@@ -76,28 +71,28 @@ class TrainAppController {
 
 // The mqtt client will broadcast important events to the controller.
 // The invoking thread is not known.
-extension TrainAppController: MQTTClientDelegate {
+extension ARAppController: MQTTClientDelegate {
 	func mqtt(client: MQTTClient, connected: MQTTConnectedState) {
 		let log: String
 		switch connected {
-			case .started:
-				log = "Started"
-				break
-			case .connected(let counter):
-				log = "Connected \(counter)"
-				break
-			case .pinged(let status):
-				log = "Ping \(status)"
-				break
-			case .retry(_, let rescus, let attempt, _):
-				log = "Connection Attempt \(rescus).\(attempt)"
-				break
-			case .retriesFailed(let counter, let rescus, _):
-				log = "Connection Failed \(counter).\(rescus)"
-				break
-			case .discconnected(let reason, let error):
-				log = "Disconnected \(reason) \(error?.localizedDescription ?? "")"
-				break
+		case .started:
+			log = "Started"
+			break
+		case .connected(let counter):
+			log = "Connected \(counter)"
+			break
+		case .pinged(let status):
+			log = "Ping \(status)"
+			break
+		case .retry(_, let rescus, let attempt, _):
+			log = "Connection Attempt \(rescus).\(attempt)"
+			break
+		case .retriesFailed(let counter, let rescus, _):
+			log = "Connection Failed \(counter).\(rescus)"
+			break
+		case .discconnected(let reason, let error):
+			log = "Disconnected \(reason) \(error?.localizedDescription ?? "")"
+			break
 		}
 		DispatchQueue.main.async {
 			self.delegate?.on(log: log)
