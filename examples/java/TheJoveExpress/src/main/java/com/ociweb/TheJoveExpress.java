@@ -2,7 +2,6 @@ package com.ociweb;
 
 import com.ociweb.behaviors.*;
 import com.ociweb.gl.api.MQTTBridge;
-import com.ociweb.gl.api.MQTTConnectionFeedback;
 import com.ociweb.gl.api.MQTTQoS;
 import com.ociweb.iot.grove.simple_analog.SimpleAnalogTwig;
 import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometerTwig;
@@ -24,8 +23,6 @@ public class TheJoveExpress implements FogApp
 
         I2CJFFIStage.debugCommands = false;
 
-        // TODO: calculating maxMessageLength anf maxinFlight given the private channel definitions and arbitrary bridging
-        // is too difficult. And we are declaring this in connections where channel message lengths are in behavior
         if (config.mqttEnabled) {
             this.mqttBridge = c.useMQTT(config.mqttBroker, config.mqttPort, false, config.mqttClientName, 40, 20000)
                     .cleanSession(true)
@@ -97,8 +94,8 @@ public class TheJoveExpress implements FogApp
                         pubSub.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
                         pubSub.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce));
                 pubSub.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
-                pubSub.subscribe(engine,"engine/power/control", MQTTQoS.atMostOnce, engine::onPower);
-                pubSub.subscribe(engine,"engine/calibration/control", MQTTQoS.atMostOnce, engine::onCalibration);
+                pubSub.subscribe(engine, "engine/power/control", MQTTQoS.atMostOnce, engine::onPower);
+                pubSub.subscribe(engine, "engine/calibration/control", MQTTQoS.atMostOnce, engine::onCalibration);
             }
 
             if (config.lightsEnabled) {
@@ -112,31 +109,32 @@ public class TheJoveExpress implements FogApp
                         pubSub.publish("lights/power/feedback", false, MQTTQoS.atMostOnce),
                         pubSub.publish("lights/calibration/feedback", false, MQTTQoS.atMostOnce));
                 pubSub.subscribe(lights, allFeedback, MQTTQoS.atMostOnce, lights::onAllFeedback);
-                pubSub.subscribe(lights,"lights/override/control", MQTTQoS.atMostOnce, lights::onOverride);
-                pubSub.subscribe(lights,"lights/calibration/control", MQTTQoS.atMostOnce, lights::onCalibration);
+                pubSub.subscribe(lights, "lights/override/control", MQTTQoS.atMostOnce, lights::onOverride);
+                pubSub.subscribe(lights, "lights/calibration/control", MQTTQoS.atMostOnce, lights::onCalibration);
                 pubSub.subscribe(lights, lightsAmbientFeedback, lights::onDetected);
             }
+        }
 
-            if (config.billboardEnabled) {
-                final BillboardBehavior billboard = new BillboardBehavior(runtime,
-                        pubSub.publish("billboard/spec/feedback", true, MQTTQoS.atMostOnce));
-                pubSub.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
-                pubSub.subscribe(billboard, "billboard/image/control", MQTTQoS.atMostOnce, billboard::onImage);
-            }
+        if (config.billboardEnabled) {
+            final BillboardBehavior billboard = new BillboardBehavior(runtime,
+                    pubSub.publish("billboard/spec/feedback", true, MQTTQoS.atMostOnce));
+            pubSub.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
+            pubSub.subscribe(billboard, "billboard/image/control", MQTTQoS.atMostOnce, billboard::onImage);
+        }
 
-            if (config.speedometerEnabled) {
-                final AccelerometerBehavior accelerometer = new AccelerometerBehavior(runtime,
-                        pubSub.publish("accelerometer/feedback", false, MQTTQoS.atMostOnce));
-                pubSub.registerBehavior(accelerometer);
-            }
+        if (config.speedometerEnabled) {
+            final AccelerometerBehavior accelerometer = new AccelerometerBehavior(runtime,
+                    pubSub.publish("accelerometer/feedback", false, MQTTQoS.atMostOnce));
+            pubSub.registerBehavior(accelerometer);
+        }
 
-            if (config.cameraEnabled) {
-                // mqtt inbound to take picture
-                // save for web app server
-                // runtime.registerListener(new CameraBehavior(runtime));
-            }
+        if (config.cameraEnabled) {
+            // mqtt inbound to take picture
+            // save for web app server
+            // runtime.registerListener(new CameraBehavior(runtime));
+        }
 
-            if (config.soundEnabled) {
+        if (config.soundEnabled) {
 //                final String soundPiezoControl = "sound/piezo/control";
 //                final SoundBehavior sound = new SoundBehavior(runtime, config.piezoPort);
 //                if (config.mqttEnabled) {
@@ -144,11 +142,10 @@ public class TheJoveExpress implements FogApp
 //                }
 //                runtime.registerListener(sound)
 //                        .addSubscription(soundPiezoControl, sound::onLevel);
-                // MQTT outbound with sound file listing
-                // MQTT outbound with play status
-                // MQTT inbound with play/stop/pause commands
-                // runtime.registerListener(new SoundBehavior(runtime));
-            }
+            // MQTT outbound with sound file listing
+            // MQTT outbound with play status
+            // MQTT inbound with play/stop/pause commands
+            // runtime.registerListener(new SoundBehavior(runtime));
         }
 
         if (config.appServerEnabled) {

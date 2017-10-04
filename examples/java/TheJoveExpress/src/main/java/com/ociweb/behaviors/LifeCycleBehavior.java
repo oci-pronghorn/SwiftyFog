@@ -3,12 +3,11 @@ package com.ociweb.behaviors;
 import com.ociweb.gl.api.MQTTConnectionFeedback;
 import com.ociweb.gl.api.MQTTConnectionStatus;
 import com.ociweb.gl.api.PubSubMethodListener;
-import com.ociweb.gl.api.ShutdownListener;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
-public class LifeCycleBehavior implements PubSubMethodListener, ShutdownListener {
+public class LifeCycleBehavior implements PubSubMethodListener {
     private final FogRuntime runtime;
     private final FogCommandChannel channel;
     private final String trainAliveFeedback;
@@ -22,11 +21,6 @@ public class LifeCycleBehavior implements PubSubMethodListener, ShutdownListener
 
     public boolean onShutdown(CharSequence topic, ChannelReader payload) {
         runtime.shutdownRuntime();
-        return true;
-    }
-
-    @Override
-    public boolean acceptShutdown() {
         return true;
     }
 

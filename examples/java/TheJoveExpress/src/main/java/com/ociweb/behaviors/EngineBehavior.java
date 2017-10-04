@@ -16,7 +16,7 @@ public class EngineBehavior implements PubSubMethodListener {
 
     private final ActuatorDriverPayload actuatorPayload = new ActuatorDriverPayload();
     private final RationalPayload enginePower = new RationalPayload(0, 100);
-    private final RationalPayload calibration = new RationalPayload(15, 100);
+    private final RationalPayload calibration = new RationalPayload(30, 100);
 
     public EngineBehavior(FogRuntime runtime, String actuatorTopic, ActuatorDriverPort port, String enginePoweredTopic, String engineCalibratedTopic) {
         this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
@@ -40,7 +40,7 @@ public class EngineBehavior implements PubSubMethodListener {
     }
 
     public boolean onCalibration(CharSequence charSequence, ChannelReader messageReader) {
-        messageReader.readInto(this.calibration);
+        messageReader.readInto(calibration);
         actuate();
         this.channel.publishTopic(calibrationTopic, writer -> writer.write(calibration));
         return true;

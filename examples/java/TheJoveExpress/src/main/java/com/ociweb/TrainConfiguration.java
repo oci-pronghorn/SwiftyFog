@@ -17,8 +17,8 @@ public class TrainConfiguration  {
     final String mqttClientName;
     final int mqttPort = 1883;
 
-    final TriState telemetryEnabled = TriState.on;
-    final String telemetryHost;
+    final TriState telemetryEnabled;
+    final String telemetryHost = null;
 
     final boolean lifecycleEnabled = true;
     final boolean engineEnabled = true;
@@ -40,9 +40,8 @@ public class TrainConfiguration  {
     TrainConfiguration(ArgumentProvider args) {
         this.trainName = args.getArgumentValue("--name", "-n", "thejoveexpress");
         String localHostName = mqttDefaultLocal ? "localhost" : this.trainName + ".local";
-        //this.telemetryHost = localHostName;
-        this.telemetryHost = null;
         this.mqttBroker = args.getArgumentValue("--broker", "-b", localHostName);
         this.mqttClientName = trainName;
+        this.telemetryEnabled = Enum.valueOf(TriState.class, args.getArgumentValue("--telemetry", "-t", "latent"));
     }
 }
