@@ -8,16 +8,31 @@
 
 /* Begin PBXBuildFile section */
 		861992531F856D2E006260C0 /* ocilogo.dae in Resources */ = {isa = PBXBuildFile; fileRef = 861992521F856D2E006260C0 /* ocilogo.dae */; };
+		861992541F8575DC006260C0 /* SwiftyFog_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8696278B1F855ED700A2CCE0 /* SwiftyFog_iOS.framework */; };
+		861992561F8575FB006260C0 /* SwiftyFog_iOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8696278B1F855ED700A2CCE0 /* SwiftyFog_iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		869627731F855E2C00A2CCE0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869627721F855E2C00A2CCE0 /* AppDelegate.swift */; };
 		869627751F855E2C00A2CCE0 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 869627741F855E2C00A2CCE0 /* art.scnassets */; };
 		869627771F855E2C00A2CCE0 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869627761F855E2C00A2CCE0 /* ARViewController.swift */; };
 		8696277A1F855E2C00A2CCE0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 869627781F855E2C00A2CCE0 /* Main.storyboard */; };
 		8696277C1F855E2C00A2CCE0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8696277B1F855E2C00A2CCE0 /* Assets.xcassets */; };
 		8696277F1F855E2D00A2CCE0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8696277D1F855E2C00A2CCE0 /* LaunchScreen.storyboard */; };
-		8696278A1F855ED700A2CCE0 /* SwiftyFog_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8696278B1F855ED700A2CCE0 /* SwiftyFog_iOS.framework */; };
 		8696278D1F85600A00A2CCE0 /* ARAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8696278C1F85600A00A2CCE0 /* ARAppController.swift */; };
 		869627911F85646200A2CCE0 /* FoggyLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869627901F85646200A2CCE0 /* FoggyLogo.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		861992571F8575FB006260C0 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				861992561F8575FB006260C0 /* SwiftyFog_iOS.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		861992521F856D2E006260C0 /* ocilogo.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = ocilogo.dae; sourceTree = "<group>"; };
@@ -39,7 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8696278A1F855ED700A2CCE0 /* SwiftyFog_iOS.framework in Frameworks */,
+				861992541F8575DC006260C0 /* SwiftyFog_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,6 +145,7 @@
 				8696276B1F855E2C00A2CCE0 /* Sources */,
 				8696276C1F855E2C00A2CCE0 /* Frameworks */,
 				8696276D1F855E2C00A2CCE0 /* Resources */,
+				861992571F8575FB006260C0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

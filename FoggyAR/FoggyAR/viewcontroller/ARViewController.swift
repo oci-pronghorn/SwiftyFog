@@ -31,6 +31,10 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
 		}
 	}
 	
+	//TODO: fakeHeadingTimer is for testing and demo-purposes, don't actually use it prod
+	private var fakeHeadingTimer: DispatchSourceTimer?
+	private var fakeHeading : Int = 0
+	
 	@IBOutlet var sceneView: ARSCNView!
 	
 	override func viewDidLoad() {
@@ -39,14 +43,30 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
 		// Set the view's delegate
 		sceneView.delegate = self
 		
-		// Show statistics such as fps and timing information
-		sceneView.showsStatistics = true
-		
 		// Create a new scene
-		let scene = SCNScene(named: "art.scnassets/ship.scn")!
+		let scene = SCNScene(named: "art.scnassets/logo.scn")!
+		
+		createFakeTimer()
 		
 		// Set the scene to the view
 		sceneView.scene = scene
+	}
+	
+	//TODO: get rid of this eventually
+	func createFakeTimer()
+	{
+		let interval = 3
+		let leeway = 1
+		
+		let fakeHeadingTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
+		fakeHeadingTimer.schedule(deadline: .now() + .seconds(interval), repeating: .seconds(interval), leeway: .seconds(leeway))
+		fakeHeadingTimer.setEventHandler { [weak self] in
+			
+			self?.fakeHeading = self!.fakeHeading <= 360 ? self!.fakeHeading + 5 : 0
+			self?.logo.control(heading: FogRational(num: Int64(self!.fakeHeading), den: Int64(360)))
+		}
+		self.fakeHeadingTimer = fakeHeadingTimer
+		fakeHeadingTimer.resume()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -73,18 +93,30 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
 	
 	func session(_ session: ARSession, didFailWithError error: Error) {
 		// Present an error message to the user
-		
+		print("Session error occured: \(error.localizedDescription)")
 	}
 	
 	func sessionWasInterrupted(_ session: ARSession) {
 		// Inform the user that the session has been interrupted, for example, by presenting an overlay
-		
+		print("Session was interrupted")
 	}
 	
 	func sessionInterruptionEnded(_ session: ARSession) {
 		// Reset tracking and/or remove existing anchors if consistent tracking is required
-		
+		print("Session interruption ended")
 	}
+}
+
+extension ARViewController {
+	
+	func feedbackCut() {
+		logo.reset()
+	}
+	
+	func assertValues() {
+		logo.assertValues()
+	}
+	
 }
 
 extension ARViewController : FoggyLogoDelegate {
@@ -92,4 +124,7 @@ extension ARViewController : FoggyLogoDelegate {
 		print("Lights are on: \(lightsPower)")
 	}
 	
+	func foggyLogo(accelerometerHeading: FogRational<Int64>, _ asserted: Bool) {
+		print("Received acceloremeter heading: \(accelerometerHeading)")
+	}
 }

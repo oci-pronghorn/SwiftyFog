@@ -4,8 +4,8 @@
   <contributor>
    <authoring_tool>SceneKit Collada Exporter v1.0</authoring_tool>
   </contributor>
-  <created>2017-10-04T19:32:17Z</created>
-  <modified>2017-10-04T19:32:17Z</modified>
+  <created>2017-10-04T20:06:37Z</created>
+  <modified>2017-10-04T20:06:37Z</modified>
   <unit meter="0.025400"/>
   <up_axis>Z_UP</up_axis>
  </asset>
@@ -273,7 +273,8 @@
  </library_geometries>
  <library_visual_scenes>
   <visual_scene id="scene28">
-   <node id="SketchUp" name="SketchUp">
+   <node id="OCI_Logo" name="OCI_Logo">
+    <matrix>0.007 0 0 -0.532 0 0.007 0 -0.3421642 0 0 0.007 -0.07 0 0 0 1 </matrix>
     <node id="skp_camera_Last_Saved_SketchUp_View" name="skp_camera_Last_Saved_SketchUp_View">
      <matrix>0.7406505 -0.2615847 0.6188783 129.9861 0.6718906 0.2883547 -0.6822131 -30.89011 0 0.9210999 0.3893263 65.32572 0 0 0 1 </matrix>
      <instance_camera url="#ID1"/>
