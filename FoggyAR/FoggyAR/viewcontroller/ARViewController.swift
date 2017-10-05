@@ -37,6 +37,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 	private var fakeHeadingTimer: DispatchSourceTimer?
 	private var fakeHeading : Int = 0
 	
+	//Outlet to the scene
 	@IBOutlet var sceneView: ARSCNView!
 	
 	override func viewDidLoad() {
@@ -111,14 +112,10 @@ extension SCNNode
 		
 		let newRotationY = CGFloat(rational.num).degreesToRadians
 		
-		if(newRotationY == 0)
-		{
-			self.eulerAngles = SCNVector3(self.eulerAngles.x, 0, self.eulerAngles.y)
-		} else {
+		//if abs(distance < 1/2 of max distance)
 			let action = SCNAction.rotateTo(x: CGFloat(self.eulerAngles.x), y:newRotationY, z: CGFloat(self.eulerAngles.z), duration: TimeInterval(duration))
 		
 			self.runAction(action, forKey: "rotateLogo")
-		}
 	}
 }
 
