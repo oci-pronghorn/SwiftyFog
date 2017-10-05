@@ -19,13 +19,15 @@ There are couple remaining TODOs.
 ## Examples
 
 The iOS example is written to work with the FogLight Java application, also in the examples directory.
-The Mac example demonstrates similar concepts for the desktop.
+The Mac example demonstrates similar concepts for the desktop. 
+The AR example demonstrates integration of ARKit and FogLight/SwiftyFog.
 
 ## Requirements
 
 ## Author
 
 dsjove, giovanninid@objectcomputing.com
+tobischw, schweigert@objectcomputing.com (MacOS integration/AR demo)
 
 ## License
 
