@@ -15,8 +15,8 @@ protocol ThermoAppControllerDelegate: class {
 }
 
 class ThermoAppController {
-	var mqtt: (MQTTBridge & MQTTControl)!
-	var metrics: MQTTMetrics?
+	let mqtt: (MQTTBridge & MQTTControl)!
+	let metrics: MQTTMetrics?
 	var wasStarted: Bool = false
 	
 	weak var delegate: ThermoAppControllerDelegate?

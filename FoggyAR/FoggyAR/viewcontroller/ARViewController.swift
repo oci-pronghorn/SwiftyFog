@@ -14,9 +14,6 @@ import Vision
 
 class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 	
-	// The MQTT control element
-	var mqttControl: MQTTControl!
-	
 	// For QR detection, setup anchors
 	var detectedDataAnchor: ARAnchor?
 	var processing = false
@@ -24,7 +21,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 	// MQTT representation for the logo
 	let logo = FoggyLogo()
 	
-	// The actual SceneNode of the 3D model
+	// SceneNode for the 3D models
 	var logoNode = SCNNode()
 	var lightbeamNode = SCNNode()
 	
@@ -48,9 +45,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 		// Set the view's delegate
 		sceneView.delegate = self
 		sceneView.session.delegate = self
-		
-		// Start the MQTT controller
-		mqttControl.start()
 		
 		// Create the fake timer
 		createFakeTimer()
@@ -115,17 +109,16 @@ extension SCNNode
 		
 		// Create the rotateTo action. It's a rotateTo because the sensor data from the gyroscope may change | TODO: fix it hitting zero
 		
-		var newRotationY = CGFloat(rational.num).degreesToRadians
+		let newRotationY = CGFloat(rational.num).degreesToRadians
 		
-		if(newRotationY >= 359)
+		if(newRotationY == 0)
 		{
-			print("hit 359 or more!")
-			newRotationY = 0
+			self.eulerAngles = SCNVector3(self.eulerAngles.x, 0, self.eulerAngles.y)
+		} else {
+			let action = SCNAction.rotateTo(x: CGFloat(self.eulerAngles.x), y:newRotationY, z: CGFloat(self.eulerAngles.z), duration: TimeInterval(duration))
+		
+			self.runAction(action, forKey: "rotateLogo")
 		}
-		
-		let action = SCNAction.rotateTo(x: CGFloat(self.eulerAngles.x), y:newRotationY, z: CGFloat(self.eulerAngles.z), duration: TimeInterval(duration))
-		
-		self.runAction(action, forKey: "rotateLogo")
 	}
 }
 
@@ -248,11 +241,6 @@ extension ARViewController {
 	func sessionInterruptionEnded(_ session: ARSession) {
 	}
 	
-}
-
-extension FloatingPoint {
-	var degreesToRadians: Self { return self * .pi / 180 }
-	var radiansToDegrees: Self { return self * 180 / .pi }
 }
 
 extension ARViewController : FoggyLogoDelegate {

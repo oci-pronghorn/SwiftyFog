@@ -10,10 +10,8 @@ import Foundation
 import SwiftyFog_iOS
 
 class ARAppController {
-	var mqtt: (MQTTBridge & MQTTControl)!
-	var network: NetworkReachability
-	
-	//weak var delegate: ARAppControllerDelegate?
+	let mqtt: (MQTTBridge & MQTTControl)!
+	let network: NetworkReachability
 	
 	init(_ trainName: String) {
 		self.network = NetworkReachability()

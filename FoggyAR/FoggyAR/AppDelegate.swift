@@ -30,8 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let scoped = controller.mqtt.createBridge(subPath: trainName)
 		
 		trainARViewer.mqtt = scoped
-		trainARViewer.mqttControl = controller.mqtt
-		
+	
 		return true
 	}
 	
