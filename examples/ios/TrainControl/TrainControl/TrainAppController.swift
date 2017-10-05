@@ -20,9 +20,9 @@ protocol TrainAppControllerDelegate: class {
 }
 
 class TrainAppController {
-	var mqtt: (MQTTBridge & MQTTControl)!
-	var network: NetworkReachability
-	var metrics: MQTTMetrics?
+	let mqtt: (MQTTBridge & MQTTControl)!
+	let network: NetworkReachability
+	let metrics: MQTTMetrics?
 	var wasStarted: Bool = true
 	
 	weak var delegate: TrainAppControllerDelegate?
@@ -46,9 +46,9 @@ class TrainAppController {
 			auth: MQTTAuthentication(username: "dsjove", password: "password"),
 			reconnect: MQTTReconnectParams(),
 			metrics: metrics)
-		mqtt.delegate = self
 		
 		self.mqtt = mqtt
+		mqtt.delegate = self
 	}
 	
 	public func goForeground() {
