@@ -20,7 +20,7 @@ public class FoggyLogo: FogFeedbackModel {
 	private var broadcaster: MQTTBroadcaster?
 	
 	//Responsible for dealing with light feedback
-	private var lightsPower: FogFeedbackValue<Bool>
+	private var lightsPower: Bool
 	
 	//The heading provided by the accelerometer
 	private var accelerometerHeading: FogFeedbackValue<FogRational<Int64>>
@@ -37,7 +37,7 @@ public class FoggyLogo: FogFeedbackModel {
 	}
 	
 	public init() {
-		self.lightsPower = FogFeedbackValue(false)
+		self.lightsPower = false
 		self.accelerometerHeading = FogFeedbackValue(FogRational(num: Int64(0), den: 360))
 	}
 	
@@ -50,23 +50,20 @@ public class FoggyLogo: FogFeedbackModel {
 	}
 	
 	public var hasFeedback: Bool {
-		return lightsPower.hasFeedback && accelerometerHeading.hasFeedback
+		return accelerometerHeading.hasFeedback
 	}
 	
 	public func reset() {
-		lightsPower.reset()
 		accelerometerHeading.reset()
 	}
 	
 	public func assertValues() {
-		delegate?.foggyLogo(lightsPower: lightsPower.value, true)
 		delegate?.foggyLogo(accelerometerHeading: accelerometerHeading.value, true)
 	}
 
 	private func feedbackLightsPower(_ msg: MQTTMessage) {
-		self.lightsPower.receive(msg.payload.fogExtract()) { value, asserted in
-			delegate?.foggyLogo(lightsPower: value, asserted)
-		}
+		let value: Bool = msg.payload.fogExtract()
+		delegate?.foggyLogo(lightsPower: value, true)
 	}
 	
 	private func feedbackAccelerometerHeading(_ msg: MQTTMessage) {
