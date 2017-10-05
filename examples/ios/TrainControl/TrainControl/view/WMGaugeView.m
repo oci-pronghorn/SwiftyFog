@@ -134,6 +134,7 @@
     _scaleDivisionsWidth = 0.01;
     _scaleSubdivisionsLength = 0.015;
     _scaleSubdivisionsWidth = 0.01;
+    _showLastTick = true;
     
     _value = 0.0;
     _minValue = 0.0;
@@ -146,6 +147,7 @@
     _rangeLabelsFont = [UIFont fontWithName:@"Helvetica" size:0.05];
     _rangeLabelsFontColor = [UIColor whiteColor];
     _rangeLabelsFontKerning = 1.0;
+    _rangeLabelsOffset = 0.0;
     _rangeValues = nil;
     _rangeColors = nil;
     _rangeLabels = nil;
@@ -161,7 +163,7 @@
     _unitOfMeasurement = @"";
     _showUnitOfMeasurement = NO;
 	
-    _scaleDescription = ^NSString* (float value) {
+    _scaleDescription = ^NSString* (float value, NSInteger tick) {
 		return [NSString stringWithFormat:@"%0.0f",value];
     };
     
@@ -352,7 +354,8 @@
     CGContextSaveGState(context);
     [self rotateContext:context fromCenter:center withAngle:DEGREES_TO_RADIANS(180 + _scaleStartAngle)];
     
-    int totalTicks = _scaleDivisions * _scaleSubdivisions + 1;
+    int totalTicks = _scaleDivisions * _scaleSubdivisions;
+    if (_showLastTick) totalTicks++;
     for (int i = 0; i < totalTicks; i++)
     {
         CGFloat offset = 0.0;
@@ -382,7 +385,7 @@
             CGContextStrokePath(context);
             
             // Draw label
-            NSString *valueString = _scaleDescription(value);
+            NSString *valueString = _scaleDescription(value, i);
             UIFont* font = _scaleFont ? _scaleFont : [UIFont fontWithName:@"Helvetica-Bold" size:0.05];
             NSDictionary* stringAttrs = @{ NSFontAttributeName : font, NSForegroundColorAttributeName : color };
             NSAttributedString* attrStr = [[NSAttributedString alloc] initWithString:valueString attributes:stringAttrs];
@@ -421,7 +424,7 @@
     CGContextSetShadow(context, CGSizeMake(0.0, 0.0), 0.0);
     
     CGFloat maxAngle = _scaleEndAngle - _scaleStartAngle;
-    CGFloat lastStartAngle = 0.0f;
+    CGFloat lastStartAngle = _rangeLabelsOffset;
 
     for (int i = 0; i < _rangeValues.count; i ++)
     {

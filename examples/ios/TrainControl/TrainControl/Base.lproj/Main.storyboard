@@ -35,13 +35,13 @@
                                         </connections>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="The Jove Express" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qsm-zT-BQc">
-                                        <rect key="frame" x="36.000000000000014" y="5.3333333333333375" width="248.33333333333337" height="21.666666666666671"/>
+                                        <rect key="frame" x="36" y="5.3333333333333375" width="204" height="21.666666666666671"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3O4-37-QBa" customClass="FSDAirportFlipLabel">
-                                        <rect key="frame" x="288.33333333333331" y="5.9999999999999982" width="37.666666666666686" height="20.333333333333329"/>
+                                        <rect key="frame" x="244" y="8" width="82" height="16"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -304,6 +304,57 @@
                                     <constraint firstAttribute="height" constant="48" id="tSM-d8-ldP"/>
                                 </constraints>
                             </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="7DK-2U-M7z">
+                                <rect key="frame" x="8" y="441" width="150" height="150"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <view opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HlX-sg-fsK" customClass="WMGaugeView">
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="150" id="4oK-5c-ubT"/>
+                                            <constraint firstAttribute="width" secondItem="HlX-sg-fsK" secondAttribute="height" multiplier="1:1" id="eXu-Tg-fcg"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="value">
+                                                <real key="value" value="0.0"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="minValue">
+                                                <integer key="value" value="0"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="maxValue">
+                                                <integer key="value" value="360"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="scaleDivisions">
+                                                <integer key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="scaleDivisionColor">
+                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showUnitOfMeasurement" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="unitOfMeasurement" value="Compass"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showRangeLabels" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="rangeLabelsFontColor">
+                                                <color key="value" red="0.26663362979999999" green="0.26668566469999999" blue="0.26663035149999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="scaleIgnoreRangeColors" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="scaleStartAngle">
+                                                <integer key="value" value="180"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showLastTick" value="NO"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="scaleEndAngle">
+                                                <integer key="value" value="540"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="scaleSubdivisions">
+                                                <integer key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="HlX-sg-fsK" firstAttribute="width" secondItem="HlX-sg-fsK" secondAttribute="height" multiplier="1:1" id="k68-W6-oF8"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -339,6 +390,7 @@
                     <tabBarItem key="tabBarItem" title="" image="Train" id="iLc-kK-t0f"/>
                     <connections>
                         <outlet property="billboardImage" destination="yOF-aF-Ux5" id="Tt9-ML-npC"/>
+                        <outlet property="compass" destination="HlX-sg-fsK" id="Fkd-Vi-4sp"/>
                         <outlet property="connectMetrics" destination="3O4-37-QBa" id="Ine-a8-zxW"/>
                         <outlet property="connectedImage" destination="4zZ-K8-b71" id="nCN-Sr-VCd"/>
                         <outlet property="engineCalibration" destination="5SJ-Xc-cNf" id="Aei-r8-lVK"/>

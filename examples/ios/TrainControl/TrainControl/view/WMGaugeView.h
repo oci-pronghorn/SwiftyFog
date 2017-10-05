@@ -35,7 +35,7 @@ typedef NS_ENUM(NSInteger, WMGaugeViewInnerBackgroundStyle)
     WMGaugeViewInnerBackgroundStyleFlat
 };
 
-typedef NSString* (^ScaleDescription)(float);
+typedef NSString* (^ScaleDescription)(float, NSInteger);
 
 /**
  * WMGaugeView class
@@ -73,6 +73,7 @@ IB_DESIGNABLE
 
 @property (nonatomic) IBInspectable UIColor *scaleDivisionColor;
 @property (nonatomic) IBInspectable UIColor *scaleSubDivisionColor;
+@property (nonatomic) IBInspectable BOOL showLastTick;
 
 @property (nonatomic) IBInspectable UIFont *scaleFont;
 
@@ -86,6 +87,7 @@ IB_DESIGNABLE
 @property (nonatomic) IBInspectable UIFont *rangeLabelsFont;
 @property (nonatomic) IBInspectable UIColor *rangeLabelsFontColor;
 @property (nonatomic) IBInspectable CGFloat rangeLabelsFontKerning;
+@property (nonatomic) IBInspectable CGFloat rangeLabelsOffset;
 
 @property (nonatomic) NSArray<NSNumber*> *rangeValues;
 @property (nonatomic) NSArray<UIColor*> *rangeColors;

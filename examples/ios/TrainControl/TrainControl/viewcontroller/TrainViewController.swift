@@ -23,6 +23,7 @@ class TrainViewController: UIViewController {
 	@IBOutlet weak var stopStartButton: UIButton!
 	
 	@IBOutlet weak var billboardImage: UIImageView!
+	@IBOutlet weak var compass: WMGaugeView!
 	
 	@IBOutlet weak var lightOverride: UISegmentedControl!
 	@IBOutlet weak var lightIndicatorImage: UIImageView!
@@ -81,6 +82,24 @@ class TrainViewController: UIViewController {
 		engineGauge.rangeColors = [UIColor.red, UIColor.yellow, UIColor.green]
 		lightingGauge.rangeLabels = ["Dark", "Light"]
 		lightingGauge.rangeColors = [UIColor.darkGray, UIColor.lightGray]
+		
+		compass.rangeLabels = ["North", "North East", "East", "South East", "South", "SouthWest", "West", "North West"]
+		compass.rangeValues = [22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5]/*, 382.5]*/
+		compass.rangeColors = [UIColor.white, UIColor.lightGray, UIColor.white, UIColor.lightGray, UIColor.white, UIColor.lightGray, UIColor.white, UIColor.lightGray]
+		compass.rangeLabelsOffset = -22.5
+		
+		compass.scaleDescription = { (v, i) in
+			if v == 0 {
+				return "N"
+			}
+			else if v == 90 {
+				return "E"
+			}
+			else if v == 180 {
+				return "S"
+			}
+			return "W"
+		}
 	}
 
     override func viewDidLayoutSubviews() {
@@ -222,6 +241,10 @@ extension TrainViewController:
 			feedbackCut()
 		}
 		trainAlive.isHighlighted = alive
+	}
+	
+	func train(heading: FogRational<Int64>) {
+		compass.setValue(Float(heading.num), animated: true, duration: 0.5)
 	}
 	
 	func engine(power: FogRational<Int64>, _ asserted: Bool) {
