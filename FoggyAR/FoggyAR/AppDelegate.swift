@@ -24,7 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let trainName = "thejoveexpress"
 		
 		controller = ARAppController(trainName)
-		controller.delegate = self
 		
 		// This view controller is specific to a train topic
 		// Create an MQTTBridge specific to the selected train
@@ -55,14 +54,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		controller.goBackground()
 	}
 }
-
-extension AppDelegate: ARAppControllerDelegate {
-	func on(log: String) {
-		//logView.onLog(log)
-	}
-	
-	func on(connected: MQTTConnectedState) {
-		//self.trainARViewer.mqtt(connected: connected)
-	}
-}
-

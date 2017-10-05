@@ -95,7 +95,6 @@
 				8696278C1F85600A00A2CCE0 /* ARAppController.swift */,
 				869627881F855E6800A2CCE0 /* viewcontroller */,
 				869627861F855E5C00A2CCE0 /* model */,
-				869627871F855E6400A2CCE0 /* view */,
 				8619924F1F856A38006260C0 /* assets */,
 				869627781F855E2C00A2CCE0 /* Main.storyboard */,
 				8696277D1F855E2C00A2CCE0 /* LaunchScreen.storyboard */,
@@ -110,13 +109,6 @@
 				869627901F85646200A2CCE0 /* FoggyLogo.swift */,
 			);
 			path = model;
-			sourceTree = "<group>";
-		};
-		869627871F855E6400A2CCE0 /* view */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = view;
 			sourceTree = "<group>";
 		};
 		869627881F855E6800A2CCE0 /* viewcontroller */ = {
