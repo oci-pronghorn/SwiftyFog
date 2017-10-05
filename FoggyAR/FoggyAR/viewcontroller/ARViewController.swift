@@ -145,41 +145,49 @@ extension ARViewController {
 			// Get the first result out of the results, if there are any
 			if let results = request.results, let result = results.first as? VNBarcodeObservation {
 				
+				print("QR code value: \(String(describing: result.payloadStringValue))")
+				
 				// Get the bounding box for the bar code and find the center
-				var rect = result.boundingBox
 				
-				// Flip coordinates
-				rect = rect.applying(CGAffineTransform(scaleX: 1, y: -1))
-				rect = rect.applying(CGAffineTransform(translationX: 0, y: 1))
-				
-				// Get center
-				let center = CGPoint(x: rect.midX, y: rect.midY)
-				
-				// Go back to the main thread
-				DispatchQueue.main.async {
+				//TODO: make sure this works, tweak if necessary
+				if(result.confidence > 0.8)
+				{
 					
-					// Perform a hit test on the ARFrame to find a surface
-					let hitTestResults = frame.hitTest(center, types: [.featurePoint/*, .estimatedHorizontalPlane, .existingPlane, .existingPlaneUsingExtent*/] )
+					var rect = result.boundingBox
 					
-					// If we have a result, process it
-					if let hitTestResult = hitTestResults.first {
+					// Flip coordinates
+					rect = rect.applying(CGAffineTransform(scaleX: 1, y: -1))
+					rect = rect.applying(CGAffineTransform(translationX: 0, y: 1))
+					
+					// Get center
+					let center = CGPoint(x: rect.midX, y: rect.midY)
+					
+					// Go back to the main thread
+					DispatchQueue.main.async {
 						
-						// If we already have an anchor, update the position of the attached node
-						if let detectedDataAnchor = self.detectedDataAnchor,
-							let node = self.sceneView.node(for: detectedDataAnchor) {
+						// Perform a hit test on the ARFrame to find a surface
+						let hitTestResults = frame.hitTest(center, types: [.featurePoint/*, .estimatedHorizontalPlane, .existingPlane, .existingPlaneUsingExtent*/] )
+						
+						// If we have a result, process it
+						if let hitTestResult = hitTestResults.first {
 							
-							self.activityIndicator.stopAnimating()
-							node.transform = SCNMatrix4(hitTestResult.worldTransform)
-							
-						} else {
-							// Create an anchor. The node will be created in delegate methods
-							self.detectedDataAnchor = ARAnchor(transform: hitTestResult.worldTransform)
-							self.sceneView.session.add(anchor: self.detectedDataAnchor!)
+							// If we already have an anchor, update the position of the attached node
+							if let detectedDataAnchor = self.detectedDataAnchor,
+								let node = self.sceneView.node(for: detectedDataAnchor) {
+								
+								self.activityIndicator.stopAnimating()
+								node.transform = SCNMatrix4(hitTestResult.worldTransform)
+								
+							} else {
+								// Create an anchor. The node will be created in delegate methods
+								self.detectedDataAnchor = ARAnchor(transform: hitTestResult.worldTransform)
+								self.sceneView.session.add(anchor: self.detectedDataAnchor!)
+							}
 						}
+						
+						// Set processing flag off
+						self.processing = false
 					}
-					
-					// Set processing flag off
-					self.processing = false
 				}
 				
 			} else {
