@@ -37,7 +37,9 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 	private var fakeHeadingTimer: DispatchSourceTimer?
 	private var fakeHeading : Int = 0
 	
-	//Outlet to the scene
+	// The activity indicator to be shown whenever it's trying to determine the QR code
+	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+	// Outlet to the scene
 	@IBOutlet var sceneView: ARSCNView!
 	
 	override func viewDidLoad() {
@@ -47,9 +49,15 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 		sceneView.delegate = self
 		sceneView.session.delegate = self
 		
+		self.activityIndicator.layer.cornerRadius = 5;
+		
 		// Create the fake timer
 		createFakeTimer()
 	
+	}
+	
+	override var prefersStatusBarHidden: Bool {
+		return true
 	}
 	
 	// TODO: get rid of this eventually
@@ -129,6 +137,7 @@ extension ARViewController {
 		}
 		
 		self.processing = true
+		self.activityIndicator.startAnimating()
 		
 		// Create a Barcode Detection Request
 		let request = VNDetectBarcodesRequest { (request, error) in
@@ -159,6 +168,7 @@ extension ARViewController {
 						if let detectedDataAnchor = self.detectedDataAnchor,
 							let node = self.sceneView.node(for: detectedDataAnchor) {
 							
+							self.activityIndicator.stopAnimating()
 							node.transform = SCNMatrix4(hitTestResult.worldTransform)
 							
 						} else {
