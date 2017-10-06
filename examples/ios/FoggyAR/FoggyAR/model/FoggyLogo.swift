@@ -15,6 +15,7 @@ public protocol FoggyLogoDelegate: class {
 }
 
 public class FoggyLogo: FogFeedbackModel {
+	public var hasFeedback: Bool = false
 	
 	//Creating the broadcaster
 	private var broadcaster: MQTTBroadcaster?
@@ -23,7 +24,7 @@ public class FoggyLogo: FogFeedbackModel {
 	private var lightsPower: Bool
 	
 	//The heading provided by the accelerometer
-	private var accelerometerHeading: FogFeedbackValue<FogRational<Int64>>
+	private var accelerometerHeading: FogRational<Int64> 
 	
 	public weak var delegate: FoggyLogoDelegate?
 	
@@ -38,27 +39,14 @@ public class FoggyLogo: FogFeedbackModel {
 	
 	public init() {
 		self.lightsPower = false
-		self.accelerometerHeading = FogFeedbackValue(FogRational(num: Int64(0), den: 360))
+		self.accelerometerHeading = FogRational(num: Int64(0), den: 360)
 	}
 	
+	//TODO: get rid of this (acceloremeter project)
 	public func control(heading: FogRational<Int64>) {
-		self.accelerometerHeading.control(heading) { value in
-			var data  = Data(capacity: value.fogSize)
-			data.fogAppend(value)
+			var data  = Data(capacity: heading.fogSize)
+			data.fogAppend(heading)
 			mqtt.publish(MQTTMessage(topic: "accelerometer/feedback/heading", payload: data))
-		}
-	}
-	
-	public var hasFeedback: Bool {
-		return accelerometerHeading.hasFeedback
-	}
-	
-	public func reset() {
-		accelerometerHeading.reset()
-	}
-	
-	public func assertValues() {
-		delegate?.foggyLogo(accelerometerHeading: accelerometerHeading.value, true)
 	}
 
 	private func feedbackLightsPower(_ msg: MQTTMessage) {
@@ -67,8 +55,16 @@ public class FoggyLogo: FogFeedbackModel {
 	}
 	
 	private func feedbackAccelerometerHeading(_ msg: MQTTMessage) {
-		self.accelerometerHeading.receive(msg.payload.fogExtract()) { value, asserted in
-			delegate?.foggyLogo(accelerometerHeading: value, asserted)
-		}
+		let value: FogRational<Int64> = msg.payload.fogExtract()!
+		delegate?.foggyLogo(accelerometerHeading: value, true)
 	}
+	
+	public func reset() {
+		
+	}
+	
+	public func assertValues() {
+		
+	}
+
 }

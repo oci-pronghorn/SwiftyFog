@@ -16,7 +16,19 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 	
 	// For QR detection, setup anchors
 	var detectedDataAnchor: ARAnchor?
-	var processing = false
+	
+	var processing = false {
+		didSet {
+			DispatchQueue.main.async(execute: {
+				if(self.processing)
+				{
+					self.activityIndicator.startAnimating()
+				} else {
+					self.activityIndicator.stopAnimating()
+				}
+			})
+		}
+	}
 	
 	// MQTT representation for the logo
 	let logo = FoggyLogo()
@@ -38,6 +50,9 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 	private var fakeHeading : Int = 0
 	
 	// The activity indicator to be shown whenever it's trying to determine the QR code
+	@IBOutlet weak var trainAlive: UIImageView!
+	
+	@IBOutlet weak var centerActivityView: UIView!
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	// Outlet to the scene
 	@IBOutlet var sceneView: ARSCNView!
@@ -49,11 +64,10 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 		sceneView.delegate = self
 		sceneView.session.delegate = self
 		
-		self.activityIndicator.layer.cornerRadius = 5;
+		self.centerActivityView.layer.cornerRadius = 5;
 		
-		// Create the fake timer
+		// Create the fake timer (get rid of this)
 		createFakeTimer()
-	
 	}
 	
 	override var prefersStatusBarHidden: Bool {
@@ -116,103 +130,16 @@ extension SCNNode
 		// Create pivot so it can spin around itself
 		self.pivot = SCNMatrix4MakeTranslation((maxVec.x - minVec.x) / 2 + minVec.x, (maxVec.y - minVec.y) / 2 + minVec.y, 0)
 		
-		// Create the rotateTo action. It's a rotateTo because the sensor data from the gyroscope may change | TODO: fix it hitting zero
-		
 		let newRotationY = CGFloat(rational.num).degreesToRadians
 		
-		//if abs(distance < 1/2 of max distance)
-			let action = SCNAction.rotateTo(x: CGFloat(self.eulerAngles.x), y:newRotationY, z: CGFloat(self.eulerAngles.z), duration: TimeInterval(duration))
+		//TODO: implement cyclical here
+		let action = SCNAction.rotateTo(x: CGFloat(self.eulerAngles.x), y:newRotationY, z: CGFloat(self.eulerAngles.z), duration: TimeInterval(duration))
 		
-			self.runAction(action, forKey: "rotateLogo")
+		self.runAction(action, forKey: "rotateLogo")
 	}
 }
 
 extension ARViewController {
-	
-	func session(_ session: ARSession, didUpdate frame: ARFrame) {
-
-		// Only run one Vision request at a time
-		if self.processing {
-			return
-		}
-		
-		self.processing = true
-		self.activityIndicator.startAnimating()
-		
-		// Create a Barcode Detection Request
-		let request = VNDetectBarcodesRequest { (request, error) in
-			
-			// Get the first result out of the results, if there are any
-			if let results = request.results, let result = results.first as? VNBarcodeObservation {
-				
-				print("QR code value: \(String(describing: result.payloadStringValue))")
-				
-				// Get the bounding box for the bar code and find the center
-				
-				print("confidence: \(result.confidence)")
-				//TODO: make sure this works, tweak if necessary
-				if(result.confidence > 0.8)
-				{
-					var rect = result.boundingBox
-					
-					// Flip coordinates
-					rect = rect.applying(CGAffineTransform(scaleX: 1, y: -1))
-					rect = rect.applying(CGAffineTransform(translationX: 0, y: 1))
-					
-					// Get center
-					let center = CGPoint(x: rect.midX, y: rect.midY)
-					
-					// Go back to the main thread
-					DispatchQueue.main.async {
-						
-						// Perform a hit test on the ARFrame to find a surface
-						let hitTestResults = frame.hitTest(center, types: [.featurePoint/*, .estimatedHorizontalPlane, .existingPlane, .existingPlaneUsingExtent*/] )
-						
-						// If we have a result, process it
-						if let hitTestResult = hitTestResults.first {
-							
-							// If we already have an anchor, update the position of the attached node
-							if let detectedDataAnchor = self.detectedDataAnchor,
-								let node = self.sceneView.node(for: detectedDataAnchor) {
-								
-								self.activityIndicator.stopAnimating()
-								node.transform = SCNMatrix4(hitTestResult.worldTransform)
-								
-							} else {
-								// Create an anchor. The node will be created in delegate methods
-								self.detectedDataAnchor = ARAnchor(transform: hitTestResult.worldTransform)
-								self.sceneView.session.add(anchor: self.detectedDataAnchor!)
-							}
-						}
-						
-						// Set processing flag off
-						self.processing = false
-					}
-				}
-				
-			} else {
-				// Set processing flag off
-				self.processing = false
-			}
-		}
-		
-		// Process the request in the background
-		DispatchQueue.global(qos: .userInitiated).async {
-			do {
-				// Set it to recognize QR code only
-				request.symbologies = [.QR]
-				
-				// Create a request handler using the captured image from the ARFrame
-				let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage,
-																												options: [:])
-				// Process the request
-				try imageRequestHandler.perform([request])
-			} catch {
-				
-			}
-		}
-		
-	}
 	
 	func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
 

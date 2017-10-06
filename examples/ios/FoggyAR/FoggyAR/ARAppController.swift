@@ -18,7 +18,7 @@ class ARAppController {
 		
 		// Create the concrete MQTTClient to connect to a specific broker
 		let mqtt = MQTTClient(
-			host: MQTTHostParams(host: "thejoveexpress.local")
+			host: MQTTHostParams(host: "Tobi.local")
 		)
 
 		self.mqtt = mqtt
