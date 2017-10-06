@@ -21,6 +21,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 	var logoNode = SCNNode()
 	var lightbeamNode = SCNNode()
 	
+	var oldRotationY = CGFloat(360.0)
+	
 	// The bridge, responsible for receiving train data
 	var mqtt: MQTTBridge! {
 		didSet {
@@ -69,9 +71,13 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 		
 		fakeHeadingTimer.schedule(deadline: .now() + .seconds(interval), repeating: .seconds(interval), leeway: .seconds(leeway))
 		fakeHeadingTimer.setEventHandler { [weak self] in
-			
-			self?.fakeHeading = self!.fakeHeading < 360 ? self!.fakeHeading + 20 : 0
-			self?.logo.control(heading: FogRational(num: Int64(self!.fakeHeading), den: Int64(360)))
+			if let m = self {
+				m.fakeHeading += 20;
+				if m.fakeHeading >= 360 {
+					m.fakeHeading -= 360
+				}
+				m.logo.control(heading: FogRational(num: Int64(self!.fakeHeading), den: Int64(360)))
+			}
 		}
 		
 		self.fakeHeadingTimer = fakeHeadingTimer
@@ -106,19 +112,17 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 }
 
 extension SCNNode
-{
-	func rotateAroundYAxis(rational : FogRational<Int64>, duration : Int)
+{ // rational : FogRational<Int64>
+	func rotateAroundYAxis(by: CGFloat, duration : Int)
 	{
 		let (minVec, maxVec) = self.boundingBox
 		
 		// Create pivot so it can spin around itself
 		self.pivot = SCNMatrix4MakeTranslation((maxVec.x - minVec.x) / 2 + minVec.x, (maxVec.y - minVec.y) / 2 + minVec.y, 0)
-		
-		let newRotationY = CGFloat(rational.num).degreesToRadians
-		
-		//TODO: implement cyclical here
-		let action = SCNAction.rotateTo(x: CGFloat(self.eulerAngles.x), y:newRotationY, z: CGFloat(self.eulerAngles.z), duration: TimeInterval(duration))
-		
+
+		// Create the rotateTo action.
+		let action = SCNAction.rotate(by: by, around: SCNVector3(0, 1, 0), duration: TimeInterval(duration))
+	
 		self.runAction(action, forKey: "rotateLogo")
 	}
 }
@@ -126,7 +130,7 @@ extension SCNNode
 extension ARViewController {
 	
 	func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-
+/*
 		// If this is our anchor, create a node
 		if self.detectedDataAnchor?.identifier == anchor.identifier {
 			
@@ -154,7 +158,7 @@ extension ARViewController {
 			
 			return wrapperNode
 		}
-		
+		*/
 		return nil
 	}
 	
@@ -177,6 +181,12 @@ extension ARViewController : FoggyLogoDelegate {
 	
 	func foggyLogo(accelerometerHeading: FogRational<Int64>, _ asserted: Bool) {
 		print("Received acceloremeter heading: \(accelerometerHeading)")
-		logoNode.rotateAroundYAxis(rational: accelerometerHeading, duration: 1)
+	
+		let newRotationY = CGFloat(accelerometerHeading.num) + 360
+		let distance = abs(newRotationY - oldRotationY)
+		let rotateBy = distance < 180 ? newRotationY - oldRotationY : 360.0 - distance
+		oldRotationY = newRotationY
+		
+		logoNode.rotateAroundYAxis(by: rotateBy.degreesToRadians, duration: 1)
 	}
 }
