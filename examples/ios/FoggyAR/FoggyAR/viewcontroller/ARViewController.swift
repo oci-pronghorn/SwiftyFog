@@ -14,22 +14,6 @@ import Vision
 
 class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 	
-	// For QR detection, setup anchors
-	var detectedDataAnchor: ARAnchor?
-	
-	var processing = false {
-		didSet {
-			DispatchQueue.main.async(execute: {
-				if(self.processing)
-				{
-					self.activityIndicator.startAnimating()
-				} else {
-					self.activityIndicator.stopAnimating()
-				}
-			})
-		}
-	}
-	
 	// MQTT representation for the logo
 	let logo = FoggyLogo()
 	
