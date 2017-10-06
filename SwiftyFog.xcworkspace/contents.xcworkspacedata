@@ -15,7 +15,7 @@
          location = "container:"
          name = "iOS">
          <FileRef
-            location = "group:FoggyAR/FoggyAR.xcodeproj">
+            location = "group:examples/ios/FoggyAR/FoggyAR.xcodeproj">
          </FileRef>
          <FileRef
             location = "group:examples/ios/TrainControl/TrainControl.xcodeproj">

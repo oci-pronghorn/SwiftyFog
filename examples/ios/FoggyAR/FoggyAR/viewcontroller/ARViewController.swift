@@ -149,10 +149,10 @@ extension ARViewController {
 				
 				// Get the bounding box for the bar code and find the center
 				
+				print("confidence: \(result.confidence)")
 				//TODO: make sure this works, tweak if necessary
 				if(result.confidence > 0.8)
 				{
-					
 					var rect = result.boundingBox
 					
 					// Flip coordinates
