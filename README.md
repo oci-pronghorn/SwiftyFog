@@ -27,6 +27,7 @@ The AR example demonstrates integration of ARKit and FogLight/SwiftyFog.
 ## Author
 
 dsjove, giovanninid@objectcomputing.com
+
 tobischw, schweigert@objectcomputing.com (MacOS integration/AR demo)
 
 ## License
