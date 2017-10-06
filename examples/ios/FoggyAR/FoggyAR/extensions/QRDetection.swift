@@ -19,7 +19,7 @@ public protocol QRDetectionDelegate: class
 public class QRDetection : NSObject, ARSessionDelegate
 {
 	public weak var delegate: QRDetectionDelegate?
-	private var detectedDataAnchor: ARAnchor?
+	public var detectedDataAnchor: ARAnchor?
 	
 	var qrValue: String = String()
 	var confidence: Float = 1.0
@@ -37,6 +37,8 @@ public class QRDetection : NSObject, ARSessionDelegate
 	}
 	
 	public func session(_ session: ARSession, didUpdate frame: ARFrame) {
+		
+		print("Session running")
 		
 		if self.isProcessing
 		{

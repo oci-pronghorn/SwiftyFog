@@ -12,10 +12,22 @@ import ARKit
 import SwiftyFog_iOS
 import Vision
 
-class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
+class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, QRDetectionDelegate {
+	func foundQRValue(stringValue: String) {
+		print("found qr value! \(stringValue)")
+	}
+	
+	func updatedAnchor() {
+		print("Updated anchor!")
+	}
+	
 	
 	// MQTT representation for the logo
 	let logo = FoggyLogo()
+	
+	var scene : SCNScene = SCNScene()
+	
+	var qrDetector : QRDetection = QRDetection()
 	
 	// SceneNode for the 3D models
 	var logoNode = SCNNode()
@@ -37,12 +49,28 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 	@IBOutlet weak var trainAlive: UIImageView!
 	
 	@IBOutlet weak var centerActivityView: UIView!
+	
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+	
 	// Outlet to the scene
 	@IBOutlet var sceneView: ARSCNView!
 	
+	required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+	
+	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		scene = SCNScene(named: "art.scnassets/logo.scn")!
+		
+		// Set the scene to the view
+		sceneView.scene = self.scene
+		
+		qrDetector = QRDetection(sceneView: self.sceneView)
+		
+		qrDetector.delegate = self
 		
 		// Set the view's delegate
 		sceneView.delegate = self
@@ -128,7 +156,7 @@ extension ARViewController {
 	func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
 
 		// If this is our anchor, create a node
-		if self.detectedDataAnchor?.identifier == anchor.identifier {
+		if self.qrDetector.detectedDataAnchor?.identifier == anchor.identifier {
 			
 			// Get our scene
 			guard let virtualObjectScene = SCNScene(named: "art.scnassets/logo.scn") else {
