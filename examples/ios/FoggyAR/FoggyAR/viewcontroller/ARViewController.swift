@@ -12,14 +12,14 @@ import ARKit
 import SwiftyFog_iOS
 import Vision
 
-class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, QRDetectionDelegate {
+class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 	
 	// MQTT representation for the logo
 	let logo = FoggyLogo()
 	
 	var scene : SCNScene = SCNScene()
 	
-	var qrDetector : QRDetection = QRDetection()
+	var qrDetector : QRDetection!
 	
 	// SceneNode for the 3D models
 	var logoNode = SCNNode()
@@ -46,12 +46,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, 
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	
 	// Outlet to the scene
-	@IBOutlet var sceneView: ARSCNView!
-	
-	required init?(coder aDecoder: NSCoder) {
-		super.init(coder: aDecoder)
-	
-	}
+	@IBOutlet weak var sceneView: ARSCNView!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -59,8 +54,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, 
 		// Set the scene to the view
 		sceneView.scene = self.scene
 		
-		qrDetector = QRDetection(sceneView: self.sceneView)
-		
+		qrDetector = QRDetection(sceneView: self.sceneView, confidence: 0.8)
 		qrDetector.delegate = self
 		
 		// Set the view's delegate
@@ -70,15 +64,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, 
 		
 		// Create the fake timer (get rid of this)
 		createFakeTimer()
-	}
-	
-	func foundQRValue(stringValue: String) {
-		print("found qr value! \(stringValue)")
-	}
-	
-	//Called when anchor changed
-	func updatedAnchor() {
-		
 	}
 	
 	//Called when processing status changed
@@ -144,8 +129,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, 
 }
 
 extension SCNNode
-{ // rational : FogRational<Int64>
-	func rotateAroundYAxis(by: CGFloat, duration : Int)
+{
+	func rotateAroundYAxis(by: CGFloat, duration : TimeInterval)
 	{
 		let (minVec, maxVec) = self.boundingBox
 		
@@ -153,9 +138,18 @@ extension SCNNode
 		self.pivot = SCNMatrix4MakeTranslation((maxVec.x - minVec.x) / 2 + minVec.x, (maxVec.y - minVec.y) / 2 + minVec.y, 0)
 
 		// Create the rotateTo action.
-		let action = SCNAction.rotate(by: by, around: SCNVector3(0, 1, 0), duration: TimeInterval(duration))
+		let action = SCNAction.rotate(by: by, around: SCNVector3(0, 1, 0), duration: duration)
 	
 		self.runAction(action, forKey: "rotateLogo")
+	}
+}
+
+extension ARViewController : QRDetectionDelegate {
+	func foundQRValue(stringValue: String) {
+		print("found qr value! \(stringValue)")
+	}
+	func detectRequestError(error: Error) {
+		print("Error in QR: \(error.localizedDescription)")
 	}
 }
 

@@ -15,6 +15,25 @@ public protocol QRDetectionDelegate: class
 	func foundQRValue(stringValue : String)
 	func updatingStatusChanged(status : Bool)
 	func updatedAnchor()
+	func detectRequestError(error : Error)
+}
+
+//Default implementation
+extension QRDetectionDelegate {
+	func foundQRValue(stringValue : String)
+	{
+		
+	}
+	func updatingStatusChanged(status : Bool){
+		
+	}
+	func updatedAnchor(){
+		
+	}
+	func detectRequestError(error : Error)
+	{
+		
+	}
 }
 
 public class QRDetection : NSObject, ARSessionDelegate
@@ -22,10 +41,10 @@ public class QRDetection : NSObject, ARSessionDelegate
 	public weak var delegate: QRDetectionDelegate?
 	public var detectedDataAnchor: ARAnchor?
 	
-	var qrValue: String = String()
-	var confidence: Float = 1.0
+	private var qrValue: String = String()
+	private var confidence: Float = 1.0
 	
-	var sceneView : ARSCNView?
+	private var sceneView : ARSCNView?
 	
 	//isProcessing vs isUpdating:
 	//isProcessing handles internal checking if qr Code has been processed (constantly)
@@ -38,27 +57,19 @@ public class QRDetection : NSObject, ARSessionDelegate
 		}
 	}
 	
-	override init() { super.init() }
-	
-	public init(sceneView : ARSCNView) {
+	public init(sceneView : ARSCNView, confidence : Float) {
 		super.init()
 		
 		self.sceneView = sceneView
 		self.sceneView?.session.delegate = self
+		
+		self.confidence = confidence
 	}
 	
-	public func session(_ session: ARSession, didUpdate frame: ARFrame) {
-		
-		if self.isProcessing
-		{
-			return
-		}
-		
-		self.isProcessing = true
-		self.isUpdating = false
-		
+	private func getBarcodeRequest(_ frame : ARFrame) -> VNDetectBarcodesRequest
+	{
 		let request = VNDetectBarcodesRequest { (request, error) in
-
+			
 			if let results = request.results, let result = results.first as? VNBarcodeObservation {
 				
 				let newValue = result.payloadStringValue
@@ -84,6 +95,7 @@ public class QRDetection : NSObject, ARSessionDelegate
 						
 						if let hitTestResult = hitTestResults.first {
 							
+							//TODO: move this out of QRDetection, against S in SOLID
 							if let detectedDataAnchor = self.detectedDataAnchor,
 								let node = self.sceneView!.node(for: detectedDataAnchor) {
 								
@@ -107,19 +119,34 @@ public class QRDetection : NSObject, ARSessionDelegate
 			}
 		}
 		
+		return request
+	}
+	
+	public func session(_ session: ARSession, didUpdate frame: ARFrame) {
+		
+		if self.isProcessing
+		{
+			return
+		}
+		
+		self.isProcessing = true
+		self.isUpdating = false
+		
+		let detectRequest = getBarcodeRequest(frame)
+		
 		// Process the request in the background
 		DispatchQueue.global(qos: .userInitiated).async {
 			do {
 				// Set it to recognize QR code only
-				request.symbologies = [.QR]
+				detectRequest.symbologies = [.QR]
 				
 				// Create a request handler using the captured image from the ARFrame
 				let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage,
 																												options: [:])
 				// Process the request
-				try imageRequestHandler.perform([request])
-			} catch {
-				
+				try imageRequestHandler.perform([detectRequest])
+			} catch let error {
+				self.delegate?.detectRequestError(error: error)
 			}
 		}
 		
