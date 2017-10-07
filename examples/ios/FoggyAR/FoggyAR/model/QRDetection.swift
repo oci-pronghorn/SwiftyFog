@@ -13,6 +13,7 @@ import Vision
 public protocol QRDetectionDelegate: class
 {
 	func foundQRValue(stringValue : String)
+	func updatingStatusChanged(status : Bool)
 	func updatedAnchor()
 }
 
@@ -26,7 +27,16 @@ public class QRDetection : NSObject, ARSessionDelegate
 	
 	var sceneView : ARSCNView?
 	
+	//isProcessing vs isUpdating:
+	//isProcessing handles internal checking if qr Code has been processed (constantly)
+	//isUpdating only updates on bigger changes (TODO make this better)
 	private var isProcessing : Bool = false
+
+	public var isUpdating : Bool = false {
+		didSet {
+			delegate?.updatingStatusChanged(status: isUpdating)
+		}
+	}
 	
 	override init() { super.init() }
 	
@@ -34,11 +44,10 @@ public class QRDetection : NSObject, ARSessionDelegate
 		super.init()
 		
 		self.sceneView = sceneView
+		self.sceneView?.session.delegate = self
 	}
 	
 	public func session(_ session: ARSession, didUpdate frame: ARFrame) {
-		
-		print("Session running")
 		
 		if self.isProcessing
 		{
@@ -46,6 +55,7 @@ public class QRDetection : NSObject, ARSessionDelegate
 		}
 		
 		self.isProcessing = true
+		self.isUpdating = false
 		
 		let request = VNDetectBarcodesRequest { (request, error) in
 
@@ -55,8 +65,6 @@ public class QRDetection : NSObject, ARSessionDelegate
 				
 				if(self.qrValue.isEmpty || newValue != self.qrValue)
 				{
-					print("QR value found!")
-					
 					self.delegate?.foundQRValue(stringValue: newValue!)
 					self.qrValue = newValue!
 				}
@@ -83,6 +91,7 @@ public class QRDetection : NSObject, ARSessionDelegate
 								node.transform = SCNMatrix4(hitTestResult.worldTransform)
 								
 							} else {
+								self.isUpdating = true
 								self.detectedDataAnchor = ARAnchor(transform: hitTestResult.worldTransform)
 								self.sceneView!.session.add(anchor: self.detectedDataAnchor!)
 							}

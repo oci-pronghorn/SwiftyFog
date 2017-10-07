@@ -73,14 +73,6 @@
 			path = assets;
 			sourceTree = "<group>";
 		};
-		86239D671F88076900B5F13C /* extensions */ = {
-			isa = PBXGroup;
-			children = (
-				86239D681F88078B00B5F13C /* QRDetection.swift */,
-			);
-			path = extensions;
-			sourceTree = "<group>";
-		};
 		869627661F855E2C00A2CCE0 = {
 			isa = PBXGroup;
 			children = (
@@ -101,7 +93,6 @@
 		869627711F855E2C00A2CCE0 /* FoggyAR */ = {
 			isa = PBXGroup;
 			children = (
-				86239D671F88076900B5F13C /* extensions */,
 				869627721F855E2C00A2CCE0 /* AppDelegate.swift */,
 				8696278C1F85600A00A2CCE0 /* ARAppController.swift */,
 				869627881F855E6800A2CCE0 /* viewcontroller */,
@@ -117,6 +108,7 @@
 		869627861F855E5C00A2CCE0 /* model */ = {
 			isa = PBXGroup;
 			children = (
+				86239D681F88078B00B5F13C /* QRDetection.swift */,
 				869627901F85646200A2CCE0 /* FoggyLogo.swift */,
 			);
 			path = model;

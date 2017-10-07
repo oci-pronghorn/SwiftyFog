@@ -13,14 +13,6 @@ import SwiftyFog_iOS
 import Vision
 
 class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, QRDetectionDelegate {
-	func foundQRValue(stringValue: String) {
-		print("found qr value! \(stringValue)")
-	}
-	
-	func updatedAnchor() {
-		print("Updated anchor!")
-	}
-	
 	
 	// MQTT representation for the logo
 	let logo = FoggyLogo()
@@ -32,6 +24,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, 
 	// SceneNode for the 3D models
 	var logoNode = SCNNode()
 	var lightbeamNode = SCNNode()
+	var qrValueTextNode = SCNNode()
 	
 	var oldRotationY = CGFloat(360.0)
 	
@@ -48,8 +41,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, 
 	private var fakeHeading : Int = 0
 	
 	// The activity indicator to be shown whenever it's trying to determine the QR code
-	@IBOutlet weak var trainAlive: UIImageView!
-	
 	@IBOutlet weak var centerActivityView: UIView!
 	
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -65,8 +56,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		scene = SCNScene(named: "art.scnassets/logo.scn")!
-		
 		// Set the scene to the view
 		sceneView.scene = self.scene
 		
@@ -76,12 +65,27 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, 
 		
 		// Set the view's delegate
 		sceneView.delegate = self
-		sceneView.session.delegate = self
 		
 		self.centerActivityView.layer.cornerRadius = 5;
 		
 		// Create the fake timer (get rid of this)
 		createFakeTimer()
+	}
+	
+	func foundQRValue(stringValue: String) {
+		print("found qr value! \(stringValue)")
+	}
+	
+	//Called when anchor changed
+	func updatedAnchor() {
+		
+	}
+	
+	//Called when processing status changed
+	func updatingStatusChanged(status: Bool) {
+		DispatchQueue.main.async(execute: {
+				self.centerActivityView.isHidden = !status
+		})
 	}
 	
 	override var prefersStatusBarHidden: Bool {
@@ -158,10 +162,10 @@ extension SCNNode
 extension ARViewController {
 	
 	func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-/*
 		// If this is our anchor, create a node
 		if self.qrDetector.detectedDataAnchor?.identifier == anchor.identifier {
 			
+			//Move line 163-to 173 maybe outside so we dont repeatedely keep grabbing it
 			// Get our scene
 			guard let virtualObjectScene = SCNScene(named: "art.scnassets/logo.scn") else {
 				return nil
@@ -186,7 +190,7 @@ extension ARViewController {
 			
 			return wrapperNode
 		}
-		*/
+
 		return nil
 	}
 	

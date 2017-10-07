@@ -21,13 +21,6 @@
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1YT-9m-6qa">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </arscnView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Dead" highlightedImage="Alive" translatesAutoresizingMaskIntoConstraints="NO" id="2d6-qA-umD" userLabel="Status Image View">
-                                <rect key="frame" x="335" y="623" width="24" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="24" id="mL5-H1-gdD"/>
-                                    <constraint firstAttribute="height" constant="24" id="wun-8e-pDs"/>
-                                </constraints>
-                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yjI-eg-LQc">
                                 <rect key="frame" x="159" y="305" width="56" height="56"/>
                                 <subviews>
@@ -51,10 +44,8 @@
                             <constraint firstItem="yjI-eg-LQc" firstAttribute="centerY" secondItem="1YT-9m-6qa" secondAttribute="centerY" id="Avq-YY-jK1"/>
                             <constraint firstItem="1YT-9m-6qa" firstAttribute="bottom" secondItem="ehd-su-wnz" secondAttribute="bottom" id="By2-Oy-yts"/>
                             <constraint firstItem="yjI-eg-LQc" firstAttribute="centerX" secondItem="1YT-9m-6qa" secondAttribute="centerX" id="FLc-7O-wRl"/>
-                            <constraint firstItem="ehd-su-wnz" firstAttribute="bottom" secondItem="2d6-qA-umD" secondAttribute="bottom" constant="20" id="Lk5-qS-QNs"/>
                             <constraint firstItem="1YT-9m-6qa" firstAttribute="trailing" secondItem="ehd-su-wnz" secondAttribute="trailing" id="Tvz-T2-18W"/>
                             <constraint firstItem="1YT-9m-6qa" firstAttribute="top" secondItem="OwL-nr-JwL" secondAttribute="top" id="gcg-Ch-waO"/>
-                            <constraint firstItem="ehd-su-wnz" firstAttribute="trailing" secondItem="2d6-qA-umD" secondAttribute="trailing" constant="16" id="tGw-OV-Zm1"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ehd-su-wnz"/>
                     </view>
@@ -63,7 +54,6 @@
                         <outlet property="activityIndicator" destination="ck3-n7-x4q" id="k0T-cN-TyQ"/>
                         <outlet property="centerActivityView" destination="yjI-eg-LQc" id="ZsW-IF-jPp"/>
                         <outlet property="sceneView" destination="1YT-9m-6qa" id="ZQO-H4-1ba"/>
-                        <outlet property="trainAlive" destination="2d6-qA-umD" id="qOh-5Q-hUd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
@@ -71,8 +61,4 @@
             <point key="canvasLocation" x="140" y="129.98500749625188"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="Alive" width="32" height="32"/>
-        <image name="Dead" width="32" height="32"/>
-    </resources>
 </document>
