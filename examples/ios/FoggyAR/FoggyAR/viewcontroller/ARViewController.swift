@@ -26,8 +26,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 	var lightbeamNode = SCNNode()
 	var qrValueTextNode = SCNNode()
 	
-	var oldRotationY = CGFloat(360.0)
-	
 	// The bridge, responsible for receiving train data
 	var mqtt: MQTTBridge! {
 		didSet {
@@ -36,9 +34,11 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 		}
 	}
 	
+	private var oldRotationY: CGFloat = 0.0
+	
 	// TODO: fakeHeadingTimer is for testing and demo-purposes, don't actually use it prod
+	private var fakeHeading : CGFloat = 0
 	private var fakeHeadingTimer: DispatchSourceTimer?
-	private var fakeHeading : Int = 0
 	
 	// The activity indicator to be shown whenever it's trying to determine the QR code
 	@IBOutlet weak var centerActivityView: UIView!
@@ -80,23 +80,31 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 	// TODO: get rid of this eventually
 	func createFakeTimer()
 	{
-		let interval = 1
-		let leeway = 1
-		
 		// Fake timer
 		let fakeHeadingTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
 		
+		fakeHeading = 3.0
+		oldRotationY = fakeHeading
+		let fakeIncrement: CGFloat = 13
+		
+		let interval = 1
+		let leeway = 1
 		fakeHeadingTimer.schedule(deadline: .now() + .seconds(interval), repeating: .seconds(interval), leeway: .seconds(leeway))
 		fakeHeadingTimer.setEventHandler { [weak self] in
 			if let m = self {
-				m.fakeHeading += 20;
-				if m.fakeHeading >= 360 {
+				m.fakeHeading += fakeIncrement;
+				if m.fakeHeading < 0 {
+					m.fakeHeading += 360
+				}
+				else if m.fakeHeading >= 360 {
 					m.fakeHeading -= 360
 				}
-				m.logo.control(heading: FogRational(num: Int64(self!.fakeHeading), den: Int64(360)))
+				let heading = FogRational(num: Int64(m.fakeHeading), den: Int64(360))
+				var data  = Data(capacity: heading.fogSize)
+				data.fogAppend(heading)
+				m.mqtt.publish(MQTTMessage(topic: "accelerometer/feedback/heading", payload: data))
 			}
 		}
-		
 		self.fakeHeadingTimer = fakeHeadingTimer
 		fakeHeadingTimer.resume()
 	}
@@ -206,13 +214,12 @@ extension ARViewController : FoggyLogoDelegate {
 	}
 	
 	func foggyLogo(accelerometerHeading: FogRational<Int64>, _ asserted: Bool) {
-		print("Received acceloremeter heading: \(accelerometerHeading)")
-	
-		let newRotationY = CGFloat(accelerometerHeading.num) + 360
-		let distance = abs(newRotationY - oldRotationY)
-		let rotateBy = distance < 180 ? newRotationY - oldRotationY : 360.0 - distance
+		let newRotationY = CGFloat(accelerometerHeading.num)
+		let normDelta = newRotationY - oldRotationY
+		let crossDelta = oldRotationY < newRotationY ? newRotationY - 360 - oldRotationY : 360 - oldRotationY + newRotationY
+		let rotateBy = abs(normDelta) < abs(crossDelta) ? normDelta : crossDelta
 		oldRotationY = newRotationY
-		
+		print("Received acceloremeter heading: \(accelerometerHeading) rotate by: \(rotateBy)")
 		logoNode.rotateAroundYAxis(by: rotateBy.degreesToRadians, duration: 1)
 	}
 }

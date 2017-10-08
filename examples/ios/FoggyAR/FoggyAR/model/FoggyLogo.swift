@@ -41,13 +41,6 @@ public class FoggyLogo: FogFeedbackModel {
 		self.lightsPower = false
 		self.accelerometerHeading = FogRational(num: Int64(0), den: 360)
 	}
-	
-	//TODO: get rid of this (acceloremeter project)
-	public func control(heading: FogRational<Int64>) {
-			var data  = Data(capacity: heading.fogSize)
-			data.fogAppend(heading)
-			mqtt.publish(MQTTMessage(topic: "accelerometer/feedback/heading", payload: data))
-	}
 
 	private func feedbackLightsPower(_ msg: MQTTMessage) {
 		let value: Bool = msg.payload.fogExtract()
