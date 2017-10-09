@@ -97,14 +97,12 @@ class ARViewController: UIViewController {
 
 }
 
-extension SCNNode
-{
-	func rotateToYAxis(to: CGFloat)
-	{
+extension SCNNode {
+	func rotateToYAxis(to: CGFloat) {
 		self.eulerAngles.y = Float(to)
 	}
-	func rotateAroundYAxis(by: CGFloat, duration : TimeInterval)
-	{
+	
+	func rotateAroundYAxis(by: CGFloat, duration : TimeInterval) {
 		let (minVec, maxVec) = self.boundingBox
 		
 		// Create pivot so it can spin around itself
@@ -118,9 +116,14 @@ extension SCNNode
 }
 
 extension ARViewController : QRDetectionDelegate {
+	func updatedAnchor() {
+		print("Updating anchor")
+	}
+	
 	func foundQRValue(stringValue: String) {
 		print("found qr value! \(stringValue)")
 	}
+	
 	func detectRequestError(error: Error) {
 		print("Error in QR: \(error.localizedDescription)")
 	}
@@ -145,6 +148,8 @@ extension ARViewController : ARSCNViewDelegate {
 			logoNode.rotateToYAxis(to: oldRotationY.degreesToRadians)
 			
 			lightbeamNode = virtualObjectScene.rootNode.childNode(withName: "lightbeam", recursively: false)!
+			
+			logoNode.eulerAngles.y = Float(oldRotationY.degreesToRadians)
 			
 			//Wrapper node for adding nodes that we want to spawn on top of the QR code
 			let wrapperNode = SCNNode()
@@ -193,7 +198,8 @@ extension ARViewController : FoggyLogoDelegate {
 		if let logoNode = logoNode {
 			if hasAppliedHeading {
 				logoNode.rotateAroundYAxis(by: rotateBy.degreesToRadians, duration: 1)
-			} else {
+			}
+			else {
 				logoNode.rotateToYAxis(to: oldRotationY)
 				hasAppliedHeading = true
 			}

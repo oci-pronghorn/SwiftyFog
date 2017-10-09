@@ -10,32 +10,14 @@ import Foundation
 import ARKit
 import Vision
 
-public protocol QRDetectionDelegate: class
-{
+public protocol QRDetectionDelegate: class {
 	func foundQRValue(stringValue : String)
 	func updatingStatusChanged(status : Bool)
 	func updatedAnchor()
 	func detectRequestError(error : Error)
 }
 
-//Default implementation
-extension QRDetectionDelegate {
-	func foundQRValue(stringValue : String) {
-		
-	}
-	func updatingStatusChanged(status : Bool) {
-		
-	}
-	func updatedAnchor() {
-		
-	}
-	func detectRequestError(error : Error) {
-		
-	}
-}
-
-public class QRDetection : NSObject, ARSessionDelegate
-{
+public class QRDetection : NSObject, ARSessionDelegate {
 	public weak var delegate: QRDetectionDelegate?
 	public private (set) var detectedDataAnchor: ARAnchor?
 	
@@ -61,8 +43,7 @@ public class QRDetection : NSObject, ARSessionDelegate
 		self.sceneView.session.delegate = self
 	}
 	
-	private func getBarcodeRequest(_ frame : ARFrame) -> VNDetectBarcodesRequest
-	{
+	private func getBarcodeRequest(_ frame : ARFrame) -> VNDetectBarcodesRequest {
 		let request = VNDetectBarcodesRequest { (request, error) in
 			
 			if let results = request.results, let result = results.first as? VNBarcodeObservation {
@@ -116,7 +97,6 @@ public class QRDetection : NSObject, ARSessionDelegate
 	}
 	
 	public func session(_ session: ARSession, didUpdate frame: ARFrame) {
-		
 		if self.isProcessing {
 			return
 		}
@@ -133,15 +113,12 @@ public class QRDetection : NSObject, ARSessionDelegate
 				detectRequest.symbologies = [.QR]
 				
 				// Create a request handler using the captured image from the ARFrame
-				let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage,
-																												options: [:])
+				let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage, options: [:])
 				// Process the request
 				try imageRequestHandler.perform([detectRequest])
 			} catch let error {
 				self.delegate?.detectRequestError(error: error)
 			}
 		}
-		
 	}
-	
 }
