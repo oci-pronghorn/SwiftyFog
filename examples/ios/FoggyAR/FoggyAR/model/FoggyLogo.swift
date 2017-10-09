@@ -10,13 +10,11 @@ import Foundation
 import SwiftyFog_iOS
 
 public protocol FoggyLogoDelegate: class {
-	func foggyLogo(lightsPower: Bool, _ asserted: Bool)
-	func foggyLogo(accelerometerHeading: FogRational<Int64>, _ asserted: Bool)
+	func foggyLogo(lightsPower: Bool)
+	func foggyLogo(accelerometerHeading: FogRational<Int64>)
 }
 
-public class FoggyLogo: FogFeedbackModel {
-	public var hasFeedback: Bool = false
-	
+public class FoggyLogo {
 	//Creating the broadcaster
 	private var broadcaster: MQTTBroadcaster?
 	
@@ -44,20 +42,12 @@ public class FoggyLogo: FogFeedbackModel {
 
 	private func feedbackLightsPower(_ msg: MQTTMessage) {
 		let value: Bool = msg.payload.fogExtract()
-		delegate?.foggyLogo(lightsPower: value, true)
+		delegate?.foggyLogo(lightsPower: value)
 	}
 	
 	private func feedbackAccelerometerHeading(_ msg: MQTTMessage) {
 		let value: FogRational<Int64> = msg.payload.fogExtract()!
-		delegate?.foggyLogo(accelerometerHeading: value, true)
-	}
-	
-	public func reset() {
-		
-	}
-	
-	public func assertValues() {
-		
+		delegate?.foggyLogo(accelerometerHeading: value)
 	}
 
 }

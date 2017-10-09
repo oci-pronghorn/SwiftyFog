@@ -12,19 +12,17 @@ import ARKit
 import SwiftyFog_iOS
 import Vision
 
-class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
+class ARViewController: UIViewController {
 	
 	// MQTT representation for the logo
 	let logo = FoggyLogo()
 	
-	var scene : SCNScene = SCNScene()
-	
 	var qrDetector : QRDetection!
 	
 	// SceneNode for the 3D models
-	var logoNode = SCNNode()
-	var lightbeamNode = SCNNode()
-	var qrValueTextNode = SCNNode()
+	var logoNode : SCNNode!
+	var lightbeamNode : SCNNode!
+	var qrValueTextNode : SCNNode!
 	
 	// The bridge, responsible for receiving train data
 	var mqtt: MQTTBridge! {
@@ -48,7 +46,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 		super.viewDidLoad()
 		
 		// Set the scene to the view
-		sceneView.scene = self.scene
+		sceneView.scene = SCNScene()
 		
 		qrDetector = QRDetection(sceneView: self.sceneView, confidence: 0.8)
 		qrDetector.delegate = self
@@ -122,7 +120,7 @@ extension ARViewController : QRDetectionDelegate {
 	}
 }
 
-extension ARViewController {
+extension ARViewController : ARSCNViewDelegate {
 	
 	func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
 		// If this is our anchor, create a node
@@ -169,18 +167,21 @@ extension ARViewController {
 }
 
 extension ARViewController : FoggyLogoDelegate {
-	func foggyLogo(lightsPower: Bool, _ asserted: Bool) {
+	func foggyLogo(lightsPower: Bool) {
 		print("Lights are on: \(lightsPower)")
 		lightbeamNode.isHidden = !lightsPower
 	}
 	
-	func foggyLogo(accelerometerHeading: FogRational<Int64>, _ asserted: Bool) {
+	func foggyLogo(accelerometerHeading: FogRational<Int64>) {
 		let newRotationY = CGFloat(accelerometerHeading.num)
 		let normDelta = newRotationY - oldRotationY
 		let crossDelta = oldRotationY < newRotationY ? newRotationY - 360 - oldRotationY : 360 - oldRotationY + newRotationY
 		let rotateBy = abs(normDelta) < abs(crossDelta) ? normDelta : crossDelta
 		oldRotationY = newRotationY
 		print("Received acceloremeter heading: \(accelerometerHeading) rotate by: \(rotateBy)")
-		logoNode.rotateAroundYAxis(by: rotateBy.degreesToRadians, duration: 1)
+		
+		if let logoNode = logoNode {
+			logoNode.rotateAroundYAxis(by: rotateBy.degreesToRadians, duration: 1)
+		}
 	}
 }

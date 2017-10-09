@@ -20,18 +20,16 @@ public protocol QRDetectionDelegate: class
 
 //Default implementation
 extension QRDetectionDelegate {
-	func foundQRValue(stringValue : String)
-	{
+	func foundQRValue(stringValue : String) {
 		
 	}
-	func updatingStatusChanged(status : Bool){
+	func updatingStatusChanged(status : Bool) {
 		
 	}
-	func updatedAnchor(){
+	func updatedAnchor() {
 		
 	}
-	func detectRequestError(error : Error)
-	{
+	func detectRequestError(error : Error) {
 		
 	}
 }
@@ -39,16 +37,13 @@ extension QRDetectionDelegate {
 public class QRDetection : NSObject, ARSessionDelegate
 {
 	public weak var delegate: QRDetectionDelegate?
-	public var detectedDataAnchor: ARAnchor?
+	public private (set) var detectedDataAnchor: ARAnchor?
 	
 	private var qrValue: String = String()
-	private var confidence: Float = 1.0
+	private var confidence: Float
 	
-	private var sceneView : ARSCNView?
+	private var sceneView : ARSCNView
 	
-	//isProcessing vs isUpdating:
-	//isProcessing handles internal checking if qr Code has been processed (constantly)
-	//isUpdating only updates on bigger changes (TODO make this better)
 	private var isProcessing : Bool = false
 
 	public var isUpdating : Bool = false {
@@ -58,12 +53,12 @@ public class QRDetection : NSObject, ARSessionDelegate
 	}
 	
 	public init(sceneView : ARSCNView, confidence : Float) {
+		self.sceneView = sceneView
+		self.confidence = confidence
+		
 		super.init()
 		
-		self.sceneView = sceneView
-		self.sceneView?.session.delegate = self
-		
-		self.confidence = confidence
+		self.sceneView.session.delegate = self
 	}
 	
 	private func getBarcodeRequest(_ frame : ARFrame) -> VNDetectBarcodesRequest
@@ -74,14 +69,12 @@ public class QRDetection : NSObject, ARSessionDelegate
 				
 				let newValue = result.payloadStringValue
 				
-				if(self.qrValue.isEmpty || newValue != self.qrValue)
-				{
+				if(self.qrValue.isEmpty || newValue != self.qrValue) {
 					self.delegate?.foundQRValue(stringValue: newValue!)
 					self.qrValue = newValue!
 				}
 				
-				if(result.confidence >= self.confidence)
-				{
+				if(result.confidence >= self.confidence) {
 					var rect = result.boundingBox
 					
 					rect = rect.applying(CGAffineTransform(scaleX: 1, y: -1))
@@ -97,7 +90,7 @@ public class QRDetection : NSObject, ARSessionDelegate
 							
 							//TODO: move this out of QRDetection, against S in SOLID
 							if let detectedDataAnchor = self.detectedDataAnchor,
-								let node = self.sceneView!.node(for: detectedDataAnchor) {
+								let node = self.sceneView.node(for: detectedDataAnchor) {
 								
 								self.delegate?.updatedAnchor()
 								node.transform = SCNMatrix4(hitTestResult.worldTransform)
@@ -105,7 +98,7 @@ public class QRDetection : NSObject, ARSessionDelegate
 							} else {
 								self.isUpdating = true
 								self.detectedDataAnchor = ARAnchor(transform: hitTestResult.worldTransform)
-								self.sceneView!.session.add(anchor: self.detectedDataAnchor!)
+								self.sceneView.session.add(anchor: self.detectedDataAnchor!)
 							}
 							
 						}
@@ -124,8 +117,7 @@ public class QRDetection : NSObject, ARSessionDelegate
 	
 	public func session(_ session: ARSession, didUpdate frame: ARFrame) {
 		
-		if self.isProcessing
-		{
+		if self.isProcessing {
 			return
 		}
 		
