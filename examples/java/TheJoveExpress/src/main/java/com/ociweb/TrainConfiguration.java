@@ -28,7 +28,7 @@ public class TrainConfiguration  {
     final boolean billboardEnabled = false;
     final boolean cameraEnabled = false;
     final boolean soundEnabled = false;
-    final boolean speedometerEnabled = false;
+    final boolean speedometerEnabled = true;
     final boolean appServerEnabled = false;
     final int appServerPort = 8089;
 

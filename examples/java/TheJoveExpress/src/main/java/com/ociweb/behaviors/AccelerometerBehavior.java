@@ -1,6 +1,7 @@
 package com.ociweb.behaviors;
 
 import com.ociweb.gl.api.Behavior;
+import com.ociweb.gl.api.StartupListener;
 import com.ociweb.iot.grove.six_axis_accelerometer.AccelValsListener;
 import com.ociweb.iot.grove.six_axis_accelerometer.MagValsListener;
 import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometer_Transducer;
@@ -8,7 +9,7 @@ import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
-public class AccelerometerBehavior implements Behavior, AccelValsListener, MagValsListener {
+public class AccelerometerBehavior implements Behavior, AccelValsListener, MagValsListener, StartupListener {
     private final FogCommandChannel channel;
     private final SixAxisAccelerometer_Transducer accSensor;
     private final String headingTopic;
@@ -16,13 +17,16 @@ public class AccelerometerBehavior implements Behavior, AccelValsListener, MagVa
 
     public AccelerometerBehavior(FogRuntime runtime, String publishTopic) {
         this.channel = runtime.newCommandChannel();
-        accSensor = new SixAxisAccelerometer_Transducer(channel, this, this);
+        accSensor = new SixAxisAccelerometer_Transducer(channel);
+        accSensor.registerListeners(this, this);
         headingTopic = publishTopic + "/" + "heading";
         accelerateTopic = publishTopic + "/" + "accelerate";
     }
 
-    public boolean onMqttConnected(CharSequence charSequence, ChannelReader messageReader) {
-        return true;
+    @Override
+    public void startup() {
+        accSensor.setAccelScale(6);
+        accSensor.setMagScale(8);
     }
 
     @Override
