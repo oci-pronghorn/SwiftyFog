@@ -19,6 +19,8 @@ class ARViewController: UIViewController {
 	
 	var qrDetector : QRDetection!
 	
+	var hasAppliedHeading = false
+	
 	// SceneNode for the 3D models
 	var logoNode : SCNNode!
 	var lightbeamNode : SCNNode!
@@ -97,6 +99,10 @@ class ARViewController: UIViewController {
 
 extension SCNNode
 {
+	func rotateToYAxis(to: CGFloat)
+	{
+		self.eulerAngles.y = Float(to)
+	}
 	func rotateAroundYAxis(by: CGFloat, duration : TimeInterval)
 	{
 		let (minVec, maxVec) = self.boundingBox
@@ -134,6 +140,10 @@ extension ARViewController : ARSCNViewDelegate {
 			
 			//Grab the required nodes
 			logoNode = virtualObjectScene.rootNode.childNode(withName: "OCILogo", recursively: false)!
+			
+			//Before render we have already received a rotation, set it to that
+			logoNode.rotateToYAxis(to: oldRotationY.degreesToRadians)
+			
 			lightbeamNode = virtualObjectScene.rootNode.childNode(withName: "lightbeam", recursively: false)!
 			
 			//Wrapper node for adding nodes that we want to spawn on top of the QR code
@@ -181,7 +191,12 @@ extension ARViewController : FoggyLogoDelegate {
 		print("Received acceloremeter heading: \(accelerometerHeading) rotate by: \(rotateBy)")
 		
 		if let logoNode = logoNode {
-			logoNode.rotateAroundYAxis(by: rotateBy.degreesToRadians, duration: 1)
+			if hasAppliedHeading {
+				logoNode.rotateAroundYAxis(by: rotateBy.degreesToRadians, duration: 1)
+			} else {
+				logoNode.rotateToYAxis(to: oldRotationY)
+				hasAppliedHeading = true
+			}
 		}
 	}
 }

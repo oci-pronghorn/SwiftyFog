@@ -70,10 +70,10 @@ class ARAppController {
 				let heading = FogRational(num: Int64(m.fakeHeading), den: Int64(360))
 				var data  = Data(capacity: heading.fogSize)
 				data.fogAppend(heading)
-				m.mqtt.publish(MQTTMessage(topic: "accelerometer/feedback/heading", payload: data))
+				m.mqtt.publish(MQTTMessage(topic: "thejoveexpress/accelerometer/feedback/heading", payload: data))
 			}
 		}
 		self.fakeHeadingTimer = fakeHeadingTimer
-		//fakeHeadingTimer.resume()
+		fakeHeadingTimer.resume()
 	}
 }
