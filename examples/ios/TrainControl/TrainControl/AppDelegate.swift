@@ -41,10 +41,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 
 	func applicationWillResignActive(_ application: UIApplication) {
-		controller.goBackground()
 	}
 
 	func applicationDidEnterBackground(_ application: UIApplication) {
+		controller.goBackground()
 	}
 
 	func applicationWillEnterForeground(_ application: UIApplication) {
@@ -52,11 +52,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 
 	func applicationDidBecomeActive(_ application: UIApplication) {
-		controller.goForeground()
 	}
 
 	func applicationWillTerminate(_ application: UIApplication) {
-		controller.goBackground()
 	}
 }
 

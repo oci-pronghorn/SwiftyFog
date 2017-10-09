@@ -10,32 +10,14 @@ import Foundation
 import ARKit
 import Vision
 
-public protocol QRDetectionDelegate: class
-{
+public protocol QRDetectionDelegate: class {
 	func foundQRValue(stringValue : String)
 	func updatingStatusChanged(status : Bool)
 	func updatedAnchor()
 	func detectRequestError(error : Error)
 }
 
-//Default implementation
-extension QRDetectionDelegate {
-	func foundQRValue(stringValue : String) {
-		
-	}
-	func updatingStatusChanged(status : Bool) {
-		
-	}
-	func updatedAnchor() {
-		
-	}
-	func detectRequestError(error : Error) {
-		
-	}
-}
-
-public class QRDetection : NSObject, ARSessionDelegate
-{
+public class QRDetection : NSObject, ARSessionDelegate {
 	public weak var delegate: QRDetectionDelegate?
 	public private (set) var detectedDataAnchor: ARAnchor?
 	
@@ -131,15 +113,12 @@ public class QRDetection : NSObject, ARSessionDelegate
 				detectRequest.symbologies = [.QR]
 				
 				// Create a request handler using the captured image from the ARFrame
-				let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage,
-																												options: [:])
+				let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage, options: [:])
 				// Process the request
 				try imageRequestHandler.perform([detectRequest])
 			} catch let error {
 				self.delegate?.detectRequestError(error: error)
 			}
 		}
-		
 	}
-	
 }

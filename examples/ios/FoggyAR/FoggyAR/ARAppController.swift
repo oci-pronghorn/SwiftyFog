@@ -20,9 +20,15 @@ class ARAppController {
 	init(_ trainName: String) {
 		self.network = NetworkReachability()
 		
+		let metrics = MQTTMetrics()
+		metrics.doPrintReceivePackets = true
+		metrics.doPrintSendPackets = true
+		metrics.debugOut = {print($0)}
+		
 		// Create the concrete MQTTClient to connect to a specific broker
 		let mqtt = MQTTClient(
 			host: MQTTHostParams(host: "thejoveexpress.local")
+			//metrics: metrics
 		)
 
 		self.mqtt = mqtt
@@ -31,15 +37,15 @@ class ARAppController {
 	}
 	
 	public func goForeground() {
-			// Network reachability can detect a disconnected state before the client
-			network.start { [weak self] status in
-				if status != .none {
-					self?.mqtt.start()
-				}
-				else {
-					self?.mqtt.stop()
-				}
+		// Network reachability can detect a disconnected state before the client
+		network.start { [weak self] status in
+			if status != .none {
+				self?.mqtt.start()
 			}
+			else {
+				self?.mqtt.stop()
+			}
+		}
 	}
 	
 	public func goBackground() {
@@ -74,6 +80,6 @@ class ARAppController {
 			}
 		}
 		self.fakeHeadingTimer = fakeHeadingTimer
-		fakeHeadingTimer.resume()
+		//fakeHeadingTimer.resume()
 	}
 }

@@ -26,11 +26,12 @@
 		554348871F82D46100C3C2CB /* Pulsator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348761F82D46100C3C2CB /* Pulsator.swift */; };
 		554348881F82D46100C3C2CB /* ScubControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348771F82D46100C3C2CB /* ScubControl.swift */; };
 		5543488B1F82D48A00C3C2CB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5543488A1F82D48A00C3C2CB /* Images.xcassets */; };
-		554348941F82D4D700C3C2CB /* SwiftyFog_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554348951F82D4D700C3C2CB /* SwiftyFog_iOS.framework */; };
 		554348971F82D5B100C3C2CB /* ExerciseMotor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348961F82D5B100C3C2CB /* ExerciseMotor.swift */; };
 		5543489D1F82D65B00C3C2CB /* WMGaugeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 554348991F82D65A00C3C2CB /* WMGaugeView.m */; };
 		5543489E1F82D65B00C3C2CB /* FSDAirportFlipLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5543489C1F82D65A00C3C2CB /* FSDAirportFlipLabel.m */; };
 		554348A01F82D6FE00C3C2CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */; };
+		55DA62DA1F8C1F140068D592 /* SwiftyFog_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554348951F82D4D700C3C2CB /* SwiftyFog_iOS.framework */; };
+		55DA62DB1F8C1F140068D592 /* SwiftyFog_iOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 554348951F82D4D700C3C2CB /* SwiftyFog_iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,20 @@
 			remoteInfo = TrainControl;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		55DA62DC1F8C1F140068D592 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				55DA62DB1F8C1F140068D592 /* SwiftyFog_iOS.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		554348351F82D3AD00C3C2CB /* TrainControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrainControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,7 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				554348941F82D4D700C3C2CB /* SwiftyFog_iOS.framework in Frameworks */,
+				55DA62DA1F8C1F140068D592 /* SwiftyFog_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,6 +240,7 @@
 				554348311F82D3AD00C3C2CB /* Sources */,
 				554348321F82D3AD00C3C2CB /* Frameworks */,
 				554348331F82D3AD00C3C2CB /* Resources */,
+				55DA62DC1F8C1F140068D592 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
