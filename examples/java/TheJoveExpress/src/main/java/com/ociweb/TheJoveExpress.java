@@ -125,7 +125,7 @@ public class TheJoveExpress implements FogApp
 
         if (config.speedometerEnabled) {
             final AccelerometerBehavior accelerometer = new AccelerometerBehavior(runtime,
-                    pubSub.publish("accelerometer/feedback", false, MQTTQoS.atMostOnce));
+                    pubSub.publish("accelerometer/feedback/heading", false, MQTTQoS.atMostOnce));
             pubSub.registerBehavior(accelerometer);
         }
 

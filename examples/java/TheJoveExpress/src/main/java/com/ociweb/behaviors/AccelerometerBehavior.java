@@ -7,20 +7,20 @@ import com.ociweb.iot.grove.six_axis_accelerometer.MagValsListener;
 import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometer_Transducer;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
+import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
-public class AccelerometerBehavior implements Behavior, AccelValsListener, MagValsListener, StartupListener {
+public class AccelerometerBehavior implements Behavior, MagValsListener, StartupListener {
     private final FogCommandChannel channel;
     private final SixAxisAccelerometer_Transducer accSensor;
     private final String headingTopic;
-    private final String accelerateTopic;
+    private final RationalPayload heading = new RationalPayload(0, 360);
 
-    public AccelerometerBehavior(FogRuntime runtime, String publishTopic) {
-        this.channel = runtime.newCommandChannel();
-        accSensor = new SixAxisAccelerometer_Transducer(channel);
-        accSensor.registerListeners(this, this);
-        headingTopic = publishTopic + "/" + "heading";
-        accelerateTopic = publishTopic + "/" + "accelerate";
+    public AccelerometerBehavior(FogRuntime runtime, String headingTopic) {
+        this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
+        this.accSensor = new SixAxisAccelerometer_Transducer(runtime.newCommandChannel());
+        this.accSensor.registerListeners(null, this);
+        this.headingTopic = headingTopic;
     }
 
     @Override
@@ -30,23 +30,15 @@ public class AccelerometerBehavior implements Behavior, AccelValsListener, MagVa
     }
 
     @Override
-    public void accelerationValues(int x, int y, int z) {
-        System.out.print(String.format("accel %d %d %d\n", x, y, z));
-     //   this.channel.publishTopic(headingTopic, writer -> {
-     //       writer.writeInt(x);
-     //       writer.writeInt(y);
-     //       writer.writeInt(z);
-     //   });
-    }
-
-    @Override
     public void magneticValues(int x, int y, int z) {
-        double heading = 180.0 * Math.atan2(y, x) / Math.PI;
-        if (heading < 0) heading += 360.0;
-        final double finalHeading = heading;
-        System.out.print(String.format("heading %f\n", finalHeading));
-        // this.channel.publishTopic(accelerateTopic, writer -> {
-        //     writer.writeDouble(finalHeading);
-        // });
+        double value = 180.0 * Math.atan2(y, x) / Math.PI;
+        if (value < 0) {
+            value += 360.0;
+        }
+        long rounded = (long)value;
+        if (rounded != heading.num) {
+            heading.num = rounded;
+            this.channel.publishTopic(headingTopic, writer -> writer.write(heading));
+        }
     }
 }
