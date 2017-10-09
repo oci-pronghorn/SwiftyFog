@@ -23,7 +23,7 @@ class ARViewController: UIViewController {
 	
 	// SceneNode for the 3D models
 	var logoNode : SCNNode!
-	var lightbeamNode : SCNNode!
+	var lightbulbNode : SCNNode!
 	var qrValueTextNode : SCNNode!
 	
 	// The bridge, responsible for receiving train data
@@ -60,7 +60,7 @@ class ARViewController: UIViewController {
 	}
 	
 	//Called when processing status changed
-	func updatingStatusChanged(status: Bool) {
+	func isShowingActivityIndicator(_ status: Bool) {
 		DispatchQueue.main.async(execute: {
 				self.centerActivityView.isHidden = !status
 		})
@@ -99,12 +99,11 @@ class ARViewController: UIViewController {
 
 extension SCNNode
 {
-	func rotateToYAxis(to: CGFloat)
-	{
+	func rotateToYAxis(to: CGFloat) {
 		self.eulerAngles.y = Float(to)
 	}
-	func rotateAroundYAxis(by: CGFloat, duration : TimeInterval)
-	{
+	
+	func rotateAroundYAxis(by: CGFloat, duration : TimeInterval) {
 		let (minVec, maxVec) = self.boundingBox
 		
 		// Create pivot so it can spin around itself
@@ -119,8 +118,20 @@ extension SCNNode
 
 extension ARViewController : QRDetectionDelegate {
 	func foundQRValue(stringValue: String) {
-		print("found qr value! \(stringValue)")
+		print("Code scanned: \(stringValue)")
+		
+		//TODO: this doesnt work the first time if qr code is scanned but the node is not loaded in
+		if let qrValueTextNode = qrValueTextNode {
+			if let textGeometry = qrValueTextNode.geometry as? SCNText {
+				textGeometry.string = stringValue
+			}
+		}
 	}
+	
+	func updatingStatusChanged(status: Bool) {
+		isShowingActivityIndicator(status)
+	}
+	
 	func detectRequestError(error: Error) {
 		print("Error in QR: \(error.localizedDescription)")
 	}
@@ -132,8 +143,6 @@ extension ARViewController : ARSCNViewDelegate {
 		// If this is our anchor, create a node
 		if self.qrDetector.detectedDataAnchor?.identifier == anchor.identifier {
 			
-			//Move line 163-to 173 maybe outside so we dont repeatedely keep grabbing it
-			// Get our scene
 			guard let virtualObjectScene = SCNScene(named: "art.scnassets/logo.scn") else {
 				return nil
 			}
@@ -144,7 +153,9 @@ extension ARViewController : ARSCNViewDelegate {
 			//Before render we have already received a rotation, set it to that
 			logoNode.rotateToYAxis(to: oldRotationY.degreesToRadians)
 			
-			lightbeamNode = virtualObjectScene.rootNode.childNode(withName: "lightbeam", recursively: false)!
+		  lightbulbNode = virtualObjectScene.rootNode.childNode(withName: "lightbulb", recursively: false)
+			
+			qrValueTextNode = virtualObjectScene.rootNode.childNode(withName: "QRCode", recursively: false)
 			
 			//Wrapper node for adding nodes that we want to spawn on top of the QR code
 			let wrapperNode = SCNNode()
@@ -179,7 +190,7 @@ extension ARViewController : ARSCNViewDelegate {
 extension ARViewController : FoggyLogoDelegate {
 	func foggyLogo(lightsPower: Bool) {
 		print("Lights are on: \(lightsPower)")
-		lightbeamNode.isHidden = !lightsPower
+		//lightbulbNode.isHidden = !lightsPower
 	}
 	
 	func foggyLogo(accelerometerHeading: FogRational<Int64>) {

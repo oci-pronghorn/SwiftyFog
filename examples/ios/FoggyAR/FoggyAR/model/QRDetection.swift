@@ -61,8 +61,7 @@ public class QRDetection : NSObject, ARSessionDelegate
 		self.sceneView.session.delegate = self
 	}
 	
-	private func getBarcodeRequest(_ frame : ARFrame) -> VNDetectBarcodesRequest
-	{
+	private func getBarcodeRequest(_ frame : ARFrame) -> VNDetectBarcodesRequest {
 		let request = VNDetectBarcodesRequest { (request, error) in
 			
 			if let results = request.results, let result = results.first as? VNBarcodeObservation {
@@ -116,7 +115,6 @@ public class QRDetection : NSObject, ARSessionDelegate
 	}
 	
 	public func session(_ session: ARSession, didUpdate frame: ARFrame) {
-		
 		if self.isProcessing {
 			return
 		}
