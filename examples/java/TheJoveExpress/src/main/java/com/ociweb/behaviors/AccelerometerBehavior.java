@@ -2,9 +2,7 @@ package com.ociweb.behaviors;
 
 import com.ociweb.gl.api.Behavior;
 import com.ociweb.gl.api.StartupListener;
-import com.ociweb.iot.grove.six_axis_accelerometer.AccelValsListener;
-import com.ociweb.iot.grove.six_axis_accelerometer.MagValsListener;
-import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometer_Transducer;
+import com.ociweb.iot.grove.six_axis_accelerometer.*;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.model.RationalPayload;
@@ -18,8 +16,7 @@ public class AccelerometerBehavior implements Behavior, MagValsListener, Startup
 
     public AccelerometerBehavior(FogRuntime runtime, String headingTopic) {
         this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
-        this.accSensor = new SixAxisAccelerometer_Transducer(runtime.newCommandChannel());
-        this.accSensor.registerListeners(null, this);
+        this.accSensor = new SixAxisAccelerometer_Transducer(runtime.newCommandChannel(), null, this);
         this.headingTopic = headingTopic;
     }
 
@@ -27,6 +24,16 @@ public class AccelerometerBehavior implements Behavior, MagValsListener, Startup
     public void startup() {
         accSensor.setAccelScale(6);
         accSensor.setMagScale(8);
+    }
+
+    @Override
+    public AccelerometerMagDataRate getMagneticDataRate() {
+        return AccelerometerMagDataRate.hz50;
+    }
+
+    @Override
+    public AccelerometerMagScale getMagneticScale() {
+        return AccelerometerMagScale.gauss8;
     }
 
     @Override
