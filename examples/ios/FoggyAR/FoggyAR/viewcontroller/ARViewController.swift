@@ -195,8 +195,6 @@ extension ARViewController : ARSCNViewDelegate {
 			//Hide the light bulb node initially
 			//lightbulbNode.isHidden = true
 			
-			logoNode.addChildNode(lightbulbNode)
-			
 			//Get the text node for the QR code
 			qrValueTextNode = virtualObjectScene.rootNode.childNode(withName: "QRCode", recursively: false)
 			
