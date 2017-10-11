@@ -21,7 +21,7 @@ public class QRDetection : NSObject, ARSessionDelegate {
 	public weak var delegate: QRDetectionDelegate?
 	public private (set) var detectedDataAnchor: ARAnchor?
 	
-	private var qrValue: String = String()
+	public var qrValue: String = String()
 	private var confidence: Float
 	
 	private var sceneView : ARSCNView

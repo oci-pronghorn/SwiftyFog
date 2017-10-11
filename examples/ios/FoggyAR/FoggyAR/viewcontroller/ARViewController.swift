@@ -125,7 +125,8 @@ extension SCNNode
 {
 	func setGeometryText(value : String) {
 		if let textGeometry = self.geometry as? SCNText {
-			textGeometry.string = value
+			textGeometry.string = "QR: \(value)"
+			textGeometry.alignmentMode = kCAAlignmentCenter
 		}
 	}
 	
@@ -161,7 +162,7 @@ extension ARViewController : QRDetectionDelegate {
 	}
 	
 	func updatingStatusChanged(status: Bool) {
-		isShowingActivityIndicator(status)
+		//isShowingActivityIndicator(status)
 	}
 	
 	func detectRequestError(error: Error) {
@@ -176,6 +177,8 @@ extension ARViewController : ARSCNViewDelegate {
 		
 		// If this is our anchor, create a node
 		if self.qrDetector.detectedDataAnchor?.identifier == anchor.identifier {
+			
+			isShowingActivityIndicator(false)
 			
 			guard let virtualObjectScene = SCNScene(named: "art.scnassets/logo.scn") else {
 				return nil
@@ -192,16 +195,20 @@ extension ARViewController : ARSCNViewDelegate {
 			//Hide the light bulb node initially
 			lightbulbNode.isHidden = true
 			
+			//logoNode.addChildNode(lightbulbNode)
+			
 			//Get the text node for the QR code
 			qrValueTextNode = virtualObjectScene.rootNode.childNode(withName: "QRCode", recursively: false)
-			
-			let (minBound, maxBound) = logoNode.boundingBox
-			
-			qrValueTextNode.pivot = SCNMatrix4MakeTranslation( (maxBound.x - minBound.x)/2, minBound.y, 0.005)
 			
 			//Since we always receive the QR code before we render our nodes, assign the
 			//existing scanned value to our geometry
 			qrValueTextNode.setGeometryText(value: qrDetector.qrValue)
+		
+			let (minBound, maxBound) = logoNode.boundingBox
+			qrValueTextNode.pivot = SCNMatrix4MakeTranslation( (maxBound.x - minBound.x)/2, minBound.y, 0.5)
+			qrValueTextNode.position = SCNVector3(0,0,0)
+			//qrValueTextNode.pivot = self.logoNode.transform
+			//qrValueTextNode.eulerAngles.x = -90
 			
 			//Wrapper node for adding nodes that we want to spawn on top of the QR code
 			let wrapperNode = SCNNode()
