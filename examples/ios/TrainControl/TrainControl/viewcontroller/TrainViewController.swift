@@ -51,7 +51,7 @@ class TrainViewController: UIViewController {
 			engine.mqtt = mqtt.createBridge(subPath: "engine")
 			
 			location.delegate = self
-			location.mqtt = mqtt
+			location.mqtt = mqtt.createBridge(subPath: "location")
 			
 			lights.delegate = self
 			lights.mqtt = mqtt.createBridge(subPath: "lights")

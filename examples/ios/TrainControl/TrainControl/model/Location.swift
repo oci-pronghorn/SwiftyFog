@@ -21,7 +21,7 @@ class Location {
     public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				("accelerometer/feedback/heading", .atLeastOnce, Location.feedbackHeading)
+				("heading/feedback/", .atLeastOnce, Location.feedbackHeading)
 			]) { listener, status in
 				print(status)
 			}

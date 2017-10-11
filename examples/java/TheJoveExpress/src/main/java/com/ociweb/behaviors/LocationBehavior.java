@@ -6,14 +6,14 @@ import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.model.RationalPayload;
 
-public class AccelerometerBehavior implements Behavior {
+public class LocationBehavior implements Behavior {
     private final FogCommandChannel channel;
     private final SixAxisAccelerometer_Transducer accSensor;
     private final AccerometerValues magValues;
     private final String headingTopic;
     private final RationalPayload heading = new RationalPayload(0, 360);
 
-    public AccelerometerBehavior(FogRuntime runtime, String headingTopic) {
+    public LocationBehavior(FogRuntime runtime, String headingTopic) {
         this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
         this.magValues = new AccerometerValues() {
             @Override
