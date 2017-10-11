@@ -56,14 +56,38 @@ class ARViewController: UIViewController {
 		// Set the view's delegate
 		sceneView.delegate = self
 		
+		// Make the activity indicator prettier
 		self.centerActivityView.layer.cornerRadius = 5;
+		
+		//Add tapping mechanism
+		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(gestureRecognizer:)))
+		view.addGestureRecognizer(tapGesture)
 	}
 	
-	//Called when processing status changed
 	func isShowingActivityIndicator(_ status: Bool) {
 		DispatchQueue.main.async(execute: {
 				self.centerActivityView.isHidden = !status
 		})
+	}
+	
+	@objc func handleTap(gestureRecognizer: UITapGestureRecognizer) {
+		let touchLocation = gestureRecognizer.location(in: self.sceneView)
+		let hitResults = self.sceneView.hitTest(touchLocation, options: [:])
+		
+	  if !hitResults.isEmpty {
+			
+			guard let hitResult = hitResults.first else {
+				return
+			}
+			let node = hitResult.node
+			let url = URL(string: qrDetector.qrValue)!
+			
+			if(node == qrValueTextNode && UIApplication.shared.canOpenURL(url))
+			{
+				UIApplication.shared.open(url)
+			}
+		}
+		
 	}
 	
 	override var prefersStatusBarHidden: Bool {
@@ -99,6 +123,13 @@ class ARViewController: UIViewController {
 
 extension SCNNode
 {
+	func setGeometryText(value : String) {
+		if let textGeometry = self.geometry as? SCNText {
+			textGeometry.string = "QR: \(value)"
+			textGeometry.alignmentMode = kCAAlignmentCenter
+		}
+	}
+	
 	func rotateToYAxis(to: CGFloat) {
 		self.eulerAngles.y = Float(to)
 	}
@@ -117,19 +148,21 @@ extension SCNNode
 }
 
 extension ARViewController : QRDetectionDelegate {
+
 	func foundQRValue(stringValue: String) {
 		print("Code scanned: \(stringValue)")
 		
-		//TODO: this doesnt work the first time if qr code is scanned but the node is not loaded in
 		if let qrValueTextNode = qrValueTextNode {
-			if let textGeometry = qrValueTextNode.geometry as? SCNText {
-				textGeometry.string = stringValue
-			}
+			qrValueTextNode.setGeometryText(value: stringValue)
 		}
 	}
 	
+	func updatedAnchor() {
+		print("Anchor changed")
+	}
+	
 	func updatingStatusChanged(status: Bool) {
-		isShowingActivityIndicator(status)
+		//isShowingActivityIndicator(status)
 	}
 	
 	func detectRequestError(error: Error) {
@@ -139,9 +172,13 @@ extension ARViewController : QRDetectionDelegate {
 
 extension ARViewController : ARSCNViewDelegate {
 	
+	//Note: Renderer only executes ONCE
 	func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
+		
 		// If this is our anchor, create a node
 		if self.qrDetector.detectedDataAnchor?.identifier == anchor.identifier {
+			
+			isShowingActivityIndicator(false)
 			
 			guard let virtualObjectScene = SCNScene(named: "art.scnassets/logo.scn") else {
 				return nil
@@ -155,11 +192,26 @@ extension ARViewController : ARSCNViewDelegate {
 			
 		  lightbulbNode = virtualObjectScene.rootNode.childNode(withName: "lightbulb", recursively: false)
 			
+			//Hide the light bulb node initially
+			//lightbulbNode.isHidden = true
+			
+			logoNode.addChildNode(lightbulbNode)
+			
+			//Get the text node for the QR code
 			qrValueTextNode = virtualObjectScene.rootNode.childNode(withName: "QRCode", recursively: false)
 			
+			//Since we always receive the QR code before we render our nodes, assign the
+			//existing scanned value to our geometry
+			qrValueTextNode.setGeometryText(value: qrDetector.qrValue)
+		
+			let (minBound, maxBound) = logoNode.boundingBox
+			qrValueTextNode.pivot = SCNMatrix4MakeTranslation( (maxBound.x - minBound.x)/2, minBound.y, 0.5)
+			qrValueTextNode.position = SCNVector3(0,0,0)
+
 			//Wrapper node for adding nodes that we want to spawn on top of the QR code
 			let wrapperNode = SCNNode()
 			
+			//Iterate over the child nodes to add them all to the wrapper node
 			for child in virtualObjectScene.rootNode.childNodes {
 				child.geometry?.firstMaterial?.lightingModel = .physicallyBased
 				child.movabilityHint = .movable
@@ -190,7 +242,7 @@ extension ARViewController : ARSCNViewDelegate {
 extension ARViewController : FoggyLogoDelegate {
 	func foggyLogo(lightsPower: Bool) {
 		print("Lights are on: \(lightsPower)")
-		//lightbulbNode.isHidden = !lightsPower
+		lightbulbNode.isHidden = !lightsPower
 	}
 	
 	func foggyLogo(accelerometerHeading: FogRational<Int64>) {
@@ -203,9 +255,9 @@ extension ARViewController : FoggyLogoDelegate {
 		
 		if let logoNode = logoNode {
 			if hasAppliedHeading {
-				logoNode.rotateAroundYAxis(by: rotateBy.degreesToRadians, duration: 1)
+				logoNode.rotateAroundYAxis(by: -rotateBy.degreesToRadians, duration: 1)
 			} else {
-				logoNode.rotateToYAxis(to: oldRotationY)
+				logoNode.rotateToYAxis(to: -oldRotationY)
 				hasAppliedHeading = true
 			}
 		}
