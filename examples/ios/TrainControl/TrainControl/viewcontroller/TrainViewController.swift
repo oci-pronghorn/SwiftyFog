@@ -11,6 +11,7 @@ import SwiftyFog_iOS
 
 class TrainViewController: UIViewController {
 	let train = Train()
+	let location = Location()
 	let engine = Engine()
 	let lights = Lights()
 	let sound = Sound()
@@ -48,6 +49,9 @@ class TrainViewController: UIViewController {
 		didSet {
 			engine.delegate = self
 			engine.mqtt = mqtt.createBridge(subPath: "engine")
+			
+			location.delegate = self
+			location.mqtt = mqtt
 			
 			lights.delegate = self
 			lights.mqtt = mqtt.createBridge(subPath: "lights")
@@ -232,6 +236,7 @@ extension TrainViewController {
 
 extension TrainViewController:
 		TrainDelegate,
+		LocationDelegate,
 		EngineDelegate,
 		LightsDelegate,
 		BillboardDelegate {

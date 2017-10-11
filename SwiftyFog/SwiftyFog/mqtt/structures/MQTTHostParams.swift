@@ -30,6 +30,14 @@ public struct MQTTHostParams {
     public let port: UInt16
     public let ssl: StreamSocketSecurityLevel?
 	
+    public var localHostName: String {
+		#if os(OSX)
+			return Host.current().localizedName ?? ""
+		#else
+			return "" // TODO
+		#endif
+    }
+	
     public init(host: String = "localhost", port: MQTTPort = .standard, ssl: StreamSocketSecurityLevel? = nil) {
 		self.host = host
 		self.port = port.number
