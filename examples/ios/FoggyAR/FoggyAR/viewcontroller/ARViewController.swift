@@ -193,9 +193,9 @@ extension ARViewController : ARSCNViewDelegate {
 		  lightbulbNode = virtualObjectScene.rootNode.childNode(withName: "lightbulb", recursively: false)
 			
 			//Hide the light bulb node initially
-			lightbulbNode.isHidden = true
+			//lightbulbNode.isHidden = true
 			
-			//logoNode.addChildNode(lightbulbNode)
+			logoNode.addChildNode(lightbulbNode)
 			
 			//Get the text node for the QR code
 			qrValueTextNode = virtualObjectScene.rootNode.childNode(withName: "QRCode", recursively: false)
@@ -207,9 +207,7 @@ extension ARViewController : ARSCNViewDelegate {
 			let (minBound, maxBound) = logoNode.boundingBox
 			qrValueTextNode.pivot = SCNMatrix4MakeTranslation( (maxBound.x - minBound.x)/2, minBound.y, 0.5)
 			qrValueTextNode.position = SCNVector3(0,0,0)
-			//qrValueTextNode.pivot = self.logoNode.transform
-			//qrValueTextNode.eulerAngles.x = -90
-			
+
 			//Wrapper node for adding nodes that we want to spawn on top of the QR code
 			let wrapperNode = SCNNode()
 			
