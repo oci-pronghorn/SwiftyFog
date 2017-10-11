@@ -34,7 +34,7 @@ public class TheJoveExpress implements FogApp
         if (config.soundEnabled) c.useSerial(Baud.B_____9600);
         if (config.engineEnabled || config.lightsEnabled) c.connect(MotorDriver);
         if (config.billboardEnabled) c.connect(OLED_96x96);
-        if (config.speedometerEnabled) {
+        if (config.locationEnabled) {
             //c.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readAccel);
             c.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readMag);
             // c.connect(invisible light reflective change sensor);
@@ -123,9 +123,9 @@ public class TheJoveExpress implements FogApp
             pubSub.subscribe(billboard, "billboard/image/control", MQTTQoS.atMostOnce, billboard::onImage);
         }
 
-        if (config.speedometerEnabled) {
-            final AccelerometerBehavior accelerometer = new AccelerometerBehavior(runtime,
-                    pubSub.publish("accelerometer/feedback/heading", false, MQTTQoS.atMostOnce));
+        if (config.locationEnabled) {
+            final LocationBehavior accelerometer = new LocationBehavior(runtime,
+                    pubSub.publish("location/heading/feedback/", false, MQTTQoS.atMostOnce));
             pubSub.registerBehavior(accelerometer);
         }
 

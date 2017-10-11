@@ -30,7 +30,7 @@ public class FoggyLogo {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("lights/power/feedback", .atMostOnce, FoggyLogo.feedbackLightsPower),
-				("accelerometer/feedback/heading", .atMostOnce, FoggyLogo.feedbackAccelerometerHeading)
+				("location/heading/feedback", .atMostOnce, FoggyLogo.feedbackAccelerometerHeading)
 				])
 		}
 	}
