@@ -44,6 +44,7 @@ public class QRDetection : NSObject, ARSessionDelegate {
 	}
 	
 	private func getBarcodeRequest(_ frame : ARFrame) -> VNDetectBarcodesRequest {
+
 		let request = VNDetectBarcodesRequest { (request, error) in
 			
 			if let results = request.results, let result = results.first as? VNBarcodeObservation {
