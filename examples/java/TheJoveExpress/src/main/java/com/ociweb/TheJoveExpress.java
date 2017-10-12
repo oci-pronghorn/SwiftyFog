@@ -125,7 +125,7 @@ public class TheJoveExpress implements FogApp
 
         if (config.locationEnabled) {
             final LocationBehavior accelerometer = new LocationBehavior(runtime,
-                    pubSub.publish("location/heading/feedback/", false, MQTTQoS.atMostOnce));
+                    pubSub.publish("location/heading/feedback", false, MQTTQoS.atMostOnce));
             pubSub.registerBehavior(accelerometer);
         }
 
