@@ -23,7 +23,7 @@ public class Train: FogFeedbackModel {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("lifecycle/feedback", .atLeastOnce, Train.feedbackLifecycle)
 			]) { listener, status in
-				print(status)
+				print("***Subscription Status: \(status)")
 			}
 		}
     }

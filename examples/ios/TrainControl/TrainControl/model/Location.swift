@@ -22,9 +22,7 @@ class Location {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("heading/feedback/", .atLeastOnce, Location.feedbackHeading)
-			]) { listener, status in
-				print(status)
-			}
+			])
 		}
     }
 	

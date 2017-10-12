@@ -37,6 +37,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		trainControl.mqtt = scoped
 		trainControl.mqttControl = controller.mqtt
 		
+		// Start up the client
+		controller.goForeground()
+		
 		return true
 	}
 

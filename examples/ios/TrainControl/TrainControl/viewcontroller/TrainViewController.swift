@@ -39,11 +39,7 @@ class TrainViewController: UIViewController {
 	
 	let pulsator = Pulsator()
 	
-	var mqttControl: MQTTControl! {
-		didSet {
-			mqttControl.start()
-		}
-	}
+	var mqttControl: MQTTControl!
 	
 	var mqtt: MQTTBridge! {
 		didSet {
