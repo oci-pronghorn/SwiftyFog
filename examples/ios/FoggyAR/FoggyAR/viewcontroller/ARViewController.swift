@@ -253,6 +253,8 @@ extension ARViewController : FoggyLogoDelegate {
 			break
 		case .retriesFailed:
 			break
+		case .pinged:
+			break
 		case .disconnected:
 			enableAliveLight(false)
 			break
