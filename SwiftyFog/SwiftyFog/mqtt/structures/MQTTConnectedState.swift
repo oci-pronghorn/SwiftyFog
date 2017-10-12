@@ -12,7 +12,7 @@ public enum MQTTConnectedState {
 	case started
 	case connected(Int)
 	case pinged(MQTTPingStatus)
-	case discconnected(reason: MQTTConnectionDisconnect, error: Error?)
+	case disconnected(reason: MQTTConnectionDisconnect, error: Error?)
 	case retry(Int, Int, Int, MQTTReconnectParams) // connection counter, rescus counter, attempt counter
 	case retriesFailed(Int, Int, MQTTReconnectParams) // connection counter, rescus counter
 }

@@ -170,7 +170,7 @@ extension MQTTClient: MQTTConnectionDelegate {
 		durability.disconnected(cleanSession: client.cleanSession, stopped: stopped)
 		idSource.disconnected(cleanSession: client.cleanSession, stopped: stopped)
 		self.connection = nil
-		delegate?.mqtt(client: self, connected: .discconnected(reason: reason, error: error))
+		delegate?.mqtt(client: self, connected: .disconnected(reason: reason, error: error))
 		if case let .handshake(ack) = reason {
 			if ack.retries {
 				retry?.connected = false

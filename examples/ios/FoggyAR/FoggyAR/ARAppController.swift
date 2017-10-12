@@ -9,13 +9,18 @@
 import UIKit
 import SwiftyFog_iOS
 
+protocol ARAppControllerDelegate: class {
+	func on(connected: MQTTConnectedState)
+}
+
 class ARAppController {
 	let mqtt: (MQTTBridge & MQTTControl)!
 	let network: NetworkReachability
 	
-	// TODO: fakeHeadingTimer is for testing and demo-purposes, don't actually use it prod
 	private var fakeHeading : CGFloat = 0
 	private var fakeHeadingTimer: DispatchSourceTimer?
+	
+	weak var delegate: ARAppControllerDelegate?
 	
 	init(_ trainName: String) {
 		self.network = NetworkReachability()
@@ -28,15 +33,16 @@ class ARAppController {
 		// Create the concrete MQTTClient to connect to a specific broker
 		let mqtt = MQTTClient(
 			host: MQTTHostParams(host: "thejoveexpress.local")
-			//metrics: metrics
 		)
 
 		self.mqtt = mqtt
-		
+		mqtt.delegate = self
+
 		createFakeTimer();
 	}
 	
 	public func goForeground() {
+		//self.mqtt.start()
 		// Network reachability can detect a disconnected state before the client
 		network.start { [weak self] status in
 			if status != .none {
@@ -81,5 +87,24 @@ class ARAppController {
 		}
 		self.fakeHeadingTimer = fakeHeadingTimer
 		//fakeHeadingTimer.resume()
+	}
+}
+
+extension ARAppController: MQTTClientDelegate {
+	func mqtt(client: MQTTClient, connected: MQTTConnectedState) {
+		DispatchQueue.main.async {
+			self.delegate?.on(connected: connected)
+		}
+	}
+	
+	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage) {
+		DispatchQueue.main.async {
+			//self.delegate?.on(log: "Unhandled \(unhandledMessage)")
+		}
+	}
+	
+	func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription]) {
+		DispatchQueue.main.async {
+		}
 	}
 }

@@ -121,7 +121,7 @@ extension HelloWorldViewController {
 			break
 		case .retriesFailed(_, _, _):
 			break
-		case .discconnected(_, _):
+		case .disconnected(_, _):
 			statusTextField.stringValue = "Disconnected"
 			connectDisconnectButton.title = "Connect"
 			break

@@ -27,9 +27,6 @@ class ARViewController: UIViewController {
 	var largeSpotLightNode : SCNNode!
 	var qrValueTextNode : SCNNode!
 	
-	let spotlightColorBulb = UIColor.yellow
-	let spotlightColorDead = UIColor.red
-	
 	// The bridge, responsible for receiving train data
 	var mqtt: MQTTBridge! {
 		didSet {
@@ -157,8 +154,6 @@ extension SCNNode
 extension ARViewController : QRDetectionDelegate {
 
 	func foundQRValue(stringValue: String) {
-		print("Code scanned: \(stringValue)")
-		
 		if let qrValueTextNode = qrValueTextNode {
 			qrValueTextNode.setGeometryText(value: stringValue)
 		}
@@ -167,11 +162,7 @@ extension ARViewController : QRDetectionDelegate {
 	func updatedAnchor() {
 		//print("Anchor changed")
 	}
-	
-	func updatingStatusChanged(status: Bool) {
-		//isShowingActivityIndicator(status)
-	}
-	
+
 	func detectRequestError(error: Error) {
 		print("Error in QR: \(error.localizedDescription)")
 	}
@@ -179,12 +170,12 @@ extension ARViewController : QRDetectionDelegate {
 
 extension ARViewController : ARSCNViewDelegate {
 	
-	//Note: Renderer only executes ONCE
 	func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
 		
 		// If this is our anchor, create a node
 		if self.qrDetector.detectedDataAnchor?.identifier == anchor.identifier {
 			
+			//We rendered, so stop showing the activity indicator
 			isShowingActivityIndicator(false)
 			
 			guard let virtualObjectScene = SCNScene(named: "art.scnassets/logo.scn") else {
@@ -249,23 +240,69 @@ extension ARViewController : ARSCNViewDelegate {
 }
 
 extension ARViewController : FoggyLogoDelegate {
+	
+	func mqtt(connected: MQTTConnectedState) {
+		switch connected {
+		case .started:
+			enableAliveLight(false)
+			break
+		case .connected(_):
+			enableAliveLight(true)
+			break
+		case .pinged(let status):
+			switch status {
+			case .notConnected:
+				enableAliveLight(false)
+				break
+			case .sent:
+				break
+			case .skipped:
+				
+				break
+			case .ack:
+				
+				break
+			case .serverDied:
+				enableAliveLight(false)
+				break
+			}
+			break
+		case .retry( _, _, _, _):
+			
+			break
+		case .retriesFailed(_, _, _):
+			
+			break
+		case .disconnected(_, _):
+			enableAliveLight(false)
+			break
+		}
+	}
+	
 	func foggyLogo(lightsPower: Bool) {
 		print("Lights are on: \(lightsPower)")
 		
-		lightbulbNode.isHidden = !lightsPower
-		
-		largeSpotLightNode.light?.color = spotlightColorBulb
-		largeSpotLightNode.isHidden = !lightsPower
+		if let lightbulbNode = lightbulbNode {
+			lightbulbNode.isHidden = !lightsPower
+			largeSpotLightNode.isHidden = !lightsPower
+		}
 	
+	}
+	
+	private func enableAliveLight(_ alive: Bool)
+	{
+		if !alive {
+			self.sceneView.scene.fogColor = UIColor.red
+			self.sceneView.scene.fogEndDistance = 0.045
+		} else {
+			self.sceneView.scene.fogEndDistance = 0
+		}
 	}
 	
 	func foggyLogo(alive: Bool) {
 		print("Train alive: \(alive)")
 		
-		if !alive {
-			largeSpotLightNode.isHidden = false
-			largeSpotLightNode.light?.color = spotlightColorDead
-		}
+		enableAliveLight(alive)
 	}
 	
 	func foggyLogo(accelerometerHeading: FogRational<Int64>) {

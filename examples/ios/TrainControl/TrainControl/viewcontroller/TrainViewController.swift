@@ -156,7 +156,7 @@ extension TrainViewController {
 			case .retriesFailed(let counter, let rescus, _):
 				self.connectMetrics.text = "\(counter).\(rescus).-"
 				break
-			case .discconnected(_, _):
+			case .disconnected(_, _):
 				self.connectedImage?.isHighlighted = false
 				self.stopStartButton.isSelected = mqttControl.started
 				self.trainAlive.isHighlighted = false

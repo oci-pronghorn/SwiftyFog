@@ -27,7 +27,7 @@ public class FoggyLogo {
 				("lights/power/feedback", .atMostOnce, FoggyLogo.feedbackLightsPower),
 				("location/heading/feedback", .atMostOnce, FoggyLogo.feedbackAccelerometerHeading),
 				("lifecycle/feedback", .atLeastOnce, FoggyLogo.feedbackLifecycle)
-				])
+			])
 		}
 	}
 

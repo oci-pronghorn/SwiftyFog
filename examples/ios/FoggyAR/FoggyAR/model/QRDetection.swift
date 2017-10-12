@@ -12,7 +12,6 @@ import Vision
 
 public protocol QRDetectionDelegate: class {
 	func foundQRValue(stringValue : String)
-	func updatingStatusChanged(status : Bool)
 	func updatedAnchor()
 	func detectRequestError(error : Error)
 }
@@ -27,12 +26,6 @@ public class QRDetection : NSObject, ARSessionDelegate {
 	private var sceneView : ARSCNView
 	
 	private var isProcessing : Bool = false
-
-	public var isUpdating : Bool = false {
-		didSet {
-			delegate?.updatingStatusChanged(status: isUpdating)
-		}
-	}
 	
 	public init(sceneView : ARSCNView, confidence : Float) {
 		self.sceneView = sceneView
@@ -62,24 +55,26 @@ public class QRDetection : NSObject, ARSessionDelegate {
 					rect = rect.applying(CGAffineTransform(scaleX: 1, y: -1))
 					rect = rect.applying(CGAffineTransform(translationX: 0, y: 1))
 					
+					//print("qr code width: \(rect.size.width) height: \(rect.size.height)")
+					
 					let center = CGPoint(x: rect.midX, y: rect.midY)
 					
 					DispatchQueue.main.async {
 						
-						let hitTestResults = frame.hitTest(center, types: [.featurePoint/*, .estimatedHorizontalPlane, .existingPlane, .existingPlaneUsingExtent*/] )
+						let hitTestResults = frame.hitTest(center, types: [.estimatedHorizontalPlane, .existingPlane, .existingPlaneUsingExtent] )
 						
 						if let hitTestResult = hitTestResults.first {
 							
-							//TODO: move this out of QRDetection, against S in SOLID
+							self.delegate?.updatedAnchor()
+							
 							if let detectedDataAnchor = self.detectedDataAnchor,
 								let node = self.sceneView.node(for: detectedDataAnchor) {
-								
-								self.delegate?.updatedAnchor()
+							
 								node.transform = SCNMatrix4(hitTestResult.worldTransform)
 								
 							} else {
-								self.isUpdating = true
 								self.detectedDataAnchor = ARAnchor(transform: hitTestResult.worldTransform)
+								
 								self.sceneView.session.add(anchor: self.detectedDataAnchor!)
 							}
 							
@@ -103,7 +98,6 @@ public class QRDetection : NSObject, ARSessionDelegate {
 		}
 		
 		self.isProcessing = true
-		self.isUpdating = false
 		
 		let detectRequest = getBarcodeRequest(frame)
 		

@@ -95,7 +95,7 @@ extension TrainAppController: MQTTClientDelegate {
 			case .retriesFailed(let counter, let rescus, _):
 				log = "Connection Failed \(counter).\(rescus)"
 				break
-			case .discconnected(let reason, let error):
+			case .disconnected(let reason, let error):
 				log = "Disconnected \(reason) \(error?.localizedDescription ?? "")"
 				break
 		}

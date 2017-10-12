@@ -30,6 +30,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let scoped = controller.mqtt.createBridge(subPath: trainName)
 		
 		trainARViewer.mqtt = scoped
+		controller.delegate = self
+		
+		controller.goForeground()
 	
 		return true
 	}
@@ -49,5 +52,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 	
 	func applicationWillTerminate(_ application: UIApplication) {
+	}
+}
+
+extension AppDelegate: ARAppControllerDelegate {
+	func on(log: String) {
+		//logView.onLog(log)
+	}
+	
+	func on(connected: MQTTConnectedState) {
+		self.trainARViewer.mqtt(connected: connected)
 	}
 }
