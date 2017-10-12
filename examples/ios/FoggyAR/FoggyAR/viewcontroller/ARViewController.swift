@@ -24,7 +24,11 @@ class ARViewController: UIViewController {
 	// SceneNode for the 3D models
 	var logoNode : SCNNode!
 	var lightbulbNode : SCNNode!
+	var largeSpotLightNode : SCNNode!
 	var qrValueTextNode : SCNNode!
+	
+	let spotlightColorBulb = UIColor.yellow
+	let spotlightColorDead = UIColor.red
 	
 	// The bridge, responsible for receiving train data
 	var mqtt: MQTTBridge! {
@@ -59,6 +63,8 @@ class ARViewController: UIViewController {
 		// Make the activity indicator prettier
 		self.centerActivityView.layer.cornerRadius = 5;
 		
+		sceneView.antialiasingMode = SCNAntialiasingMode.multisampling4X
+		
 		//Add tapping mechanism
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(gestureRecognizer:)))
 		view.addGestureRecognizer(tapGesture)
@@ -80,11 +86,12 @@ class ARViewController: UIViewController {
 				return
 			}
 			let node = hitResult.node
-			let url = URL(string: qrDetector.qrValue)!
 			
-			if(node == qrValueTextNode && UIApplication.shared.canOpenURL(url))
-			{
-				UIApplication.shared.open(url)
+			if let url = URL(string: qrDetector.qrValue) {
+				if(node == qrValueTextNode && UIApplication.shared.canOpenURL(url))
+				{
+					UIApplication.shared.open(url)
+				}
 			}
 		}
 		
@@ -158,7 +165,7 @@ extension ARViewController : QRDetectionDelegate {
 	}
 	
 	func updatedAnchor() {
-		print("Anchor changed")
+		//print("Anchor changed")
 	}
 	
 	func updatingStatusChanged(status: Bool) {
@@ -191,13 +198,15 @@ extension ARViewController : ARSCNViewDelegate {
 			logoNode.rotateToYAxis(to: oldRotationY.degreesToRadians)
 			
 		  lightbulbNode = virtualObjectScene.rootNode.childNode(withName: "lightbulb", recursively: false)
+			largeSpotLightNode = virtualObjectScene.rootNode.childNode(withName: "largespot", recursively: false)
 			
-			//Hide the light bulb node initially
-			//lightbulbNode.isHidden = true
-			
-			logoNode.addChildNode(lightbulbNode)
+			//Hide the light bulb nodes initially
+			lightbulbNode.isHidden = true
+			largeSpotLightNode.isHidden = true
 			
 			//Get the text node for the QR code
+			//TODO: replace qrValueTextNode with a popup billboard that appears when clicked on
+			//qr code
 			qrValueTextNode = virtualObjectScene.rootNode.childNode(withName: "QRCode", recursively: false)
 			
 			//Since we always receive the QR code before we render our nodes, assign the
@@ -242,7 +251,21 @@ extension ARViewController : ARSCNViewDelegate {
 extension ARViewController : FoggyLogoDelegate {
 	func foggyLogo(lightsPower: Bool) {
 		print("Lights are on: \(lightsPower)")
+		
 		lightbulbNode.isHidden = !lightsPower
+		
+		largeSpotLightNode.light?.color = spotlightColorBulb
+		largeSpotLightNode.isHidden = !lightsPower
+	
+	}
+	
+	func foggyLogo(alive: Bool) {
+		print("Train alive: \(alive)")
+		
+		if !alive {
+			largeSpotLightNode.isHidden = false
+			largeSpotLightNode.light?.color = spotlightColorDead
+		}
 	}
 	
 	func foggyLogo(accelerometerHeading: FogRational<Int64>) {

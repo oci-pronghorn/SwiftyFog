@@ -11,7 +11,7 @@
 		861992541F8575DC006260C0 /* SwiftyFog_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8696278B1F855ED700A2CCE0 /* SwiftyFog_iOS.framework */; };
 		861992561F8575FB006260C0 /* SwiftyFog_iOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8696278B1F855ED700A2CCE0 /* SwiftyFog_iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		86239D691F88078B00B5F13C /* QRDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86239D681F88078B00B5F13C /* QRDetection.swift */; };
-		862F48E31F8C260200EE8AA5 /* lightbulb.dae in Resources */ = {isa = PBXBuildFile; fileRef = 862F48E21F8C260200EE8AA5 /* lightbulb.dae */; };
+		867CDBA21F8E97EC00D0F5AE /* FoggyLogoRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867CDBA11F8E97EC00D0F5AE /* FoggyLogoRenderer.swift */; };
 		869627731F855E2C00A2CCE0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869627721F855E2C00A2CCE0 /* AppDelegate.swift */; };
 		869627751F855E2C00A2CCE0 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 869627741F855E2C00A2CCE0 /* art.scnassets */; };
 		869627771F855E2C00A2CCE0 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869627761F855E2C00A2CCE0 /* ARViewController.swift */; };
@@ -20,6 +20,7 @@
 		8696277F1F855E2D00A2CCE0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8696277D1F855E2C00A2CCE0 /* LaunchScreen.storyboard */; };
 		8696278D1F85600A00A2CCE0 /* ARAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8696278C1F85600A00A2CCE0 /* ARAppController.swift */; };
 		869627911F85646200A2CCE0 /* FoggyLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869627901F85646200A2CCE0 /* FoggyLogo.swift */; };
+		86FCE2321F8F13E300CB217C /* lightbulb.dae in Resources */ = {isa = PBXBuildFile; fileRef = 86FCE2311F8F13E300CB217C /* lightbulb.dae */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,7 +40,7 @@
 /* Begin PBXFileReference section */
 		861992521F856D2E006260C0 /* ocilogo.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = ocilogo.dae; sourceTree = "<group>"; };
 		86239D681F88078B00B5F13C /* QRDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRDetection.swift; sourceTree = "<group>"; };
-		862F48E21F8C260200EE8AA5 /* lightbulb.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = lightbulb.dae; sourceTree = "<group>"; };
+		867CDBA11F8E97EC00D0F5AE /* FoggyLogoRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyLogoRenderer.swift; sourceTree = "<group>"; };
 		8696276F1F855E2C00A2CCE0 /* FoggyAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoggyAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		869627721F855E2C00A2CCE0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		869627741F855E2C00A2CCE0 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -51,6 +52,7 @@
 		8696278B1F855ED700A2CCE0 /* SwiftyFog_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyFog_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8696278C1F85600A00A2CCE0 /* ARAppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARAppController.swift; sourceTree = "<group>"; };
 		869627901F85646200A2CCE0 /* FoggyLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyLogo.swift; sourceTree = "<group>"; };
+		86FCE2311F8F13E300CB217C /* lightbulb.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = lightbulb.dae; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,10 +70,10 @@
 		8619924F1F856A38006260C0 /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				86FCE2311F8F13E300CB217C /* lightbulb.dae */,
+				861992521F856D2E006260C0 /* ocilogo.dae */,
 				869627741F855E2C00A2CCE0 /* art.scnassets */,
 				8696277B1F855E2C00A2CCE0 /* Assets.xcassets */,
-				861992521F856D2E006260C0 /* ocilogo.dae */,
-				862F48E21F8C260200EE8AA5 /* lightbulb.dae */,
 			);
 			path = assets;
 			sourceTree = "<group>";
@@ -113,6 +115,7 @@
 			children = (
 				86239D681F88078B00B5F13C /* QRDetection.swift */,
 				869627901F85646200A2CCE0 /* FoggyLogo.swift */,
+				867CDBA11F8E97EC00D0F5AE /* FoggyLogoRenderer.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -193,7 +196,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				862F48E31F8C260200EE8AA5 /* lightbulb.dae in Resources */,
+				86FCE2321F8F13E300CB217C /* lightbulb.dae in Resources */,
 				861992531F856D2E006260C0 /* ocilogo.dae in Resources */,
 				869627751F855E2C00A2CCE0 /* art.scnassets in Resources */,
 				8696277F1F855E2D00A2CCE0 /* LaunchScreen.storyboard in Resources */,
@@ -211,6 +214,7 @@
 			files = (
 				8696278D1F85600A00A2CCE0 /* ARAppController.swift in Sources */,
 				869627771F855E2C00A2CCE0 /* ARViewController.swift in Sources */,
+				867CDBA21F8E97EC00D0F5AE /* FoggyLogoRenderer.swift in Sources */,
 				869627731F855E2C00A2CCE0 /* AppDelegate.swift in Sources */,
 				86239D691F88078B00B5F13C /* QRDetection.swift in Sources */,
 				869627911F85646200A2CCE0 /* FoggyLogo.swift in Sources */,
