@@ -42,7 +42,6 @@ class ARAppController {
 	}
 	
 	public func goForeground() {
-		//self.mqtt.start()
 		// Network reachability can detect a disconnected state before the client
 		network.start { [weak self] status in
 			if status != .none {
@@ -98,13 +97,8 @@ extension ARAppController: MQTTClientDelegate {
 	}
 	
 	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage) {
-		DispatchQueue.main.async {
-			//self.delegate?.on(log: "Unhandled \(unhandledMessage)")
-		}
 	}
 	
 	func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription]) {
-		DispatchQueue.main.async {
-		}
 	}
 }

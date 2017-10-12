@@ -57,7 +57,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: ARAppControllerDelegate {
 	func on(log: String) {
-		//logView.onLog(log)
 	}
 	
 	func on(connected: MQTTConnectedState) {

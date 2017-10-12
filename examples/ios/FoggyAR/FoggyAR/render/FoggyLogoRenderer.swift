@@ -6,7 +6,7 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-/*
+
 import UIKit
 import SceneKit
 import ARKit
@@ -35,12 +35,12 @@ class FoggyLogoRenderer : NSObject, ARSCNViewDelegate {
 	private var oldRotationY: CGFloat = 0.0
 	
 	public init(sceneView : ARSCNView) {
-		
-		self.sceneView = sceneView;
-
 		qrDetector = QRDetection(sceneView: self.sceneView, confidence: 0.8)
+		
+		super.init()
 		qrDetector.delegate = self
 		
+		self.sceneView = sceneView;
 	}
 	
 	func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
@@ -49,7 +49,7 @@ class FoggyLogoRenderer : NSObject, ARSCNViewDelegate {
 		if self.qrDetector.detectedDataAnchor?.identifier == anchor.identifier {
 			
 			//We rendered, so stop showing the activity indicator
-			isShowingActivityIndicator(false)
+			//isShowingActivityIndicator(false)
 			
 			guard let virtualObjectScene = SCNScene(named: "art.scnassets/logo.scn") else {
 				return nil
@@ -69,8 +69,6 @@ class FoggyLogoRenderer : NSObject, ARSCNViewDelegate {
 			largeSpotLightNode.isHidden = true
 			
 			//Get the text node for the QR code
-			//TODO: replace qrValueTextNode with a popup billboard that appears when clicked on
-			//qr code
 			qrValueTextNode = virtualObjectScene.rootNode.childNode(withName: "QRCode", recursively: false)
 			
 			//Since we always receive the QR code before we render our nodes, assign the
@@ -97,10 +95,13 @@ class FoggyLogoRenderer : NSObject, ARSCNViewDelegate {
 			
 			return wrapperNode
 		}
+		
+		return nil
+	}
 	
 }
 
-	extension FoggyLogoRenderer: QRDetectionDelegate {
+extension FoggyLogoRenderer: QRDetectionDelegate {
 		
 		func foundQRValue(stringValue: String) {
 			if let qrValueTextNode = qrValueTextNode {
@@ -116,4 +117,4 @@ class FoggyLogoRenderer : NSObject, ARSCNViewDelegate {
 			print("Error in QR: \(error.localizedDescription)")
 		}
 }
-*/
+
