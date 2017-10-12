@@ -11,6 +11,7 @@ import SwiftyFog_iOS
 
 public protocol FoggyLogoDelegate: class {
 	func foggyLogo(lightsPower: Bool)
+	func foggyLogo(alive: Bool)
 	func foggyLogo(accelerometerHeading: FogRational<Int64>)
 }
 
@@ -18,26 +19,16 @@ public class FoggyLogo {
 	//Creating the broadcaster
 	private var broadcaster: MQTTBroadcaster?
 	
-	//Responsible for dealing with light feedback
-	private var lightsPower: Bool
-	
-	//The heading provided by the accelerometer
-	private var accelerometerHeading: FogRational<Int64> 
-	
 	public weak var delegate: FoggyLogoDelegate?
 	
 	public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("lights/power/feedback", .atMostOnce, FoggyLogo.feedbackLightsPower),
-				("location/heading/feedback", .atMostOnce, FoggyLogo.feedbackAccelerometerHeading)
+				("location/heading/feedback", .atMostOnce, FoggyLogo.feedbackAccelerometerHeading),
+				("lifecycle/feedback", .atLeastOnce, FoggyLogo.feedbackLifecycle)
 				])
 		}
-	}
-	
-	public init() {
-		self.lightsPower = false
-		self.accelerometerHeading = FogRational(num: Int64(0), den: 360)
 	}
 
 	private func feedbackLightsPower(_ msg: MQTTMessage) {
@@ -48,6 +39,17 @@ public class FoggyLogo {
 	private func feedbackAccelerometerHeading(_ msg: MQTTMessage) {
 		let value: FogRational<Int64> = msg.payload.fogExtract()!
 		delegate?.foggyLogo(accelerometerHeading: value)
+	}
+	
+	private func feedbackLifecycle(msg: MQTTMessage) {
+		let alive: Bool = msg.payload.fogExtract()
+		delegate?.foggyLogo(alive: alive)
+		if alive {
+			askForFeedback()
+		}
+	}
+	private func askForFeedback() {
+		mqtt.publish(MQTTMessage(topic: "feedback", qos: .atLeastOnce))
 	}
 
 }

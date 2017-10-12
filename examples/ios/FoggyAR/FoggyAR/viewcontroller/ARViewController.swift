@@ -27,6 +27,9 @@ class ARViewController: UIViewController {
 	var largeSpotLightNode : SCNNode!
 	var qrValueTextNode : SCNNode!
 	
+	let spotlightColorBulb = UIColor.yellow
+	let spotlightColorDead = UIColor.red
+	
 	// The bridge, responsible for receiving train data
 	var mqtt: MQTTBridge! {
 		didSet {
@@ -61,15 +64,6 @@ class ARViewController: UIViewController {
 		self.centerActivityView.layer.cornerRadius = 5;
 		
 		sceneView.antialiasingMode = SCNAntialiasingMode.multisampling4X
-		
-		/*if let camera = sceneView.pointOfView?.camera {
-			camera.wantsHDR = true
-			camera.wantsExposureAdaptation = true
-			camera.exposureOffset = -1
-			camera.minimumExposure = 1
-			camera.bloomIntensity = 5
-			camera.bloomBlurRadius = 5
-		}*/
 		
 		//Add tapping mechanism
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(gestureRecognizer:)))
@@ -205,8 +199,8 @@ extension ARViewController : ARSCNViewDelegate {
 			
 		  lightbulbNode = virtualObjectScene.rootNode.childNode(withName: "lightbulb", recursively: false)
 			largeSpotLightNode = virtualObjectScene.rootNode.childNode(withName: "largespot", recursively: false)
-
-			//Hide the light bulb node initially
+			
+			//Hide the light bulb nodes initially
 			lightbulbNode.isHidden = true
 			largeSpotLightNode.isHidden = true
 			
@@ -257,14 +251,21 @@ extension ARViewController : ARSCNViewDelegate {
 extension ARViewController : FoggyLogoDelegate {
 	func foggyLogo(lightsPower: Bool) {
 		print("Lights are on: \(lightsPower)")
+		
 		lightbulbNode.isHidden = !lightsPower
+		
+		largeSpotLightNode.light?.color = spotlightColorBulb
 		largeSpotLightNode.isHidden = !lightsPower
+	
+	}
+	
+	func foggyLogo(alive: Bool) {
+		print("Train alive: \(alive)")
 		
-		if let camera = self.sceneView.pointOfView?.camera {
-			camera.bloomIntensity = lightsPower ? 5 : 0
-			camera.bloomBlurRadius = lightsPower ? 5 : 0
+		if !alive {
+			largeSpotLightNode.isHidden = false
+			largeSpotLightNode.light?.color = spotlightColorDead
 		}
-		
 	}
 	
 	func foggyLogo(accelerometerHeading: FogRational<Int64>) {
