@@ -123,10 +123,10 @@ extension ARViewController : FoggyLogoDelegate {
 			break
 		case .retriesFailed:
 			break
-		case .disconnected:
-			trainIsAlive(false)
 		case .pinged:
 			break
+		case .disconnected:
+			trainIsAlive(false)
 		}
 	}
 	

@@ -12,18 +12,17 @@ import Vision
 
 public protocol QRDetectionDelegate: class {
 	func foundQRValue(stringValue : String)
-	func updatedAnchor()
 	func detectRequestError(error : Error)
 }
 
-public class QRDetection : NSObject, ARSessionDelegate {
+public class QRDetection : NSObject {
 	public weak var delegate: QRDetectionDelegate?
 	public private (set) var detectedDataAnchor: ARAnchor?
 	
-	public var qrValue: String = String()
-	private var confidence: Float
+	public private (set) var qrValue: String = String()
+	private let confidence: Float
 	
-	private var sceneView : ARSCNView
+	private let sceneView : ARSCNView
 	
 	private var isProcessing : Bool = false
 	
@@ -36,20 +35,11 @@ public class QRDetection : NSObject, ARSessionDelegate {
 		self.sceneView.session.delegate = self
 	}
 	
-	private func getBarcodeRequest(_ frame : ARFrame) -> VNDetectBarcodesRequest {
-
-		let request = VNDetectBarcodesRequest { (request, error) in
-			
-			if let results = request.results, let result = results.first as? VNBarcodeObservation {
+	private func qrCodeRequestCompletion(_ frame: ARFrame, _ request: VNRequest, error: Error?) {
+		if let result = request.results?.first as? VNBarcodeObservation, let newValue = result.payloadStringValue {
+			if newValue.isEmpty == false && newValue != self.qrValue {
+				if result.confidence >= self.confidence {
 				
-				let newValue = result.payloadStringValue
-				
-				if(self.qrValue.isEmpty || newValue != self.qrValue) {
-					self.delegate?.foundQRValue(stringValue: newValue!)
-					self.qrValue = newValue!
-				}
-				
-				if(result.confidence >= self.confidence) {
 					var rect = result.boundingBox
 					
 					rect = rect.applying(CGAffineTransform(scaleX: 1, y: -1))
@@ -59,13 +49,12 @@ public class QRDetection : NSObject, ARSessionDelegate {
 					
 					let center = CGPoint(x: rect.midX, y: rect.midY)
 					
-					DispatchQueue.main.async {
-						
-						let hitTestResults = frame.hitTest(center, types: [.estimatedHorizontalPlane, .existingPlane, .existingPlaneUsingExtent] )
-						
-						if let hitTestResult = hitTestResults.first {
-							
-							self.delegate?.updatedAnchor()
+					let hitTestResults = frame.hitTest(center, types: [.estimatedHorizontalPlane, .existingPlane, .existingPlaneUsingExtent] )
+				
+					if let hitTestResult = hitTestResults.first {
+						self.qrValue = newValue
+						DispatchQueue.main.async {
+							self.delegate?.foundQRValue(stringValue: newValue)
 							
 							if let detectedDataAnchor = self.detectedDataAnchor,
 								let node = self.sceneView.node(for: detectedDataAnchor) {
@@ -77,33 +66,28 @@ public class QRDetection : NSObject, ARSessionDelegate {
 								
 								self.sceneView.session.add(anchor: self.detectedDataAnchor!)
 							}
-							
 						}
-						
-						self.isProcessing = false
 					}
 				}
-				
-			} else {
-				self.isProcessing = false
 			}
 		}
-		
-		return request
 	}
-	
+}
+
+extension QRDetection: ARSessionDelegate {
 	public func session(_ session: ARSession, didUpdate frame: ARFrame) {
-		if self.isProcessing {
-			return
-		}
-		
-		self.isProcessing = true
-		
-		let detectRequest = getBarcodeRequest(frame)
 		
 		// Process the request in the background
 		DispatchQueue.global(qos: .userInitiated).async {
 			do {
+				if self.isProcessing {
+					return
+				}
+				self.isProcessing = true
+				let detectRequest = VNDetectBarcodesRequest(completionHandler: { (request, error) in
+					self.qrCodeRequestCompletion(frame, request, error: error)
+					self.isProcessing = false
+				})
 				// Set it to recognize QR code only
 				detectRequest.symbologies = [.QR]
 				
