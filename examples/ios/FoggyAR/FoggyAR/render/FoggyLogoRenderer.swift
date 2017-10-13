@@ -13,35 +13,87 @@ import ARKit
 import SwiftyFog_iOS
 import Vision
 
-class FoggyLogoRenderer : NSObject, ARSCNViewDelegate {
-	
-	let logo = FoggyLogo()
-	
-	var qrDetector : QRDetection!
-	
-	var hasAppliedHeading = false
+protocol FoggyLogoRendererDelegate:class {
+	func qrCodeDetected(code: String)
+	func loading(_ state : Bool)
+}
+
+class FoggyLogoRenderer : NSObject {
+
+	private let qrDetector : QRDetection
 	
 	// SceneNode for the 3D models
-	var logoNode : SCNNode!
-	var lightbulbNode : SCNNode!
-	var largeSpotLightNode : SCNNode!
-	var qrValueTextNode : SCNNode!
+	private var logoNode : SCNNode!
+	private var lightbulbNode : SCNNode!
+	private var largeSpotLightNode : SCNNode!
+	private var qrValueTextNode : SCNNode!
 	
-	let spotlightColorBulb = UIColor.yellow
-	let spotlightColorDead = UIColor.red
-	
-	var sceneView : 	ARSCNView!
-	
+	// Rotation variables
+	private var hasAppliedHeading = false
 	private var oldRotationY: CGFloat = 0.0
+
+	private let sceneView : 	ARSCNView
+	
+	public weak var delegate: FoggyLogoRendererDelegate?
 	
 	public init(sceneView : ARSCNView) {
-		qrDetector = QRDetection(sceneView: self.sceneView, confidence: 0.8)
+		self.qrDetector = QRDetection(sceneView: sceneView, confidence: 0.8)
+		self.sceneView = sceneView;
 		
 		super.init()
-		qrDetector.delegate = self
 		
-		self.sceneView = sceneView;
+		self.sceneView.delegate = self
+		self.qrDetector.delegate = self
+		
+		self.delegate?.loading(true)
 	}
+	
+	func hitQRCode(node: SCNNode) -> Bool
+	{
+		return node == qrValueTextNode
+	}
+	
+	func train(alive: Bool)
+	{
+		if !alive {
+			self.sceneView.scene.fogColor = UIColor.red
+			self.sceneView.scene.fogEndDistance = 0.045
+		} else {
+			self.sceneView.scene.fogEndDistance = 0
+		}
+	}
+	
+	func heading(heading: FogRational<Int64>)
+	{
+		let newRotationY = CGFloat(heading.num)
+		let normDelta = newRotationY - oldRotationY
+		let crossDelta = oldRotationY < newRotationY ? newRotationY - 360 - oldRotationY : 360 - oldRotationY + newRotationY
+		let rotateBy = abs(normDelta) < abs(crossDelta) ? normDelta : crossDelta
+		oldRotationY = newRotationY
+		
+		print("Received acceloremeter heading: \(heading) rotate by: \(rotateBy)")
+		
+		if let logoNode = logoNode {
+			if hasAppliedHeading {
+				logoNode.rotateAroundYAxis(by: -rotateBy.degreesToRadians, duration: 1)
+			} else {
+				logoNode.rotateToYAxis(to: -oldRotationY.degreesToRadians)
+				hasAppliedHeading = true
+			}
+		}
+	}
+	
+	public func lights(on : Bool)
+	{
+		if let lightbulbNode = lightbulbNode, let largeSpotLightNode = largeSpotLightNode {
+			lightbulbNode.isHidden = !on
+			largeSpotLightNode.isHidden = !on
+		}
+	}
+	
+}
+
+extension FoggyLogoRenderer : ARSCNViewDelegate {
 	
 	func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
 		
@@ -49,7 +101,7 @@ class FoggyLogoRenderer : NSObject, ARSCNViewDelegate {
 		if self.qrDetector.detectedDataAnchor?.identifier == anchor.identifier {
 			
 			//We rendered, so stop showing the activity indicator
-			//isShowingActivityIndicator(false)
+			delegate?.loading(false)
 			
 			guard let virtualObjectScene = SCNScene(named: "art.scnassets/logo.scn") else {
 				return nil
@@ -59,7 +111,7 @@ class FoggyLogoRenderer : NSObject, ARSCNViewDelegate {
 			logoNode = virtualObjectScene.rootNode.childNode(withName: "OCILogo", recursively: false)!
 			
 			//Before render we have already received a rotation, set it to that
-			logoNode.rotateToYAxis(to: oldRotationY.degreesToRadians)
+			logoNode.rotateToYAxis(to: -oldRotationY)
 			
 			lightbulbNode = virtualObjectScene.rootNode.childNode(withName: "lightbulb", recursively: false)
 			largeSpotLightNode = virtualObjectScene.rootNode.childNode(withName: "largespot", recursively: false)
@@ -74,10 +126,6 @@ class FoggyLogoRenderer : NSObject, ARSCNViewDelegate {
 			//Since we always receive the QR code before we render our nodes, assign the
 			//existing scanned value to our geometry
 			qrValueTextNode.setGeometryText(value: qrDetector.qrValue)
-			
-			let (minBound, maxBound) = logoNode.boundingBox
-			qrValueTextNode.pivot = SCNMatrix4MakeTranslation( (maxBound.x - minBound.x)/2, minBound.y, 0.5)
-			qrValueTextNode.position = SCNVector3(0,0,0)
 			
 			//Wrapper node for adding nodes that we want to spawn on top of the QR code
 			let wrapperNode = SCNNode()
@@ -98,19 +146,45 @@ class FoggyLogoRenderer : NSObject, ARSCNViewDelegate {
 		
 		return nil
 	}
+}
+
+extension SCNNode
+{
+	func setGeometryText(value : String) {
+		if let textGeometry = self.geometry as? SCNText {
+			textGeometry.string = value
+			textGeometry.alignmentMode = kCAAlignmentCenter
+		}
+	}
 	
+	func rotateToYAxis(to: CGFloat) {
+		self.eulerAngles.y = Float(to)
+	}
+	
+	func rotateAroundYAxis(by: CGFloat, duration : TimeInterval) {
+		let (minVec, maxVec) = self.boundingBox
+		
+		// Create pivot so it can spin around itself
+		self.pivot = SCNMatrix4MakeTranslation((maxVec.x - minVec.x) / 2 + minVec.x, (maxVec.y - minVec.y) / 2 + minVec.y, 0)
+		
+		// Create the rotateTo action.
+		let action = SCNAction.rotate(by: by, around: SCNVector3(0, 1, 0), duration: duration)
+		
+		self.runAction(action, forKey: "rotatingYAxis")
+	}
 }
 
 extension FoggyLogoRenderer: QRDetectionDelegate {
+	
+		func updatedAnchor() {
 		
+		}
+	
 		func foundQRValue(stringValue: String) {
 			if let qrValueTextNode = qrValueTextNode {
 				qrValueTextNode.setGeometryText(value: stringValue)
+				delegate?.qrCodeDetected(code: stringValue)
 			}
-		}
-		
-		func updatedAnchor() {
-			//print("Anchor changed")
 		}
 		
 		func detectRequestError(error: Error) {
