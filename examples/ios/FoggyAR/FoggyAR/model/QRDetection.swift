@@ -44,12 +44,10 @@ public class QRDetection : NSObject {
 					
 					rect = rect.applying(CGAffineTransform(scaleX: 1, y: -1))
 					rect = rect.applying(CGAffineTransform(translationX: 0, y: 1))
-					
-					//print("qr code width: \(rect.size.width) height: \(rect.size.height)")
-					
+
 					let center = CGPoint(x: rect.midX, y: rect.midY)
 					
-					let hitTestResults = frame.hitTest(center, types: [.estimatedHorizontalPlane, .existingPlane, .existingPlaneUsingExtent] )
+					let hitTestResults = frame.hitTest(center, types: [.featurePoint, /*.existingPlane, .existingPlaneUsingExtent*/] )
 				
 					if let hitTestResult = hitTestResults.first {
 						self.qrValue = newValue

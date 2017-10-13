@@ -34,6 +34,8 @@ class FoggyLogoRenderer : NSObject {
 
 	private let sceneView : 	ARSCNView
 	
+	private var originalPosition = SCNVector3()
+	
 	public weak var delegate: FoggyLogoRendererDelegate?
 	
 	public init(sceneView : ARSCNView) {
@@ -65,6 +67,8 @@ class FoggyLogoRenderer : NSObject {
 	
 	func heading(heading: FogRational<Int64>)
 	{
+		//return
+		
 		let newRotationY = CGFloat(heading.num)
 		let normDelta = newRotationY - oldRotationY
 		let crossDelta = oldRotationY < newRotationY ? newRotationY - 360 - oldRotationY : 360 - oldRotationY + newRotationY
@@ -83,8 +87,7 @@ class FoggyLogoRenderer : NSObject {
 		}
 	}
 	
-	public func lights(on : Bool)
-	{
+	public func lights(on : Bool) {
 		if let lightbulbNode = lightbulbNode, let largeSpotLightNode = largeSpotLightNode {
 			lightbulbNode.isHidden = !on
 			largeSpotLightNode.isHidden = !on
@@ -109,9 +112,14 @@ extension FoggyLogoRenderer : ARSCNViewDelegate {
 			
 			//Grab the required nodes
 			logoNode = virtualObjectScene.rootNode.childNode(withName: "OCILogo", recursively: false)!
+			let (minVec, maxVec) = logoNode.boundingBox
+			logoNode.pivot = SCNMatrix4MakeTranslation((maxVec.x - minVec.x) / 2 + minVec.x, (maxVec.y - minVec.y) / 2 + minVec.y, 0)
+			
+			logoNode.position = SCNVector3(0, 0, 0)
 			
 			//Before render we have already received a rotation, set it to that
-			logoNode.rotateToYAxis(to: -oldRotationY)
+			//CULRPIT RIGHT HERE:
+			logoNode.rotateToYAxis(to: -oldRotationY.degreesToRadians)
 			
 			lightbulbNode = virtualObjectScene.rootNode.childNode(withName: "lightbulb", recursively: false)
 			largeSpotLightNode = virtualObjectScene.rootNode.childNode(withName: "largespot", recursively: false)
@@ -162,28 +170,22 @@ extension SCNNode
 	}
 	
 	func rotateAroundYAxis(by: CGFloat, duration : TimeInterval) {
-		let (minVec, maxVec) = self.boundingBox
-		
-		// Create pivot so it can spin around itself
-		self.pivot = SCNMatrix4MakeTranslation((maxVec.x - minVec.x) / 2 + minVec.x, (maxVec.y - minVec.y) / 2 + minVec.y, 0)
-		
-		// Create the rotateTo action.
 		let action = SCNAction.rotate(by: by, around: SCNVector3(0, 1, 0), duration: duration)
 		
 		self.runAction(action, forKey: "rotatingYAxis")
+		
+		self.position = SCNVector3(0,0,0)
 	}
 }
 
 extension FoggyLogoRenderer: QRDetectionDelegate {
 	
-		func updatedAnchor() {
-		
-		}
-	
 		func foundQRValue(stringValue: String) {
 			if let qrValueTextNode = qrValueTextNode {
 				qrValueTextNode.setGeometryText(value: stringValue)
 				delegate?.qrCodeDetected(code: stringValue)
+				
+				print("found qr value! logo transform: \(logoNode.position)")
 			}
 		}
 		

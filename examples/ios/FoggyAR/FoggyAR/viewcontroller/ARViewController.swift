@@ -52,7 +52,6 @@ class ARViewController: UIViewController {
 		
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(gestureRecognizer:)))
 		self.sceneView.addGestureRecognizer(tapGesture)
-		
 	}
 	
 	func isShowingActivityIndicator(_ status: Bool) {
@@ -150,6 +149,8 @@ extension ARViewController : FoggyLogoDelegate {
 extension ARViewController : FoggyLogoRendererDelegate {
 	func qrCodeDetected(code: String) {
 		self.qrValue = code
+		
+		print("found qr value! \(self.qrValue)")
 	}
 	
 	func loading(_ state : Bool) {
