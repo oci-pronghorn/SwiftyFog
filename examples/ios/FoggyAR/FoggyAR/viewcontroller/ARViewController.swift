@@ -158,10 +158,6 @@ extension ARViewController : QRDetectionDelegate {
 			qrValueTextNode.setGeometryText(value: stringValue)
 		}
 	}
-	
-	func updatedAnchor() {
-		//print("Anchor changed")
-	}
 
 	func detectRequestError(error: Error) {
 		print("Error in QR: \(error.localizedDescription)")

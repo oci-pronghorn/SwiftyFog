@@ -12,7 +12,6 @@ import Vision
 
 public protocol QRDetectionDelegate: class {
 	func foundQRValue(stringValue : String)
-	func updatedAnchor()
 	func detectRequestError(error : Error)
 }
 
@@ -53,12 +52,9 @@ public class QRDetection : NSObject {
 					let hitTestResults = frame.hitTest(center, types: [.estimatedHorizontalPlane, .existingPlane, .existingPlaneUsingExtent] )
 				
 					if let hitTestResult = hitTestResults.first {
-					
+						self.qrValue = newValue
 						DispatchQueue.main.async {
-							self.qrValue = newValue
 							self.delegate?.foundQRValue(stringValue: newValue)
-							
-							self.delegate?.updatedAnchor()
 							
 							if let detectedDataAnchor = self.detectedDataAnchor,
 								let node = self.sceneView.node(for: detectedDataAnchor) {
