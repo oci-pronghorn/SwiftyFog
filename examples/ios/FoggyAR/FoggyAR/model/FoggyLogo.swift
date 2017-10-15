@@ -51,5 +51,4 @@ public class FoggyLogo {
 	private func askForFeedback() {
 		mqtt.publish(MQTTMessage(topic: "feedback", qos: .atLeastOnce))
 	}
-
 }

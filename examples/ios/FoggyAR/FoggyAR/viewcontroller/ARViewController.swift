@@ -94,7 +94,6 @@ class ARViewController: UIViewController {
 				}
 			}
 		}
-		
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
@@ -102,11 +101,6 @@ class ARViewController: UIViewController {
 		
 		// Pause the view's session
 		sceneView.session.pause()
-	}
-	
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-		// Release any cached data, images, etc that aren't in use.
 	}
 }
 

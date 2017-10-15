@@ -6,7 +6,6 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-
 import UIKit
 import SceneKit
 import ARKit
@@ -50,13 +49,11 @@ class FoggyLogoRenderer : NSObject {
 		self.delegate?.loading(true)
 	}
 	
-	func hitQRCode(node: SCNNode) -> Bool
-	{
+	func hitQRCode(node: SCNNode) -> Bool {
 		return node == qrValueTextNode
 	}
 	
-	func train(alive: Bool)
-	{
+	func train(alive: Bool) {
 		if !alive {
 			self.sceneView.scene.fogColor = UIColor.red
 			self.sceneView.scene.fogEndDistance = 0.045
@@ -65,10 +62,7 @@ class FoggyLogoRenderer : NSObject {
 		}
 	}
 	
-	func heading(heading: FogRational<Int64>)
-	{
-		//return
-		
+	func heading(heading: FogRational<Int64>) {
 		let newRotationY = CGFloat(heading.num)
 		let normDelta = newRotationY - oldRotationY
 		let crossDelta = oldRotationY < newRotationY ? newRotationY - 360 - oldRotationY : 360 - oldRotationY + newRotationY
@@ -93,7 +87,6 @@ class FoggyLogoRenderer : NSObject {
 			largeSpotLightNode.isHidden = !on
 		}
 	}
-	
 }
 
 extension FoggyLogoRenderer : ARSCNViewDelegate {
@@ -156,8 +149,7 @@ extension FoggyLogoRenderer : ARSCNViewDelegate {
 	}
 }
 
-extension SCNNode
-{
+extension SCNNode {
 	func setGeometryText(value : String) {
 		if let textGeometry = self.geometry as? SCNText {
 			textGeometry.string = value
@@ -180,17 +172,17 @@ extension SCNNode
 
 extension FoggyLogoRenderer: QRDetectionDelegate {
 	
-		func foundQRValue(stringValue: String) {
-			if let qrValueTextNode = qrValueTextNode {
-				qrValueTextNode.setGeometryText(value: stringValue)
-				delegate?.qrCodeDetected(code: stringValue)
-				
-				print("found qr value! logo transform: \(logoNode.position)")
-			}
+	func foundQRValue(stringValue: String) {
+		if let qrValueTextNode = qrValueTextNode {
+			qrValueTextNode.setGeometryText(value: stringValue)
+			delegate?.qrCodeDetected(code: stringValue)
+			
+			print("found qr value! logo transform: \(logoNode.position)")
 		}
-		
-		func detectRequestError(error: Error) {
-			print("Error in QR: \(error.localizedDescription)")
-		}
+	}
+	
+	func detectRequestError(error: Error) {
+		print("Error in QR: \(error.localizedDescription)")
+	}
 }
 

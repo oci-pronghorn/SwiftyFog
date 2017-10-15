@@ -93,7 +93,8 @@ extension QRDetection: ARSessionDelegate {
 				let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage, options: [:])
 				// Process the request
 				try imageRequestHandler.perform([detectRequest])
-			} catch let error {
+			}
+			catch let error {
 				self.delegate?.detectRequestError(error: error)
 			}
 		}
