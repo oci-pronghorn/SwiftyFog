@@ -19,7 +19,7 @@ class TrainViewController: UIViewController {
 	
 	@IBOutlet weak var trainAlive: UIImageView!
 	@IBOutlet weak var trainName: UILabel!
-	@IBOutlet weak var connectMetrics: FSDAirportFlipLabel!
+	@IBOutlet weak var connectMetrics: FlipLabel!
 	@IBOutlet weak var connectedImage: UIImageView!
 	@IBOutlet weak var stopStartButton: UIButton!
 	
