@@ -42,25 +42,30 @@ public class FlipLabel: UIView {
     @IBInspectable public var textSize: CGFloat = 14
     
 	// Optional fixed lenght for number of characters in label
-    @IBInspectable public var fixedLength: Int = 0
+    @IBInspectable public var fixedLength: Int = 0 {
+		didSet {
+			if oldValue != fixedLength {
+				invalidateIntrinsicContentSize()
+				updateText()
+			}
+		}
+	}
 	
 	// The base number of flips a label will animate when changing between characters. Defaults to 10
     @IBInspectable public var numberOfFlips: Int = 1
 	
 	/* The range used to calculate the random number of flips an animating label will take.
 	 * The value will be randomly selected between (numberOfFlips, (1 + numberOfFlipsRange) * numberOfFlips ).
-     * Defaults to 1.0 => Default range is (numberOfFlips, 2*numberOfFlips)
      */
     @IBInspectable public var numberOfFlipsRange: Int = 1
 
 	// Base flip velocity for changing labels.
-    @IBInspectable public var flipDuration: CGFloat = 0.5
+    @IBInspectable public var flipDuration: TimeInterval = 0.5
 	
 	/* Range of flip duration span. The actual duration will be calculated randomly between
 	 * (flipDuration, (1 + flipDurationRange) * flipDuration).
-     * Defaults to 1.0 => Default range is (flipDuration, 2*flipDuration)
      */
-    @IBInspectable public var flipDurationRange: CGFloat = 0.0
+    @IBInspectable public var flipDurationRange: TimeInterval = 0.0
 	
 	// The flipping label's text color
     @IBInspectable public var flipTextColor = UIColor.white
@@ -70,18 +75,21 @@ public class FlipLabel: UIView {
 	
 	@IBInspectable public var text: String = "" {
 		didSet {
-			updateText(text)
+			if fixedLength <= 0 && oldValue.count != text.count {
+				invalidateIntrinsicContentSize()
+			}
+			updateText()
 		}
 	}
 	
 	// Block called when the last label stops flipping
-    public var finishedFlippingLabelsBlock: (() -> Void)? = nil
+    public var finishedFlippingLabelsBlock: (()->())? = nil
 	
 	// Block called when the labels start flipping
-    public var startedFlippingLabelsBlock: (() -> Void)? = nil
+    public var startedFlippingLabelsBlock: (()->())? = nil
 	
     private var labels = [UILabel]()
-    private var labelsInFlip: Int = 0
+    private var labelsInFlip = 0
 	
 	public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -90,26 +98,21 @@ public class FlipLabel: UIView {
 	public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-	
-    public var isFlipping: Bool  {
-    	return labelsInFlip > 0
-    }
 
 	public override var intrinsicContentSize: CGSize {
-		let charCount = max(fixedLength, text.count)
+		let charCount = fixedLength > 0 ? fixedLength : text.count
 		return CGSize(width: CGFloat(charCount) * (textSize + 3.0) - 3.0, height: textSize + 2.0)
 	}
 	
 	public override func layoutSubviews() {
 		super.layoutSubviews()
-		updateText(self.text)
+		updateText()
 	}
 
-	private func updateText(_ text1: String) {
+	private func updateText() {
 		labelsInFlip = 0
-		//    self.textSize = self.frame.size.width / text.length - 2;
-		let text = text1.uppercased()
-		let len = max(fixedLength, text.count)
+		let text = self.text.uppercased()
+		let len = fixedLength > 0 ? fixedLength : text.count
 		for i in 0..<len {
 			// get ith label
 			let label = getOrCreateLabel(for: i)
@@ -119,13 +122,12 @@ public class FlipLabel: UIView {
 				ichar = "\(text[text.index(text.startIndex, offsetBy: i)])"
 			}
 			//if it is different than current animate flip
-			label.isHidden = (ichar == "") && !(fixedLength > 0)
 			if !(ichar == label.text) {
 				animate(label, toLetter: ichar)
 			}
 		}
 		for i in len..<labels.count {
-			labels[i].removeFromSuperview()
+			labels[i].isHidden = true
 		}
 	}
 
@@ -137,13 +139,14 @@ public class FlipLabel: UIView {
 		}
 		else {
 			label = UILabel()
+			label.isHidden = true
 			labels.append(label)
 			addSubview(label)
-			label.backgroundColor = flipBackGroundColor
-			label.textColor = flipTextColor
 			label.textAlignment = .center
 		}
 		label.frame = frame
+		label.backgroundColor = flipBackGroundColor
+		label.textColor = flipTextColor
 		label.font = UIFont.systemFont(ofSize: textSize)
 		return label
 	}
@@ -166,10 +169,11 @@ public class FlipLabel: UIView {
 	}
 	
 	func flip(_ label: UILabel, toLetter letter: String, inNumberOfFlips flipsToDo: Int) {
-		let duration: TimeInterval = TimeInterval(flipDuration + (CGFloat(drand48()) * flipDurationRange * flipDuration))
+		label.isHidden = false
+		let duration = flipDuration + (TimeInterval(drand48()) * flipDurationRange * flipDuration)
 		UIView.transition(with: label, duration: duration, options: .transitionFlipFromTop,
 			animations: {
-				label.text = flipsToDo == 1 ? letter : self.randomAlphabetCharacter()
+				label.text = flipsToDo == 1 ? letter : CharacterSet.alphanumerics.randomString(length: 1)
 			},
 			completion: {(_ finished: Bool) in
 				// if last flip
@@ -185,9 +189,5 @@ public class FlipLabel: UIView {
 					self.flip(label, toLetter: letter, inNumberOfFlips: flipsToDo - 1)
 				}
 			})
-	}
-	
-	private func randomAlphabetCharacter() -> String {
-    	return CharacterSet.alphanumerics.randomString(length: 1)
 	}
 }
