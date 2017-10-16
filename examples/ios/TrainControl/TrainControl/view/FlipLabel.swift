@@ -1,5 +1,5 @@
 //
-//  FiipLabel.swift
+//  FlipLabel.swift
 //  TrainControl
 //
 //  Created by David Giovannini on 10/15/17.
@@ -9,32 +9,7 @@
 //
 
 import Foundation
-
-private extension CharacterSet {
-    /// extracting characters
-    func allCharacters() -> [Character] {
-        var allCharacters = [Character]()
-        for plane: UInt8 in 0 ... 16 where hasMember(inPlane: plane) {
-            for unicode in UInt32(plane) << 16 ..< UInt32(plane + 1) << 16 {
-                if let uniChar = UnicodeScalar(unicode), contains(uniChar) {
-                    allCharacters.append(Character(uniChar))
-                }
-            }
-        }
-        return allCharacters
-    }
-
-    /// building random string of desired length
-    func randomString(length: Int) -> String {
-        let charArray = allCharacters()
-        let charArrayCount = UInt32(charArray.count)
-        var randomString = ""
-        for _ in 0 ..< length {
-            randomString += String(charArray[Int(arc4random_uniform(charArrayCount))])
-        }
-        return randomString
-    }
-}
+import SwiftyFog_iOS
 
 @IBDesignable
 public class FlipLabel: UIView {
@@ -168,7 +143,7 @@ public class FlipLabel: UIView {
 		}
 	}
 	
-	func flip(_ label: UILabel, toLetter letter: String, inNumberOfFlips flipsToDo: Int) {
+	private func flip(_ label: UILabel, toLetter letter: String, inNumberOfFlips flipsToDo: Int) {
 		label.isHidden = false
 		let duration = flipDuration + (TimeInterval(drand48()) * flipDurationRange * flipDuration)
 		UIView.transition(with: label, duration: duration, options: .transitionFlipFromTop,

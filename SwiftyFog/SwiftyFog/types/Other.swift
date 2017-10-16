@@ -30,3 +30,29 @@ public extension FloatingPoint {
 	var degreesToRadians: Self { return self * .pi / 180 }
 	var radiansToDegrees: Self { return self * 180 / .pi }
 }
+
+public extension CharacterSet {
+    /// extracting characters
+    public func allCharacters() -> [Character] {
+        var allCharacters = [Character]()
+        for plane: UInt8 in 0 ... 16 where hasMember(inPlane: plane) {
+            for unicode in UInt32(plane) << 16 ..< UInt32(plane + 1) << 16 {
+                if let uniChar = UnicodeScalar(unicode), contains(uniChar) {
+                    allCharacters.append(Character(uniChar))
+                }
+            }
+        }
+        return allCharacters
+    }
+
+    /// building random string of desired length
+    public func randomString(length: Int) -> String {
+        let charArray = allCharacters()
+        let charArrayCount = UInt32(charArray.count)
+        var randomString = ""
+        for _ in 0 ..< length {
+            randomString += String(charArray[Int(arc4random_uniform(charArrayCount))])
+        }
+        return randomString
+    }
+}
