@@ -36,9 +36,14 @@ public class FoggyLogo {
 		delegate?.foggyLogo(lightsPower: value)
 	}
 	
+	private var lastTime = Date().timeIntervalSince1970
+	
 	private func feedbackAccelerometerHeading(_ msg: MQTTMessage) {
 		let value: FogRational<Int64> = msg.payload.fogExtract()!
 		delegate?.foggyLogo(accelerometerHeading: value)
+		let now = Date().timeIntervalSince1970
+		print("Time interval beetween heading \(now - lastTime) secs.")
+		lastTime = now
 	}
 	
 	private func feedbackLifecycle(msg: MQTTMessage) {

@@ -22,7 +22,7 @@ public class LocationBehavior implements Behavior {
             }
         };
 
-        this.accSensor = new SixAxisAccelerometer_Transducer(runtime.newCommandChannel(), null, magValues, null);
+        this.accSensor = new SixAxisAccelerometer_Transducer(runtime.newCommandChannel(FogRuntime.I2C_WRITER, 200), null, magValues, null);
         this.headingTopic = headingTopic;
     }
 

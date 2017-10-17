@@ -21,21 +21,26 @@ public class TrainConfiguration  {
     final String telemetryHost = null;
 
     final boolean lifecycleEnabled = true;
+
     final boolean engineEnabled = true;
+    final ActuatorDriverPort engineAccuatorPort = ActuatorDriverPort.A;
+
     final boolean lightsEnabled = true;
     final int lightDetectFreq = 250;
+    final Port lightSensorPort = A0;
+    final ActuatorDriverPort lightAccuatorPort = ActuatorDriverPort.B;
 
     final boolean billboardEnabled = false;
     final boolean cameraEnabled = false;
-    final boolean soundEnabled = false;
+
     final boolean locationEnabled = true;
+    final int headingReadFreq = 250;
+
     final boolean appServerEnabled = false;
     final int appServerPort = 8089;
 
+    final boolean soundEnabled = false;
     final Port piezoPort = A1;
-    final Port lightSensorPort = A0;
-    final ActuatorDriverPort engineAccuatorPort = ActuatorDriverPort.A;
-    final ActuatorDriverPort lightAccuatorPort = ActuatorDriverPort.B;
 
     TrainConfiguration(ArgumentProvider args) {
         this.trainName = args.getArgumentValue("--name", "-n", "thejoveexpress");

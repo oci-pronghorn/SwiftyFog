@@ -36,8 +36,7 @@ public class TheJoveExpress implements FogApp
         if (config.billboardEnabled) c.connect(OLED_96x96);
         if (config.locationEnabled) {
             //c.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readAccel);
-            c.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readMag);
-            // c.connect(invisible light reflective change sensor);
+            c.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readMag, config.headingReadFreq);
         }
         if (config.cameraEnabled) ; //c.connect(pi-bus camera);
         if (config.soundEnabled) ; //c.connect(serial mp3 player);
