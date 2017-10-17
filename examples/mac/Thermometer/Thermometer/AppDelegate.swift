@@ -13,37 +13,27 @@ import SwiftyFog_mac
 class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	var controller: ThermoAppController!
-	
 	var helloWorldView : HelloWorldViewController!
 
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
+		//Setup the AppController
+		controller = ThermoAppController()
+		controller.delegate = self
+
+		helloWorldView = NSApplication.shared.mainWindow!.contentViewController as! HelloWorldViewController
+			
+		helloWorldView.mqtt = controller.mqtt
 		
+		controller.start()
 	}
 	
-	func applicationDidBecomeActive(_ notification: Notification)
-	{
-		//Setup the AppController
-		if controller == nil {
-			controller = ThermoAppController()
-			controller.delegate = self
-			controller.goForeground()
-		}
-		
-		if(helloWorldView == nil)
-		{
-			NSApp.activate(ignoringOtherApps: true)
-
-			//Get the required view controller
-			helloWorldView = NSApplication.shared.mainWindow!.contentViewController as! HelloWorldViewController
-			
-			helloWorldView.mqtt = controller.mqtt
-		}
+	func applicationDidBecomeActive(_ notification: Notification) {
+		// invoked before applicationDidFinishLaunching
 	}
 
 	func applicationWillTerminate(_ aNotification: Notification) {
-		controller.goBackground()
+		controller.stop()
 	}
-
 }
 
 extension AppDelegate: ThermoAppControllerDelegate {

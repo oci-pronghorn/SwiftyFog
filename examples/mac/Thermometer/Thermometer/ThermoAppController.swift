@@ -16,40 +16,31 @@ protocol ThermoAppControllerDelegate: class {
 
 class ThermoAppController {
 	let mqtt: (MQTTBridge & MQTTControl)!
-	let metrics: MQTTMetrics?
 	
 	weak var delegate: ThermoAppControllerDelegate?
 	
 	init() {
 		// Setup metrics
-		metrics = MQTTMetrics()
-		metrics?.doPrintSendPackets = true
-		metrics?.doPrintReceivePackets = true
-		metrics?.doPrintWireData = true
-		metrics?.debugOut = {print("\(Date.nowInSeconds()) MQTT \($0)")}
+		let metrics = MQTTMetrics()
+		metrics.doPrintSendPackets = true
+		metrics.doPrintReceivePackets = true
+		metrics.debugOut = {print("\(Date.nowInSeconds()) MQTT \($0)")}
 		
 		// Create the concrete MQTTClient to connect to a specific broker
-		let client = MQTTClientParams()
-		
-		let mqtt = MQTTClient(metrics: metrics)
-			//client: client,
-			//host: MQTTHostParams(host: "localhost"),
-			//auth: MQTTAuthentication(username: "tobischw", password: "password"),
-			//reconnect: MQTTReconnectParams(),
-			//metrics: metrics)
+		let mqtt = MQTTClient(
+			host: MQTTHostParams(host: "localhost"),
+			metrics: metrics)
 		
 		self.mqtt = mqtt
 		
 		mqtt.delegate = self
-		
 	}
 	
-	public func goForeground() {
-			mqtt.start()
+	public func start() {
+		mqtt.start()
 	}
 	
-	public func goBackground() {
-		// Be a good MacOS citizen and shutdown the connection and timers
+	public func stop() {
 		mqtt.stop()
 	}
 }
@@ -66,14 +57,14 @@ extension ThermoAppController: MQTTClientDelegate {
 		case .connected(let counter):
 			log = "Connected \(counter)"
 			break
-		case .pinged(let status):
-			log = "Ping \(status)"
-			break
 		case .retry(_, let rescus, let attempt, _):
 			log = "Connection Attempt \(rescus).\(attempt)"
 			break
 		case .retriesFailed(let counter, let rescus, _):
 			log = "Connection Failed \(counter).\(rescus)"
+			break
+		case .pinged(let status):
+			log = "Ping \(status)"
 			break
 		case .disconnected(let reason, let error):
 			log = "Disconnected \(reason) \(error?.localizedDescription ?? "")"
