@@ -22,7 +22,7 @@ public class Thermometer: FogFeedbackModel {
 	public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				("temperature/control", .atMostOnce, Thermometer.feedbackTemperature)])
+				("temperature/feedback", .atMostOnce, Thermometer.feedbackTemperature)])
 			//TODO: This isn't 100% how it's supposed to be, but right now we are just echoing
 			//back. Next step is integrating feedback loop as seen in the Train.swift
 			//Also fix the slider not responding to inputs
@@ -49,7 +49,7 @@ public class Thermometer: FogFeedbackModel {
 		self.temperature.control(temperature) { value in
 			var data  = Data(capacity: value.fogSize)
 			data.fogAppend(value)
-			mqtt.publish(MQTTMessage(topic: "temperature/control", payload: data))
+			//mqtt.publish(MQTTMessage(topic: "temperature/control", payload: data))
 		}
 	}
 	

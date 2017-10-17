@@ -17,7 +17,6 @@ protocol ThermoAppControllerDelegate: class {
 class ThermoAppController {
 	let mqtt: (MQTTBridge & MQTTControl)!
 	let metrics: MQTTMetrics?
-	var wasStarted: Bool = false
 	
 	weak var delegate: ThermoAppControllerDelegate?
 	
@@ -32,29 +31,25 @@ class ThermoAppController {
 		// Create the concrete MQTTClient to connect to a specific broker
 		let client = MQTTClientParams()
 		
-		let mqtt = MQTTClient(
-			client: client,
-			host: MQTTHostParams(),
-			auth: MQTTAuthentication(username: "tobischw", password: "password"),
-			reconnect: MQTTReconnectParams(),
-			metrics: metrics)
-		
-		mqtt.delegate = self
+		let mqtt = MQTTClient(metrics: metrics)
+			//client: client,
+			//host: MQTTHostParams(host: "localhost"),
+			//auth: MQTTAuthentication(username: "tobischw", password: "password"),
+			//reconnect: MQTTReconnectParams(),
+			//metrics: metrics)
 		
 		self.mqtt = mqtt
+		
+		mqtt.delegate = self
 		
 	}
 	
 	public func goForeground() {
-		// If it wants to be started, restore it
-		if wasStarted {
 			mqtt.start()
-		}
 	}
 	
 	public func goBackground() {
 		// Be a good MacOS citizen and shutdown the connection and timers
-		wasStarted = mqtt.started
 		mqtt.stop()
 	}
 }

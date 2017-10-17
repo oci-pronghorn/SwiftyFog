@@ -27,16 +27,10 @@ class HelloWorldViewController : NSViewController {
 	
 	let thermometer = Thermometer()
 	
-	var mqttControl: MQTTControl! {
-		didSet {
-			mqttControl.start()
-		}
-	}
-	
 	var mqtt: MQTTBridge! {
 		didSet {
 			thermometer.delegate = self
-			thermometer.mqtt = mqtt.createBridge(subPath: "thermometer")
+			thermometer.mqtt = mqtt
 		}
 	}
 	var subscription: MQTTSubscription?
@@ -60,12 +54,12 @@ class HelloWorldViewController : NSViewController {
 	}
 	
 	@IBAction func connectDisconnectPressed(_ sender: Any) {
-		if mqttControl.started {
+/*		if mqttControl.started {
 			mqttControl.stop()
 		}
 		else {
 			mqttControl.start()
-		}
+		}*/
 	}
 	
 	@IBAction func publishFirstTestPressed(_ sender: Any) {
@@ -76,7 +70,7 @@ class HelloWorldViewController : NSViewController {
 		// Since we are possibly resubscribing to the same topic we force the unsubscribe first.
 		// Otherwide we redundantly subscribe and then unsubscribe
 		subscription = nil
-		subscription = mqtt.subscribe(topics: [("thermometer/#", .atMostOnce)]) { status in
+		subscription = mqtt.subscribe(topics: [("temperature/#", .atMostOnce)]) { status in
 			print("\(Date.nowInSeconds()) subAll0: \(status)")
 		}
 	}

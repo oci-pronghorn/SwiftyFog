@@ -22,21 +22,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	func applicationDidBecomeActive(_ notification: Notification)
 	{
+		//Setup the AppController
+		if controller == nil {
+			controller = ThermoAppController()
+			controller.delegate = self
+			controller.goForeground()
+		}
+		
 		if(helloWorldView == nil)
 		{
 			NSApp.activate(ignoringOtherApps: true)
-			
-			//Setup the AppController
-			controller = ThermoAppController()
-			controller.delegate = self
-			
+
 			//Get the required view controller
 			helloWorldView = NSApplication.shared.mainWindow!.contentViewController as! HelloWorldViewController
 			
-			let scoped = controller.mqtt.createBridge(subPath: "mac.test")
-			
-			helloWorldView.mqtt = scoped
-			helloWorldView.mqttControl = controller.mqtt
+			helloWorldView.mqtt = controller.mqtt
 		}
 	}
 
