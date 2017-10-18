@@ -32,7 +32,7 @@ public class TempSensorBehavior implements AnalogListener {
 	        
         		if(temperature != oldValue) {
         			oldValue = temperature;
-        			if(!channel.publishTopic(publishTopic, writer->{ writer.writeInt(value); })) {
+        			if(!channel.publishTopic(publishTopic, writer->{ writer.writeInt(temperature); })) {
         				System.out.println("**** Temperature Reading Change Failed to Publish ****");
         			}
         		}

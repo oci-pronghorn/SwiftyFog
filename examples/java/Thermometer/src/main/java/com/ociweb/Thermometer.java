@@ -17,7 +17,7 @@ public class Thermometer implements FogApp
 
     @Override
     public void declareConnections(Hardware c) {	
-        this.mqttBridge = c.useMQTT("Tobi.local", 1883, false, "Thermometer-Publisher", 40, 20000)
+        this.mqttBridge = c.useMQTT("172.16.10.77", 1883, false, "Thermometer-Publisher", 40, 20000)
                 .cleanSession(true)
                 .keepAliveSeconds(10);
         
