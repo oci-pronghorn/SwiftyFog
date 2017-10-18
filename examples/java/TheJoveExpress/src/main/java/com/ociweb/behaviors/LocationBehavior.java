@@ -11,7 +11,7 @@ public class LocationBehavior implements Behavior {
     private final SixAxisAccelerometer_Transducer accSensor;
     private final AccerometerValues magValues;
     private final String headingTopic;
-    private final RationalPayload heading = new RationalPayload(0, 360);
+    private final RationalPayload heading = new RationalPayload(0, 3600);
 
     public LocationBehavior(FogRuntime runtime, String headingTopic) {
         this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
@@ -27,7 +27,7 @@ public class LocationBehavior implements Behavior {
     }
 
     public void headingChange() {
-        long rounded = (long)magValues.getHeading();
+        long rounded = (long)(magValues.getHeading() * 10.0);
         if (rounded != heading.num) {
             heading.num = rounded;
             this.channel.publishTopic(headingTopic, writer -> writer.write(heading));

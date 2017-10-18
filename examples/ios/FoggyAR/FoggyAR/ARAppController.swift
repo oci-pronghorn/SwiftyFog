@@ -78,7 +78,7 @@ class ARAppController {
 				else if m.fakeHeading >= 360 {
 					m.fakeHeading -= 360
 				}
-				let heading = FogRational(num: Int64(m.fakeHeading), den: Int64(360))
+				let heading = FogRational(num: Int64(m.fakeHeading * 10.0), den: Int64(3600))
 				var data  = Data(capacity: heading.fogSize)
 				data.fogAppend(heading)
 				m.mqtt.publish(MQTTMessage(topic: "thejoveexpress/accelerometer/feedback/heading", payload: data))

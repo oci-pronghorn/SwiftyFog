@@ -62,22 +62,26 @@ class FoggyLogoRenderer : NSObject {
 		}
 	}
 	
+	private var lastTime = Date().timeIntervalSince1970
+	
 	func heading(heading: FogRational<Int64>) {
-		let newRotationY = CGFloat(heading.num)
+		let newRotationY = CGFloat(heading.num) / 10.0 // in units of 0.1 degrees
 		let normDelta = newRotationY - oldRotationY
 		let crossDelta = oldRotationY < newRotationY ? newRotationY - 360 - oldRotationY : 360 - oldRotationY + newRotationY
 		let rotateBy = abs(normDelta) < abs(crossDelta) ? normDelta : crossDelta
 		oldRotationY = newRotationY
 		
-		print("Received acceloremeter heading: \(heading) rotate by: \(rotateBy)")
+		let now = Date().timeIntervalSince1970
+		print("Heading: \(heading) degrees: \(newRotationY) delta: \(rotateBy) in \(now - lastTime) secs.")
+		lastTime = now
 		
 		if let logoNode = logoNode {
-			if hasAppliedHeading {
-				logoNode.rotateAroundYAxis(by: -rotateBy.degreesToRadians, duration: 1)
-			} else {
+			//if hasAppliedHeading {
+			//	logoNode.rotateAroundYAxis(by: -rotateBy.degreesToRadians, duration: 1)
+			//} else {
 				logoNode.rotateToYAxis(to: -oldRotationY.degreesToRadians)
 				hasAppliedHeading = true
-			}
+			//}
 		}
 	}
 	
