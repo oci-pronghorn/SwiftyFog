@@ -10,10 +10,9 @@ public class TempSensorBehavior implements AnalogListener {
 	private String publishTopic;
 	private Port sensorPort; 
 	private int oldValue = 0;
-	
-	/* TODO: magic numbers, what do they mean!? */
-    private final int B = 4275;
-    private final int R0 = 100000; 
+
+    private final int B = 4275; // B value of the thermistor
+    private final int R0 = 100000; // R0 = 100k (Resistance of thermistor)
     
 	public TempSensorBehavior(FogRuntime runtime, Port sensorPort, String publishTopic) { 
 		 this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
@@ -25,12 +24,11 @@ public class TempSensorBehavior implements AnalogListener {
     public void analogEvent(Port port, long time, long durationMillis, int average, int value) {
         if(this.sensorPort == port) {
 	       
-	        double R =  (1023.0/value-1.0);
-	        R = R0*R;
-	        double preciseTemperature =1.0/(Math.log(R/R0)/B+1/298.15)-273.15; //TODO int->double?
-	        int temperature = (int)preciseTemperature;
+	        double R =  (1023.0 / value - 1.0);
+	        R = R0 * R;
+	        int temperature = (int)( 1.0 / (Math.log(R / R0) / B + 1 / 298.15) - 273.15 );
 	        
-	        System.out.printf("*** Analog event received with value %.8f (-> %d Celsius)", preciseTemperature, temperature);
+	        System.out.printf("**** Analog event received with value %d (-> %d Celsius) ****%n", value, temperature);
 	        
         		if(temperature != oldValue) {
         			oldValue = temperature;
