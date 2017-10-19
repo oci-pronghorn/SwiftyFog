@@ -19,7 +19,13 @@ public protocol TrainDetectionDelegate: class {
 public class TrainDetection {
 	public weak var delegate: TrainDetectionDelegate?
 	private let selectedModel: VNCoreMLModel
-	private var isProcessing : Bool = false
+	private var identifier = ""
+	
+	private lazy var request: VNCoreMLRequest = {
+		let classificationRequest = VNCoreMLRequest(model: selectedModel, completionHandler: classificationCompleteHandler)
+		classificationRequest.imageCropAndScaleOption = VNImageCropAndScaleOption.centerCrop
+		return classificationRequest
+	}()
 	
 	public init() {
 		guard let selectedModel = try? VNCoreMLModel(for: Inceptionv3().model) else {
@@ -28,29 +34,24 @@ public class TrainDetection {
 		self.selectedModel = selectedModel
 	}
 	
-	public func session(inScene: ARSCNView, didUpdate capturedImage: CVPixelBuffer) {
+	public func session(didUpdate capturedImage: CVPixelBuffer) {
 		let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: capturedImage, options: [:])
 		do {
-			if self.isProcessing {
-				return
-			}
-			self.isProcessing = true
-			let classificationRequest = VNCoreMLRequest(model: selectedModel, completionHandler: classificationCompleteHandler)
-			classificationRequest.imageCropAndScaleOption = VNImageCropAndScaleOption.centerCrop
-			try imageRequestHandler.perform([classificationRequest])
+			try imageRequestHandler.perform([self.request])
 		} catch {
 			delegate?.detectRequestError(error: error)
 		}
 	}
 	
 	func classificationCompleteHandler(request: VNRequest, error: Error?) {
-		defer { isProcessing = false }
-		
 		if let error = error {
 			delegate?.detectRequestError(error: error)
 		}
 		else if let observation = request.results?.first as? VNClassificationObservation {
-			delegate?.foundObject(observation: observation)
+			if identifier != observation.identifier {
+				identifier = observation.identifier
+				delegate?.foundObject(observation: observation)
+			}
 		}
 	}
 }

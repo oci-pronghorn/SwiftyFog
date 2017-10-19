@@ -48,6 +48,7 @@ class FoggyLogoRenderer : NSObject {
 		super.init()
 		
 		self.sceneView.session.delegate = self
+		self.sceneView.session.delegateQueue = dispatchQueue
 		self.sceneView.delegate = self
 		self.qrDetector.delegate = self
 		self.trainDetector.delegate = self
@@ -185,10 +186,8 @@ extension FoggyLogoRenderer: ARSessionDelegate {
 	public func session(_ session: ARSession, didUpdate frame: ARFrame) {
 		// Process the request in the background
 		let capturedImage = frame.capturedImage
-		dispatchQueue.async {
-			self.qrDetector.session(session, inScene: self.sceneView, didUpdate: frame, capturedImage: capturedImage)
-			self.trainDetector.session(inScene: self.sceneView, didUpdate: capturedImage)
-		}
+		//self.qrDetector.session(session, inScene: self.sceneView, didUpdate: frame, capturedImage: capturedImage)
+		self.trainDetector.session(didUpdate: capturedImage)
 	}
 }
 
