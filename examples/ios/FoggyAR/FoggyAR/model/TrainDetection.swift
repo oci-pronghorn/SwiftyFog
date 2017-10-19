@@ -13,15 +13,13 @@ import Vision
 
 public class TrainDetection : NSObject {
 	private var visionRequests = [VNRequest]()
-	private let dispatchQueueML = DispatchQueue(label: "com.hw.dispatchqueueml")
+	private let dispatchQueueML = DispatchQueue.global(qos: .userInitiated)
 	private let sceneView : ARSCNView
 	
 	public init(sceneView : ARSCNView) {
 		self.sceneView = sceneView
 
 		super.init()
-		
-		//self.sceneView.session.delegate = self
 		
 		guard let selectedModel = try? VNCoreMLModel(for: Inceptionv3().model) else {
 			fatalError("Could not load model. Ensure model has been added to project.")
@@ -32,23 +30,44 @@ public class TrainDetection : NSObject {
 		visionRequests = [classificationRequest]
 		
 		// Begin Loop to Update CoreML
-		loopCoreMLUpdate()
+		self.updateCoreML()
 	}
 	
-	func loopCoreMLUpdate() {
-		// Continuously run CoreML whenever it's ready. (Preventing 'hiccups' in Frame Rate)
-		
-		dispatchQueueML.async {
-			// 1. Run Update.
-			self.updateCoreML()
-			
-			// 2. Loop this function.
-			self.loopCoreMLUpdate()
+	func updateCoreML() {
+		///////////////////////////
+		// Get Camera Image as RGB
+		let pixbuff : CVPixelBuffer? = (sceneView.session.currentFrame?.capturedImage)
+		if pixbuff == nil {
+			dispatchQueueML.async {
+				self.updateCoreML()
+			}
+			return
 		}
+		let ciImage = CIImage(cvPixelBuffer: pixbuff!)
+		// Note: Not entirely sure if the ciImage is being interpreted as RGB, but for now it works with the Inception model.
+		// Note2: Also uncertain if the pixelBuffer should be rotated before handing off to Vision (VNImageRequestHandler) - regardless, for now, it still works well with the Inception model.
 		
+		///////////////////////////
+		// Prepare CoreML/Vision Request
+		let imageRequestHandler = VNImageRequestHandler(ciImage: ciImage, options: [:])
+		// let imageRequestHandler = VNImageRequestHandler(cgImage: cgImage!, orientation: myOrientation, options: [:]) // Alternatively; we can convert the above to an RGB CGImage and use that. Also UIInterfaceOrientation can inform orientation values.
+		
+		///////////////////////////
+		// Run Image Request
+		do {
+			try imageRequestHandler.perform(self.visionRequests)
+		} catch {
+			print(error)
+		}
 	}
 	
 	func classificationCompleteHandler(request: VNRequest, error: Error?) {
+		defer {
+			dispatchQueueML.async {
+				self.updateCoreML()
+			}
+		}
+	
 		// Catch Errors
 		if error != nil {
 			print("Error: " + (error?.localizedDescription)!)
@@ -83,29 +102,4 @@ public class TrainDetection : NSObject {
 			
 		}
 	}
-	
-	func updateCoreML() {
-		///////////////////////////
-		// Get Camera Image as RGB
-		let pixbuff : CVPixelBuffer? = (sceneView.session.currentFrame?.capturedImage)
-		if pixbuff == nil { return }
-		let ciImage = CIImage(cvPixelBuffer: pixbuff!)
-		// Note: Not entirely sure if the ciImage is being interpreted as RGB, but for now it works with the Inception model.
-		// Note2: Also uncertain if the pixelBuffer should be rotated before handing off to Vision (VNImageRequestHandler) - regardless, for now, it still works well with the Inception model.
-		
-		///////////////////////////
-		// Prepare CoreML/Vision Request
-		let imageRequestHandler = VNImageRequestHandler(ciImage: ciImage, options: [:])
-		// let imageRequestHandler = VNImageRequestHandler(cgImage: cgImage!, orientation: myOrientation, options: [:]) // Alternatively; we can convert the above to an RGB CGImage and use that. Also UIInterfaceOrientation can inform orientation values.
-		
-		///////////////////////////
-		// Run Image Request
-		do {
-			try imageRequestHandler.perform(self.visionRequests)
-		} catch {
-			print(error)
-		}
-		
-	}
-	
 }

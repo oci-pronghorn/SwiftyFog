@@ -18,7 +18,6 @@ class FoggyViewController: UIViewController {
 	
 	var mqtt: MQTTBridge! {
 		didSet {
-			logo.delegate = self
 			logo.mqtt = mqtt
 		}
 	}
@@ -40,10 +39,12 @@ class FoggyViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		logo.delegate = self
+		
 		// Set the scene to the view
 		sceneView.scene = SCNScene()
 		
-		// Set the view's delegate
+		// Set the renderer's delegate
 		self.renderer = FoggyLogoRenderer(sceneView: sceneView)
 		self.renderer.delegate = self
 		
@@ -62,9 +63,9 @@ class FoggyViewController: UIViewController {
 	}
 	
 	func isShowingActivityIndicator(_ status: Bool) {
-		DispatchQueue.main.async(execute: {
-				self.centerActivityView.isHidden = !status
-		})
+		DispatchQueue.main.async {
+			self.centerActivityView.isHidden = !status
+		}
 	}
 	
 	override var prefersStatusBarHidden: Bool {
