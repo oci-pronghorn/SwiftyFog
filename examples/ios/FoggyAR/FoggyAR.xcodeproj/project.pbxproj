@@ -14,12 +14,14 @@
 		867CDBA21F8E97EC00D0F5AE /* FoggyLogoRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867CDBA11F8E97EC00D0F5AE /* FoggyLogoRenderer.swift */; };
 		869627731F855E2C00A2CCE0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869627721F855E2C00A2CCE0 /* AppDelegate.swift */; };
 		869627751F855E2C00A2CCE0 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 869627741F855E2C00A2CCE0 /* art.scnassets */; };
-		869627771F855E2C00A2CCE0 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869627761F855E2C00A2CCE0 /* ARViewController.swift */; };
+		869627771F855E2C00A2CCE0 /* FoggyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869627761F855E2C00A2CCE0 /* FoggyViewController.swift */; };
 		8696277A1F855E2C00A2CCE0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 869627781F855E2C00A2CCE0 /* Main.storyboard */; };
 		8696277C1F855E2C00A2CCE0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8696277B1F855E2C00A2CCE0 /* Assets.xcassets */; };
 		8696277F1F855E2D00A2CCE0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8696277D1F855E2C00A2CCE0 /* LaunchScreen.storyboard */; };
-		8696278D1F85600A00A2CCE0 /* ARAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8696278C1F85600A00A2CCE0 /* ARAppController.swift */; };
+		8696278D1F85600A00A2CCE0 /* FoggyAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8696278C1F85600A00A2CCE0 /* FoggyAppController.swift */; };
 		869627911F85646200A2CCE0 /* FoggyLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869627901F85646200A2CCE0 /* FoggyLogo.swift */; };
+		86BAC2221F97FCEE00AF6F5A /* TrainDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BAC2211F97FCEE00AF6F5A /* TrainDetection.swift */; };
+		86BAC2241F97FFA800AF6F5A /* Inceptionv3.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 86BAC2231F97FFA800AF6F5A /* Inceptionv3.mlmodel */; };
 		86FCE2321F8F13E300CB217C /* lightbulb.dae in Resources */ = {isa = PBXBuildFile; fileRef = 86FCE2311F8F13E300CB217C /* lightbulb.dae */; };
 /* End PBXBuildFile section */
 
@@ -44,14 +46,16 @@
 		8696276F1F855E2C00A2CCE0 /* FoggyAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoggyAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		869627721F855E2C00A2CCE0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		869627741F855E2C00A2CCE0 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
-		869627761F855E2C00A2CCE0 /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
+		869627761F855E2C00A2CCE0 /* FoggyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyViewController.swift; sourceTree = "<group>"; };
 		869627791F855E2C00A2CCE0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8696277B1F855E2C00A2CCE0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8696277E1F855E2C00A2CCE0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		869627801F855E2D00A2CCE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8696278B1F855ED700A2CCE0 /* SwiftyFog_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyFog_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8696278C1F85600A00A2CCE0 /* ARAppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARAppController.swift; sourceTree = "<group>"; };
+		8696278C1F85600A00A2CCE0 /* FoggyAppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyAppController.swift; sourceTree = "<group>"; };
 		869627901F85646200A2CCE0 /* FoggyLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyLogo.swift; sourceTree = "<group>"; };
+		86BAC2211F97FCEE00AF6F5A /* TrainDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainDetection.swift; sourceTree = "<group>"; };
+		86BAC2231F97FFA800AF6F5A /* Inceptionv3.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Inceptionv3.mlmodel; sourceTree = "<group>"; };
 		86FCE2311F8F13E300CB217C /* lightbulb.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = lightbulb.dae; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,6 +74,7 @@
 		8619924F1F856A38006260C0 /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				86BAC2231F97FFA800AF6F5A /* Inceptionv3.mlmodel */,
 				86FCE2311F8F13E300CB217C /* lightbulb.dae */,
 				861992521F856D2E006260C0 /* ocilogo.dae */,
 				869627741F855E2C00A2CCE0 /* art.scnassets */,
@@ -107,7 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				869627721F855E2C00A2CCE0 /* AppDelegate.swift */,
-				8696278C1F85600A00A2CCE0 /* ARAppController.swift */,
+				8696278C1F85600A00A2CCE0 /* FoggyAppController.swift */,
 				869627881F855E6800A2CCE0 /* viewcontroller */,
 				867938D91F8F9CC7004ED3C9 /* render */,
 				869627861F855E5C00A2CCE0 /* model */,
@@ -123,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				86239D681F88078B00B5F13C /* QRDetection.swift */,
+				86BAC2211F97FCEE00AF6F5A /* TrainDetection.swift */,
 				869627901F85646200A2CCE0 /* FoggyLogo.swift */,
 			);
 			path = model;
@@ -131,7 +137,7 @@
 		869627881F855E6800A2CCE0 /* viewcontroller */ = {
 			isa = PBXGroup;
 			children = (
-				869627761F855E2C00A2CCE0 /* ARViewController.swift */,
+				869627761F855E2C00A2CCE0 /* FoggyViewController.swift */,
 			);
 			path = viewcontroller;
 			sourceTree = "<group>";
@@ -220,12 +226,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8696278D1F85600A00A2CCE0 /* ARAppController.swift in Sources */,
-				869627771F855E2C00A2CCE0 /* ARViewController.swift in Sources */,
+				8696278D1F85600A00A2CCE0 /* FoggyAppController.swift in Sources */,
+				869627771F855E2C00A2CCE0 /* FoggyViewController.swift in Sources */,
 				867CDBA21F8E97EC00D0F5AE /* FoggyLogoRenderer.swift in Sources */,
 				869627731F855E2C00A2CCE0 /* AppDelegate.swift in Sources */,
 				86239D691F88078B00B5F13C /* QRDetection.swift in Sources */,
+				86BAC2241F97FFA800AF6F5A /* Inceptionv3.mlmodel in Sources */,
 				869627911F85646200A2CCE0 /* FoggyLogo.swift in Sources */,
+				86BAC2221F97FCEE00AF6F5A /* TrainDetection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

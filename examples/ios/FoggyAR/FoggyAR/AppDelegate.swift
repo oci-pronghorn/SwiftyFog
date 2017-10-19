@@ -12,18 +12,18 @@ import SwiftyFog_iOS
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
-	var controller: ARAppController!
+	var controller: FoggyAppController!
 	
-	var trainARViewer: ARViewController!
+	var trainARViewer: FoggyViewController!
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		
-		trainARViewer = (self.window!.rootViewController) as! ARViewController
+		trainARViewer = (self.window!.rootViewController) as! FoggyViewController
 		
 		// Select the train
 		let trainName = "thejoveexpress"
 		
-		controller = ARAppController(trainName)
+		controller = FoggyAppController(trainName)
 		
 		// This view controller is specific to a train topic
 		// Create an MQTTBridge specific to the selected train
@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 }
 
-extension AppDelegate: ARAppControllerDelegate {
+extension AppDelegate: FoggyAppControllerDelegate {
 	func on(log: String) {
 	}
 	
