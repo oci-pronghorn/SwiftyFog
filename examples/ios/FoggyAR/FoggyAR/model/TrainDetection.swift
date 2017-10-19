@@ -14,7 +14,6 @@ import Vision
 public class TrainDetection : NSObject {
 	private var visionRequests = [VNRequest]()
 	private let dispatchQueueML = DispatchQueue(label: "com.hw.dispatchqueueml")
-	
 	private let sceneView : ARSCNView
 	
 	public init(sceneView : ARSCNView) {
@@ -65,7 +64,6 @@ public class TrainDetection : NSObject {
 			.flatMap({ $0 as? VNClassificationObservation })
 			.map({ "\($0.identifier) \(String(format:"- %.2f", $0.confidence))" })
 			.joined(separator: "\n")
-		
 		
 		DispatchQueue.main.async {
 			// Print Classifications

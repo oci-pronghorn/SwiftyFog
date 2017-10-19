@@ -40,20 +40,23 @@ class FoggyViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		self.trainDetector = TrainDetection(sceneView: sceneView)
-		
 		// Set the scene to the view
 		sceneView.scene = SCNScene()
 		
 		// Set the view's delegate
-		renderer = FoggyLogoRenderer(sceneView: sceneView)
-		renderer.delegate = self
+		self.renderer = FoggyLogoRenderer(sceneView: sceneView)
+		self.renderer.delegate = self
+		
+		// Set the ML's view
+		self.trainDetector = TrainDetection(sceneView: sceneView)
 		
 		// Make the activity indicator prettier
 		self.centerActivityView.layer.cornerRadius = 5;
 		
+		// Add anitaliasing
 		sceneView.antialiasingMode = SCNAntialiasingMode.multisampling4X
 		
+		// Create tap gesture recognizer
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(gestureRecognizer:)))
 		self.sceneView.addGestureRecognizer(tapGesture)
 	}
