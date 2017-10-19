@@ -28,6 +28,8 @@ class FoggyLogoRenderer : NSObject {
 	private var largeSpotLightNode : SCNNode!
 	private var qrValueTextNode : SCNNode!
 	
+	public private (set) var detectedDataAnchor: ARAnchor?
+	
 	// Rotation variables
 	private var hasAppliedHeading = false
 	private var oldRotationY: CGFloat = 0.0
@@ -105,7 +107,7 @@ extension FoggyLogoRenderer : ARSCNViewDelegate {
 	func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
 		
 		// If this is our anchor, create a node
-		if self.qrDetector.detectedDataAnchor?.identifier == anchor.identifier {
+		if self.detectedDataAnchor?.identifier == anchor.identifier {
 			
 			//We rendered, so stop showing the activity indicator
 			delegate?.loading(false)
@@ -186,12 +188,13 @@ extension FoggyLogoRenderer: ARSessionDelegate {
 	public func session(_ session: ARSession, didUpdate frame: ARFrame) {
 		// Process the request in the background
 		let capturedImage = frame.capturedImage
-		//self.qrDetector.session(session, inScene: self.sceneView, didUpdate: frame, capturedImage: capturedImage)
-		self.trainDetector.session(didUpdate: capturedImage)
+		self.qrDetector.session(session, inScene: self.sceneView, didUpdate: frame, capturedImage: capturedImage)
+		//self.trainDetector.session(didUpdate: capturedImage)
 	}
 }
 
 extension FoggyLogoRenderer: QRDetectionDelegate, TrainDetectionDelegate {
+	
 	func foundObject(observation: VNClassificationObservation) {
 		/*
 		// Get Classifications
@@ -206,13 +209,44 @@ extension FoggyLogoRenderer: QRDetectionDelegate, TrainDetectionDelegate {
 		print(observation.identifier)
 	}
 	
-	func foundQRValue(stringValue: String) {
+	func findQRValue(observation : VNBarcodeObservation, frame : ARFrame) -> Bool {
+		var newValue : String = observation.payloadStringValue!
+		
+		// 3D Text
 		if let qrValueTextNode = qrValueTextNode {
-			qrValueTextNode.setGeometryText(value: stringValue)
-			delegate?.qrCodeDetected(code: stringValue)
-			
-			print("found qr value! logo transform: \(logoNode.position)")
+			qrValueTextNode.setGeometryText(value: newValue)
+			delegate?.qrCodeDetected(code: newValue)
 		}
+		
+		// Logo
+		var rect = observation.boundingBox
+		
+		rect = rect.applying(CGAffineTransform(scaleX: 1, y: -1))
+		rect = rect.applying(CGAffineTransform(translationX: 0, y: 1))
+		
+		let center = CGPoint(x: rect.midX, y: rect.midY)
+		
+		let hitTestResults = frame.hitTest(center, types: [.featurePoint] )
+		
+		if let hitTestResult = hitTestResults.first {
+			DispatchQueue.main.async {
+				self.delegate?.qrCodeDetected(code: newValue)
+				
+				if let detectedDataAnchor = self.detectedDataAnchor,
+					let node = self.sceneView.node(for: detectedDataAnchor) {
+					
+					node.transform = SCNMatrix4(hitTestResult.worldTransform)
+					
+				} else {
+					self.detectedDataAnchor = ARAnchor(transform: hitTestResult.worldTransform)
+					
+					self.sceneView.session.add(anchor: self.detectedDataAnchor!)
+				}
+			}
+			return true
+		}
+		
+		return false
 	}
 	
 	func detectRequestError(error: Error) {

@@ -11,13 +11,12 @@ import ARKit
 import Vision
 
 public protocol QRDetectionDelegate: class {
-	func foundQRValue(stringValue : String)
+	func findQRValue(observation : VNBarcodeObservation, frame : ARFrame) -> Bool
 	func detectRequestError(error : Error)
 }
 
 public class QRDetection {
 	public weak var delegate: QRDetectionDelegate?
-	public private (set) var detectedDataAnchor: ARAnchor?
 	public private (set) var qrValue: String = String()
 	
 	private let confidence: Float
@@ -56,6 +55,10 @@ public class QRDetection {
 			if newValue.isEmpty == false && newValue != self.qrValue {
 				if result.confidence >= self.confidence {
 				
+					if (self.delegate?.findQRValue(observation: result, frame: frame))! {
+						self.qrValue = newValue
+					}
+					/*
 					var rect = result.boundingBox
 					
 					rect = rect.applying(CGAffineTransform(scaleX: 1, y: -1))
@@ -81,7 +84,7 @@ public class QRDetection {
 								sceneView.session.add(anchor: self.detectedDataAnchor!)
 							}
 						}
-					}
+					}*/
 				}
 			}
 		}
