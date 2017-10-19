@@ -20,6 +20,7 @@ protocol FoggyLogoRendererDelegate:class {
 class FoggyLogoRenderer : NSObject {
 
 	private let qrDetector : QRDetection
+	private let trainDetector : TrainDetection
 	
 	// SceneNode for the 3D models
 	private var logoNode : SCNNode!
@@ -37,14 +38,19 @@ class FoggyLogoRenderer : NSObject {
 	
 	public weak var delegate: FoggyLogoRendererDelegate?
 	
+	private let dispatchQueue = DispatchQueue(label: "com.hw.dispatchqueueml")
+	
 	public init(sceneView : ARSCNView) {
-		self.qrDetector = QRDetection(sceneView: sceneView, confidence: 0.8)
-		self.sceneView = sceneView;
+		self.sceneView = sceneView
+		self.trainDetector = TrainDetection()
+		self.qrDetector = QRDetection(confidence: 0.8)
 		
 		super.init()
 		
+		self.sceneView.session.delegate = self
 		self.sceneView.delegate = self
 		self.qrDetector.delegate = self
+		self.trainDetector.delegate = self
 		
 		self.delegate?.loading(true)
 	}
@@ -174,7 +180,32 @@ extension SCNNode {
 	}
 }
 
-extension FoggyLogoRenderer: QRDetectionDelegate {
+
+extension FoggyLogoRenderer: ARSessionDelegate {
+	public func session(_ session: ARSession, didUpdate frame: ARFrame) {
+		// Process the request in the background
+		let capturedImage = frame.capturedImage
+		dispatchQueue.async {
+			self.qrDetector.session(session, inScene: self.sceneView, didUpdate: frame, capturedImage: capturedImage)
+			self.trainDetector.session(inScene: self.sceneView, didUpdate: capturedImage)
+		}
+	}
+}
+
+extension FoggyLogoRenderer: QRDetectionDelegate, TrainDetectionDelegate {
+	func foundObject(observation: VNClassificationObservation) {
+		/*
+		// Get Classifications
+		let classifications = observations[0...1] // top 2 results
+			.flatMap({ $0 as? VNClassificationObservation })
+			.map({ "\($0.identifier) \(String(format:"- %.2f", $0.confidence))" })
+			.joined(separator: "\n")
+		
+			print(classifications)
+			print("--")
+		}*/
+		print(observation.identifier)
+	}
 	
 	func foundQRValue(stringValue: String) {
 		if let qrValueTextNode = qrValueTextNode {
@@ -186,7 +217,7 @@ extension FoggyLogoRenderer: QRDetectionDelegate {
 	}
 	
 	func detectRequestError(error: Error) {
-		print("Error in QR: \(error.localizedDescription)")
+		print("Error in detection: \(error.localizedDescription)")
 	}
 }
 

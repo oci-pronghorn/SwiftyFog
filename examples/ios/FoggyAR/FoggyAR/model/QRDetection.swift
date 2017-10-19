@@ -15,27 +15,43 @@ public protocol QRDetectionDelegate: class {
 	func detectRequestError(error : Error)
 }
 
-public class QRDetection : NSObject {
+public class QRDetection {
 	public weak var delegate: QRDetectionDelegate?
 	public private (set) var detectedDataAnchor: ARAnchor?
-	
 	public private (set) var qrValue: String = String()
+	
 	private let confidence: Float
-	
-	private let sceneView : ARSCNView
-	
 	private var isProcessing : Bool = false
 	
-	public init(sceneView : ARSCNView, confidence : Float) {
-		self.sceneView = sceneView
+	public init(confidence : Float) {
 		self.confidence = confidence
-		
-		super.init()
-		
-		self.sceneView.session.delegate = self
 	}
 	
-	private func qrCodeRequestCompletion(_ frame: ARFrame, _ request: VNRequest, error: Error?) {
+	public func session(_ session: ARSession, inScene: ARSCNView, didUpdate frame: ARFrame, capturedImage: CVPixelBuffer) {
+		// Process the request in the background
+		do {
+			if self.isProcessing {
+				return
+			}
+			self.isProcessing = true
+			let detectRequest = VNDetectBarcodesRequest(completionHandler: { (request, error) in
+				self.qrCodeRequestCompletion(frame, capturedImage, inScene, request, error: error)
+				self.isProcessing = false
+			})
+			// Set it to recognize QR code only
+			detectRequest.symbologies = [.QR]
+			
+			// Create a request handler using the captured image from the ARFrame
+			let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: capturedImage, options: [:])
+			// Process the request
+			try imageRequestHandler.perform([detectRequest])
+		}
+		catch let error {
+			self.delegate?.detectRequestError(error: error)
+		}
+	}
+	
+	private func qrCodeRequestCompletion(_ frame: ARFrame, _ capturedImage: CVPixelBuffer, _ sceneView: ARSCNView, _ request: VNRequest, error: Error?) {
 		if let result = request.results?.first as? VNBarcodeObservation, let newValue = result.payloadStringValue {
 			if newValue.isEmpty == false && newValue != self.qrValue {
 				if result.confidence >= self.confidence {
@@ -46,7 +62,7 @@ public class QRDetection : NSObject {
 					rect = rect.applying(CGAffineTransform(translationX: 0, y: 1))
 
 					let center = CGPoint(x: rect.midX, y: rect.midY)
-					
+
 					let hitTestResults = frame.hitTest(center, types: [.featurePoint, /*.existingPlane, .existingPlaneUsingExtent*/] )
 				
 					if let hitTestResult = hitTestResults.first {
@@ -55,47 +71,18 @@ public class QRDetection : NSObject {
 							self.delegate?.foundQRValue(stringValue: newValue)
 							
 							if let detectedDataAnchor = self.detectedDataAnchor,
-								let node = self.sceneView.node(for: detectedDataAnchor) {
+								let node = sceneView.node(for: detectedDataAnchor) {
 							
 								node.transform = SCNMatrix4(hitTestResult.worldTransform)
 								
 							} else {
 								self.detectedDataAnchor = ARAnchor(transform: hitTestResult.worldTransform)
 								
-								self.sceneView.session.add(anchor: self.detectedDataAnchor!)
+								sceneView.session.add(anchor: self.detectedDataAnchor!)
 							}
 						}
 					}
 				}
-			}
-		}
-	}
-}
-
-extension QRDetection: ARSessionDelegate {
-	public func session(_ session: ARSession, didUpdate frame: ARFrame) {
-		
-		// Process the request in the background
-		DispatchQueue.global(qos: .userInitiated).async {
-			do {
-				if self.isProcessing {
-					return
-				}
-				self.isProcessing = true
-				let detectRequest = VNDetectBarcodesRequest(completionHandler: { (request, error) in
-					self.qrCodeRequestCompletion(frame, request, error: error)
-					self.isProcessing = false
-				})
-				// Set it to recognize QR code only
-				detectRequest.symbologies = [.QR]
-				
-				// Create a request handler using the captured image from the ARFrame
-				let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage, options: [:])
-				// Process the request
-				try imageRequestHandler.perform([detectRequest])
-			}
-			catch let error {
-				self.delegate?.detectRequestError(error: error)
 			}
 		}
 	}

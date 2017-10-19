@@ -24,8 +24,6 @@ class FoggyViewController: UIViewController {
 	
 	var renderer : FoggyLogoRenderer!
 	
-	var trainDetector : TrainDetection!
-	
 	var qrValue : String = ""
 	
 	// The activity indicator to be shown whenever it's trying to determine the QR code
@@ -47,9 +45,6 @@ class FoggyViewController: UIViewController {
 		// Set the renderer's delegate
 		self.renderer = FoggyLogoRenderer(sceneView: sceneView)
 		self.renderer.delegate = self
-		
-		// Set the ML's view
-		self.trainDetector = TrainDetection(sceneView: sceneView)
 		
 		// Make the activity indicator prettier
 		self.centerActivityView.layer.cornerRadius = 5;

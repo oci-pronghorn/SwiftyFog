@@ -11,95 +11,46 @@ import SceneKit
 import ARKit
 import Vision
 
-public class TrainDetection : NSObject {
-	private var visionRequests = [VNRequest]()
-	private let dispatchQueueML = DispatchQueue.global(qos: .userInitiated)
-	private let sceneView : ARSCNView
-	
-	public init(sceneView : ARSCNView) {
-		self.sceneView = sceneView
+public protocol TrainDetectionDelegate: class {
+	func foundObject(observation : VNClassificationObservation)
+	func detectRequestError(error : Error)
+}
 
-		super.init()
-		
+public class TrainDetection {
+	public weak var delegate: TrainDetectionDelegate?
+	private let selectedModel: VNCoreMLModel
+	private var isProcessing : Bool = false
+	
+	public init() {
 		guard let selectedModel = try? VNCoreMLModel(for: Inceptionv3().model) else {
 			fatalError("Could not load model. Ensure model has been added to project.")
 		}
-		
-		let classificationRequest = VNCoreMLRequest(model: selectedModel, completionHandler: classificationCompleteHandler)
-		classificationRequest.imageCropAndScaleOption = VNImageCropAndScaleOption.centerCrop // Crop from centre of images and scale to appropriate size.
-		visionRequests = [classificationRequest]
-		
-		// Begin Loop to Update CoreML
-		self.updateCoreML()
+		self.selectedModel = selectedModel
 	}
 	
-	func updateCoreML() {
-		///////////////////////////
-		// Get Camera Image as RGB
-		let pixbuff : CVPixelBuffer? = (sceneView.session.currentFrame?.capturedImage)
-		if pixbuff == nil {
-			dispatchQueueML.async {
-				self.updateCoreML()
-			}
-			return
-		}
-		let ciImage = CIImage(cvPixelBuffer: pixbuff!)
-		// Note: Not entirely sure if the ciImage is being interpreted as RGB, but for now it works with the Inception model.
-		// Note2: Also uncertain if the pixelBuffer should be rotated before handing off to Vision (VNImageRequestHandler) - regardless, for now, it still works well with the Inception model.
-		
-		///////////////////////////
-		// Prepare CoreML/Vision Request
-		let imageRequestHandler = VNImageRequestHandler(ciImage: ciImage, options: [:])
-		// let imageRequestHandler = VNImageRequestHandler(cgImage: cgImage!, orientation: myOrientation, options: [:]) // Alternatively; we can convert the above to an RGB CGImage and use that. Also UIInterfaceOrientation can inform orientation values.
-		
-		///////////////////////////
-		// Run Image Request
+	public func session(inScene: ARSCNView, didUpdate capturedImage: CVPixelBuffer) {
+		let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: capturedImage, options: [:])
 		do {
-			try imageRequestHandler.perform(self.visionRequests)
+			if self.isProcessing {
+				return
+			}
+			self.isProcessing = true
+			let classificationRequest = VNCoreMLRequest(model: selectedModel, completionHandler: classificationCompleteHandler)
+			classificationRequest.imageCropAndScaleOption = VNImageCropAndScaleOption.centerCrop
+			try imageRequestHandler.perform([classificationRequest])
 		} catch {
-			print(error)
+			delegate?.detectRequestError(error: error)
 		}
 	}
 	
 	func classificationCompleteHandler(request: VNRequest, error: Error?) {
-		defer {
-			dispatchQueueML.async {
-				self.updateCoreML()
-			}
-		}
-	
-		// Catch Errors
-		if error != nil {
-			print("Error: " + (error?.localizedDescription)!)
-			return
-		}
-		guard let observations = request.results else {
-			print("No results")
-			return
-		}
+		defer { isProcessing = false }
 		
-		// Get Classifications
-		let classifications = observations[0...1] // top 2 results
-			.flatMap({ $0 as? VNClassificationObservation })
-			.map({ "\($0.identifier) \(String(format:"- %.2f", $0.confidence))" })
-			.joined(separator: "\n")
-		
-		DispatchQueue.main.async {
-			// Print Classifications
-			print(classifications)
-			print("--")
-			
-			// Display Debug Text on screen
-			/*var debugText:String = ""
-			debugText += classifications
-			self.debugTextView.text = debugText
-			
-			// Store the latest prediction
-			var objectName:String = "…"
-			objectName = classifications.components(separatedBy: "-")[0]
-			objectName = objectName.components(separatedBy: ",")[0]
-			self.latestPrediction = objectName*/
-			
+		if let error = error {
+			delegate?.detectRequestError(error: error)
+		}
+		else if let observation = request.results?.first as? VNClassificationObservation {
+			delegate?.foundObject(observation: observation)
 		}
 	}
 }
