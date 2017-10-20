@@ -126,7 +126,6 @@ extension FoggyLogoRenderer : ARSCNViewDelegate {
 			logoNode.position = SCNVector3(0, 0, 0)
 			
 			//Before render we have already received a rotation, set it to that
-			//CULRPIT RIGHT HERE:
 			logoNode.rotateToYAxis(to: -oldRotationY.degreesToRadians)
 			
 			lightbulbNode = virtualObjectScene.rootNode.childNode(withName: "lightbulb", recursively: false)
@@ -185,14 +184,13 @@ extension SCNNode {
 	}
 }
 
-
 extension FoggyLogoRenderer: ARSessionDelegate {
 	public func session(_ session: ARSession, didUpdate frame: ARFrame) {
 	}
 
 	func loopCoreMLUpdate() {
 		// Having the background serial queue requeue the detection request
-		// after each process instead ofsession  delegate frame update is kinder
+		// after each process instead of session delegate frame update is kinder
 		// to the frame rate.
 		// Since the rate of frame changes is higher than the processing time
 		// of detection we are not queuing up detection requests on the serial
@@ -205,6 +203,7 @@ extension FoggyLogoRenderer: ARSessionDelegate {
 		// simultaniously.
 		// There is some mutex shenanigans that could explain the AR freeze
 		// and the AR drop in framerate.
+		// Maybe file a bug report with ARKit?
 		dispatchQueue.async { [weak self] in
 			// Since this is a recursive dispatch, we must use weak self.
 			if let me = self {
@@ -229,11 +228,12 @@ extension FoggyLogoRenderer: ARSessionDelegate {
 }
 
 extension FoggyLogoRenderer: QRDetectionDelegate, TrainDetectionDelegate {
+	
 	func foundObject(observation: VNClassificationObservation) {
 		print(observation.identifier)
 	}
 	
-	func findQRValue(observation : VNBarcodeObservation, frame: ARFrame) -> Bool {
+	func findQRValue(observation : VNBarcodeObservation/*, frame: ARFrame*/) -> Bool {
 		let newValue : String = observation.payloadStringValue!
 		
 		// 3D Text
@@ -249,9 +249,9 @@ extension FoggyLogoRenderer: QRDetectionDelegate, TrainDetectionDelegate {
 		
 		let center = CGPoint(x: rect.midX, y: rect.midY)
 		
-		let hitTestResults = frame.hitTest(center, types: [.featurePoint] )
+		let hitTestResults = self.sceneView.session.currentFrame?.hitTest(center, types: [.featurePoint] )
 		
-		if let hitTestResult = hitTestResults.first {
+		if let hitTestResult = hitTestResults?.first {
 			DispatchQueue.main.async {
 				self.delegate?.qrCodeDetected(code: newValue)
 				
