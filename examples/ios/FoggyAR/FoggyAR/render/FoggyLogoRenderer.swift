@@ -34,7 +34,7 @@ class FoggyLogoRenderer : NSObject {
 	private var hasAppliedHeading = false
 	private var oldRotationY: CGFloat = 0.0
 
-	private let sceneView : 	ARSCNView
+	private let sceneView : ARSCNView
 	
 	private var originalPosition = SCNVector3()
 	
@@ -56,6 +56,8 @@ class FoggyLogoRenderer : NSObject {
 		self.trainDetector.delegate = self
 		
 		self.delegate?.loading(true)
+		
+		loopCoreMLUpdate()
 	}
 	
 	func hitQRCode(node: SCNNode) -> Bool {
@@ -186,15 +188,40 @@ extension SCNNode {
 
 extension FoggyLogoRenderer: ARSessionDelegate {
 	public func session(_ session: ARSession, didUpdate frame: ARFrame) {
-		// Process the request in the background
-		let capturedImage = frame.capturedImage
-		self.qrDetector.session(session, inScene: self.sceneView, didUpdate: frame, capturedImage: capturedImage)
-		//self.trainDetector.session(didUpdate: capturedImage)
+	}
+
+	func loopCoreMLUpdate() {
+		// Having the background serial queue requeue the detection request
+		// after each process instead ofsession  delegate frame update is kinder
+		// to the frame rate.
+		// Since the rate of frame changes is higher than the processing time
+		// of detection we are not queuing up detection requests on the serial
+		// queue for old frames. Nor do we have to maintain "is processing"
+		// flags to stop that queuing.
+		// The detector's didUpdate methods are blocking. Strangely, if the
+		// dectectors are dispatched async from the session delegate the AR
+		// frame rate drops with the processing time if the detector.
+		dispatchQueue.async { [weak self] in
+			// Since this is a recursive dispatch, we must use weak self.
+			if let me = self {
+				if let capturedImage = me.sceneView.session.currentFrame?.capturedImage {
+					// Blocking calls
+					me.trainDetector.session(didUpdate: capturedImage)
+					let frame = me.sceneView.session.currentFrame!
+					me.qrDetector.session(me.sceneView.session, inScene: me.sceneView, didUpdate: frame, capturedImage: capturedImage)
+				}
+				else {
+					// This happens during setup. Be kind and not queue up 1000 no-ops.
+					sleep(1)
+				}
+				// Recurse
+				me.loopCoreMLUpdate()
+			}
+		}
 	}
 }
 
 extension FoggyLogoRenderer: QRDetectionDelegate, TrainDetectionDelegate {
-	
 	func foundObject(observation: VNClassificationObservation) {
 		/*
 		// Get Classifications
@@ -209,8 +236,8 @@ extension FoggyLogoRenderer: QRDetectionDelegate, TrainDetectionDelegate {
 		print(observation.identifier)
 	}
 	
-	func findQRValue(observation : VNBarcodeObservation, frame : ARFrame) -> Bool {
-		var newValue : String = observation.payloadStringValue!
+	func findQRValue(observation : VNBarcodeObservation, frame: ARFrame) -> Bool {
+		let newValue : String = observation.payloadStringValue!
 		
 		// 3D Text
 		if let qrValueTextNode = qrValueTextNode {
@@ -226,6 +253,7 @@ extension FoggyLogoRenderer: QRDetectionDelegate, TrainDetectionDelegate {
 		
 		let center = CGPoint(x: rect.midX, y: rect.midY)
 		
+		//let frame = sceneView.session.currentFrame!
 		let hitTestResults = frame.hitTest(center, types: [.featurePoint] )
 		
 		if let hitTestResult = hitTestResults.first {
