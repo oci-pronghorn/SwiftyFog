@@ -200,18 +200,25 @@ extension FoggyLogoRenderer: ARSessionDelegate {
 		// flags to stop that queuing.
 		// The detector's didUpdate methods are blocking. Strangely, if the
 		// dectectors are dispatched async from the session delegate the AR
-		// frame rate drops with the processing time if the detector.
+		// frame rate drops with the processing time of the detector.
+		// The AR scene will eventually freeze if the detectors are executed
+		// simultaniously.
+		// There is some mutex shenanigans that could explain the AR freeze
+		// and the AR drop in framerate.
 		dispatchQueue.async { [weak self] in
 			// Since this is a recursive dispatch, we must use weak self.
 			if let me = self {
-				if let capturedImage = me.sceneView.session.currentFrame?.capturedImage {
-					// Blocking calls
+				// We appear to never receive the same frame consecutively - always detect.
+				if let frame = me.sceneView.session.currentFrame {
+					let capturedImage = frame.capturedImage
+					// Blocking calls and must be executed serially.
 					me.trainDetector.session(didUpdate: capturedImage)
-					let frame = me.sceneView.session.currentFrame!
 					me.qrDetector.session(me.sceneView.session, inScene: me.sceneView, didUpdate: frame, capturedImage: capturedImage)
 				}
 				else {
 					// This happens during setup. Be kind and not queue up 1000 no-ops.
+					// Alternative is to use a flag. This is simpler for a one time
+					// startup performance consideration.
 					sleep(1)
 				}
 				// Recurse
@@ -223,16 +230,6 @@ extension FoggyLogoRenderer: ARSessionDelegate {
 
 extension FoggyLogoRenderer: QRDetectionDelegate, TrainDetectionDelegate {
 	func foundObject(observation: VNClassificationObservation) {
-		/*
-		// Get Classifications
-		let classifications = observations[0...1] // top 2 results
-			.flatMap({ $0 as? VNClassificationObservation })
-			.map({ "\($0.identifier) \(String(format:"- %.2f", $0.confidence))" })
-			.joined(separator: "\n")
-		
-			print(classifications)
-			print("--")
-		}*/
 		print(observation.identifier)
 	}
 	
@@ -247,13 +244,11 @@ extension FoggyLogoRenderer: QRDetectionDelegate, TrainDetectionDelegate {
 		
 		// Logo
 		var rect = observation.boundingBox
-		
 		rect = rect.applying(CGAffineTransform(scaleX: 1, y: -1))
 		rect = rect.applying(CGAffineTransform(translationX: 0, y: 1))
 		
 		let center = CGPoint(x: rect.midX, y: rect.midY)
 		
-		//let frame = sceneView.session.currentFrame!
 		let hitTestResults = frame.hitTest(center, types: [.featurePoint] )
 		
 		if let hitTestResult = hitTestResults.first {
@@ -273,7 +268,6 @@ extension FoggyLogoRenderer: QRDetectionDelegate, TrainDetectionDelegate {
 			}
 			return true
 		}
-		
 		return false
 	}
 	
