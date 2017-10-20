@@ -192,7 +192,7 @@ extension FoggyLogoRenderer: ARSessionDelegate {
 
 	func loopCoreMLUpdate() {
 		// Having the background serial queue requeue the detection request
-		// after each process instead ofsession  delegate frame update is kinder
+		// after each process instead of session delegate frame update is kinder
 		// to the frame rate.
 		// Since the rate of frame changes is higher than the processing time
 		// of detection we are not queuing up detection requests on the serial

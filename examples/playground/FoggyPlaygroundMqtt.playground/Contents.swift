@@ -31,7 +31,7 @@ class Delegate: MQTTClientDelegate {
 		case .retriesFailed(let counter, let rescus, _):
 			print("* Connection Failed \(counter).\(rescus)")
 			break
-		case .discconnected(let reason, let error):
+		case .disconnected(let reason, let error):
 			print("* Discconnected \(reason) \(error?.localizedDescription ?? "")")
 			break
 		}
