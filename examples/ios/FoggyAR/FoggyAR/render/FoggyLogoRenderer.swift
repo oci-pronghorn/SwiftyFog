@@ -27,7 +27,6 @@ class FoggyLogoRenderer : NSObject {
 	private var lightbulbNode : SCNNode!
 	private var largeSpotLightNode : SCNNode!
 	private var qrValueTextNode : SCNNode!
-	
 	public private (set) var detectedDataAnchor: ARAnchor?
 	
 	// Rotation variables
@@ -136,6 +135,15 @@ extension FoggyLogoRenderer : ARSCNViewDelegate {
 			//Since we always receive the QR code before we render our nodes, assign the
 			//existing scanned value to our geometry
 			qrValueTextNode.setGeometryText(value: qrDetector.qrValue)
+			
+			print("Centering QR text!")
+			//Attempt at centering QR text
+			let (minVecL, maxVecL) = qrValueTextNode.boundingBox
+			qrValueTextNode.pivot = SCNMatrix4MakeTranslation(
+				minVecL.x + (maxVecL.x - minVecL.x)/2,
+				minVecL.y + (maxVecL.y - minVecL.y)/2,
+				minVecL.z + (maxVecL.z - minVecL.z)/2
+			)
 			
 			//Wrapper node for adding nodes that we want to spawn on top of the QR code
 			let wrapperNode = SCNNode()
