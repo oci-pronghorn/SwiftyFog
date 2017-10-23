@@ -87,12 +87,8 @@ class FoggyLogoRenderer : NSObject {
 		lastTime = now
 		
 		if let logoNode = logoNode {
-			//if hasAppliedHeading {
-			//	logoNode.rotateAroundYAxis(by: -rotateBy.degreesToRadians, duration: 1)
-			//} else {
 				logoNode.rotateToYAxis(to: -oldRotationY.degreesToRadians)
 				hasAppliedHeading = true
-			//}
 		}
 	}
 	
@@ -107,7 +103,6 @@ class FoggyLogoRenderer : NSObject {
 extension FoggyLogoRenderer : ARSCNViewDelegate {
 	
 	func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-		
 		// If this is our anchor, create a node
 		if self.detectedDataAnchor?.identifier == anchor.identifier {
 			
@@ -152,10 +147,9 @@ extension FoggyLogoRenderer : ARSCNViewDelegate {
 				
 				wrapperNode.addChildNode(child)
 			}
-			
 			// Set its position based off the anchor
 			wrapperNode.transform = SCNMatrix4(anchor.transform)
-			
+		
 			return wrapperNode
 		}
 		
@@ -179,7 +173,6 @@ extension SCNNode {
 		let action = SCNAction.rotate(by: by, around: SCNVector3(0, 1, 0), duration: duration)
 		
 		self.runAction(action, forKey: "rotatingYAxis")
-		
 		self.position = SCNVector3(0,0,0)
 	}
 }
@@ -262,7 +255,6 @@ extension FoggyLogoRenderer: QRDetectionDelegate, TrainDetectionDelegate {
 					
 				} else {
 					self.detectedDataAnchor = ARAnchor(transform: hitTestResult.worldTransform)
-					
 					self.sceneView.session.add(anchor: self.detectedDataAnchor!)
 				}
 			}
