@@ -20,7 +20,9 @@ public class TheJoveExpress implements FogApp
     @Override
     public void declareConnections(Hardware c) {
         config = new TrainConfiguration(c);
-
+        
+        c.setDefaultRate(2_000_000); //slow to 2 ms
+        
         I2CJFFIStage.debugCommands = false;
 
         if (config.mqttEnabled) {
