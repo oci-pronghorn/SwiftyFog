@@ -21,7 +21,7 @@ public class TheJoveExpress implements FogApp
     public void declareConnections(Hardware c) {
         config = new TrainConfiguration(c);
         
-        c.setDefaultRate(2_000_000); //slow to 2 ms
+        c.setDefaultRate(16_000_000);
         
         I2CJFFIStage.debugCommands = false;
 
