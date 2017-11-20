@@ -26,7 +26,7 @@ public class TheJoveExpress implements FogApp
         I2CJFFIStage.debugCommands = false;
 
         if (config.mqttEnabled) {
-            this.mqttBridge = c.useMQTT(config.mqttBroker, config.mqttPort, false, config.mqttClientName, 40, 20000)
+            this.mqttBridge = c.useMQTT(config.mqttBroker, config.mqttPort, config.mqttClientName, 40, 20000)
                     .cleanSession(true)
                     .authentication("dsjove", "password")
                     .keepAliveSeconds(10);
@@ -47,7 +47,7 @@ public class TheJoveExpress implements FogApp
         switch (config.telemetryEnabled) {
             case on:
                 if (config.telemetryHost != null) {
-                    c.enableTelemetry(config.telemetryHost, Hardware.defaultTelemetryPort);
+                    c.enableTelemetry(config.telemetryHost);
                 }
                 else {
                     c.enableTelemetry();
@@ -56,7 +56,7 @@ public class TheJoveExpress implements FogApp
             case latent:
                 if (c.isTestHardware()) {
                     if (config.telemetryHost != null) {
-                        c.enableTelemetry(config.telemetryHost, Hardware.defaultTelemetryPort);
+                        c.enableTelemetry(config.telemetryHost);
                     }
                     else {
                         c.enableTelemetry();

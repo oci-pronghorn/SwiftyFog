@@ -16,7 +16,7 @@
     <orderEntry type="library" name="Maven: com.ociweb:Pronghorn:0.0.15-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.ociweb:PronghornPipes:0.0.15-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.hdrhistogram:HdrHistogram:2.1.5" level="project" />
-    <orderEntry type="library" name="Maven: com.ociweb:Ph-TLS-pureJava:0.0.4-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.ociweb:Ph-TLS-pureJava:0.0.6-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.github.jnr:jnr-ffi:2.0.9" level="project" />
     <orderEntry type="library" name="Maven: com.github.jnr:jffi:1.2.11" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.github.jnr:jffi:native:1.2.11" level="project" />
