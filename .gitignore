@@ -57,3 +57,5 @@ target/
 #####
 # DotEnv files
 .env
+
+examples/playground/artechtalk.playgroundbook/Contents/Sources/*.framework

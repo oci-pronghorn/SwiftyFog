@@ -16,8 +16,8 @@ public protocol MQTTClientDelegate: class {
 
 public final class MQTTClient {
 	public let client: MQTTClientParams
-	public let auth: MQTTAuthentication
 	public let host: MQTTHostParams
+    public let auth: MQTTAuthentication
 	public let reconnect: MQTTReconnectParams
 	
 	private let queue: DispatchQueue

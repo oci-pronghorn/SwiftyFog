@@ -136,7 +136,21 @@
 		55D7C5571F82E6BC0045258D /* FogBitmapLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347541F82D13700C3C2CB /* FogBitmapLayout.swift */; };
 		55D7C5581F82E6D30045258D /* FogPixel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347561F82D13700C3C2CB /* FogPixel.swift */; };
 		55D7C5591F82E6F30045258D /* FogBitMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347531F82D13700C3C2CB /* FogBitMap.swift */; };
+		AC36A5FE1FC4AEDE0094BEDE /* SwiftyFog_iOS.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 554347471F82D0F600C3C2CB /* SwiftyFog_iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		AC36A5FD1FC4AED10094BEDE /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "${SOURCE_ROOT}/../examples/playground/artechtalk.playgroundbook/Contents/Sources";
+			dstSubfolderSpec = 0;
+			files = (
+				AC36A5FE1FC4AEDE0094BEDE /* SwiftyFog_iOS.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		554347471F82D0F600C3C2CB /* SwiftyFog_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyFog_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -473,6 +487,7 @@
 				554347431F82D0F600C3C2CB /* Frameworks */,
 				554347441F82D0F600C3C2CB /* Headers */,
 				554347451F82D0F600C3C2CB /* Resources */,
+				AC36A5FD1FC4AED10094BEDE /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -507,7 +522,7 @@
 		5543473E1F82D0F600C3C2CB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0910;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Object Computing Inc";
 				TargetAttributes = {
 					554347461F82D0F600C3C2CB = {
@@ -862,7 +877,7 @@
 		554347ED1F82D1B600C3C2CB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -887,7 +902,7 @@
 		554347EE1F82D1B600C3C2CB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;

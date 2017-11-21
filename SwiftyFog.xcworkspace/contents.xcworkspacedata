@@ -8,6 +8,9 @@
          location = "container:"
          name = "playground">
          <FileRef
+            location = "group:examples/playground/artechtalk.playgroundbook">
+         </FileRef>
+         <FileRef
             location = "group:examples/playground/FoggyPlaygroundMqtt.playground">
          </FileRef>
       </Group>
