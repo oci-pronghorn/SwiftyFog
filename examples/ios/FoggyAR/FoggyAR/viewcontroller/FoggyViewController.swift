@@ -12,7 +12,7 @@ import ARKit
 import SwiftyFog_iOS
 import Vision
 
-class FoggyViewController: UIViewController {
+public class FoggyViewController: UIViewController {
 	
 	let logo = FoggyLogo()
 	
@@ -34,7 +34,7 @@ class FoggyViewController: UIViewController {
 	// Outlet to the scene
 	@IBOutlet weak var sceneView: ARSCNView!
 	
-	override func viewDidLoad() {
+	override public func viewDidLoad() {
 		super.viewDidLoad()
 		
 		logo.delegate = self
@@ -63,11 +63,11 @@ class FoggyViewController: UIViewController {
 		}
 	}
 	
-	override var prefersStatusBarHidden: Bool {
+	override public var prefersStatusBarHidden: Bool {
 		return true
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
+	override public func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		// Create a session configuration
@@ -99,7 +99,7 @@ class FoggyViewController: UIViewController {
 		}
 	}
 	
-	override func viewWillDisappear(_ animated: Bool) {
+	override public func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		
 		// Pause the view's session
@@ -130,15 +130,15 @@ extension FoggyViewController : FoggyLogoDelegate {
 		renderer.train(alive: alive)
 	}
 	
-	func foggyLogo(lightsPower: Bool) {
+	public func foggyLogo(lightsPower: Bool) {
 		renderer.lights(on: lightsPower)
 	}
 	
-	func foggyLogo(alive: Bool) {
+	public func foggyLogo(alive: Bool) {
 		trainIsAlive(alive)
 	}
 	
-	func foggyLogo(accelerometerHeading: FogRational<Int64>) {
+	public func foggyLogo(accelerometerHeading: FogRational<Int64>) {
 		renderer.heading(heading: accelerometerHeading)
 	}
 }
