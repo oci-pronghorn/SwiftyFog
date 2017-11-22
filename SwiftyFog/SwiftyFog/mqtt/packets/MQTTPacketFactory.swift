@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum UnmarshalState {
+public enum UnmarshalState {
 	case failedReadHeader
 	case failedReadLength
 	case failedReadPayload(Int)
@@ -41,12 +41,13 @@ enum UnmarshalState {
 	}
 }
 
-protocol PacketMarshaller {
+// Converts Streams to/From MQTTPackets
+public protocol PacketMarshaller {
 	func send(_ packet: MQTTPacket, _ writer: FogSocketStreamWrite) -> Bool
 	func receive(_ read: StreamReader) -> UnmarshalState
 }
 
-struct MQTTPacketFactory: PacketMarshaller {
+public struct MQTTPacketFactory: PacketMarshaller {
     private let constructors: [MQTTPacketType : (MQTTPacketFixedHeader, Data)->MQTTPacket?] = [
         .connAck : MQTTConnAckPacket.init,
         .pingAck : MQTTPingAckPacket.init,
@@ -65,7 +66,7 @@ struct MQTTPacketFactory: PacketMarshaller {
 		self.metrics = metrics
 	}
 	
-	func send(_ packet: MQTTPacket, _ writer: FogSocketStreamWrite) -> Bool {
+	public func send(_ packet: MQTTPacket, _ writer: FogSocketStreamWrite) -> Bool {
 		let data = marshal(packet)
 		var success = false
 		metrics?.writingPacket()
@@ -78,7 +79,7 @@ struct MQTTPacketFactory: PacketMarshaller {
 		return success
     }
 	
-    func receive(_ read: StreamReader) -> UnmarshalState {
+    public func receive(_ read: StreamReader) -> UnmarshalState {
 		metrics?.receivedMessage()
 		let result = unmarshal(read)
 		if result.isPartialFailure {

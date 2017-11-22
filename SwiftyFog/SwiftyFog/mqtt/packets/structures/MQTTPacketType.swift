@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum MQTTPacketType: UInt8 {
+public enum MQTTPacketType: UInt8 {
     case connect        = 0x01
     case connAck        = 0x02
     case publish        = 0x03

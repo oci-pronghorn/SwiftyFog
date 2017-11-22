@@ -8,19 +8,18 @@
 
 import Foundation
 
-protocol MQTTRouterDelegate: class {
+public protocol MQTTRouterDelegate: class {
 	func mqtt(unhandledMessage: MQTTMessage)
 	func mqtt(send: MQTTPacket, completion: @escaping (Bool)->())
 } 
 
-class MQTTRouter {
+public class MQTTRouter {
 	private let metrics: MQTTMetrics?
 	private let idSource: MQTTMessageIdSource
 	private let durability: MQTTPacketDurability
 	private let publisher: MQTTPublisher
 	private let subscriber: MQTTSubscriber
 	private let distributer: MQTTDistributor
-    private let factory: MQTTPacketFactory
 
     public weak var delegate: MQTTRouterDelegate?
 	
@@ -34,7 +33,6 @@ class MQTTRouter {
 		self.publisher = MQTTPublisher(issuer: packetIssuer, queuePubOnDisconnect: routing.queuePubOnDisconnect, qos2Mode: routing.qos2Mode)
 		self.subscriber = MQTTSubscriber(issuer: packetIssuer)
 		self.distributer = MQTTDistributor(issuer: packetIssuer, qos2Mode: routing.qos2Mode)
-		self.factory = MQTTPacketFactory(metrics: metrics)
 		
 		self.distributer.delegate = self
 	}

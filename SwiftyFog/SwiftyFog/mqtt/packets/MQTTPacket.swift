@@ -8,7 +8,7 @@
 
 import Foundation
 
-class MQTTPacket: CustomStringConvertible {
+public class MQTTPacket: CustomStringConvertible {
     let header: MQTTPacketFixedHeader
     
     init(header: MQTTPacketFixedHeader) {
@@ -21,7 +21,7 @@ class MQTTPacket: CustomStringConvertible {
 	
     static let fixedHeaderLength: Int = 1
 	
-    var description: String {
+    public var description: String {
 		return "\(header.packetType)"
     }
 	

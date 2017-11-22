@@ -20,12 +20,14 @@ public final class MQTTClient {
 	public let auth: MQTTAuthentication
 	public let reconnect: MQTTReconnectParams
 	
+	// TODO: use MQTTRouter
 	private let metrics: MQTTMetrics?
 	private let idSource: MQTTMessageIdSource
 	private let durability: MQTTPacketDurability
 	private let publisher: MQTTPublisher
 	private let subscriber: MQTTSubscriber
 	private let distributer: MQTTDistributor
+	
     private let factory: MQTTPacketFactory
 	
 	private var connection: MQTTConnection?
