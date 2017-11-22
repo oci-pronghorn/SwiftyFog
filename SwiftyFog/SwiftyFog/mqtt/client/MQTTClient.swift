@@ -26,6 +26,7 @@ public final class MQTTClient {
 	private let publisher: MQTTPublisher
 	private let subscriber: MQTTSubscriber
 	private let distributer: MQTTDistributor
+    private let factory: MQTTPacketFactory
 	
 	private var connection: MQTTConnection?
 	private var retry: MQTTRetryConnection?
@@ -59,6 +60,7 @@ public final class MQTTClient {
 		self.publisher = MQTTPublisher(issuer: packetIssuer, queuePubOnDisconnect: routing.queuePubOnDisconnect, qos2Mode: routing.qos2Mode)
 		self.subscriber = MQTTSubscriber(issuer: packetIssuer)
 		self.distributer = MQTTDistributor(issuer: packetIssuer, qos2Mode: routing.qos2Mode)
+		self.factory = MQTTPacketFactory(metrics: metrics)
 		
 		self.madeInitialConnection = false
 		
@@ -70,6 +72,7 @@ public final class MQTTClient {
 		if let attempt = attempt {
 			delegate?.mqtt(client: self, connected: .retry(connectionCounter, rescus, attempt, self.reconnect))
 			let connection = MQTTConnection(
+				factory: factory,
 				hostParams: host,
 				clientPrams: client,
 				authPrams: auth,

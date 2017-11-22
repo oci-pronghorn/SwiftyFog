@@ -41,7 +41,12 @@ enum UnmarshalState {
 	}
 }
 
-struct MQTTPacketFactory {
+protocol PacketMarshaller {
+	func send(_ packet: MQTTPacket, _ writer: FogSocketStreamWrite) -> Bool
+	func receive(_ read: StreamReader) -> UnmarshalState
+}
+
+struct MQTTPacketFactory: PacketMarshaller {
     private let constructors: [MQTTPacketType : (MQTTPacketFixedHeader, Data)->MQTTPacket?] = [
         .connAck : MQTTConnAckPacket.init,
         .pingAck : MQTTPingAckPacket.init,

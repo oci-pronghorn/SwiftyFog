@@ -19,7 +19,7 @@ final class MQTTConnection {
 	private let hostParams: MQTTHostParams
 	private let clientPrams: MQTTClientParams
 	private let authPrams: MQTTAuthentication
-    private let factory: MQTTPacketFactory
+    private let factory: PacketMarshaller
 	private let metrics: MQTTMetrics?
     private var stream: FogSocketStream?
 	
@@ -33,16 +33,17 @@ final class MQTTConnection {
     private var expectPingPacketStart: Int64 = Int64.max
 	
     init(
+    		factory: PacketMarshaller,
 			hostParams: MQTTHostParams,
 			clientPrams: MQTTClientParams,
 			authPrams: MQTTAuthentication,
 			socketQoS: DispatchQoS,
 			metrics: MQTTMetrics?) {
+		self.factory = factory
 		self.hostParams = hostParams
 		self.clientPrams = clientPrams
 		self.authPrams = authPrams
 		self.metrics = metrics
-		self.factory = MQTTPacketFactory(metrics: metrics)
 		
 		self.stream = FogSocketStream(hostName: hostParams.host, port: Int(hostParams.port), qos: socketQoS)
     }
