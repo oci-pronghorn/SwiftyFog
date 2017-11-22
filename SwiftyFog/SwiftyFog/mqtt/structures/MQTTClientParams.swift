@@ -26,15 +26,6 @@ public struct MQTTClientParams {
     // If will is set, do not send DisconnectPacket. DisconnectPacket will cancel last will on server.
     public var alwaysSendLastWill: Bool = true
 	
-	// The spec states that business logic may be invoked on either the 1st or 2nd ack
-    public var qos2Mode: Qos2Mode = .lowLatency
-    // The spec states that retransmission of disconnected pubs is up to business logic
-	public var queuePubOnDisconnect: MQTTQoS? = nil
-	// Spec says we must resend only on reconnect not-clean-session.
-	// A non-zero interval will resend while connected
-    public var resendPulseInterval: TimeInterval = 5.0
-    public var resendLimit: UInt64 = UInt64.max
-	
     public init(keepAlive: UInt16) {
 		self.clientID = ""
 		self.cleanSession = true

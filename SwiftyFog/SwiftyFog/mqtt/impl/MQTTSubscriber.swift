@@ -35,9 +35,6 @@ public struct MQTTSubscriptionDetail: CustomStringConvertible  {
 	}
 }
 
-protocol MQTTSubscriptionDelegate: class {
-}
-
 public final class MQTTSubscription: CustomStringConvertible {
 	fileprivate weak var subscriber: MQTTSubscriber? = nil
 	public let detail: MQTTSubscriptionDetail
@@ -63,9 +60,7 @@ final class MQTTSubscriber {
 	private var knownSubscriptions = [UInt64 : MQTTSubscriptionDetail]()
 	private var deferredSubscriptions = [UInt16 : MQTTSubscriptionDetail]()
 	private var deferredUnSubscriptions = [UInt16 : MQTTSubscriptionDetail]()
-	
-	weak var delegate: MQTTSubscriptionDelegate?
-	
+		
 	init(issuer: MQTTPacketIssuer) {
 		self.issuer = issuer
 	}

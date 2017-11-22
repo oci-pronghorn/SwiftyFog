@@ -8,9 +8,6 @@
 
 import Foundation
 
-protocol MQTTPublisherDelegate: class {
-}
-
 final class MQTTPublisher {
 	private let issuer: MQTTPacketIssuer
 	private let queuePubOnDisconnect: MQTTQoS?
@@ -18,9 +15,7 @@ final class MQTTPublisher {
 
 	private let mutex = ReadWriteMutex()
 	private var deferredCompletion = [UInt16 : (Bool)->()]()
-	
-	weak var delegate: MQTTPublisherDelegate?
-	
+		
 	init(issuer: MQTTPacketIssuer, queuePubOnDisconnect: MQTTQoS?, qos2Mode: Qos2Mode) {
 		self.issuer = issuer
 		self.queuePubOnDisconnect = queuePubOnDisconnect

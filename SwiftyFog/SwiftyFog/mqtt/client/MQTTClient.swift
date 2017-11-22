@@ -17,15 +17,12 @@ public protocol MQTTClientDelegate: class {
 public final class MQTTClient {
 	public let client: MQTTClientParams
 	public let host: MQTTHostParams
-    public let auth: MQTTAuthentication
+	public let auth: MQTTAuthentication
 	public let reconnect: MQTTReconnectParams
 	
-	private let queue: DispatchQueue
-	private let socketQoS: DispatchQoS
 	private let metrics: MQTTMetrics?
-
 	private let idSource: MQTTMessageIdSource
-    private let durability: MQTTPacketDurability
+	private let durability: MQTTPacketDurability
 	private let publisher: MQTTPublisher
 	private let subscriber: MQTTSubscriber
 	private let distributer: MQTTDistributor
@@ -34,6 +31,8 @@ public final class MQTTClient {
 	private var retry: MQTTRetryConnection?
 	private var madeInitialConnection = false
 	private var connectionCounter = 0
+	private let queue: DispatchQueue
+	private let socketQoS: DispatchQoS
 
     public weak var delegate: MQTTClientDelegate?
 	
@@ -42,6 +41,7 @@ public final class MQTTClient {
 			host: MQTTHostParams = MQTTHostParams(),
 			auth: MQTTAuthentication = MQTTAuthentication(),
 			reconnect: MQTTReconnectParams = MQTTReconnectParams(),
+			routing: MQTTRoutingParams = MQTTRoutingParams(),
 			queue: DispatchQueue = DispatchQueue.global(),
 			socketQoS: DispatchQoS = .userInitiated,
 			metrics: MQTTMetrics? = nil) {
@@ -54,16 +54,15 @@ public final class MQTTClient {
 		self.metrics = metrics
 		
 		idSource = MQTTMessageIdSource(metrics: metrics)
-		self.durability = MQTTPacketDurability(idSource: idSource, queuePubOnDisconnect: client.queuePubOnDisconnect, resendInterval: client.resendPulseInterval, resendLimit: client.resendLimit)
-		self.publisher = MQTTPublisher(issuer: durability, queuePubOnDisconnect: client.queuePubOnDisconnect, qos2Mode: client.qos2Mode)
-		self.subscriber = MQTTSubscriber(issuer: durability)
-		self.distributer = MQTTDistributor(issuer: durability, qos2Mode: client.qos2Mode)
+		self.durability = MQTTPacketDurability(idSource: idSource, queuePubOnDisconnect: routing.queuePubOnDisconnect, resendInterval: routing.resendPulseInterval, resendLimit: routing.resendLimit)
+		let packetIssuer: MQTTPacketIssuer = self.durability
+		self.publisher = MQTTPublisher(issuer: packetIssuer, queuePubOnDisconnect: routing.queuePubOnDisconnect, qos2Mode: routing.qos2Mode)
+		self.subscriber = MQTTSubscriber(issuer: packetIssuer)
+		self.distributer = MQTTDistributor(issuer: packetIssuer, qos2Mode: routing.qos2Mode)
 		
 		self.madeInitialConnection = false
 		
 		durability.delegate = self
-		publisher.delegate = self
-		subscriber.delegate = self
 		distributer.delegate = self
 	}
 	
@@ -226,10 +225,8 @@ extension MQTTClient: MQTTConnectionDelegate {
 }
 
 extension MQTTClient:
-		MQTTPublisherDelegate,
-		MQTTSubscriptionDelegate,
-		MQTTDistributorDelegate,
-		MQTTPacketDurabilityDelegate {
+		MQTTPacketDurabilityDelegate,
+		MQTTDistributorDelegate {
 	func mqtt(send: MQTTPacket, completion: @escaping (Bool)->()) {
 		if let connection = connection, connected {
 			queue.async {
