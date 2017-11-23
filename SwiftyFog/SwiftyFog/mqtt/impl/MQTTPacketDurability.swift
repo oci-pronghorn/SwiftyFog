@@ -21,7 +21,7 @@ protocol MQTTPacketIssuer {
 final class MQTTPacketDurability: MQTTPacketIssuer {
 	private let idSource: MQTTMessageIdSource
 	private let mutex = ReadWriteMutex()
-    private let resendTimer: DispatchSourceTimer
+    private var resendTimer: DispatchSourceTimer?
 	
 	// TODO: not implemented yet
 	private let queuePubOnDisconnect: MQTTQoS?
@@ -38,19 +38,22 @@ final class MQTTPacketDurability: MQTTPacketIssuer {
 		self.queuePubOnDisconnect = queuePubOnDisconnect
 		self.resendInterval = resendInterval
 		self.resendLimit = resendLimit
-		resendTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
-		resendTimer.setEventHandler { [weak self] in
-			self?.resendPulse()
-		}
 	}
 	
+	deinit {
+		resendTimer?.cancel()
+	}
 	
 	// TODO: not working yet - has to be > 0.0 and works with queuePubOnDisconnect
 	// TODO: pre-subscriptions count on the retry. Do we allow pre-subscriptions if retry == 0
 	// TODO: spec says retry must be on reconnect but not necessarely timer while connected
 	func connected(cleanSession: Bool, present: Bool, initial: Bool) {
-		resendTimer.schedule(deadline: .now(), repeating: resendInterval, leeway: .milliseconds(250))
-		resendTimer.resume()
+		resendTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
+		resendTimer?.setEventHandler { [weak self] in
+			self?.resendPulse()
+		}
+		resendTimer?.schedule(deadline: .now(), repeating: resendInterval, leeway: .milliseconds(250))
+		resendTimer?.resume()
 	}
 	
 	public func send<T: MQTTPacket>(packet: T, sent: ((T, Bool)->())?) {
@@ -154,7 +157,7 @@ final class MQTTPacketDurability: MQTTPacketIssuer {
 	}
 	
 	func disconnected(cleanSession: Bool, stopped: Bool) {
-		resendTimer.suspend()
+		resendTimer?.suspend()
 		mutex.writing {
 			for request in retryRequestPackets {
 				request(false)
