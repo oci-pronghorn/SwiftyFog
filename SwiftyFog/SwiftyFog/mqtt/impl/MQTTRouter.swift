@@ -52,6 +52,23 @@ public class MQTTRouter {
 		}
 	}
 	
+	public func connected(cleanSession: Bool, present: Bool, initial: Bool) -> [MQTTSubscription] {
+		idSource.connected(cleanSession: cleanSession, present: present, initial: initial)
+		durability.connected(cleanSession: cleanSession, present: present, initial: initial)
+		publisher.connected(cleanSession: cleanSession, present: present, initial: initial)
+		let recreatedSubscriptions = subscriber.connected(cleanSession: cleanSession, present: present, initial: initial)
+		distributer.connected(cleanSession: cleanSession, present: present, initial: initial)
+		return recreatedSubscriptions
+	}
+	
+	public func disconnected(cleanSession: Bool, stopped: Bool, reason: MQTTConnectionDisconnect, error: Error?) {
+		publisher.disconnected(cleanSession: cleanSession, stopped: stopped)
+		subscriber.disconnected(cleanSession: cleanSession, stopped: stopped)
+		distributer.disconnected(cleanSession: cleanSession, stopped: stopped)
+		durability.disconnected(cleanSession: cleanSession, stopped: stopped)
+		idSource.disconnected(cleanSession: cleanSession, stopped: stopped)
+	}
+	
 	private func unhandledPacket(packet: MQTTPacket) {
 		if let metrics = metrics {
 			metrics.unhandledPacket()

@@ -20,16 +20,11 @@ public final class MQTTClient {
 	public let auth: MQTTAuthentication
 	public let reconnect: MQTTReconnectParams
 	
-	// TODO: use MQTTRouter
 	private let metrics: MQTTMetrics?
-	private let idSource: MQTTMessageIdSource
-	private let durability: MQTTPacketDurability
-	private let publisher: MQTTPublisher
-	private let subscriber: MQTTSubscriber
-	private let distributer: MQTTDistributor
-	
+    private let router: MQTTRouter
     private let factory: MQTTPacketFactory
 	
+	// TODO create class to encapsulate this functionality
 	private var connection: MQTTConnection?
 	private var retry: MQTTRetryConnection?
 	private var madeInitialConnection = false
@@ -55,19 +50,12 @@ public final class MQTTClient {
 		self.queue = queue
 		self.socketQoS = socketQoS
 		self.metrics = metrics
-		
-		idSource = MQTTMessageIdSource(metrics: metrics)
-		self.durability = MQTTPacketDurability(idSource: idSource, queuePubOnDisconnect: routing.queuePubOnDisconnect, resendInterval: routing.resendPulseInterval, resendLimit: routing.resendLimit)
-		let packetIssuer: MQTTPacketIssuer = self.durability
-		self.publisher = MQTTPublisher(issuer: packetIssuer, queuePubOnDisconnect: routing.queuePubOnDisconnect, qos2Mode: routing.qos2Mode)
-		self.subscriber = MQTTSubscriber(issuer: packetIssuer)
-		self.distributer = MQTTDistributor(issuer: packetIssuer, qos2Mode: routing.qos2Mode)
+		self.router = MQTTRouter(metrics: metrics, routing: routing)
 		self.factory = MQTTPacketFactory(metrics: metrics)
 		
 		self.madeInitialConnection = false
 		
-		durability.delegate = self
-		distributer.delegate = self
+		router.delegate = self
 	}
 	
 	private func makeConnection(_ rescus: Int, _ attempt : Int?) {
@@ -134,27 +122,19 @@ extension MQTTClient: MQTTControl {
 
 extension MQTTClient: MQTTBridge {
 	public func createBridge(subPath: String) -> MQTTBridge {
-		return MQTTTopicScope(base: self, fullPath: subPath)
+		return router.createBridge(subPath: subPath)
 	}
 
 	public func publish(_ pubMsg: MQTTMessage, completion: ((Bool)->())?) {
-		let path = String(pubMsg.topic)
-		let resolved = path.hasPrefix("$") ? String(path.dropFirst()) : path
-		let newMessage = MQTTMessage(topic: resolved, payload: pubMsg.payload, retain: pubMsg.retain, qos: pubMsg.qos)
-		publisher.publish(pubMsg: newMessage, completion: completion)
+		router.publish(pubMsg, completion: completion)
 	}
 	
 	public func subscribe(topics: [(String, MQTTQoS)], acknowledged: SubscriptionAcknowledged?) -> MQTTSubscription {
-		let resolved = topics.map { (
-			$0.0.hasPrefix("$") ? String($0.0.dropFirst()) : $0.0,
-			$0.1
-		)}
-		return subscriber.subscribe(topics: resolved, acknowledged: acknowledged)
+		return router.subscribe(topics: topics, acknowledged: acknowledged)
 	}
 	
 	public func register(topic: String, action: @escaping (MQTTMessage)->()) -> MQTTRegistration {
-		let resolved = topic.hasPrefix("$") ? String(topic.dropFirst()) : topic
-		return distributer.registerTopic(path: resolved, action: action)
+		return router.register(topic: topic, action: action)
 	}
 }
 
@@ -168,11 +148,7 @@ extension MQTTClient: MQTTConnectionDelegate {
 		if case .stopped = reason {
 			stopped = true
 		}
-		publisher.disconnected(cleanSession: client.cleanSession, stopped: stopped)
-		subscriber.disconnected(cleanSession: client.cleanSession, stopped: stopped)
-		distributer.disconnected(cleanSession: client.cleanSession, stopped: stopped)
-		durability.disconnected(cleanSession: client.cleanSession, stopped: stopped)
-		idSource.disconnected(cleanSession: client.cleanSession, stopped: stopped)
+		router.disconnected(cleanSession: client.cleanSession, stopped: stopped, reason: reason, error: error)
 		self.connection = nil
 		delegate?.mqtt(client: self, connected: .disconnected(reason: reason, error: error))
 		if case let .handshake(ack) = reason {
@@ -196,12 +172,7 @@ extension MQTTClient: MQTTConnectionDelegate {
 		retry?.connected = true
 		connectionCounter += 1
 		delegate?.mqtt(client: self, connected: .connected(connectionCounter))
-		idSource.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
-		durability.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
-		publisher.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
-		let recreatedSubscriptions = subscriber.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
-		distributer.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
-		
+		let recreatedSubscriptions = router.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
 		delegate?.mqtt(client: self, recreatedSubscriptions: recreatedSubscriptions)
 	}
 	
@@ -211,28 +182,13 @@ extension MQTTClient: MQTTConnectionDelegate {
 	
 	func mqtt(connection: MQTTConnection, received: MQTTPacket) {
 		queue.async { [weak self] in
-			self?.dispatch(packet: received)
-		}
-	}
-	
-	private func dispatch(packet: MQTTPacket) {
-		var handled = distributer.receive(packet: packet)
-		if handled == false {
-			handled = publisher.receive(packet: packet)
-			if handled == false {
-				handled = subscriber.receive(packet: packet)
-				if handled == false {
-					unhandledPacket(packet: packet)
-				}
-			}
+			self?.router.dispatch(packet: received)
 		}
 	}
 }
 
-extension MQTTClient:
-		MQTTPacketDurabilityDelegate,
-		MQTTDistributorDelegate {
-	func mqtt(send: MQTTPacket, completion: @escaping (Bool)->()) {
+extension MQTTClient: MQTTRouterDelegate {
+	public func mqtt(send: MQTTPacket, completion: @escaping (Bool)->()) {
 		if let connection = connection, connected {
 			queue.async {
 				let success = connection.send(packet: send)
@@ -244,7 +200,7 @@ extension MQTTClient:
 		}
 	}
 	
-	func mqtt(unhandledMessage: MQTTMessage) {
+	public func mqtt(unhandledMessage: MQTTMessage) {
 		delegate?.mqtt(client: self, unhandledMessage: unhandledMessage)
 	}
 }
