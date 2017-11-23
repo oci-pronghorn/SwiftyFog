@@ -38,6 +38,10 @@ final class MQTTPacketDurability: MQTTPacketIssuer {
 		self.queuePubOnDisconnect = queuePubOnDisconnect
 		self.resendInterval = resendInterval
 		self.resendLimit = resendLimit
+		resendTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
+		resendTimer?.setEventHandler { [weak self] in
+			self?.resendPulse()
+		}
 	}
 	
 	deinit {
@@ -48,10 +52,6 @@ final class MQTTPacketDurability: MQTTPacketIssuer {
 	// TODO: pre-subscriptions count on the retry. Do we allow pre-subscriptions if retry == 0
 	// TODO: spec says retry must be on reconnect but not necessarely timer while connected
 	func connected(cleanSession: Bool, present: Bool, initial: Bool) {
-		resendTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
-		resendTimer?.setEventHandler { [weak self] in
-			self?.resendPulse()
-		}
 		resendTimer?.schedule(deadline: .now(), repeating: resendInterval, leeway: .milliseconds(250))
 		resendTimer?.resume()
 	}
