@@ -10,9 +10,9 @@ import Foundation
 
 public enum MQTTConnectedState {
 	case started
-	case connected(Int)
+	case connected(cleanSession: Bool, connectedAsPresent: Bool, isInitial: Bool, connectionCounter: Int)
 	case pinged(MQTTPingStatus)
-	case disconnected(reason: MQTTConnectionDisconnect, error: Error?)
+	case disconnected(cleanSession: Bool, reason: MQTTConnectionDisconnect, error: Error?)
 	case retry(Int, Int, Int, MQTTReconnectParams) // connection counter, rescus counter, attempt counter
 	case retriesFailed(Int, Int, MQTTReconnectParams) // connection counter, rescus counter
 }

@@ -116,7 +116,7 @@ extension TrainViewController {
 			case .started:
 				self.stopStartButton.isSelected = mqttControl.started
 				break
-			case .connected(let counter):
+			case .connected(_, _, _, let counter):
 				feedbackCut()
 				assertValues()
 				pulsator.backgroundColor = UIColor.green.cgColor
@@ -152,7 +152,7 @@ extension TrainViewController {
 			case .retriesFailed(let counter, let rescus, _):
 				self.connectMetrics.text = "\(counter).\(rescus).-"
 				break
-			case .disconnected(_, _):
+			case .disconnected(_, _, _):
 				self.connectedImage?.isHighlighted = false
 				self.stopStartButton.isSelected = mqttControl.started
 				self.trainAlive.isHighlighted = false

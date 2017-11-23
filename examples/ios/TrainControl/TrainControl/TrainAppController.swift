@@ -42,7 +42,7 @@ class TrainAppController {
 		client.detectServerDeath = 2
 		let mqtt = MQTTClient(
 			client: client,
-			host: MQTTHostParams(host: trainName + ".local", port: .standard),
+			//host: MQTTHostParams(host: trainName + ".local", port: .standard),
 			auth: MQTTAuthentication(username: "dsjove", password: "password"),
 			reconnect: MQTTReconnectParams(),
 			metrics: metrics)
@@ -83,7 +83,7 @@ extension TrainAppController: MQTTClientDelegate {
 			case .started:
 				log = "Started"
 				break
-			case .connected(let counter):
+			case .connected(_, _, _, let counter):
 				log = "Connected \(counter)"
 				break
 			case .pinged(let status):
@@ -95,7 +95,7 @@ extension TrainAppController: MQTTClientDelegate {
 			case .retriesFailed(let counter, let rescus, _):
 				log = "Connection Failed \(counter).\(rescus)"
 				break
-			case .disconnected(let reason, let error):
+			case .disconnected(_, let reason, let error):
 				log = "Disconnected \(reason) \(error?.localizedDescription ?? "")"
 				break
 		}

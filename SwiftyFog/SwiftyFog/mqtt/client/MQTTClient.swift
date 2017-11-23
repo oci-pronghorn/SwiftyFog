@@ -15,22 +15,9 @@ public protocol MQTTClientDelegate: class {
 }
 
 public final class MQTTClient {
-	public let client: MQTTClientParams
-	public let host: MQTTHostParams
-	public let auth: MQTTAuthentication
-	public let reconnect: MQTTReconnectParams
-	
-	private let metrics: MQTTMetrics?
+	private let connect: MQTTConnectionManager
     private let router: MQTTRouter
-    private let factory: MQTTPacketFactory
 	private let queue: DispatchQueue
-	
-	// TODO create class to encapsulate this functionality
-	private var connection: MQTTConnection?
-	private var retry: MQTTRetryConnection?
-	private var madeInitialConnection = false
-	private var connectionCounter = 0
-	private let socketQoS: DispatchQoS
 
     public weak var delegate: MQTTClientDelegate?
 	
@@ -43,71 +30,44 @@ public final class MQTTClient {
 			queue: DispatchQueue = DispatchQueue.global(),
 			socketQoS: DispatchQoS = .userInitiated,
 			metrics: MQTTMetrics? = nil) {
-		self.client = client
-		self.host = host
-		self.auth = auth
-		self.reconnect = reconnect
 		self.queue = queue
-		self.socketQoS = socketQoS
-		self.metrics = metrics
-		self.router = MQTTRouter(metrics: metrics, routing: routing)
-		self.factory = MQTTPacketFactory(metrics: metrics)
-		
-		self.madeInitialConnection = false
+		self.connect = MQTTConnectionManager(
+			factory: MQTTPacketFactory(metrics: metrics),
+			client: client,
+			host: host,
+			auth: auth,
+			reconnect: reconnect,
+			socketQoS: socketQoS,
+			metrics: metrics);
+		self.router = MQTTRouter(
+			metrics: metrics,
+			routing: routing)
 		
 		router.delegate = self
-	}
-	
-	private func makeConnection(_ rescus: Int, _ attempt : Int?) {
-		if let attempt = attempt {
-			delegate?.mqtt(client: self, connected: .retry(connectionCounter, rescus, attempt, self.reconnect))
-			let connection = MQTTConnection(
-				factory: factory,
-				hostParams: host,
-				clientPrams: client,
-				authPrams: auth,
-				socketQoS: socketQoS,
-				metrics: metrics)
-			self.connection = connection
-			connection.start(delegate: self)
-		}
-		else {
-			delegate?.mqtt(client: self, connected: .retriesFailed(connectionCounter, rescus, self.reconnect));
-		}
+		connect.delegate = self
 	}
 }
 
 extension MQTTClient: MQTTControl {
 	public var started: Bool {
-		return retry != nil
+		return self.connect.started
 	}
 	
 	public var connected: Bool {
 		get {
-			return connection?.isFullConnected ?? false
+			return self.connect.connected
 		}
 		set {
-			newValue ? start(): stop()
+			self.connect.connected = newValue
 		}
 	}
 
 	public func start() {
-		if retry == nil {
-			retry = MQTTRetryConnection(spec: reconnect) { [weak self] r, a in
-				self?.makeConnection(r, a)
-			}
-			delegate?.mqtt(client: self, connected: .started)
-			retry?.start()
-		}
+		return self.connect.start()
 	}
 
 	public func stop() {
-		if retry != nil {
-			retry = nil
-			connection = nil
-			// connection does not call delegate in deinit
-			doDisconnect(reason: .stopped, error: nil)
-		}
+		return self.connect.stop()
 	}
 }
 
@@ -129,49 +89,32 @@ extension MQTTClient: MQTTBridge {
 	}
 }
 
-extension MQTTClient: MQTTConnectionDelegate {
-	func mqtt(connection: MQTTConnection, disconnected: MQTTConnectionDisconnect, error: Error?) {
-		doDisconnect(reason: disconnected, error: error)
-	}
-	
-	private func doDisconnect(reason: MQTTConnectionDisconnect, error: Error?) {
-		var stopped = false
-		if case .stopped = reason {
-			stopped = true
+extension MQTTClient: MQTTConnectionManagerDelegate {
+	public func mqtt(connected: MQTTConnectedState) {
+		switch connected {
+			case .started:
+				break
+			case .connected(let cleanSession, let connectedAsPresent, let wasInitialConnection, _):
+				delegate?.mqtt(client: self, connected: connected)
+				let recreatedSubscriptions = router.connected(cleanSession: cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
+				delegate?.mqtt(client: self, recreatedSubscriptions: recreatedSubscriptions)
+			case .pinged:
+				break
+			case .disconnected(let cleanSession, let reason, let error):
+				var stopped = false
+				if case .stopped = reason {
+					stopped = true
+				}
+				router.disconnected(cleanSession: cleanSession, stopped: stopped, reason: reason, error: error)
+			case .retry:
+				break
+			case .retriesFailed:
+				break
 		}
-		router.disconnected(cleanSession: client.cleanSession, stopped: stopped, reason: reason, error: error)
-		self.connection = nil
-		delegate?.mqtt(client: self, connected: .disconnected(reason: reason, error: error))
-		if case let .handshake(ack) = reason {
-			if ack.retries {
-				retry?.connected = false
-			}
-			else {
-				retry = nil
-			}
-		}
-		else {
-			retry?.connected = false
-		}
+		delegate?.mqtt(client: self, connected: connected)
 	}
 	
-	func mqtt(connection: MQTTConnection, connectedAsPresent: Bool) {
-		metrics?.madeConnection()
-		let wasInitialConnection = madeInitialConnection == false
-		madeInitialConnection = true
-
-		retry?.connected = true
-		connectionCounter += 1
-		delegate?.mqtt(client: self, connected: .connected(connectionCounter))
-		let recreatedSubscriptions = router.connected(cleanSession: client.cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
-		delegate?.mqtt(client: self, recreatedSubscriptions: recreatedSubscriptions)
-	}
-	
-	func mqtt(connection: MQTTConnection, pinged status: MQTTPingStatus) {
-		delegate?.mqtt(client: self, connected: .pinged(status))
-	}
-	
-	func mqtt(connection: MQTTConnection, received: MQTTPacket) {
+	public func mqtt(received: MQTTPacket) {
 		queue.async { [weak self] in
 			self?.router.dispatch(packet: received)
 		}
@@ -180,14 +123,8 @@ extension MQTTClient: MQTTConnectionDelegate {
 
 extension MQTTClient: MQTTRouterDelegate {
 	public func mqtt(send: MQTTPacket, completion: @escaping (Bool)->()) {
-		if let connection = connection, connected {
-			queue.async {
-				let success = connection.send(packet: send)
-				completion(success)
-			}
-		}
-		else {
-			completion(false)
+		queue.async { [weak self] in
+			self?.connect.send(packet: send, completion: completion)
 		}
 	}
 	

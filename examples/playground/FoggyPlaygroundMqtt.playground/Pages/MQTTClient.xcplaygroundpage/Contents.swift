@@ -19,7 +19,7 @@ class Delegate: MQTTClientDelegate {
 		case .started:
 			print("* Started")
 			break
-		case .connected(let counter):
+		case .connected(_, _, _, let counter):
 			print("* Connected \(counter)")
 			break
 		case .pinged(let status):
@@ -31,7 +31,7 @@ class Delegate: MQTTClientDelegate {
 		case .retriesFailed(let counter, let rescus, _):
 			print("* Connection Failed \(counter).\(rescus)")
 			break
-		case .disconnected(let reason, let error):
+		case .disconnected(_, let reason, let error):
 			print("* Discconnected \(reason) \(error?.localizedDescription ?? "")")
 			break
 		}

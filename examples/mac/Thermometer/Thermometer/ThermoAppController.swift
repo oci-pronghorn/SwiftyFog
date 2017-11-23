@@ -54,7 +54,7 @@ extension ThermoAppController: MQTTClientDelegate {
 		case .started:
 			log = "Started"
 			break
-		case .connected(let counter):
+		case .connected(_, _, _, let counter):
 			log = "Connected \(counter)"
 			break
 		case .retry(_, let rescus, let attempt, _):
@@ -66,7 +66,7 @@ extension ThermoAppController: MQTTClientDelegate {
 		case .pinged(let status):
 			log = "Ping \(status)"
 			break
-		case .disconnected(let reason, let error):
+		case .disconnected(_, let reason, let error):
 			log = "Disconnected \(reason) \(error?.localizedDescription ?? "")"
 			break
 		}
