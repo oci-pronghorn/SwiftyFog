@@ -62,7 +62,7 @@ public struct MQTTPacketFactory: PacketMarshaller {
 	
 	private let metrics: MQTTWireMetrics?
 	
-	init( metrics: MQTTWireMetrics?) {
+	public init(metrics: MQTTWireMetrics? = nil) {
 		self.metrics = metrics
 	}
 	

@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol MQTTDebugMetrics {
+public protocol MQTTDebugMetrics {
 	func debug(_ out: @autoclosure ()->(String?))
 }
 
@@ -21,7 +21,7 @@ protocol MQTTClientMetrics: MQTTDebugMetrics {
 	func unhandledPacket()
 }
 
-protocol MQTTWireMetrics: MQTTDebugMetrics {
+public protocol MQTTWireMetrics: MQTTDebugMetrics {
 	var printWireData: Bool { get }
 	
 	func writingPacket()
@@ -55,7 +55,7 @@ public final class MQTTMetrics: MQTTWireMetrics, MQTTIdMetrics, MQTTClientMetric
 	var printReceivePackets: Bool { return printDebug && doPrintReceivePackets }
 	var printUnhandledPackets: Bool { return printDebug && doPrintUnhandledPackets }
 	var printIdRetains: Bool { return printDebug && doPrintIdRetains }
-	var printWireData: Bool { return printDebug && doPrintWireData }
+	public var printWireData: Bool { return printDebug && doPrintWireData }
 	
 	public var debugOut: ((String)->())?
 	
@@ -80,7 +80,7 @@ public final class MQTTMetrics: MQTTWireMetrics, MQTTIdMetrics, MQTTClientMetric
 	
 	var printDebug: Bool { return debugOut != nil }
 	
-	func debug(_ out: @autoclosure ()->(String?)) {
+	public func debug(_ out: @autoclosure ()->(String?)) {
 		if let debugOut = debugOut {
 			if let str = out() {
 				debugOut(str)
@@ -96,23 +96,23 @@ public final class MQTTMetrics: MQTTWireMetrics, MQTTIdMetrics, MQTTClientMetric
 		self.idsInUse = idsInUse
 	}
 
-	func writingPacket() {
+	public func writingPacket() {
 		written += 1
 	}
 	
-	func failedToWitePcket() {
+	public func failedToWitePcket() {
 		writesFailed += 1
 	}
 	
-	func receivedMessage() {
+	public func receivedMessage() {
 		received += 1
 	}
 	
-	func failedToCreatePacket() {
+	public func failedToCreatePacket() {
 		unmarshalFailed += 1
 	}
 	
-	func unhandledPacket() {
+	public func unhandledPacket() {
 		unhandled += 1
 	}
 }

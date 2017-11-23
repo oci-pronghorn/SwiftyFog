@@ -34,6 +34,7 @@ public class MQTTRouter {
 		self.subscriber = MQTTSubscriber(issuer: packetIssuer)
 		self.distributer = MQTTDistributor(issuer: packetIssuer, qos2Mode: routing.qos2Mode)
 		
+		self.durability.delegate = self
 		self.distributer.delegate = self
 	}
 	

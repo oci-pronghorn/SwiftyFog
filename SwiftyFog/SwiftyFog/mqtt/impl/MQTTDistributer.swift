@@ -59,7 +59,9 @@ final class MQTTDistributor {
 			token += 1
 			let entity = (token, action)
 			registeredPaths.computeIfAbsent(path, {_ in [entity]}, { $1.append(entity) })
-			return MQTTRegistration(token: token, path: path)
+			let registration = MQTTRegistration(token: token, path: path)
+			registration.distributor = self
+			return registration
 		}
 	}
 	
