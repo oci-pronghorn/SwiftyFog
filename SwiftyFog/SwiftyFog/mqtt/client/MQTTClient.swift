@@ -23,13 +23,13 @@ public final class MQTTClient {
 	private let metrics: MQTTMetrics?
     private let router: MQTTRouter
     private let factory: MQTTPacketFactory
+	private let queue: DispatchQueue
 	
 	// TODO create class to encapsulate this functionality
 	private var connection: MQTTConnection?
 	private var retry: MQTTRetryConnection?
 	private var madeInitialConnection = false
 	private var connectionCounter = 0
-	private let queue: DispatchQueue
 	private let socketQoS: DispatchQoS
 
     public weak var delegate: MQTTClientDelegate?
@@ -73,15 +73,6 @@ public final class MQTTClient {
 		}
 		else {
 			delegate?.mqtt(client: self, connected: .retriesFailed(connectionCounter, rescus, self.reconnect));
-		}
-	}
-	
-	private func unhandledPacket(packet: MQTTPacket) {
-		if let metrics = metrics {
-			metrics.unhandledPacket()
-			if metrics.printUnhandledPackets {
-				metrics.debug("Unhandled: \(packet)")
-			}
 		}
 	}
 }

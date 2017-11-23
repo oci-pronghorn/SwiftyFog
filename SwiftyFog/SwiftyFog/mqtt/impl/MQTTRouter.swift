@@ -13,7 +13,7 @@ public protocol MQTTRouterDelegate: class {
 	func mqtt(send: MQTTPacket, completion: @escaping (Bool)->())
 } 
 
-public class MQTTRouter {
+public final class MQTTRouter {
 	private let metrics: MQTTMetrics?
 	private let idSource: MQTTMessageIdSource
 	private let durability: MQTTPacketDurability
