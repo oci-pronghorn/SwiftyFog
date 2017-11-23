@@ -7,7 +7,7 @@ let router = MQTTRouter()
 
 class Direct: MQTTRouterDelegate {
 	func mqtt(send packet: MQTTPacket, completion: @escaping (Bool)->()) {
-		print("Routing \(packet)")
+		print("Routing to self\(packet)")
 		router.dispatch(packet: packet)
 	}
 	func mqtt(unhandledMessage: MQTTMessage) {

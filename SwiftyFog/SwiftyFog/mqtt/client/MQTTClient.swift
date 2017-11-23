@@ -95,7 +95,6 @@ extension MQTTClient: MQTTConnectionManagerDelegate {
 			case .started:
 				break
 			case .connected(let cleanSession, let connectedAsPresent, let wasInitialConnection, _):
-				delegate?.mqtt(client: self, connected: connected)
 				let recreatedSubscriptions = router.connected(cleanSession: cleanSession, present: connectedAsPresent, initial: wasInitialConnection)
 				delegate?.mqtt(client: self, recreatedSubscriptions: recreatedSubscriptions)
 			case .pinged:

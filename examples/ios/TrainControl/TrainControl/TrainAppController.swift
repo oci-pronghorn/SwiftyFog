@@ -42,7 +42,7 @@ class TrainAppController {
 		client.detectServerDeath = 2
 		let mqtt = MQTTClient(
 			client: client,
-			//host: MQTTHostParams(host: trainName + ".local", port: .standard),
+			host: MQTTHostParams(host: trainName + ".local", port: .standard),
 			auth: MQTTAuthentication(username: "dsjove", password: "password"),
 			reconnect: MQTTReconnectParams(),
 			metrics: metrics)
