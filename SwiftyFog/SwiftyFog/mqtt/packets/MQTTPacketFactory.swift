@@ -90,7 +90,7 @@ public struct MQTTPacketFactory: PacketMarshaller {
 	
     private static let filler = [UInt8](repeating: 0, count: MQTTPacket.fixedHeaderLength + MQTTPackedLength.maxLen)
 	
-    private func marshal(_ packet: MQTTPacket) -> Data {
+    public func marshal(_ packet: MQTTPacket) -> Data {
 		let fcl = MQTTPacketFactory.filler.count
 		let fhl = MQTTPacket.fixedHeaderLength
 		let fsl = fcl - fhl
@@ -118,6 +118,21 @@ public struct MQTTPacketFactory: PacketMarshaller {
 		}
 		return data
     }
+	
+	// TODO: metrics is treated differently between marshal and unmarshal
+	public func unmarshal(_ data: Data) -> UnmarshalState {
+		var cursor = 0
+		var result = UnmarshalState.failedReadHeader
+		data.withUnsafeBytes { (u8Ptr: UnsafePointer<UInt8>) in
+			result = self.receive { ptr, l in
+				let pos = u8Ptr.advanced(by: cursor)
+				memcpy(ptr, pos, l)
+				cursor += l
+				return l
+			}
+		}
+		return result
+	}
 
     private func unmarshal(_ read: StreamReader) -> UnmarshalState {
         var headerByte: UInt8 = 0
