@@ -23,17 +23,6 @@
 		86BAC2221F97FCEE00AF6F5A /* TrainDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BAC2211F97FCEE00AF6F5A /* TrainDetection.swift */; };
 		86BAC2241F97FFA800AF6F5A /* Inceptionv3.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 86BAC2231F97FFA800AF6F5A /* Inceptionv3.mlmodel */; };
 		86FCE2321F8F13E300CB217C /* lightbulb.dae in Resources */ = {isa = PBXBuildFile; fileRef = 86FCE2311F8F13E300CB217C /* lightbulb.dae */; };
-		AC124B301FC4CAC200C4FADC /* FoggyLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869627901F85646200A2CCE0 /* FoggyLogo.swift */; };
-		AC124B311FC4CAD900C4FADC /* FoggyLogoRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867CDBA11F8E97EC00D0F5AE /* FoggyLogoRenderer.swift */; };
-		AC124B321FC4CAFE00C4FADC /* ocilogo.dae in Resources */ = {isa = PBXBuildFile; fileRef = 861992521F856D2E006260C0 /* ocilogo.dae */; };
-		AC124B331FC4CB0200C4FADC /* lightbulb.dae in Resources */ = {isa = PBXBuildFile; fileRef = 86FCE2311F8F13E300CB217C /* lightbulb.dae */; };
-		AC124B341FC4CB0C00C4FADC /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 869627741F855E2C00A2CCE0 /* art.scnassets */; };
-		AC124B351FC4CBF700C4FADC /* FoggyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869627761F855E2C00A2CCE0 /* FoggyViewController.swift */; };
-		AC36A6081FC4BE390094BEDE /* EmbeddFoggyAR.h in Headers */ = {isa = PBXBuildFile; fileRef = AC36A6061FC4BE390094BEDE /* EmbeddFoggyAR.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		AC36A60D1FC4BE8B0094BEDE /* EmbeddFoggyAR.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = AC36A6041FC4BE380094BEDE /* EmbeddFoggyAR.framework */; };
-		AC36A60E1FC4C0D80094BEDE /* QRDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86239D681F88078B00B5F13C /* QRDetection.swift */; };
-		AC36A60F1FC4C0DF0094BEDE /* TrainDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BAC2211F97FCEE00AF6F5A /* TrainDetection.swift */; };
-		AC36A6101FC4C1060094BEDE /* Inceptionv3.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 86BAC2231F97FFA800AF6F5A /* Inceptionv3.mlmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,16 +35,6 @@
 				861992561F8575FB006260C0 /* SwiftyFog_iOS.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AC36A60C1FC4BE670094BEDE /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/Sources";
-			dstSubfolderSpec = 0;
-			files = (
-				AC36A60D1FC4BE8B0094BEDE /* EmbeddFoggyAR.framework in CopyFiles */,
-			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -78,7 +57,6 @@
 		86BAC2211F97FCEE00AF6F5A /* TrainDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainDetection.swift; sourceTree = "<group>"; };
 		86BAC2231F97FFA800AF6F5A /* Inceptionv3.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Inceptionv3.mlmodel; sourceTree = "<group>"; };
 		86FCE2311F8F13E300CB217C /* lightbulb.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = lightbulb.dae; sourceTree = "<group>"; };
-		AC36A6041FC4BE380094BEDE /* EmbeddFoggyAR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EmbeddFoggyAR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC36A6061FC4BE390094BEDE /* EmbeddFoggyAR.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmbeddFoggyAR.h; sourceTree = "<group>"; };
 		AC36A6071FC4BE390094BEDE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -89,13 +67,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				861992541F8575DC006260C0 /* SwiftyFog_iOS.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AC36A6001FC4BE380094BEDE /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,7 +107,6 @@
 			isa = PBXGroup;
 			children = (
 				8696276F1F855E2C00A2CCE0 /* FoggyAR.app */,
-				AC36A6041FC4BE380094BEDE /* EmbeddFoggyAR.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -194,17 +164,6 @@
 		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		AC36A6011FC4BE380094BEDE /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AC36A6081FC4BE390094BEDE /* EmbeddFoggyAR.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
 		8696276E1F855E2C00A2CCE0 /* FoggyAR */ = {
 			isa = PBXNativeTarget;
@@ -214,6 +173,7 @@
 				8696276C1F855E2C00A2CCE0 /* Frameworks */,
 				8696276D1F855E2C00A2CCE0 /* Resources */,
 				861992571F8575FB006260C0 /* Embed Frameworks */,
+				5571685C1FC8D2DD009ADD6B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -223,25 +183,6 @@
 			productName = FoggyAR;
 			productReference = 8696276F1F855E2C00A2CCE0 /* FoggyAR.app */;
 			productType = "com.apple.product-type.application";
-		};
-		AC36A6031FC4BE380094BEDE /* EmbeddFoggyAR */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AC36A60B1FC4BE390094BEDE /* Build configuration list for PBXNativeTarget "EmbeddFoggyAR" */;
-			buildPhases = (
-				AC36A5FF1FC4BE380094BEDE /* Sources */,
-				AC36A6001FC4BE380094BEDE /* Frameworks */,
-				AC36A6011FC4BE380094BEDE /* Headers */,
-				AC36A6021FC4BE380094BEDE /* Resources */,
-				AC36A60C1FC4BE670094BEDE /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = EmbeddFoggyAR;
-			productName = EmbeddFoggyAR;
-			productReference = AC36A6041FC4BE380094BEDE /* EmbeddFoggyAR.framework */;
-			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -255,10 +196,6 @@
 				TargetAttributes = {
 					8696276E1F855E2C00A2CCE0 = {
 						CreatedOnToolsVersion = 9.1;
-						ProvisioningStyle = Automatic;
-					};
-					AC36A6031FC4BE380094BEDE = {
-						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -277,7 +214,6 @@
 			projectRoot = "";
 			targets = (
 				8696276E1F855E2C00A2CCE0 /* FoggyAR */,
-				AC36A6031FC4BE380094BEDE /* EmbeddFoggyAR */,
 			);
 		};
 /* End PBXProject section */
@@ -296,17 +232,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AC36A6021FC4BE380094BEDE /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5571685C1FC8D2DD009ADD6B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC124B331FC4CB0200C4FADC /* lightbulb.dae in Resources */,
-				AC124B341FC4CB0C00C4FADC /* art.scnassets in Resources */,
-				AC124B321FC4CAFE00C4FADC /* ocilogo.dae in Resources */,
+			);
+			inputPaths = (
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp -R ${SOURCE_ROOT}/FoggyAR ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/Sources/";
 		};
-/* End PBXResourcesBuildPhase section */
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8696276B1F855E2C00A2CCE0 /* Sources */ = {
@@ -321,19 +263,6 @@
 				86BAC2241F97FFA800AF6F5A /* Inceptionv3.mlmodel in Sources */,
 				869627911F85646200A2CCE0 /* FoggyLogo.swift in Sources */,
 				86BAC2221F97FCEE00AF6F5A /* TrainDetection.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AC36A5FF1FC4BE380094BEDE /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AC36A60F1FC4C0DF0094BEDE /* TrainDetection.swift in Sources */,
-				AC36A6101FC4C1060094BEDE /* Inceptionv3.mlmodel in Sources */,
-				AC36A60E1FC4C0D80094BEDE /* QRDetection.swift in Sources */,
-				AC124B351FC4CBF700C4FADC /* FoggyViewController.swift in Sources */,
-				AC124B311FC4CAD900C4FADC /* FoggyLogoRenderer.swift in Sources */,
-				AC124B301FC4CAC200C4FADC /* FoggyLogo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,7 +400,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8VPYJWT4Q6;
+				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
 				INFOPLIST_FILE = FoggyAR/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -487,7 +416,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8VPYJWT4Q6;
+				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
 				INFOPLIST_FILE = FoggyAR/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -495,54 +424,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		AC36A6091FC4BE390094BEDE /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = EmbeddFoggyAR/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.EmbedFoggyAR;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		AC36A60A1FC4BE390094BEDE /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = EmbeddFoggyAR/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.EmbedFoggyAR;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -563,15 +444,6 @@
 			buildConfigurations = (
 				869627841F855E2D00A2CCE0 /* Debug */,
 				869627851F855E2D00A2CCE0 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AC36A60B1FC4BE390094BEDE /* Build configuration list for PBXNativeTarget "EmbeddFoggyAR" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AC36A6091FC4BE390094BEDE /* Debug */,
-				AC36A60A1FC4BE390094BEDE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

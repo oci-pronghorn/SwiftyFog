@@ -58,4 +58,5 @@ target/
 # DotEnv files
 .env
 
-examples/playground/artechtalk.playgroundbook/Contents/Sources/*.framework
+examples/playground/artechtalk.playgroundbook/Contents/Sources/SwiftyFog
+examples/playground/artechtalk.playgroundbook/Contents/Sources/FoggyAR

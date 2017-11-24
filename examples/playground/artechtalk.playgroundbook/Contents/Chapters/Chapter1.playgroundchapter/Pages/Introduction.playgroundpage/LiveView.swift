@@ -1,6 +1,4 @@
 import PlaygroundSupport
-import EmbeddFoggyAR
-import SwiftyFog_IOS
 
 let viewController = FoggyViewController()
 PlaygroundPage.current.liveView = viewController

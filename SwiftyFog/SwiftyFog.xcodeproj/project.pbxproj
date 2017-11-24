@@ -142,21 +142,7 @@
 		55D7C5571F82E6BC0045258D /* FogBitmapLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347541F82D13700C3C2CB /* FogBitmapLayout.swift */; };
 		55D7C5581F82E6D30045258D /* FogPixel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347561F82D13700C3C2CB /* FogPixel.swift */; };
 		55D7C5591F82E6F30045258D /* FogBitMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347531F82D13700C3C2CB /* FogBitMap.swift */; };
-		AC36A5FE1FC4AEDE0094BEDE /* SwiftyFog_iOS.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 554347471F82D0F600C3C2CB /* SwiftyFog_iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		AC36A5FD1FC4AED10094BEDE /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "${SOURCE_ROOT}/../examples/playground/artechtalk.playgroundbook/Contents/Sources";
-			dstSubfolderSpec = 0;
-			files = (
-				AC36A5FE1FC4AEDE0094BEDE /* SwiftyFog_iOS.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5500657B1FC5F71F00EEC1CE /* MQTTRoutingParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTRoutingParams.swift; sourceTree = "<group>"; };
@@ -499,7 +485,7 @@
 				554347431F82D0F600C3C2CB /* Frameworks */,
 				554347441F82D0F600C3C2CB /* Headers */,
 				554347451F82D0F600C3C2CB /* Resources */,
-				AC36A5FD1FC4AED10094BEDE /* CopyFiles */,
+				5571685A1FC8D035009ADD6B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -581,6 +567,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5571685A1FC8D035009ADD6B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp -R ${SOURCE_ROOT}/SwiftyFog ${SOURCE_ROOT}/../examples/playground/artechtalk.playgroundbook/Contents/Sources/";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		554347421F82D0F600C3C2CB /* Sources */ = {
