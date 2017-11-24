@@ -57,8 +57,6 @@
 		86BAC2211F97FCEE00AF6F5A /* TrainDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainDetection.swift; sourceTree = "<group>"; };
 		86BAC2231F97FFA800AF6F5A /* Inceptionv3.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Inceptionv3.mlmodel; sourceTree = "<group>"; };
 		86FCE2311F8F13E300CB217C /* lightbulb.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = lightbulb.dae; sourceTree = "<group>"; };
-		AC36A6061FC4BE390094BEDE /* EmbeddFoggyAR.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmbeddFoggyAR.h; sourceTree = "<group>"; };
-		AC36A6071FC4BE390094BEDE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +71,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5571685D1FC8D3CE009ADD6B /* FoggyARApp */ = {
+			isa = PBXGroup;
+			children = (
+				869627721F855E2C00A2CCE0 /* AppDelegate.swift */,
+				8696278C1F85600A00A2CCE0 /* FoggyAppController.swift */,
+				8619924F1F856A38006260C0 /* assets */,
+				869627781F855E2C00A2CCE0 /* Main.storyboard */,
+				8696277D1F855E2C00A2CCE0 /* LaunchScreen.storyboard */,
+				869627801F855E2D00A2CCE0 /* Info.plist */,
+			);
+			name = FoggyARApp;
+			sourceTree = "<group>";
+		};
 		8619924F1F856A38006260C0 /* assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -96,8 +107,8 @@
 		869627661F855E2C00A2CCE0 = {
 			isa = PBXGroup;
 			children = (
+				5571685D1FC8D3CE009ADD6B /* FoggyARApp */,
 				869627711F855E2C00A2CCE0 /* FoggyAR */,
-				AC36A6051FC4BE390094BEDE /* EmbeddFoggyAR */,
 				869627701F855E2C00A2CCE0 /* Products */,
 				869627891F855ED700A2CCE0 /* Frameworks */,
 			);
@@ -114,15 +125,9 @@
 		869627711F855E2C00A2CCE0 /* FoggyAR */ = {
 			isa = PBXGroup;
 			children = (
-				869627721F855E2C00A2CCE0 /* AppDelegate.swift */,
-				8696278C1F85600A00A2CCE0 /* FoggyAppController.swift */,
 				869627881F855E6800A2CCE0 /* viewcontroller */,
 				867938D91F8F9CC7004ED3C9 /* render */,
 				869627861F855E5C00A2CCE0 /* model */,
-				8619924F1F856A38006260C0 /* assets */,
-				869627781F855E2C00A2CCE0 /* Main.storyboard */,
-				8696277D1F855E2C00A2CCE0 /* LaunchScreen.storyboard */,
-				869627801F855E2D00A2CCE0 /* Info.plist */,
 			);
 			path = FoggyAR;
 			sourceTree = "<group>";
@@ -151,15 +156,6 @@
 				8696278B1F855ED700A2CCE0 /* SwiftyFog_iOS.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		AC36A6051FC4BE390094BEDE /* EmbeddFoggyAR */ = {
-			isa = PBXGroup;
-			children = (
-				AC36A6061FC4BE390094BEDE /* EmbeddFoggyAR.h */,
-				AC36A6071FC4BE390094BEDE /* Info.plist */,
-			);
-			path = EmbeddFoggyAR;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -401,7 +397,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
-				INFOPLIST_FILE = FoggyAR/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.oci.FoggyAR;
@@ -417,7 +413,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
-				INFOPLIST_FILE = FoggyAR/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.oci.FoggyAR;
