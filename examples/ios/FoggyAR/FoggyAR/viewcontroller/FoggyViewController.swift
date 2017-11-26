@@ -9,8 +9,10 @@
 import UIKit
 import SceneKit
 import ARKit
-import SwiftyFog_iOS
 import Vision
+#if APP
+import SwiftyFog_iOS
+#endif
 
 public class FoggyViewController: UIViewController {
 	

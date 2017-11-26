@@ -7,7 +7,9 @@
 //
 
 import Foundation
+#if APP
 import SwiftyFog_iOS
+#endif
 
 public protocol FoggyLogoDelegate: class {
 	func foggyLogo(lightsPower: Bool)
