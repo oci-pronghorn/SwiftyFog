@@ -16,6 +16,7 @@ public protocol TrainDetectionDelegate: class {
 	func detectRequestError(error : Error)
 }
 
+#if APP
 public class TrainDetection {
 	public weak var delegate: TrainDetectionDelegate?
 	private let selectedModel: VNCoreMLModel
@@ -55,3 +56,4 @@ public class TrainDetection {
 		}
 	}
 }
+#endif

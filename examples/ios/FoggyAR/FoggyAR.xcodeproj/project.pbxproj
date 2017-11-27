@@ -74,9 +74,9 @@
 		5571685D1FC8D3CE009ADD6B /* FoggyARApp */ = {
 			isa = PBXGroup;
 			children = (
+				868F0DA91FCCA3C6001C13C7 /* assets */,
 				869627721F855E2C00A2CCE0 /* AppDelegate.swift */,
 				8696278C1F85600A00A2CCE0 /* FoggyAppController.swift */,
-				8619924F1F856A38006260C0 /* assets */,
 				869627781F855E2C00A2CCE0 /* Main.storyboard */,
 				8696277D1F855E2C00A2CCE0 /* LaunchScreen.storyboard */,
 				869627801F855E2D00A2CCE0 /* Info.plist */,
@@ -87,7 +87,6 @@
 		8619924F1F856A38006260C0 /* assets */ = {
 			isa = PBXGroup;
 			children = (
-				86BAC2231F97FFA800AF6F5A /* Inceptionv3.mlmodel */,
 				86FCE2311F8F13E300CB217C /* lightbulb.dae */,
 				861992521F856D2E006260C0 /* ocilogo.dae */,
 				869627741F855E2C00A2CCE0 /* art.scnassets */,
@@ -102,6 +101,14 @@
 				867CDBA11F8E97EC00D0F5AE /* FoggyLogoRenderer.swift */,
 			);
 			path = render;
+			sourceTree = "<group>";
+		};
+		868F0DA91FCCA3C6001C13C7 /* assets */ = {
+			isa = PBXGroup;
+			children = (
+				86BAC2231F97FFA800AF6F5A /* Inceptionv3.mlmodel */,
+			);
+			path = assets;
 			sourceTree = "<group>";
 		};
 		869627661F855E2C00A2CCE0 = {
@@ -125,6 +132,7 @@
 		869627711F855E2C00A2CCE0 /* FoggyAR */ = {
 			isa = PBXGroup;
 			children = (
+				8619924F1F856A38006260C0 /* assets */,
 				869627881F855E6800A2CCE0 /* viewcontroller */,
 				867938D91F8F9CC7004ED3C9 /* render */,
 				869627861F855E5C00A2CCE0 /* model */,

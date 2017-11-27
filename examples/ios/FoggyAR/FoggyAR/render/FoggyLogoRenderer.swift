@@ -22,7 +22,10 @@ protocol FoggyLogoRendererDelegate:class {
 class FoggyLogoRenderer : NSObject {
 
 	private let qrDetector : QRDetection
+	
+	#if APP
 	private let trainDetector : TrainDetection
+	#endif
 	
 	// SceneNode for the 3D models
 	private var logoNode : SCNNode!
@@ -45,7 +48,9 @@ class FoggyLogoRenderer : NSObject {
 	
 	public init(sceneView : ARSCNView) {
 		self.sceneView = sceneView
+		#if APP
 		self.trainDetector = TrainDetection()
+		#endif
 		self.qrDetector = QRDetection(confidence: 0.8)
 		
 		super.init()
@@ -54,7 +59,10 @@ class FoggyLogoRenderer : NSObject {
 		self.sceneView.session.delegateQueue = dispatchQueue
 		self.sceneView.delegate = self
 		self.qrDetector.delegate = self
+		
+		#if APP
 		self.trainDetector.delegate = self
+		#endif
 		
 		self.delegate?.loading(true)
 		
@@ -214,7 +222,9 @@ extension FoggyLogoRenderer: ARSessionDelegate {
 				if let frame = me.sceneView.session.currentFrame {
 					let capturedImage = frame.capturedImage
 					// Blocking calls and must be executed serially.
+					#if APP
 					me.trainDetector.session(didUpdate: capturedImage)
+					#endif
 					me.qrDetector.session(me.sceneView.session, inScene: me.sceneView, didUpdate: frame, capturedImage: capturedImage)
 				}
 				else {
@@ -274,7 +284,9 @@ extension FoggyLogoRenderer: QRDetectionDelegate, TrainDetectionDelegate {
 	}
 	
 	func detectRequestError(error: Error) {
+		#if APP
 		print("Error in detection: \(error.localizedDescription)")
+		#endif
 	}
 }
 

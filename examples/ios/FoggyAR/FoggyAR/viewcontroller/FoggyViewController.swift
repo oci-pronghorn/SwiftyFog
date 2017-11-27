@@ -15,7 +15,6 @@ import SwiftyFog_iOS
 #endif
 
 public class FoggyViewController: UIViewController {
-	
 	let logo = FoggyLogo()
 	
 	var mqtt: MQTTBridge! {
@@ -94,9 +93,11 @@ public class FoggyViewController: UIViewController {
 			let node = hitResult.node
 			
 			if let url = URL(string: qrValue) {
+			  #if APP
 				if(renderer.hitQRCode(node: node) && UIApplication.shared.canOpenURL(url)) {
 					UIApplication.shared.open(url)
 				}
+				#endif
 			}
 		}
 	}
