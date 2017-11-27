@@ -1,3 +1,4 @@
+/*
 import PlaygroundSupport
 
 let viewController = FoggyViewController()
@@ -44,3 +45,4 @@ var subscription: MQTTBroadcaster? = router.broadcast(to: business, topics: [("h
 router.publish(MQTTMessage(topic: "hello", payload: "something".data(using: .utf8)!), completion: nil)
 subscription = nil
 
+*/

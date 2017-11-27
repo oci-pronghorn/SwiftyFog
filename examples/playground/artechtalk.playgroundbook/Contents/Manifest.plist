@@ -17,7 +17,7 @@
 	<key>DevelopmentRegion</key>
 	<string>US</string>
 	<key>SwiftVersion</key>
-	<string>3.1</string>
+	<string>4.0</string>
 	<key>MinimumSwiftPlaygroundsVersion</key>
 	<string>1.2</string>
 	<key>Chapters</key>
