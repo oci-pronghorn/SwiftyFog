@@ -61,9 +61,9 @@ extension PlaygroundMQTTClient : PlaygroundLiveViewMessageHandler {
 		metrics?.debug("closed live messaging")
 	}
 	
-	public func receive(_ message: PlaygroundValue) {
+	public func receive(_ value: PlaygroundValue) {
 		metrics?.debug("Received Playground Value: \(value)")
-		if case .data ( let data ) = message {
+		if case .data ( let data ) = value {
 			if case .success(let packet) = factory.unmarshal(data) {
 				router.dispatch(packet: packet)
 			}

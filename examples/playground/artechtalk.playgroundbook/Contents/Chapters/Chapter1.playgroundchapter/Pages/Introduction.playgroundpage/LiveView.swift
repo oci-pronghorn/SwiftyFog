@@ -13,7 +13,7 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 let metrics = MQTTMetrics()
 metrics.debugOut = {
 	print("- \($0)")
-	testLabel.text = \($0)
+	testLabel.text = "\($0)"
 }
 metrics.doPrintSendPackets = true
 metrics.doPrintReceivePackets = true
