@@ -1,48 +1,30 @@
-/*
+import UIKit
 import PlaygroundSupport
 
-let viewController = FoggyViewController()
-PlaygroundPage.current.liveView = viewController
+let container = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
+var testLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
+testLabel.center = CGPoint(x: 160, y: 284)
+testLabel.text = "Nothing"
+container.addSubview(testLabel)
+
+PlaygroundPage.current.liveView = container
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-let router = MQTTRouter()
-
-class PlaygroundMQTTConnection: MQTTRouterDelegate {
-	let factory = MQTTPacketFactory()
-	func mqtt(send packet: MQTTPacket, completion: @escaping (Bool)->()) {
-		print("Routing: \(packet)")
-		let data = factory.marshal(packet)
-		let result = factory.unmarshal(data)
-		if case .success(let packet) = result {
-			router.dispatch(packet: packet)
-		}
-	}
-	func mqtt(unhandledMessage: MQTTMessage) {
-		print("Unhandled \(unhandledMessage)")
-	}
-}
-/*
- extension PlaygroundMQTTConnection: PlaygroundLiveViewMessageHandler {
- // use the factory to move messages in/out of router
- }
-
- extension PlaygroundMQTTConnection: PlaygroundRemoteLiveViewProxyDelegate {
- // use the factory to move messages in/out of router
- }
-*/
-
-let connect = Direct()
-router.delegate = connect
+let liveViewClient = PlaygroundMQTTClient()
 
 class Business {
 	func receive(_ msg: MQTTMessage) {
-		print("Received: \(msg)")
+		testLabel.text = "Data: \(msg.payload)"
 	}
 }
 
 let business = Business()
-var subscription: MQTTBroadcaster? = router.broadcast(to: business, topics: [("hello", .atMostOnce, Business.receive)])
-router.publish(MQTTMessage(topic: "hello", payload: "something".data(using: .utf8)!), completion: nil)
-subscription = nil
 
+var subscription: MQTTBroadcaster? = liveViewClient.broadcast(to: business, topics: [
+  ("hello", .atMostOnce, Business.receive)
+])
+
+/*
+let viewController = FoggyViewController()
+PlaygroundPage.current.liveView = viewController
 */
