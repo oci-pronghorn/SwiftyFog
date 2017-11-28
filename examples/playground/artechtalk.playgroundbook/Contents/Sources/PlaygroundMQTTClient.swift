@@ -7,6 +7,10 @@ public class PlaygroundMQTTClient {
 	private weak var liveViewMessageHandler: PlaygroundLiveViewMessageHandler!
 	private weak var contentViewMessageHandler: PlaygroundRemoteLiveViewProxy!
 	
+	public convenience init(metrics: MQTTMetrics? = nil) {
+		self.init(liveViewMessageHandler: nil, contentViewMessageHandler: nil, metrics: metrics)
+	}
+	
 	public convenience init(liveViewMessageHandler: PlaygroundLiveViewMessageHandler, metrics: MQTTMetrics? = nil) {
 		self.init(liveViewMessageHandler: liveViewMessageHandler, contentViewMessageHandler: nil, metrics: metrics)
 	}
@@ -50,7 +54,6 @@ extension PlaygroundMQTTClient: MQTTBridge {
 }
 
 extension PlaygroundMQTTClient : MQTTRouterDelegate {
-
 	// Takes an MQTT message and sends it to the Playground as if it was a broker
 	public func mqtt(send packet: MQTTPacket, completion: @escaping (Bool)->()) {
 		let data = factory.marshal(packet)
@@ -60,13 +63,19 @@ extension PlaygroundMQTTClient : MQTTRouterDelegate {
 			contentViewMessageHandler.send(payload)
 		}
 		// * Sends a message from Live View to Content
-		if let liveViewMessageHandler = liveViewMessageHandler {
+		else if let liveViewMessageHandler = liveViewMessageHandler {
 			liveViewMessageHandler.send(payload)
+		}
+		// * Sends directly to self
+		else if case .success(let packet) = factory.unmarshal(data) {
+			router.dispatch(packet: packet)
+		}
+		else {
+			metrics?.debug("Failed to unmarshal packet")
 		}
 	}
 	
 	public func mqtt(unhandledMessage: MQTTMessage) {
-		metrics?.debug("Unhandled \(unhandledMessage)")
 	}
 }
 
@@ -77,13 +86,13 @@ extension PlaygroundMQTTClient: PlaygroundRemoteLiveViewProxyDelegate {
 	}
 	
 	public func remoteLiveViewProxyConnectionClosed(_ remoteLiveViewProxy: PlaygroundRemoteLiveViewProxy) {
+		metrics?.debug("Live View closed connection to client")
 	}
 }
 
 extension PlaygroundMQTTClient {
-
 	// * Receives a message from ContentView and deleivered to LiveView
-	// * Manually call from PlaygroundLiveViewMessageHandler in Live View
+	// * Manually call from PlaygroundLiveViewMessageHandler in the LiveView
 	public func receive(playgroundValue value: PlaygroundValue) {
 		metrics?.debug("Received Playground Value: \(value)")
 		if case .data ( let data ) = value {
