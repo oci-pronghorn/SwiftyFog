@@ -10,11 +10,22 @@ container.addSubview(testLabel)
 PlaygroundPage.current.liveView = container
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-let liveViewClient = PlaygroundMQTTClient()
+let metrics = MQTTMetrics()
+metrics.debugOut = {
+	print("- \($0)")
+	testLabel.text = \($0)
+}
+metrics.doPrintSendPackets = true
+metrics.doPrintReceivePackets = true
+metrics.doPrintUnhandledPackets = true
+metrics.doPrintIdRetains = true
+metrics.doPrintWireData = true
+
+let liveViewClient = PlaygroundMQTTClient(metrics: metrics)
 
 class Business {
 	func receive(_ msg: MQTTMessage) {
-		testLabel.text = "Data: \(msg.payload)"
+		testLabel.text = "Data: \(msg)"
 	}
 }
 

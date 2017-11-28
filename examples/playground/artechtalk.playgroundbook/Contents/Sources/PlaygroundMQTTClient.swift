@@ -1,27 +1,34 @@
 import PlaygroundSupport
 
 public class PlaygroundMQTTClient : MQTTRouterDelegate {
-	let router = MQTTRouter()
-	let factory = MQTTPacketFactory()
+	let metrics: MQTTMetrics?
+	let router: MQTTRouter
+	let factory: MQTTPacketFactory
 	
-	public init() {
-		print("Initialized MQTT")
+	public init(metrics: MQTTMetrics? = nil) {
+		metrics?.debug("Initialize MQTT")
+		self.metrics = metrics
+		self.router = MQTTRouter(metrics: metrics)
+		self.factory = MQTTPacketFactory(metrics: metrics)
 		router.delegate = self
 	}
 
 	public func mqtt(send packet: MQTTPacket, completion: @escaping (Bool)->()) {
-		print("Routing: \(packet)")
-		//Going from CONTENTS -> LIVEVIEW
+		metrics?.debug("Routing: \(packet)")
 		let page = PlaygroundPage.current
+		//Going from CONTENTS -> LIVEVIEW
 		if let proxy = page.liveView as? PlaygroundRemoteLiveViewProxy {
 			let data = factory.marshal(packet)
 			let payload : PlaygroundValue = .data(data)
 			proxy.send(payload)
 		}
+		else {
+			metrics?.debug("No Live View to send to")
+		}
 	}
 	
 	public func mqtt(unhandledMessage: MQTTMessage) {
-		print("Unhandled \(unhandledMessage)")
+		metrics?.debug("Unhandled \(unhandledMessage)")
 	}
 }
 
@@ -47,19 +54,25 @@ extension PlaygroundMQTTClient: MQTTBridge {
 /* Playground Message Handler */
 extension PlaygroundMQTTClient : PlaygroundLiveViewMessageHandler {
 	public func liveViewMessageConnectionOpened() {
-		print("opened live messaging")
+		metrics?.debug("opened live messaging")
 	}
 	
 	public func liveViewMessageConnectionClosed() {
-		print("closed live messaging")
+		metrics?.debug("closed live messaging")
 	}
 	
 	public func receive(_ message: PlaygroundValue) {
-		print("received playground value")
+		metrics?.debug("Received Playground Value: \(value)")
 		if case .data ( let data ) = message {
 			if case .success(let packet) = factory.unmarshal(data) {
 				router.dispatch(packet: packet)
 			}
+			else {
+				metrics?.debug("Failed to unmarshal packet")
+			}
+		}
+		else {
+			metrics?.debug("Received Playground Value NOT DATA")
 		}
 	}
 }
