@@ -17,7 +17,7 @@ import SwiftyFog_iOS
 public class FoggyViewController: UIViewController {
 	let logo = FoggyLogo()
 	
-	var mqtt: MQTTBridge! {
+	public var mqtt: MQTTBridge! {
 		didSet {
 			logo.mqtt = mqtt
 		}

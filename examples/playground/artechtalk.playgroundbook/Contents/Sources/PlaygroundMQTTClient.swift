@@ -82,7 +82,7 @@ extension PlaygroundMQTTClient : MQTTRouterDelegate {
 extension PlaygroundMQTTClient: PlaygroundRemoteLiveViewProxyDelegate {
 	// * Receives a message from LiveView and delivered to ContentView
 	public func remoteLiveViewProxy(_ remoteLiveViewProxy: PlaygroundRemoteLiveViewProxy, received message: PlaygroundValue) {
-		receive(playgroundValue: message)
+		dispatch(playgroundValue: message)
 	}
 	
 	public func remoteLiveViewProxyConnectionClosed(_ remoteLiveViewProxy: PlaygroundRemoteLiveViewProxy) {
@@ -93,7 +93,7 @@ extension PlaygroundMQTTClient: PlaygroundRemoteLiveViewProxyDelegate {
 extension PlaygroundMQTTClient {
 	// * Receives a message from ContentView and deleivered to LiveView
 	// * Manually call from PlaygroundLiveViewMessageHandler in the LiveView
-	public func receive(playgroundValue value: PlaygroundValue) {
+	public func dispatch(playgroundValue value: PlaygroundValue) {
 		metrics?.debug("Received Playground Value: \(value)")
 		if case .data ( let data ) = value {
 			if case .success(let packet) = factory.unmarshal(data) {
