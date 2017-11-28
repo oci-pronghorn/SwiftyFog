@@ -1,9 +1,11 @@
-//: ## SwiftyFog & Foglight
+//: ## SwiftyFog & AR Kit
 //:
 //: Using MQTT, we are sending a message to the **live view**.
+//: The plyground is the broker that sends the MQTT packets between the pages' processes.
 
 import PlaygroundSupport
 
+//#-hidden-code
 let metrics = MQTTMetrics()
 metrics.debugOut = {print("- \($0)")}
 metrics.doPrintSendPackets = true
@@ -11,7 +13,9 @@ metrics.doPrintReceivePackets = true
 metrics.doPrintUnhandledPackets = true
 metrics.doPrintIdRetains = true
 metrics.doPrintWireData = true
+let mqtt = PlaygroundMQTTClient(metrics: metrics)
+//#-end-hidden-code
 
-let contentClient = PlaygroundMQTTClient(metrics: metrics)
-contentClient.publish(MQTTMessage(topic: "hello", payload: "Hello World!".data(using: .utf8)!), completion: nil)
+mqtt.publish(
+	MQTTMessage(topic: "hello", payload: /*#-editable-code*/"<#Hello World!#>"/*#-end-editable-code*/.data(using: .utf8)!), completion: nil)
 

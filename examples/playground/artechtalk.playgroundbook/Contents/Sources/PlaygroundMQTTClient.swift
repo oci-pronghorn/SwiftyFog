@@ -51,16 +51,8 @@ extension PlaygroundMQTTClient: MQTTBridge {
 	}
 }
 
-/* Playground Message Handler */
-extension PlaygroundMQTTClient : PlaygroundLiveViewMessageHandler {
-	public func liveViewMessageConnectionOpened() {
-		metrics?.debug("opened live messaging")
-	}
-	
-	public func liveViewMessageConnectionClosed() {
-		metrics?.debug("closed live messaging")
-	}
-	
+/* PlaygroundLiveViewMessageHandler */
+extension PlaygroundMQTTClient {
 	public func receive(_ value: PlaygroundValue) {
 		metrics?.debug("Received Playground Value: \(value)")
 		if case .data ( let data ) = value {

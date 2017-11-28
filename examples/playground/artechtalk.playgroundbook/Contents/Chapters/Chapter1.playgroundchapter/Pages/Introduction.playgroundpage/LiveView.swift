@@ -1,41 +1,63 @@
 import UIKit
 import PlaygroundSupport
 
-let container = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
-var testLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
-testLabel.center = CGPoint(x: 160, y: 284)
-testLabel.text = "Nothing"
-container.addSubview(testLabel)
+let page = PlaygroundPage.current
+page.needsIndefiniteExecution = true
 
-PlaygroundPage.current.liveView = container
-PlaygroundPage.current.needsIndefiniteExecution = true
-
-let metrics = MQTTMetrics()
-metrics.debugOut = {
-	print("- \($0)")
-	testLabel.text = "\($0)"
-}
-metrics.doPrintSendPackets = true
-metrics.doPrintReceivePackets = true
-metrics.doPrintUnhandledPackets = true
-metrics.doPrintIdRetains = true
-metrics.doPrintWireData = true
-
-let liveViewClient = PlaygroundMQTTClient(metrics: metrics)
-
-class Business {
+public class MyViewController: UIViewController {
+	var metrics = MQTTMetrics()
+	var mqtt: PlaygroundMQTTClient!
+	var subscription: MQTTBroadcaster!
+	var testLabel: UILabel!
+	
+	override public func viewDidLoad() {
+		super.viewDidLoad()
+		
+		self.testLabel = UILabel(frame: CGRect(x: 20, y: 20, width: 400, height: 80))
+		self.testLabel.text = "Nothing"
+		self.testLabel.numberOfLines = 0
+		self.testLabel.lineBreakMode = .byCharWrapping
+		self.view.addSubview(testLabel)
+		
+		metrics.debugOut = { [weak self] in
+			print($0)
+		}
+		metrics.doPrintSendPackets = true
+		metrics.doPrintReceivePackets = true
+		metrics.doPrintUnhandledPackets = true
+		metrics.doPrintIdRetains = true
+		metrics.doPrintWireData = true
+		
+		mqtt = PlaygroundMQTTClient(metrics: metrics)
+		
+		subscription = mqtt.broadcast(to: self, topics: [
+		 	("hello", .atMostOnce, MyViewController.receive)
+		])
+	}
+	
 	func receive(_ msg: MQTTMessage) {
-		testLabel.text = "Data: \(msg)"
+		self.testLabel.text = "!\(msg.payload)"
 	}
 }
 
-let business = Business()
+extension MyViewController: PlaygroundLiveViewMessageHandler {
+	public func liveViewMessageConnectionOpened() {
+		//self.testLabel.text = "Open"
+	}
+	
+	public func liveViewMessageConnectionClosed() {
+		//self.testLabel.text = "Close"
+	}
+	
+	public func receive(_ value: PlaygroundValue) {
+		self.mqtt.receive(value)
+	}
+}
 
-var subscription: MQTTBroadcaster? = liveViewClient.broadcast(to: business, topics: [
-  ("hello", .atMostOnce, Business.receive)
-])
-
+let viewController = MyViewController()
 /*
 let viewController = FoggyViewController()
-PlaygroundPage.current.liveView = viewController
+page.liveView = viewController
 */
+page.liveView = viewController
+

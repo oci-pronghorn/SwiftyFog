@@ -11,6 +11,6 @@
 	<key>LiveViewEdgeToEdge</key>
 	<true/>
 	<key>PlaygroundLoggingMode</key>
-	<string>Off</string>
+	<string>Normal</string>
 </dict>
 </plist>
