@@ -19,7 +19,7 @@ public class MyViewController: UIViewController {
 		self.testLabel.lineBreakMode = .byCharWrapping
 		self.view.addSubview(testLabel)
 		
-		metrics.debugOut = { [weak self] in
+		metrics.debugOut = {
 			print($0)
 		}
 		metrics.doPrintSendPackets = true
@@ -28,7 +28,7 @@ public class MyViewController: UIViewController {
 		metrics.doPrintIdRetains = true
 		metrics.doPrintWireData = true
 		
-		mqtt = PlaygroundMQTTClient(metrics: metrics)
+		mqtt = PlaygroundMQTTClient(liveViewMessageHandler: self, metrics: metrics)
 		
 		subscription = mqtt.broadcast(to: self, topics: [
 		 	("hello", .atMostOnce, MyViewController.receive)
@@ -49,8 +49,9 @@ extension MyViewController: PlaygroundLiveViewMessageHandler {
 		//self.testLabel.text = "Close"
 	}
 	
+	// Wire up mqtt to playground per message received
 	public func receive(_ value: PlaygroundValue) {
-		self.mqtt.receive(value)
+		self.mqtt.receive(playgroundValue: value)
 	}
 }
 

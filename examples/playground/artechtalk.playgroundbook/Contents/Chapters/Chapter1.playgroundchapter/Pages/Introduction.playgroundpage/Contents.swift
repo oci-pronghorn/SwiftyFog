@@ -6,6 +6,9 @@
 import PlaygroundSupport
 
 //#-hidden-code
+let page = PlaygroundPage.current
+page.needsIndefiniteExecution = true
+
 let metrics = MQTTMetrics()
 metrics.debugOut = {print("- \($0)")}
 metrics.doPrintSendPackets = true
@@ -13,7 +16,7 @@ metrics.doPrintReceivePackets = true
 metrics.doPrintUnhandledPackets = true
 metrics.doPrintIdRetains = true
 metrics.doPrintWireData = true
-let mqtt = PlaygroundMQTTClient(metrics: metrics)
+let mqtt = PlaygroundMQTTClient(contentViewMessageHandler: page.liveView as! PlaygroundRemoteLiveViewProxy, metrics: metrics)
 //#-end-hidden-code
 
 mqtt.publish(

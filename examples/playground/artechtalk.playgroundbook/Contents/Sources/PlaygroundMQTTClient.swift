@@ -1,38 +1,36 @@
 import PlaygroundSupport
 
-public class PlaygroundMQTTClient : MQTTRouterDelegate {
-	let metrics: MQTTMetrics?
-	let router: MQTTRouter
-	let factory: MQTTPacketFactory
+public class PlaygroundMQTTClient {
+	private let metrics: MQTTMetrics?
+	private let router: MQTTRouter
+	private let factory: MQTTPacketFactory
+	private weak var liveViewMessageHandler: PlaygroundLiveViewMessageHandler!
+	private weak var contentViewMessageHandler: PlaygroundRemoteLiveViewProxy!
 	
-	public init(metrics: MQTTMetrics? = nil) {
-		metrics?.debug("Initialize MQTT")
+	public convenience init(liveViewMessageHandler: PlaygroundLiveViewMessageHandler, metrics: MQTTMetrics? = nil) {
+		self.init(liveViewMessageHandler: liveViewMessageHandler, contentViewMessageHandler: nil, metrics: metrics)
+	}
+	
+	public convenience init(contentViewMessageHandler: PlaygroundRemoteLiveViewProxy, metrics: MQTTMetrics? = nil) {
+		self.init(liveViewMessageHandler: nil, contentViewMessageHandler: contentViewMessageHandler, metrics: metrics)
+		contentViewMessageHandler.delegate = self
+	}
+	
+	private init(
+		liveViewMessageHandler: PlaygroundLiveViewMessageHandler?,
+		contentViewMessageHandler: PlaygroundRemoteLiveViewProxy?,
+		metrics: MQTTMetrics? = nil) {
+
+		self.liveViewMessageHandler = liveViewMessageHandler
+		self.contentViewMessageHandler = contentViewMessageHandler
 		self.metrics = metrics
 		self.router = MQTTRouter(metrics: metrics)
 		self.factory = MQTTPacketFactory(metrics: metrics)
+		
 		router.delegate = self
-	}
-
-	public func mqtt(send packet: MQTTPacket, completion: @escaping (Bool)->()) {
-		metrics?.debug("Routing: \(packet)")
-		let page = PlaygroundPage.current
-		//Going from CONTENTS -> LIVEVIEW
-		if let proxy = page.liveView as? PlaygroundRemoteLiveViewProxy {
-			let data = factory.marshal(packet)
-			let payload : PlaygroundValue = .data(data)
-			proxy.send(payload)
-		}
-		else {
-			metrics?.debug("No Live View to send to")
-		}
-	}
-	
-	public func mqtt(unhandledMessage: MQTTMessage) {
-		metrics?.debug("Unhandled \(unhandledMessage)")
 	}
 }
 
-/* MQTT Bridge Handler */
 extension PlaygroundMQTTClient: MQTTBridge {
 	public func createBridge(subPath: String) -> MQTTBridge {
 		return router.createBridge(subPath: subPath)
@@ -51,9 +49,42 @@ extension PlaygroundMQTTClient: MQTTBridge {
 	}
 }
 
-/* PlaygroundLiveViewMessageHandler */
+extension PlaygroundMQTTClient : MQTTRouterDelegate {
+
+	// Takes an MQTT message and sends it to the Playground as if it was a broker
+	public func mqtt(send packet: MQTTPacket, completion: @escaping (Bool)->()) {
+		let data = factory.marshal(packet)
+		let payload : PlaygroundValue = .data(data)
+		// * Sends a message from Content to Live View
+		if let contentViewMessageHandler = contentViewMessageHandler {
+			contentViewMessageHandler.send(payload)
+		}
+		// * Sends a message from Live View to Content
+		if let liveViewMessageHandler = liveViewMessageHandler {
+			liveViewMessageHandler.send(payload)
+		}
+	}
+	
+	public func mqtt(unhandledMessage: MQTTMessage) {
+		metrics?.debug("Unhandled \(unhandledMessage)")
+	}
+}
+
+extension PlaygroundMQTTClient: PlaygroundRemoteLiveViewProxyDelegate {
+	// * Receives a message from LiveView and delivered to ContentView
+	public func remoteLiveViewProxy(_ remoteLiveViewProxy: PlaygroundRemoteLiveViewProxy, received message: PlaygroundValue) {
+		receive(playgroundValue: message)
+	}
+	
+	public func remoteLiveViewProxyConnectionClosed(_ remoteLiveViewProxy: PlaygroundRemoteLiveViewProxy) {
+	}
+}
+
 extension PlaygroundMQTTClient {
-	public func receive(_ value: PlaygroundValue) {
+
+	// * Receives a message from ContentView and deleivered to LiveView
+	// * Manually call from PlaygroundLiveViewMessageHandler in Live View
+	public func receive(playgroundValue value: PlaygroundValue) {
 		metrics?.debug("Received Playground Value: \(value)")
 		if case .data ( let data ) = value {
 			if case .success(let packet) = factory.unmarshal(data) {
