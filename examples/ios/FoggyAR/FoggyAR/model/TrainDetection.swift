@@ -11,12 +11,12 @@ import SceneKit
 import ARKit
 import Vision
 
+#if APP
 public protocol TrainDetectionDelegate: class {
 	func foundObject(observation : VNClassificationObservation)
 	func detectRequestError(error : Error)
 }
 
-#if APP
 public class TrainDetection {
 	public weak var delegate: TrainDetectionDelegate?
 	private let selectedModel: VNCoreMLModel

@@ -59,8 +59,8 @@ extension FoggyViewController: PlaygroundLiveViewMessageHandler {
 	}
 }
 
-let viewController = MyViewController()
-// let viewController = FoggyViewController()
+//let viewController = MyViewController()
+let viewController = FoggyViewController()
 
 let mqtt = PlaygroundMQTTClient(liveViewMessageHandler: viewController, metrics: metrics)
 viewController.mqtt = mqtt

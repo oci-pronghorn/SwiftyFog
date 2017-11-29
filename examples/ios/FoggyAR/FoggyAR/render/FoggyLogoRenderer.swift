@@ -240,11 +240,15 @@ extension FoggyLogoRenderer: ARSessionDelegate {
 	}
 }
 
-extension FoggyLogoRenderer: QRDetectionDelegate, TrainDetectionDelegate {
-	
-	func foundObject(observation: VNClassificationObservation) {
-		print(observation.identifier)
-	}
+#if APP
+extension FoggyLogoRenderer: TrainDetectionDelegate {
+    func foundObject(observation: VNClassificationObservation) {
+        print(observation.identifier)
+    }
+}
+#endif
+
+extension FoggyLogoRenderer: QRDetectionDelegate  {
 	
 	func findQRValue(observation : VNBarcodeObservation/*, frame: ARFrame*/) -> Bool {
 		let newValue : String = observation.payloadStringValue!

@@ -34,30 +34,46 @@ public class FoggyViewController: UIViewController {
 	
 	// Outlet to the scene
 	@IBOutlet weak var sceneView: ARSCNView!
+    
+    public func buildUI() {
+        #if APP
+            // IB
+        #else
+        let b = self.view.bounds
+        self.sceneView = ARSCNView(frame: b)
+        let centerActivityView = UIView(frame: CGRect(x: 10, y: 10, width: 56, height: 56))
+        self.centerActivityView = centerActivityView
+            centerActivityView.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+        let activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 18, y: 18, width: 20, height: 20))
+        self.activityIndicator = activityIndicator
+        self.view.addSubview(self.sceneView)
+        self.view.addSubview(self.centerActivityView)
+        self.centerActivityView.addSubview(self.activityIndicator)
+        #endif
+        
+        // Set the scene to the view
+        // Add anitaliasing
+        sceneView.scene = SCNScene()
+        sceneView.antialiasingMode = SCNAntialiasingMode.multisampling4X
+        self.centerActivityView.layer.cornerRadius = 5;
+    }
 	
 	override public func viewDidLoad() {
 		super.viewDidLoad()
-		
+        
+        buildUI()
+
 		logo.delegate = self
-		
-		// Set the scene to the view
-		sceneView.scene = SCNScene()
-		
+        
 		// Set the renderer's delegate
 		self.renderer = FoggyLogoRenderer(sceneView: sceneView)
 		self.renderer.delegate = self
-		
-		// Make the activity indicator prettier
-		self.centerActivityView.layer.cornerRadius = 5;
-		
-		// Add anitaliasing
-		sceneView.antialiasingMode = SCNAntialiasingMode.multisampling4X
 		
 		// Create tap gesture recognizer
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(gestureRecognizer:)))
 		self.sceneView.addGestureRecognizer(tapGesture)
 	}
-	
+
 	func isShowingActivityIndicator(_ status: Bool) {
 		DispatchQueue.main.async {
 			self.centerActivityView.isHidden = !status
@@ -67,7 +83,7 @@ public class FoggyViewController: UIViewController {
 	override public var prefersStatusBarHidden: Bool {
 		return true
 	}
-	
+
 	override public func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
@@ -80,7 +96,7 @@ public class FoggyViewController: UIViewController {
 		// Run the view's session
 		sceneView.session.run(configuration)
 	}
-	
+
 	@objc func handleTap(gestureRecognizer: UITapGestureRecognizer) {
 		let touchLocation = gestureRecognizer.location(in: self.sceneView)
 		let hitResults = self.sceneView.hitTest(touchLocation, options: [:])
@@ -101,33 +117,32 @@ public class FoggyViewController: UIViewController {
 			}
 		}
 	}
-	
+
 	override public func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
-		
 		// Pause the view's session
 		sceneView.session.pause()
 	}
+    
+    func mqtt(connected: MQTTConnectedState) {
+        switch connected {
+        case .started:
+            trainIsAlive(false)
+        case .connected:
+            trainIsAlive(true)
+        case .retry:
+            break
+        case .retriesFailed:
+            break
+        case .pinged:
+            break
+        case .disconnected:
+            trainIsAlive(false)
+        }
+    }
 }
 
 extension FoggyViewController : FoggyLogoDelegate {
-	
-	func mqtt(connected: MQTTConnectedState) {
-		switch connected {
-		case .started:
-			trainIsAlive(false)
-		case .connected:
-			trainIsAlive(true)
-		case .retry:
-			break
-		case .retriesFailed:
-			break
-		case .pinged:
-			break
-		case .disconnected:
-			trainIsAlive(false)
-		}
-	}
 	
 	func trainIsAlive(_ alive: Bool) {
 		renderer.train(alive: alive)
@@ -157,3 +172,4 @@ extension FoggyViewController : FoggyLogoRendererDelegate {
 		self.isShowingActivityIndicator(state)
 	}
 }
+
