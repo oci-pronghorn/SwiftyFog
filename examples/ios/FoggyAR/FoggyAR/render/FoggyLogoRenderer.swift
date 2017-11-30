@@ -129,6 +129,8 @@ extension FoggyLogoRenderer : ARSCNViewDelegate {
 			
 			//Grab the required nodes
 			logoNode = virtualObjectScene.rootNode.childNode(withName: "OCILogo", recursively: false)!
+			
+			#if APP
 			let (minVec, maxVec) = logoNode.boundingBox
 			logoNode.pivot = SCNMatrix4MakeTranslation((maxVec.x - minVec.x) / 2 + minVec.x, (maxVec.y - minVec.y) / 2 + minVec.y, 0)
 			
@@ -136,6 +138,8 @@ extension FoggyLogoRenderer : ARSCNViewDelegate {
 			
 			//Before render we have already received a rotation, set it to that
 			logoNode.rotateToYAxis(to: -oldRotationY.degreesToRadians)
+				
+			#endif
 			
 			lightbulbNode = virtualObjectScene.rootNode.childNode(withName: "lightbulb", recursively: false)
 			largeSpotLightNode = virtualObjectScene.rootNode.childNode(withName: "largespot", recursively: false)
@@ -189,14 +193,18 @@ extension SCNNode {
 	}
 	
 	func rotateToYAxis(to: CGFloat) {
+		#if APP
 		self.eulerAngles.y = Float(to)
+		#endif
 	}
 	
 	func rotateAroundYAxis(by: CGFloat, duration : TimeInterval) {
+		#if APP
 		let action = SCNAction.rotate(by: by, around: SCNVector3(0, 1, 0), duration: duration)
 		
 		self.runAction(action, forKey: "rotatingYAxis")
 		self.position = SCNVector3(0,0,0)
+		#endif
 	}
 }
 
