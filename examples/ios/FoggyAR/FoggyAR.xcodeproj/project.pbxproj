@@ -250,7 +250,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -R ${SOURCE_ROOT}/FoggyAR ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/Sources/\nrm -rf ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/PrivateResources\nmv ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/Sources/FoggyAR/assets/  ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/PrivateResources";
+			shellScript = "cp -R ${SOURCE_ROOT}/FoggyAR ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/Sources/\nrm -rf ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/PrivateResources\nmv ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/Sources/FoggyAR/assets/  ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/PrivateResources\nmv ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/PrivateResources/art.scnassets/* ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/PrivateResources/";
 		};
 /* End PBXShellScriptBuildPhase section */
 

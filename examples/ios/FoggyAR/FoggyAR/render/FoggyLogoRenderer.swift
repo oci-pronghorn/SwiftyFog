@@ -119,9 +119,13 @@ extension FoggyLogoRenderer : ARSCNViewDelegate {
 			delegate?.loading(false)
 			
             // TODO: this appears to not work in playgrounds...
+            #if APP
 			guard let virtualObjectScene = SCNScene(named: "art.scnassets/logo.scn") else {
 				return nil
 			}
+            #else
+                let virtualObjectScene = SCNScene(named: "logo.scn")!
+            #endif
 			
 			//Grab the required nodes
 			logoNode = virtualObjectScene.rootNode.childNode(withName: "OCILogo", recursively: false)!
