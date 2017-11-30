@@ -118,6 +118,7 @@ extension FoggyLogoRenderer : ARSCNViewDelegate {
 			//We rendered, so stop showing the activity indicator
 			delegate?.loading(false)
 			
+            // TODO: this appears to not work in playgrounds...
 			guard let virtualObjectScene = SCNScene(named: "art.scnassets/logo.scn") else {
 				return nil
 			}

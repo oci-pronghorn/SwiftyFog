@@ -90,7 +90,6 @@
 				86FCE2311F8F13E300CB217C /* lightbulb.dae */,
 				861992521F856D2E006260C0 /* ocilogo.dae */,
 				869627741F855E2C00A2CCE0 /* art.scnassets */,
-				8696277B1F855E2C00A2CCE0 /* Assets.xcassets */,
 			);
 			path = assets;
 			sourceTree = "<group>";
@@ -106,6 +105,7 @@
 		868F0DA91FCCA3C6001C13C7 /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				8696277B1F855E2C00A2CCE0 /* Assets.xcassets */,
 				86BAC2231F97FFA800AF6F5A /* Inceptionv3.mlmodel */,
 			);
 			path = assets;
@@ -250,7 +250,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -R ${SOURCE_ROOT}/FoggyAR ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/Sources/\nmv ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/Sources/FoggyAR/assets/  ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/PrivateResources";
+			shellScript = "cp -R ${SOURCE_ROOT}/FoggyAR ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/Sources/\nrm -rf ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/PrivateResources\nmv ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/Sources/FoggyAR/assets/  ${SOURCE_ROOT}/../../playground/artechtalk.playgroundbook/Contents/PrivateResources";
 		};
 /* End PBXShellScriptBuildPhase section */
 
