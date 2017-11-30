@@ -43,7 +43,8 @@ public class FoggyViewController: UIViewController {
         self.sceneView = ARSCNView(frame: b)
         let centerActivityView = UIView(frame: CGRect(x: 10, y: 10, width: 56, height: 56))
         self.centerActivityView = centerActivityView
-            centerActivityView.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+        self.centerActivityView.backgroundColor = UIColor.black.withAlphaComponent(0.25)
+        self.centerActivityView.isOpaque = false
         let activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 18, y: 18, width: 20, height: 20))
         self.activityIndicator = activityIndicator
         self.view.addSubview(self.sceneView)
