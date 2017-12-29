@@ -3,15 +3,11 @@ package com.ociweb.behaviors;
 import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.gl.api.StartupListener;
 import com.ociweb.gl.api.Writable;
-import com.ociweb.iot.grove.simple_analog.SimpleAnalogTwig;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.Port;
-import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 import com.ociweb.pronghorn.pipe.ChannelWriter;
-
-import static com.ociweb.iot.maker.FogCommandChannel.SERIAL_WRITER;
 
 public class SoundBehavior implements PubSubMethodListener, StartupListener {
     private final FogCommandChannel channel;
@@ -30,12 +26,7 @@ public class SoundBehavior implements PubSubMethodListener, StartupListener {
         channel.publishSerial(writable);
     }
 
-    Writable writable = new Writable() {
-        @Override
-        public void write(ChannelWriter writer) {
-            writer.writeByte(0);
-        }
-    };
+    final Writable writable = writer -> writer.writeByte(0);
 
     public void sendTick() {
 

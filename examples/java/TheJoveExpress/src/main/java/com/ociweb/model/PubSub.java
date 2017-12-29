@@ -18,18 +18,18 @@ import java.util.Map;
 // MQTT can be disabled (optional null)
 
 public class PubSub {
-    private CharSequence externalScope;
-    private MQTTBridge mqttBridge;
-    private MsgRuntime<HardwareImpl, ListenerFilterIoT> runtime;
+    private final CharSequence externalScope;
+    private final MQTTBridge mqttBridge;
+    private final MsgRuntime<HardwareImpl, ListenerFilterIoT> runtime;
 
     private static class Trans {
         MQTTQoS qos;
         boolean retain;
     }
 
-    private Map<Behavior, ListenerFilter> registeredListeners = new HashMap<>();
-    private Map<String, MQTTQoS> accumeMQTTSubscriptions = new HashMap<>();
-    private Map<String, Trans> accumeMQTTTransmissions = new HashMap<>();
+    private final Map<Behavior, ListenerFilter> registeredListeners = new HashMap<>();
+    private final Map<String, MQTTQoS> accumeMQTTSubscriptions = new HashMap<>();
+    private final Map<String, Trans> accumeMQTTTransmissions = new HashMap<>();
 
     public PubSub(String externalScope, MsgRuntime<HardwareImpl, ListenerFilterIoT> runtime, MQTTBridge mqttBridge) {
         this.externalScope = externalScope + "/";

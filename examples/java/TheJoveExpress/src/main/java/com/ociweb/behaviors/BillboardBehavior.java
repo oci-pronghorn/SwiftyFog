@@ -41,12 +41,12 @@ public class BillboardBehavior implements PubSubMethodListener, StartupListener 
     }
 
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
-        bufferChannel.publishTopic(publishTopic, writer->{writer.write(display.newBmpLayout());});
+        bufferChannel.publishTopic(publishTopic, writer-> writer.write(display.newBmpLayout()));
         return true;
     }
 
     private void sendTestImage() {
-        bufferChannel.publishTopic("billboard/image/control", writer->{writer.write(bmp);});
+        bufferChannel.publishTopic("billboard/image/control", writer-> writer.write(bmp));
     }
 
     public boolean onImage(CharSequence charSequence, ChannelReader ChannelReader) {

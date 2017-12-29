@@ -23,12 +23,12 @@ public class TrainConfiguration  {
     final boolean lifecycleEnabled = true;
 
     final boolean engineEnabled = true;
-    final ActuatorDriverPort engineAccuatorPort = ActuatorDriverPort.A;
+    final ActuatorDriverPort engineActuatorPort = ActuatorDriverPort.A;
 
     final boolean lightsEnabled = true;
     final int lightDetectFreq = 250;
     final Port lightSensorPort = A0;
-    final ActuatorDriverPort lightAccuatorPort = ActuatorDriverPort.B;
+    final ActuatorDriverPort lightActuatorPort = ActuatorDriverPort.B;
 
     final boolean billboardEnabled = false;
     final boolean cameraEnabled = false;

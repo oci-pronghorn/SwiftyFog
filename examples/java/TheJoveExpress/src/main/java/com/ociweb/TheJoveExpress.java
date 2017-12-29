@@ -28,10 +28,10 @@ public class TheJoveExpress implements FogApp
         if (config.mqttEnabled) {
             this.mqttBridge = c.useMQTT(config.mqttBroker, config.mqttPort, config.mqttClientName, 40, 20000)
                     .cleanSession(true)
-                    .authentication("dsjove", "password")
+                    //.authentication("dsjove", "password")
                     .keepAliveSeconds(10);
         }
-        if (config.appServerEnabled) c.enableServer(false, config.appServerPort); // TODO: heap problem on Pi0
+        if (config.appServerEnabled) c.useHTTP1xServer(config.appServerPort); // TODO: heap problem on Pi0
         if (config.lightsEnabled) c.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);
         if (config.soundEnabled) c.useSerial(Baud.B_____9600);
         if (config.engineEnabled || config.lightsEnabled) c.connect(MotorDriver);
@@ -75,7 +75,7 @@ public class TheJoveExpress implements FogApp
             final String lifeCycleFeedback = "lifecycle/feedback";
             final String internalMqttConnect = "MQTT/Connection";
             final String shutdownControl = "lifecycle/control/shutdown";
-            pubSub.lastWill(lifeCycleFeedback, true, MQTTQoS.atLeastOnce, blobWriter -> { blobWriter.writeBoolean(false); }); // TODO remove immutable check
+            pubSub.lastWill(lifeCycleFeedback, true, MQTTQoS.atLeastOnce, blobWriter -> blobWriter.writeBoolean(false)); // TODO remove immutable check
             pubSub.connectionFeedbackTopic(internalMqttConnect);
             LifeCycleBehavior lifeCycle = new LifeCycleBehavior(runtime,
                     pubSub.publish(lifeCycleFeedback, true, MQTTQoS.atLeastOnce));
@@ -92,7 +92,7 @@ public class TheJoveExpress implements FogApp
             pubSub.subscribe(actuator, actuatorPowerInternal, actuator::setPower);
 
             if (config.engineEnabled) {
-                final EngineBehavior engine = new EngineBehavior(runtime, actuatorPowerInternal, config.engineAccuatorPort,
+                final EngineBehavior engine = new EngineBehavior(runtime, actuatorPowerInternal, config.engineActuatorPort,
                         pubSub.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
                         pubSub.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce));
                 pubSub.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
@@ -106,7 +106,7 @@ public class TheJoveExpress implements FogApp
                         pubSub.publish(lightsAmbientFeedback, false, MQTTQoS.atMostOnce));
                 pubSub.subscribe(ambientLight, allFeedback, MQTTQoS.atMostOnce, ambientLight::onAllFeedback);
 
-                final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerInternal, config.lightAccuatorPort,
+                final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerInternal, config.lightActuatorPort,
                         pubSub.publish("lights/override/feedback", false, MQTTQoS.atMostOnce),
                         pubSub.publish("lights/power/feedback", false, MQTTQoS.atMostOnce),
                         pubSub.publish("lights/calibration/feedback", false, MQTTQoS.atMostOnce));
