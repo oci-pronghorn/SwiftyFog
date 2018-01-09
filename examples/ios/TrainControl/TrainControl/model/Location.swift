@@ -11,6 +11,7 @@ import SwiftyFog_iOS
 
 public protocol LocationDelegate: class {
 	func train(heading: FogRational<Int64>)
+    func train(motion: Bool)
 }
 
 class Location {
@@ -21,7 +22,8 @@ class Location {
     public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				("heading/feedback/", .atLeastOnce, Location.feedbackHeading)
+				("heading/feedback/", .atLeastOnce, Location.feedbackHeading),
+                ("motion/feedback/", .atLeastOnce, Location.feedbackMotion)
 			])
 		}
     }
@@ -34,4 +36,9 @@ class Location {
 			delegate?.train(heading: heading)
 		}
 	}
+    
+    private func feedbackMotion(msg: MQTTMessage) {
+        let motion: Bool = msg.payload.fogExtract()
+        delegate?.train(motion: motion)
+    }
 }

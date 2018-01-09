@@ -28,7 +28,6 @@ public class TheJoveExpress implements FogApp
         if (config.mqttEnabled) {
             this.mqttBridge = c.useMQTT(config.mqttBroker, config.mqttPort, config.mqttClientName, 40, 20000)
                     .cleanSession(true)
-                    //.authentication("dsjove", "password")
                     .keepAliveSeconds(10);
         }
         if (config.appServerEnabled) c.useHTTP1xServer(config.appServerPort); // TODO: heap problem on Pi0
@@ -126,8 +125,10 @@ public class TheJoveExpress implements FogApp
 
         if (config.locationEnabled) {
             final LocationBehavior accelerometer = new LocationBehavior(runtime,
-                    pubSub.publish("location/heading/feedback", false, MQTTQoS.atMostOnce));
-            pubSub.registerBehavior(accelerometer);
+                    pubSub.publish("location/heading/feedback", false, MQTTQoS.atMostOnce),
+                    pubSub.publish("location/motion/feedback", false, MQTTQoS.atMostOnce),
+                    pubSub.publish("location/accel/feedback", false, MQTTQoS.atMostOnce));
+            pubSub.subscribe(accelerometer, allFeedback, MQTTQoS.atMostOnce, accelerometer::onAllFeedback);
         }
 
         if (config.cameraEnabled) {

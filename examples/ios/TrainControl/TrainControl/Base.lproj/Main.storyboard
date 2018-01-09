@@ -77,9 +77,20 @@
                                         <subviews>
                                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i1b-Ey-Udf" customClass="WMGaugeView">
                                                 <rect key="frame" x="0.0" y="0.0" width="182.66666666666666" height="182.66666666666666"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MotionIdle" highlightedImage="MotionGo" translatesAutoresizingMaskIntoConstraints="NO" id="4w2-tJ-M4K" userLabel="Motion Indicator">
+                                                        <rect key="frame" x="75" y="38.666666666666671" width="32" height="32"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="32" id="9cO-M2-49H"/>
+                                                            <constraint firstAttribute="width" constant="32" id="fOk-7W-P8j"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
+                                                    <constraint firstItem="4w2-tJ-M4K" firstAttribute="centerX" secondItem="i1b-Ey-Udf" secondAttribute="centerX" id="1Ko-9Z-d1M"/>
                                                     <constraint firstAttribute="width" secondItem="i1b-Ey-Udf" secondAttribute="height" multiplier="1:1" id="KWR-sZ-BOP"/>
+                                                    <constraint firstItem="4w2-tJ-M4K" firstAttribute="centerY" secondItem="i1b-Ey-Udf" secondAttribute="centerY" multiplier="0.6" id="ndY-ia-bjE"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="value">
@@ -301,10 +312,10 @@
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="7DK-2U-M7z">
-                                <rect key="frame" x="132" y="441" width="150" height="150"/>
+                                <rect key="frame" x="207" y="441" width="0.0" height="0.0"/>
                                 <subviews>
-                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HlX-sg-fsK" customClass="WMGaugeView">
-                                        <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                    <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HlX-sg-fsK" customClass="WMGaugeView">
+                                        <rect key="frame" x="-207" y="-441" width="150" height="150"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="150" id="4oK-5c-ubT"/>
@@ -397,6 +408,7 @@
                         <outlet property="lightIndicatorImage" destination="I8S-Am-1OA" id="oTj-7e-Fp7"/>
                         <outlet property="lightOverride" destination="N5j-RN-YrA" id="V9s-s2-1wZ"/>
                         <outlet property="lightingGauge" destination="YEQ-Tl-lGJ" id="XdX-qt-wSf"/>
+                        <outlet property="motionIndicatorImage" destination="4w2-tJ-M4K" id="L3w-Jz-RIW"/>
                         <outlet property="soundControl" destination="NOS-K5-A9v" id="ebE-BR-wXT"/>
                         <outlet property="stopStartButton" destination="Wpe-Ny-YbN" id="GnV-Hl-k0c"/>
                         <outlet property="trainAlive" destination="28I-X8-rcw" id="Zsa-74-W0S"/>
@@ -566,6 +578,8 @@
         <image name="Disconnected" width="128" height="128"/>
         <image name="Horn" width="32" height="32"/>
         <image name="Log" width="32" height="32"/>
+        <image name="MotionGo" width="64" height="64"/>
+        <image name="MotionIdle" width="32" height="32"/>
         <image name="Off" width="32" height="32"/>
         <image name="On" width="32" height="32"/>
         <image name="Remote" width="30" height="30"/>

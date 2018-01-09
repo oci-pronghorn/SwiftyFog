@@ -32,6 +32,7 @@ class TrainViewController: UIViewController {
 	@IBOutlet weak var lightingGauge: WMGaugeView!
 	
 	@IBOutlet weak var enginePower: ScrubControl!
+    @IBOutlet weak var motionIndicatorImage: UIImageView!
 	@IBOutlet weak var engineCalibration: UISlider!
 	@IBOutlet weak var engineGauge: WMGaugeView!
 	
@@ -247,6 +248,11 @@ extension TrainViewController:
 	func train(heading: FogRational<Int64>) {
 		compass.setValue(Float(heading.num), animated: true, duration: 0.5)
 	}
+    
+    
+    func train(motion: Bool) {
+        motionIndicatorImage?.isHighlighted = motion
+    }
 	
 	func engine(power: FogRational<Int64>, _ asserted: Bool) {
 		engineGauge?.setValue(Float(power.num), animated: true, duration: 0.5)
