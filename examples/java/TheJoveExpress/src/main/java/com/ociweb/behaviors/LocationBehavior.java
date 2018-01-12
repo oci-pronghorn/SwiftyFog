@@ -11,7 +11,7 @@ public class LocationBehavior implements PubSubMethodListener {
     private final FogCommandChannel channel;
     private final String isMovingTopic;
     private final SixAxisAccelerometer_Transducer accSensor;
-    private final AccerometerValues magValues;
+    private final AccelerometerValues magValues;
 
     private final RationalPayload heading = new RationalPayload(0, 3600);
     private final boolean isMoving = false;
@@ -19,7 +19,7 @@ public class LocationBehavior implements PubSubMethodListener {
     public LocationBehavior(FogRuntime runtime, String headingTopic, String isMovingTopic, String accelTopic) {
         this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
         this.isMovingTopic = isMovingTopic;
-        this.magValues = new AccerometerValues() {
+        this.magValues = new AccelerometerValues() {
             @Override
             public void onChange(Changed change) {
                 headingChange();
