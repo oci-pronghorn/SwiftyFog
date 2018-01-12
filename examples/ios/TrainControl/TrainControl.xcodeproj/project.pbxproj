@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		551AB9DF1F93B94A0080D37B /* FlipLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551AB9DE1F93B94A0080D37B /* FlipLabel.swift */; };
-		552E93E71F8EC1D60025D546 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E93E61F8EC1D60025D546 /* Location.swift */; };
 		554348391F82D3AD00C3C2CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348381F82D3AD00C3C2CB /* AppDelegate.swift */; };
 		5543483E1F82D3AD00C3C2CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5543483C1F82D3AD00C3C2CB /* Main.storyboard */; };
 		554348401F82D3AD00C3C2CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5543483F1F82D3AD00C3C2CB /* Assets.xcassets */; };
@@ -69,7 +68,6 @@
 /* Begin PBXFileReference section */
 		551AB9DE1F93B94A0080D37B /* FlipLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipLabel.swift; sourceTree = "<group>"; };
 		551AB9E01F9529B40080D37B /* GaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeView.swift; sourceTree = "<group>"; };
-		552E93E61F8EC1D60025D546 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		554348351F82D3AD00C3C2CB /* TrainControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrainControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		554348381F82D3AD00C3C2CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5543483D1F82D3AD00C3C2CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -194,7 +192,6 @@
 				554348691F82D46100C3C2CB /* Lights.swift */,
 				5543486A1F82D46100C3C2CB /* Sound.swift */,
 				5543486B1F82D46100C3C2CB /* Train.swift */,
-				552E93E61F8EC1D60025D546 /* Location.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -375,7 +372,6 @@
 				5543489D1F82D65B00C3C2CB /* WMGaugeView.m in Sources */,
 				554348831F82D46100C3C2CB /* TrainAppController.swift in Sources */,
 				5543487E1F82D46100C3C2CB /* Sound.swift in Sources */,
-				552E93E71F8EC1D60025D546 /* Location.swift in Sources */,
 				551AB9DF1F93B94A0080D37B /* FlipLabel.swift in Sources */,
 				5543487F1F82D46100C3C2CB /* Train.swift in Sources */,
 				554348861F82D46100C3C2CB /* MetalPanelView.swift in Sources */,

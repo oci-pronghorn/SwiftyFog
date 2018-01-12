@@ -1,6 +1,8 @@
 package com.ociweb;
 
 import com.ociweb.behaviors.*;
+import com.ociweb.behaviors.internal.AccelerometerBehavior;
+import com.ociweb.behaviors.internal.ActuatorDriverBehavior;
 import com.ociweb.gl.api.MQTTBridge;
 import com.ociweb.gl.api.MQTTQoS;
 import com.ociweb.iot.grove.simple_analog.SimpleAnalogTwig;
@@ -35,9 +37,8 @@ public class TheJoveExpress implements FogApp
         if (config.soundEnabled) c.useSerial(Baud.B_____9600);
         if (config.engineEnabled || config.lightsEnabled) c.connect(MotorDriver);
         if (config.billboardEnabled) c.connect(OLED_96x96);
-        if (config.locationEnabled) {
-            //c.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readAccel);
-            c.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readMag, config.headingReadFreq);
+        if (config.faultDetectionEnabled) {
+            c.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readAccel, config.accelerometerReadFreq);
         }
         if (config.cameraEnabled) ; //c.connect(pi-bus camera);
         if (config.soundEnabled) ; //c.connect(serial mp3 player);
@@ -83,6 +84,8 @@ public class TheJoveExpress implements FogApp
         }
 
         final String allFeedback = "feedback";
+        final String accelerometerInternal = "accelerometer/internal";
+        final String engineState = "engine/state/feedback";
 
         if (config.engineEnabled || config.lightsEnabled) {
             final String actuatorPowerInternal = "actuator/power/internal";
@@ -93,7 +96,8 @@ public class TheJoveExpress implements FogApp
             if (config.engineEnabled) {
                 final EngineBehavior engine = new EngineBehavior(runtime, actuatorPowerInternal, config.engineActuatorPort,
                         pubSub.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
-                        pubSub.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce));
+                        pubSub.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce),
+                        pubSub.publish("engine/state/feedback", false, MQTTQoS.atMostOnce));
                 pubSub.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
                 pubSub.subscribe(engine, "engine/power/control", MQTTQoS.atMostOnce, engine::onPower);
                 pubSub.subscribe(engine, "engine/calibration/control", MQTTQoS.atMostOnce, engine::onCalibration);
@@ -115,20 +119,25 @@ public class TheJoveExpress implements FogApp
                 pubSub.subscribe(lights, lightsAmbientFeedback, lights::onDetected);
             }
         }
+        if (config.faultDetectionEnabled) {
+            final AccelerometerBehavior accelerometerBehavior = new AccelerometerBehavior(runtime, accelerometerInternal);
+            pubSub.registerBehavior(accelerometerBehavior);
+        }
+
+        if (config.faultDetectionEnabled) {
+            final String faultFeedback = "fault/feedback";
+            final MotionFaultBehavior motionFault = new MotionFaultBehavior(runtime,
+                    pubSub.publish(faultFeedback, false, MQTTQoS.atMostOnce));
+            pubSub.subscribe(motionFault, allFeedback, MQTTQoS.atMostOnce, motionFault::onAllFeedback);
+            pubSub.subscribe(motionFault, accelerometerInternal, motionFault::onAccelerometer);
+            pubSub.subscribe(motionFault, engineState, motionFault::onEngineState);
+        }
 
         if (config.billboardEnabled) {
             final BillboardBehavior billboard = new BillboardBehavior(runtime,
                     pubSub.publish("billboard/spec/feedback", true, MQTTQoS.atMostOnce));
             pubSub.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
             pubSub.subscribe(billboard, "billboard/image/control", MQTTQoS.atMostOnce, billboard::onImage);
-        }
-
-        if (config.locationEnabled) {
-            final LocationBehavior accelerometer = new LocationBehavior(runtime,
-                    pubSub.publish("location/heading/feedback", false, MQTTQoS.atMostOnce),
-                    pubSub.publish("location/motion/feedback", false, MQTTQoS.atMostOnce),
-                    pubSub.publish("location/accel/feedback", false, MQTTQoS.atMostOnce));
-            pubSub.subscribe(accelerometer, allFeedback, MQTTQoS.atMostOnce, accelerometer::onAllFeedback);
         }
 
         if (config.cameraEnabled) {

@@ -11,7 +11,6 @@ import SwiftyFog_iOS
 
 class TrainViewController: UIViewController {
 	let train = Train()
-	let location = Location()
 	let engine = Engine()
 	let lights = Lights()
 	let sound = Sound()
@@ -39,6 +38,7 @@ class TrainViewController: UIViewController {
 	@IBOutlet weak var soundControl: UISlider!
 	
 	let pulsator = Pulsator()
+    weak var crack: UIImageView?
 	
 	var mqttControl: MQTTControl!
 	
@@ -46,9 +46,6 @@ class TrainViewController: UIViewController {
 		didSet {
 			engine.delegate = self
 			engine.mqtt = mqtt.createBridge(subPath: "engine")
-			
-			location.delegate = self
-			location.mqtt = mqtt.createBridge(subPath: "location")
 			
 			lights.delegate = self
 			lights.mqtt = mqtt.createBridge(subPath: "lights")
@@ -71,6 +68,8 @@ class TrainViewController: UIViewController {
 		self.stopStartButton.isSelected = mqttControl.started
 		
 		assertValues()
+        
+        train(fault: true)
 	}
 	
 	func codeUi() {
@@ -231,12 +230,28 @@ extension TrainViewController {
 	}
 }
 
+extension UIView {
+    
+    /// Adds constraints to this `UIView` instances `superview` object to make sure this always has the same size as the superview.
+    /// Please note that this has no effect if its `superview` is `nil` – add this `UIView` instance as a subview before calling this.
+    func bindFrameToSuperviewBounds() {
+        guard let superview = self.superview else {
+            print("Error! `superview` was nil – call `addSubview(view: UIView)` before calling `bindFrameToSuperviewBounds()` to fix this.")
+            return
+        }
+        
+        self.translatesAutoresizingMaskIntoConstraints = false
+        superview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[subview]-0-|", options: .directionLeadingToTrailing, metrics: nil, views: ["subview": self]))
+        superview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[subview]-0-|", options: .directionLeadingToTrailing, metrics: nil, views: ["subview": self]))
+    }
+}
+
 extension TrainViewController:
 		TrainDelegate,
-		LocationDelegate,
 		EngineDelegate,
 		LightsDelegate,
-		BillboardDelegate {
+        BillboardDelegate {
+    
 	
 	func train(alive: Bool) {
 		if alive == false {
@@ -244,14 +259,19 @@ extension TrainViewController:
 		}
 		trainAlive.isHighlighted = alive
 	}
-	
-	func train(heading: FogRational<Int64>) {
-		compass.setValue(Float(heading.num), animated: true, duration: 0.5)
-	}
     
-    
-    func train(motion: Bool) {
-        motionIndicatorImage?.isHighlighted = motion
+    func train(fault: Bool) {
+        if fault == false {
+            crack?.removeFromSuperview()
+        }
+        else {
+            let crack = UIImageView(image: #imageLiteral(resourceName: "brokenglass"))
+            crack.translatesAutoresizingMaskIntoConstraints = false
+            crack.alpha = 0.25
+            view.addSubview(crack)
+            crack.bindFrameToSuperviewBounds()
+            self.crack = crack
+        }
     }
 	
 	func engine(power: FogRational<Int64>, _ asserted: Bool) {
@@ -260,6 +280,17 @@ extension TrainViewController:
 			self.enginePower.rational = power
 		}
 	}
+    
+    func engine(state: EngineState, _ asserted: Bool) {
+        switch state {
+            case .idle:
+                motionIndicatorImage?.image = #imageLiteral(resourceName: "MotionIdle")
+            case .forward:
+                motionIndicatorImage?.image = #imageLiteral(resourceName: "MotionForward")
+            case .reverse:
+                motionIndicatorImage?.image = #imageLiteral(resourceName: "MotionReverse")
+        }
+    }
 	
 	func engine(calibration: FogRational<Int64>, _ asserted: Bool) {
 		engineGauge?.rangeValues = [NSNumber(value: -calibration.num), NSNumber(value: calibration.num), 100]

@@ -11,7 +11,7 @@ public class TrainConfiguration  {
 
     final String trainName;
 
-    final boolean mqttDefaultLocal = false;
+    final boolean mqttDefaultLocal = true;
     final boolean mqttEnabled = true;
     final String mqttBroker;
     final String mqttClientName;
@@ -33,8 +33,8 @@ public class TrainConfiguration  {
     final boolean billboardEnabled = false;
     final boolean cameraEnabled = false;
 
-    final boolean locationEnabled = true;
-    final int headingReadFreq = 250;
+    final boolean faultDetectionEnabled = false;
+    final int accelerometerReadFreq = 250;
 
     final boolean appServerEnabled = false;
     final int appServerPort = 8089;
