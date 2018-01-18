@@ -5,6 +5,7 @@ import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.model.ActuatorDriverPayload;
 import com.ociweb.model.ActuatorDriverPort;
+import com.ociweb.model.MotionFaults;
 import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
@@ -18,6 +19,7 @@ public class EngineBehavior implements PubSubMethodListener {
     private final ActuatorDriverPayload actuatorPayload = new ActuatorDriverPayload();
     private final RationalPayload enginePower = new RationalPayload(0, 100);
     private final RationalPayload calibration = new RationalPayload(30, 100);
+    private final MotionFaults motionFaults = new MotionFaults();
     private int engineState = 0;
 
     public EngineBehavior(FogRuntime runtime, String actuatorTopic, ActuatorDriverPort port, String enginePoweredTopic, String engineCalibratedTopic, String engineStateTopic) {
@@ -33,6 +35,16 @@ public class EngineBehavior implements PubSubMethodListener {
         this.channel.publishTopic(powerTopic, writer -> writer.write(enginePower));
         this.channel.publishTopic(calibrationTopic, writer -> writer.write(calibration));
         this.channel.publishTopic(engineStateTopic, writer -> writer.writeInt(engineState));
+        return true;
+    }
+
+    public boolean onFault(CharSequence charSequence, ChannelReader messageReader) {
+        messageReader.readInto(motionFaults);
+        if (motionFaults.hasFault()) {
+            enginePower.num = 0;
+            actuate();
+            this.channel.publishTopic(powerTopic, writer -> writer.write(enginePower));
+        }
         return true;
     }
 

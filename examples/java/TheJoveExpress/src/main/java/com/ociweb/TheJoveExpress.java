@@ -38,7 +38,7 @@ public class TheJoveExpress implements FogApp
         if (config.engineEnabled || config.lightsEnabled) c.connect(MotorDriver);
         if (config.billboardEnabled) c.connect(OLED_96x96);
         if (config.faultDetectionEnabled) {
-            c.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readAccel, config.accelerometerReadFreq);
+            //c.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readAccel, config.accelerometerReadFreq);
         }
         if (config.cameraEnabled) ; //c.connect(pi-bus camera);
         if (config.soundEnabled) ; //c.connect(serial mp3 player);
@@ -86,6 +86,7 @@ public class TheJoveExpress implements FogApp
         final String allFeedback = "feedback";
         final String accelerometerInternal = "accelerometer/internal";
         final String engineState = "engine/state/feedback";
+        final String faultFeedback = "fault/feedback";
 
         if (config.engineEnabled || config.lightsEnabled) {
             final String actuatorPowerInternal = "actuator/power/internal";
@@ -101,6 +102,7 @@ public class TheJoveExpress implements FogApp
                 pubSub.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
                 pubSub.subscribe(engine, "engine/power/control", MQTTQoS.atMostOnce, engine::onPower);
                 pubSub.subscribe(engine, "engine/calibration/control", MQTTQoS.atMostOnce, engine::onCalibration);
+                pubSub.subscribe(engine, faultFeedback, engine::onFault);
             }
 
             if (config.lightsEnabled) {
@@ -120,15 +122,15 @@ public class TheJoveExpress implements FogApp
             }
         }
         if (config.faultDetectionEnabled) {
-            final AccelerometerBehavior accelerometerBehavior = new AccelerometerBehavior(runtime, accelerometerInternal);
-            pubSub.registerBehavior(accelerometerBehavior);
+            //final AccelerometerBehavior accelerometerBehavior = new AccelerometerBehavior(runtime, accelerometerInternal);
+            //pubSub.registerBehavior(accelerometerBehavior);
         }
 
         if (config.faultDetectionEnabled) {
-            final String faultFeedback = "fault/feedback";
             final MotionFaultBehavior motionFault = new MotionFaultBehavior(runtime,
                     pubSub.publish(faultFeedback, false, MQTTQoS.atMostOnce));
             pubSub.subscribe(motionFault, allFeedback, MQTTQoS.atMostOnce, motionFault::onAllFeedback);
+            pubSub.subscribe(motionFault, "fault/control", MQTTQoS.atMostOnce, motionFault::onForceFault);
             pubSub.subscribe(motionFault, accelerometerInternal, motionFault::onAccelerometer);
             pubSub.subscribe(motionFault, engineState, motionFault::onEngineState);
         }

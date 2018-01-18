@@ -8,12 +8,12 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
 public class MotionFaults implements Externalizable {
-    private boolean derailed;
-    private boolean tipped;
-    private boolean lifted;
-    private boolean falling;
+    public boolean derailed;
+    public boolean tipped;
+    public boolean lifted;
+    public boolean falling;
 
-    boolean hasFault() {
+    public boolean hasFault() {
         return (derailed || tipped || lifted || falling);
     }
 

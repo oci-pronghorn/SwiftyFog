@@ -24,6 +24,12 @@ public class MotionFaultBehavior implements PubSubMethodListener {
         return true;
     }
 
+    public boolean onForceFault(CharSequence charSequence, ChannelReader channelReader) {
+        motionFaults.derailed = !motionFaults.derailed;
+        channel.publishTopic(faultChangeTopic, writer -> writer.write(motionFaults));
+        return true;
+    }
+
     public boolean onEngineState(CharSequence charSequence, ChannelReader channelReader) {
         int state = channelReader.readInt();
         if (motionFaults.accept(state)) {

@@ -33,7 +33,7 @@ public class TrainConfiguration  {
     final boolean billboardEnabled = false;
     final boolean cameraEnabled = false;
 
-    final boolean faultDetectionEnabled = false;
+    final boolean faultDetectionEnabled = true;
     final int accelerometerReadFreq = 250;
 
     final boolean appServerEnabled = false;

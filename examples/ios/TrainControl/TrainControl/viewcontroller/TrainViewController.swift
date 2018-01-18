@@ -68,8 +68,6 @@ class TrainViewController: UIViewController {
 		self.stopStartButton.isSelected = mqttControl.started
 		
 		assertValues()
-        
-        //train(fault: true)
 	}
 	
 	func codeUi() {
@@ -188,6 +186,11 @@ extension TrainViewController {
 	func shutdownTrain(sender: UILongPressGestureRecognizer) {
 		train.controlShutdown()
 	}
+    
+    @IBAction
+    func faultTrain(sender: UIButton?) {
+        train.controlFault()
+    }
 	
 	@IBAction
 	func doEnginePower(sender: ScrubControl?) {
@@ -260,11 +263,11 @@ extension TrainViewController:
 		trainAlive.isHighlighted = alive
 	}
     
-    func train(fault: Bool) {
-        if fault == false {
+    func train(faults: MotionFaults, _ asserted: Bool) {
+        if faults.hasFault == false {
             crack?.removeFromSuperview()
         }
-        else {
+        else if (self.crack == nil) {
             let crack = UIImageView(image: #imageLiteral(resourceName: "brokenglass"))
             crack.translatesAutoresizingMaskIntoConstraints = false
             crack.alpha = 0.25
