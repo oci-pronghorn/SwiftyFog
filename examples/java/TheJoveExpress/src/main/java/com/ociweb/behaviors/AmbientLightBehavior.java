@@ -14,7 +14,7 @@ public class AmbientLightBehavior implements PubSubMethodListener, AnalogListene
     private final FogCommandChannel channel;
     private final Port lightSensorPort;
     private final String publishTopic;
-    public static final long maxSensorReading = SimpleAnalogTwig.LightSensor.range();
+    public static final int maxSensorReading = SimpleAnalogTwig.LightSensor.range();
     private final RationalPayload oldValue = new RationalPayload(-1, maxSensorReading);
 
     public AmbientLightBehavior(FogRuntime runtime, Port lightSensorPort, String publishTopic) {

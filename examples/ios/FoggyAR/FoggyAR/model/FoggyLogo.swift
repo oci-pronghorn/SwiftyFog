@@ -14,7 +14,7 @@ import SwiftyFog_iOS
 public protocol FoggyLogoDelegate: class {
 	func foggyLogo(lightsPower: Bool)
 	func foggyLogo(alive: Bool)
-	func foggyLogo(accelerometerHeading: FogRational<Int64>)
+	func foggyLogo(accelerometerHeading: TrainRational)
 }
 
 public class FoggyLogo {
@@ -39,7 +39,7 @@ public class FoggyLogo {
 	}
 	
 	private func feedbackAccelerometerHeading(_ msg: MQTTMessage) {
-		let value: FogRational<Int64> = msg.payload.fogExtract()!
+		let value: TrainRational = msg.payload.fogExtract()!
 		delegate?.foggyLogo(accelerometerHeading: value)
 	}
 	

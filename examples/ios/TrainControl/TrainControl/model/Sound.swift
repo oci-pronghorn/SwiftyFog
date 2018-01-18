@@ -10,10 +10,10 @@ import Foundation
 import SwiftyFog_iOS
 
 class Sound {
-	private var piezo: FogFeedbackValue<FogRational<Int64>>
+	private var piezo: FogFeedbackValue<TrainRational>
 	
 	public init() {
-		self.piezo = FogFeedbackValue(FogRational(num: Int64(0), den: 100))
+		self.piezo = FogFeedbackValue(TrainRational(num: TrainRational.ValueType(0), den: 100))
 	}
 	
     public var mqtt: MQTTBridge! {
@@ -21,7 +21,7 @@ class Sound {
 		}
     }
 	
-	public func control(piezo: FogRational<Int64>) {
+	public func control(piezo: TrainRational) {
 		self.piezo.control(piezo) { value in
 			var data  = Data(capacity: value.fogSize)
 			data.fogAppend(value)

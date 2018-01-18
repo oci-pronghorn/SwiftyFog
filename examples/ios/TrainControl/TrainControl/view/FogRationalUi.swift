@@ -10,11 +10,11 @@ import UIKit
 import SwiftyFog_iOS
 
 public extension UISlider {
-	public var rational: FogRational<Int64> {
+	public var rational: TrainRational {
 		get {
-			let numerator = Int64(self.value)
-			let denominator = Int64(self.maximumValue)
-			return FogRational(num: numerator, den: denominator)
+			let numerator = TrainRational.ValueType(self.value)
+			let denominator = TrainRational.ValueType(self.maximumValue)
+			return TrainRational(num: numerator, den: denominator)
 		}
 		set {
 			self.value = self.maximumValue * Float(newValue.num) / Float(newValue.den)
@@ -23,11 +23,11 @@ public extension UISlider {
 }
 
 public extension ScrubControl {
-	public var rational: FogRational<Int64> {
+	public var rational: TrainRational {
 		get {
-			let numerator = Int64(self.value)
-			let denominator = Int64(self.maximumValue)
-			return FogRational(num: numerator, den: denominator)
+			let numerator = TrainRational.ValueType(self.value)
+			let denominator = TrainRational.ValueType(self.maximumValue)
+			return TrainRational(num: numerator, den: denominator)
 		}
 		set {
 			self.value = self.maximumValue * Float(newValue.num) / Float(newValue.den)

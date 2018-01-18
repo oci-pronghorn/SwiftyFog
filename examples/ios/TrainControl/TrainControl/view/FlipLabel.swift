@@ -8,7 +8,7 @@
 //  Based on FSDAirportFlipLabel by Felix Dumit on 3/25/14
 //
 
-import Foundation
+import UIKit
 import SwiftyFog_iOS
 
 @IBDesignable

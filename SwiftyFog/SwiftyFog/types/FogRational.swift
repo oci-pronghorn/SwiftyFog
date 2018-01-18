@@ -62,9 +62,10 @@ public extension BinaryInteger where Self: SignedInteger {
 }
 */
 public struct FogRational<T: FixedWidthInteger> : Equatable, FogExternalizable, CustomStringConvertible {
+    public typealias ValueType = T
 	public var num: T = 0
 	public var den: T = 1
-	
+
 	public init() {
 		self.num = 0
 		self.den = 1

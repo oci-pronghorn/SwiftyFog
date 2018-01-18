@@ -5,36 +5,32 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
-// TODO: make swift understand big endian packed SInt64
+// TODO: make swift understand big endian packed SInt32
 public class RationalPayload implements Externalizable {
-    public long num;
-    public long den;
+    public int num;
+    public int den;
 
     public RationalPayload() {
         this.num = 0;
         this.den = 1;
     }
 
-    public RationalPayload(long num, long den) {
+    public RationalPayload(int num, int den) {
         this.num = num;
         this.den = den;
-    }
-
-    public int messageSize() {
-        return Long.SIZE + Long.SIZE;
     }
 
     public double ratio() { return (double)num / (double)den; }
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeLong(num);
-        out.writeLong(den);
+        out.writeInt(num);
+        out.writeInt(den);
     }
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        num = in.readLong();
-        den = in.readLong();
+        num = in.readInt();
+        den = in.readInt();
     }
 }

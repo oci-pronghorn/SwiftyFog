@@ -84,7 +84,7 @@ class FoggyLogoRenderer : NSObject {
 	
 	private var lastTime = Date().timeIntervalSince1970
 	
-	func heading(heading: FogRational<Int64>) {
+	func heading(heading: TrainRational) {
 		let newRotationY = CGFloat(heading.num) / 10.0 // in units of 0.1 degrees
 		let normDelta = newRotationY - oldRotationY
 		let crossDelta = oldRotationY < newRotationY ? newRotationY - 360 - oldRotationY : 360 - oldRotationY + newRotationY

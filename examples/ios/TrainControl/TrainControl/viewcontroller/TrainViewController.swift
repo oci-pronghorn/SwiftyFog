@@ -69,7 +69,7 @@ class TrainViewController: UIViewController {
 		
 		assertValues()
         
-        train(fault: true)
+        //train(fault: true)
 	}
 	
 	func codeUi() {
@@ -274,7 +274,7 @@ extension TrainViewController:
         }
     }
 	
-	func engine(power: FogRational<Int64>, _ asserted: Bool) {
+	func engine(power: TrainRational, _ asserted: Bool) {
 		engineGauge?.setValue(Float(power.num), animated: true, duration: 0.5)
 		if asserted {
 			self.enginePower.rational = power
@@ -292,7 +292,7 @@ extension TrainViewController:
         }
     }
 	
-	func engine(calibration: FogRational<Int64>, _ asserted: Bool) {
+	func engine(calibration: TrainRational, _ asserted: Bool) {
 		engineGauge?.rangeValues = [NSNumber(value: -calibration.num), NSNumber(value: calibration.num), 100]
 		if asserted {
 			self.engineCalibration.rational = calibration
@@ -309,14 +309,14 @@ extension TrainViewController:
 		lightIndicatorImage?.isHighlighted = power
 	}
 	
-	func lights(calibration: FogRational<Int64>, _ asserted: Bool) {
+	func lights(calibration: TrainRational, _ asserted: Bool) {
 		lightingGauge?.rangeValues = [NSNumber(value: calibration.num), 256]
 		if asserted {
 			self.lightCalibration.rational = calibration
 		}
 	}
 	
-	func lights(ambient: FogRational<Int64>, _ asserted: Bool) {
+	func lights(ambient: TrainRational, _ asserted: Bool) {
 		self.lightingGauge?.setValue(Float(ambient.num), animated: true, duration: 0.5)
 		if asserted {
 		}

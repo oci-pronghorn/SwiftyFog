@@ -9,6 +9,8 @@
 import Foundation
 import SwiftyFog_iOS
 
+public typealias TrainRational = FogRational<Int32>
+
 public enum EngineState: Int {
     case reverse = -1;
     case idle = 0;
@@ -16,22 +18,22 @@ public enum EngineState: Int {
 }
 
 public protocol EngineDelegate: class {
-	func engine(power: FogRational<Int64>, _ asserted: Bool)
-	func engine(calibration: FogRational<Int64>, _ asserted: Bool)
+	func engine(power: TrainRational, _ asserted: Bool)
+	func engine(calibration: TrainRational, _ asserted: Bool)
     func engine(state: EngineState, _ asserted: Bool)
 }
 
 public class Engine: FogFeedbackModel {
 	private var broadcaster: MQTTBroadcaster?
-	private var power: FogFeedbackValue<FogRational<Int64>>
-	private var calibration: FogFeedbackValue<FogRational<Int64>>
+	private var power: FogFeedbackValue<TrainRational>
+	private var calibration: FogFeedbackValue<TrainRational>
     private var state: FogFeedbackValue<EngineState>
 	
 	public weak var delegate: EngineDelegate?
 	
 	public init() {
-		self.power = FogFeedbackValue(FogRational(num: Int64(0), den: 100))
-		self.calibration = FogFeedbackValue(FogRational(num: Int64(15), den: 100))
+		self.power = FogFeedbackValue(TrainRational(num: TrainRational.ValueType(0), den: 100))
+		self.calibration = FogFeedbackValue(TrainRational(num: TrainRational.ValueType(15), den: 100))
         self.state = FogFeedbackValue(.idle)
 	}
 	
@@ -59,7 +61,7 @@ public class Engine: FogFeedbackModel {
 		delegate?.engine(calibration: calibration.value, true)
 	}
 	
-	public func control(power: FogRational<Int64>) {
+	public func control(power: TrainRational) {
 		self.power.control(power) { value in
 			var data  = Data(capacity: value.fogSize)
 			data.fogAppend(value)
@@ -67,7 +69,7 @@ public class Engine: FogFeedbackModel {
 		}
 	}
 	
-	public func control(calibration: FogRational<Int64>) {
+	public func control(calibration: TrainRational) {
 		self.calibration.control(calibration) { value in
 			var data  = Data(capacity: calibration.fogSize)
 			data.fogAppend(calibration)

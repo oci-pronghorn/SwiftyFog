@@ -161,7 +161,7 @@ extension FoggyViewController : FoggyLogoDelegate {
 		trainIsAlive(alive)
 	}
 	
-	public func foggyLogo(accelerometerHeading: FogRational<Int64>) {
+	public func foggyLogo(accelerometerHeading: TrainRational) {
 		renderer.heading(heading: accelerometerHeading)
 	}
 }

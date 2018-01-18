@@ -12,8 +12,8 @@ import SwiftyFog_iOS
 public protocol LightsDelegate: class {
 	func lights(override: LightCommand, _ asserted: Bool)
 	func lights(power: Bool, _ asserted: Bool)
-	func lights(calibration: FogRational<Int64>, _ asserted: Bool)
-	func lights(ambient: FogRational<Int64>, _ asserted: Bool)
+	func lights(calibration: TrainRational, _ asserted: Bool)
+	func lights(ambient: TrainRational, _ asserted: Bool)
 }
 
 public enum LightCommand: Int32 {
@@ -26,8 +26,8 @@ public class Lights: FogFeedbackModel {
 	private var broadcaster: MQTTBroadcaster?
 	private var override: FogFeedbackValue<LightCommand>
 	private var power: FogFeedbackValue<Bool>
-	private var calibration: FogFeedbackValue<FogRational<Int64>>
-	private var ambient: FogFeedbackValue<FogRational<Int64>>
+	private var calibration: FogFeedbackValue<TrainRational>
+	private var ambient: FogFeedbackValue<TrainRational>
 	
 	public weak var delegate: LightsDelegate?
 	
@@ -45,7 +45,7 @@ public class Lights: FogFeedbackModel {
     public init() {
 		self.override = FogFeedbackValue(.auto)
 		self.power = FogFeedbackValue(false)
-		self.calibration = FogFeedbackValue(FogRational(num: Int64(128), den: 255))
+		self.calibration = FogFeedbackValue(TrainRational(num: TrainRational.ValueType(128), den: 255))
 		self.ambient = FogFeedbackValue(FogRational())
     }
 	
@@ -73,7 +73,7 @@ public class Lights: FogFeedbackModel {
 		mqtt.publish(MQTTMessage(topic: "override/control", payload: data))
 	}
 	
-	public func control(calibration: FogRational<Int64>) {
+	public func control(calibration: TrainRational) {
 		self.calibration.control(calibration) { value in
 			var data  = Data(capacity: value.fogSize)
 			data.fogAppend(value)
