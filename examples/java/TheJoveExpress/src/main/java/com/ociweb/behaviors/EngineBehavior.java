@@ -18,7 +18,7 @@ public class EngineBehavior implements PubSubMethodListener {
     private final ActuatorDriverPayload actuatorPayload = new ActuatorDriverPayload();
     private final RationalPayload enginePower = new RationalPayload(0, 100);
     private final RationalPayload calibration = new RationalPayload(30, 100);
-    private int engineMotion = 0;
+    private int engineState = 0;
 
     public EngineBehavior(FogRuntime runtime, String actuatorTopic, ActuatorDriverPort port, String enginePoweredTopic, String engineCalibratedTopic, String engineStateTopic) {
         this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
@@ -32,7 +32,7 @@ public class EngineBehavior implements PubSubMethodListener {
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
         this.channel.publishTopic(powerTopic, writer -> writer.write(enginePower));
         this.channel.publishTopic(calibrationTopic, writer -> writer.write(calibration));
-        this.channel.publishTopic(engineStateTopic, writer -> writer.writeInt(engineMotion));
+        this.channel.publishTopic(engineStateTopic, writer -> writer.writeInt(engineState));
         return true;
     }
 
@@ -61,9 +61,9 @@ public class EngineBehavior implements PubSubMethodListener {
             actuatorPayload.power = actualPower;
             this.channel.publishTopic(actuatorTopic, writer -> writer.write(actuatorPayload));
         }
-        if (state != engineMotion) {
-            engineMotion = state;
-            this.channel.publishTopic(engineStateTopic, writer -> writer.writeInt(engineMotion));
+        if (state != engineState) {
+            engineState = state;
+            this.channel.publishTopic(engineStateTopic, writer -> writer.writeInt(engineState));
         }
     }
 }

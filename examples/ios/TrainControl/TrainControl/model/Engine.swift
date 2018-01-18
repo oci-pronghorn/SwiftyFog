@@ -11,7 +11,7 @@ import SwiftyFog_iOS
 
 public typealias TrainRational = FogRational<Int32>
 
-public enum EngineState: Int {
+public enum EngineState: Int32 {
     case reverse = -1;
     case idle = 0;
     case forward = 1
