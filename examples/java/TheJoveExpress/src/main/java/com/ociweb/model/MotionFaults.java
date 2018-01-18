@@ -37,10 +37,11 @@ public class MotionFaults implements Externalizable {
     }
 
     public boolean accept(AccelerometerValues accelerometerValues) {
-        return false;
+        return false; // no change in fault
     }
 
     public boolean accept(int engineState) {
-        return false;
+        // -1, 0, 1 for reverse, idle, forward
+        return false; // no change in fault
     }
 }

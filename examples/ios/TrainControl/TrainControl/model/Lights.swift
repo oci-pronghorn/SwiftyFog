@@ -9,17 +9,17 @@
 import Foundation
 import SwiftyFog_iOS
 
+public enum LightCommand: Int32 {
+    case off = 0
+    case on = 1
+    case auto = 2
+}
+
 public protocol LightsDelegate: class {
 	func lights(override: LightCommand, _ asserted: Bool)
 	func lights(power: Bool, _ asserted: Bool)
 	func lights(calibration: TrainRational, _ asserted: Bool)
 	func lights(ambient: TrainRational, _ asserted: Bool)
-}
-
-public enum LightCommand: Int32 {
-	case off
-	case on
-	case auto
 }
 
 public class Lights: FogFeedbackModel {
