@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 import SwiftyFog_iOS
 
 class TrainViewController: UIViewController {
@@ -39,6 +40,7 @@ class TrainViewController: UIViewController {
 	
 	let pulsator = Pulsator()
     weak var crack: UIImageView?
+    var player: AVAudioPlayer?
 	
 	var mqttControl: MQTTControl!
 	
@@ -268,12 +270,37 @@ extension TrainViewController:
             crack?.removeFromSuperview()
         }
         else if (self.crack == nil) {
+            playSound()
             let crack = UIImageView(image: #imageLiteral(resourceName: "brokenglass"))
             crack.translatesAutoresizingMaskIntoConstraints = false
             crack.alpha = 0.25
             view.addSubview(crack)
             crack.bindFrameToSuperviewBounds()
             self.crack = crack
+        }
+    }
+    
+    func playSound() {
+        guard let url = Bundle.main.url(forResource: "glass break", withExtension: "mp3") else { return }
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            
+            
+            
+            /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
+            player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+            
+            /* iOS 10 and earlier require the following line:
+             player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileTypeMPEGLayer3) */
+            
+            guard let player = player else { return }
+            
+            player.play()
+            
+        } catch let error {
+            print(error.localizedDescription)
         }
     }
 	
