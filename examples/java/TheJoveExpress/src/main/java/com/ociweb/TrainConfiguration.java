@@ -30,6 +30,7 @@ public class TrainConfiguration  {
     final Port lightSensorPort = A0;
     final ActuatorDriverPort lightActuatorPort = ActuatorDriverPort.B;
 
+    final boolean textDisplayEnabled = true;
     final boolean billboardEnabled = false;
     final boolean cameraEnabled = false;
 

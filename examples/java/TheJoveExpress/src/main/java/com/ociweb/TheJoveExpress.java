@@ -64,8 +64,8 @@ public class TheJoveExpress implements FogApp
                 }
                 break;
         }
-
-        //c.setTimerPulseRate(1000);
+    // TextDisplay
+        c.setTimerPulseRate(250);
     }
 
     public void declareBehavior(FogRuntime runtime) {
@@ -140,6 +140,10 @@ public class TheJoveExpress implements FogApp
                     pubSub.publish("billboard/spec/feedback", true, MQTTQoS.atMostOnce));
             pubSub.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
             pubSub.subscribe(billboard, "billboard/image/control", MQTTQoS.atMostOnce, billboard::onImage);
+        }
+
+        if (config.textDisplayEnabled) {
+            runtime.registerListener(new TextDisplay(runtime));
         }
 
         if (config.cameraEnabled) {
