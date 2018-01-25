@@ -22,6 +22,7 @@ class TrainViewController: UIViewController {
 	@IBOutlet weak var connectMetrics: FlipLabel!
 	@IBOutlet weak var connectedImage: UIImageView!
 	@IBOutlet weak var stopStartButton: UIButton!
+    @IBOutlet weak var billboardText: UITextField!
 	
 	@IBOutlet weak var billboardImage: UIImageView!
 	@IBOutlet weak var compass: WMGaugeView!
@@ -162,7 +163,7 @@ extension TrainViewController {
 	}
 }
 
-extension TrainViewController {
+extension TrainViewController: UITextFieldDelegate {
 	func feedbackCut() {
 		engine.reset()
 		lights.reset()
@@ -174,14 +175,18 @@ extension TrainViewController {
 		lights.assertValues()
 		billboard.assertValues()
 	}
+    
+    @IBAction func stopStartConnecting(sender: UIButton?) {
+        if mqttControl.started {
+            mqttControl.stop()
+        }
+        else {
+            mqttControl.start()
+        }
+    }
 	
-	@IBAction func stopStartConnecting(sender: UIButton?) {
-		if mqttControl.started {
-			mqttControl.stop()
-		}
-		else {
-			mqttControl.start()
-		}
+	@IBAction func billboardTextChanged(sender: UIButton?) {
+		billboard.control(text: billboardText.text ?? "")
 	}
 	
 	@IBAction
@@ -256,7 +261,6 @@ extension TrainViewController:
 		EngineDelegate,
 		LightsDelegate,
         BillboardDelegate {
-    
 	
 	func train(alive: Bool) {
 		if alive == false {

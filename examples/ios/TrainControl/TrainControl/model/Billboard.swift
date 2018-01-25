@@ -45,6 +45,12 @@ public class Billboard: FogFeedbackModel {
 	public var layout: FogBitmapLayout? {
 		return bitmap?.layout
 	}
+    
+    public func control(text: String) {
+        var payload = Data();
+        payload.fogAppend(text);
+        mqtt.publish(MQTTMessage(topic: "text/control", payload: payload))
+    }
 	
 	public func control(image: UIImage) {
 		if var bitmap = bitmap {

@@ -372,6 +372,19 @@
                                     <action selector="faultTrainWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gOp-A1-R98"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="n8M-qB-QXO">
+                                <rect key="frame" x="52.666666666666657" y="474" width="309" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="309" id="BXQ-Xl-gTa"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="billboardTextChangedWithSender:" destination="BYZ-38-t0r" eventType="editingChanged" id="WZm-S2-ebe"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="c5J-k0-pT7"/>
+                                </connections>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -385,6 +398,7 @@
                             <constraint firstItem="7DK-2U-M7z" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="TIh-CK-Ot5"/>
                             <constraint firstItem="sxl-aJ-Zwu" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-8" id="a50-3A-I6e"/>
                             <constraint firstItem="NOS-K5-A9v" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="biJ-Eu-I2M"/>
+                            <constraint firstItem="n8M-qB-QXO" firstAttribute="top" secondItem="0P7-i3-PrJ" secondAttribute="bottom" constant="49.666666666666686" id="c1g-9q-1BI"/>
                             <constraint firstItem="HPE-xF-BzU" firstAttribute="centerY" secondItem="yOF-aF-Ux5" secondAttribute="centerY" id="c2a-8f-3nQ"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="eBe-4Q-Ytg"/>
                             <constraint firstItem="yOF-aF-Ux5" firstAttribute="top" secondItem="0P7-i3-PrJ" secondAttribute="bottom" constant="17" id="eMJ-EH-bod"/>
@@ -392,6 +406,7 @@
                                 <variation key="heightClass=regular-widthClass=regular" constant="16"/>
                             </constraint>
                             <constraint firstItem="7DK-2U-M7z" firstAttribute="top" secondItem="0P7-i3-PrJ" secondAttribute="bottom" constant="16.666666666666686" id="hKY-uy-iSi"/>
+                            <constraint firstItem="n8M-qB-QXO" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="hMb-wN-3Pf"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="hUY-FX-r7F">
                                 <variation key="heightClass=regular-widthClass=regular" constant="16"/>
                             </constraint>
@@ -411,6 +426,7 @@
                     <tabBarItem key="tabBarItem" title="" image="Train" id="iLc-kK-t0f"/>
                     <connections>
                         <outlet property="billboardImage" destination="yOF-aF-Ux5" id="Tt9-ML-npC"/>
+                        <outlet property="billboardText" destination="n8M-qB-QXO" id="fxm-Mo-35h"/>
                         <outlet property="compass" destination="HlX-sg-fsK" id="Fkd-Vi-4sp"/>
                         <outlet property="connectMetrics" destination="4cK-ON-aes" id="Z3X-4F-k7t"/>
                         <outlet property="connectedImage" destination="4zZ-K8-b71" id="nCN-Sr-VCd"/>

@@ -12,6 +12,7 @@ import com.ociweb.model.PubSub;
 import com.ociweb.pronghorn.iot.i2c.I2CJFFIStage;
 
 import static com.ociweb.iot.grove.motor_driver.MotorDriverTwig.MotorDriver;
+import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
 import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_96x96;
 
 public class TheJoveExpress implements FogApp
@@ -36,7 +37,7 @@ public class TheJoveExpress implements FogApp
         if (config.lightsEnabled) c.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);
         if (config.soundEnabled) c.useSerial(Baud.B_____9600);
         if (config.engineEnabled || config.lightsEnabled) c.connect(MotorDriver);
-        if (config.billboardEnabled) c.connect(OLED_96x96);
+        if (config.billboardEnabled) /*c.connect(OLED_96x96);*/c.connect(OLED_128x64);
         if (config.faultDetectionEnabled) {
             //c.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readAccel, config.accelerometerReadFreq);
         }
@@ -64,8 +65,6 @@ public class TheJoveExpress implements FogApp
                 }
                 break;
         }
-    // TextDisplay
-        c.setTimerPulseRate(250);
     }
 
     public void declareBehavior(FogRuntime runtime) {
@@ -136,14 +135,14 @@ public class TheJoveExpress implements FogApp
         }
 
         if (config.billboardEnabled) {
+            /*
             final BillboardBehavior billboard = new BillboardBehavior(runtime,
                     pubSub.publish("billboard/spec/feedback", true, MQTTQoS.atMostOnce));
             pubSub.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
             pubSub.subscribe(billboard, "billboard/image/control", MQTTQoS.atMostOnce, billboard::onImage);
-        }
-
-        if (config.textDisplayEnabled) {
-            runtime.registerListener(new TextDisplay(runtime));
+            */
+            final TextDisplay billboard = new TextDisplay(runtime);
+            pubSub.subscribe(billboard, "billboard/text/control", MQTTQoS.atMostOnce, billboard::onText);
         }
 
         if (config.cameraEnabled) {

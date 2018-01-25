@@ -11,7 +11,7 @@ public class TrainConfiguration  {
 
     final String trainName;
 
-    final boolean mqttDefaultLocal = true;
+    final boolean mqttDefaultLocal = false;
     final boolean mqttEnabled = true;
     final String mqttBroker;
     final String mqttClientName;
@@ -30,8 +30,7 @@ public class TrainConfiguration  {
     final Port lightSensorPort = A0;
     final ActuatorDriverPort lightActuatorPort = ActuatorDriverPort.B;
 
-    final boolean textDisplayEnabled = true;
-    final boolean billboardEnabled = false;
+    final boolean billboardEnabled = true;
     final boolean cameraEnabled = false;
 
     final boolean faultDetectionEnabled = true;
