@@ -1,15 +1,13 @@
 package com.ociweb.behaviors;
 
-import static com.ociweb.iot.grove.oled.OLEDTwig.*;
-
 import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.gl.api.StartupListener;
-
 import com.ociweb.iot.grove.oled.OLED_128x64_Transducer;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
-import static com.ociweb.iot.maker.FogRuntime.*;
+import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
+import static com.ociweb.iot.maker.FogRuntime.I2C_WRITER;
 
 public class TextDisplay implements PubSubMethodListener, StartupListener {
 
@@ -32,6 +30,10 @@ public class TextDisplay implements PubSubMethodListener, StartupListener {
         if (output.length() > 16) {
             output = output.substring(0, 16);
         }
+        else {
+            output = String.format("%1$-" + 16 + "s", output);
+        }
+        System.out.println(output);
         display.printCharSequence(output);
         return true;
     }
