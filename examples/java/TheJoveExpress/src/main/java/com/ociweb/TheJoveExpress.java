@@ -141,7 +141,9 @@ public class TheJoveExpress implements FogApp
             pubSub.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
             pubSub.subscribe(billboard, "billboard/image/control", MQTTQoS.atMostOnce, billboard::onImage);
             */
-            final TextDisplay billboard = new TextDisplay(runtime);
+            final TextDisplay billboard = new TextDisplay(runtime,
+                    pubSub.publish("billboard/text/feedback", false, MQTTQoS.atMostOnce));
+            pubSub.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
             pubSub.subscribe(billboard, "billboard/text/control", MQTTQoS.atMostOnce, billboard::onText);
         }
 

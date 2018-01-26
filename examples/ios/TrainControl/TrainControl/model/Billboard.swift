@@ -12,34 +12,40 @@ import SwiftyFog_iOS
 public protocol BillboardDelegate: class {
 	func billboard(layout: FogBitmapLayout)
 	func billboard(image: UIImage)
+    func billboard(text: String, _ asserted: Bool)
 }
 
 public class Billboard: FogFeedbackModel {
+    private var broadcaster: MQTTBroadcaster?
 	private var bitmap: FogBitMap?
-	private var broadcaster: MQTTBroadcaster?
+    private var text: FogFeedbackValue<String>
 	
 	public weak var delegate: BillboardDelegate?
 	
     public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				("spec/feedback", .atMostOnce, Billboard.feedbackSpec)
+				("spec/feedback", .atMostOnce, Billboard.feedbackSpec),
+                ("text/feedback", .atMostOnce, Billboard.feedbackText)
 			])
 		}
     }
 	
 	public init() {
+        self.text = FogFeedbackValue("")
 	}
 	
 	public var hasFeedback: Bool {
-		return bitmap != nil
+		return /*bitmap != nil &&*/ text.hasFeedback
 	}
 	
 	public func reset() {
 		bitmap = nil
+        text.reset()
 	}
 	
 	public func assertValues() {
+        delegate?.billboard(text: text.value, true)
 	}
 	
 	public var layout: FogBitmapLayout? {
@@ -71,4 +77,10 @@ public class Billboard: FogFeedbackModel {
 			bitmap = FogBitMap(layout: layout)
 		}
 	}
+    
+    private func feedbackText(msg: MQTTMessage) {
+        self.text.receive(msg.payload.fogExtract()) { value, asserted in
+            delegate?.billboard(text: value.trimmingCharacters(in: .whitespacesAndNewlines), asserted)
+        }
+    }
 }

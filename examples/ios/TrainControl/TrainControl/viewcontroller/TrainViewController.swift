@@ -188,6 +188,11 @@ extension TrainViewController: UITextFieldDelegate {
 	@IBAction func billboardTextChanged(sender: UIButton?) {
 		billboard.control(text: billboardText.text ?? "")
 	}
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 	
 	@IBAction
 	func shutdownTrain(sender: UILongPressGestureRecognizer) {
@@ -362,4 +367,10 @@ extension TrainViewController:
 	func billboard(image: UIImage) {
 		billboardImage?.image = image
 	}
+    
+    func billboard(text: String, _ asserted: Bool) {
+        if asserted {
+            billboardText.text = text
+        }
+    }
 }
