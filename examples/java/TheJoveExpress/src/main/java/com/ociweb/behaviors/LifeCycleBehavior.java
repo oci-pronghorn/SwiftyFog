@@ -21,6 +21,11 @@ public class LifeCycleBehavior implements PubSubMethodListener {
 
     public boolean onShutdown(CharSequence topic, ChannelReader payload) {
         runtime.shutdownRuntime();
+        /*
+        TODO:After all behaviors have had a chance to accept shutdown
+        if not test hardware
+            Runtime.getRuntime().exec("sudo reboot now");
+         */
         return true;
     }
 

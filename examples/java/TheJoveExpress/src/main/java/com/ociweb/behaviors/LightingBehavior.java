@@ -1,6 +1,8 @@
 package com.ociweb.behaviors;
 
 import com.ociweb.gl.api.PubSubMethodListener;
+import com.ociweb.gl.api.StartupListener;
+import com.ociweb.gl.api.TimeListener;
 import com.ociweb.iot.maker.*;
 import com.ociweb.model.ActuatorDriverPayload;
 import com.ociweb.model.ActuatorDriverPort;
@@ -10,7 +12,7 @@ import com.ociweb.pronghorn.pipe.ChannelReader;
 import static com.ociweb.behaviors.AmbientLightBehavior.maxSensorReading;
 import static com.ociweb.iot.maker.TriState.latent;
 
-public class LightingBehavior implements PubSubMethodListener {
+public class LightingBehavior implements PubSubMethodListener, TimeListener, StartupListener {
     private final FogCommandChannel channel;
     private final ActuatorDriverPayload actuatorPayload = new ActuatorDriverPayload();
     private final String actuatorTopic;
@@ -18,11 +20,14 @@ public class LightingBehavior implements PubSubMethodListener {
     private final String powerTopic;
     private final String calibrationTopic;
 
-    private final RationalPayload calibration = new RationalPayload(maxSensorReading, maxSensorReading);
+    private final RationalPayload calibration = new RationalPayload(maxSensorReading/2, maxSensorReading);
     private final RationalPayload ambient = new RationalPayload(maxSensorReading, maxSensorReading);
 
     private double determinedPower = -1.0;
     private Double overridePower = null;
+
+    private int flashCount = 1;
+    private long flashStamp = 0;
 
     public LightingBehavior(FogRuntime runtime, String actuatorTopic, ActuatorDriverPort port, String overrideTopic, String powerTopic, String calibrationTopic) {
         this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
@@ -41,6 +46,11 @@ public class LightingBehavior implements PubSubMethodListener {
         this.channel.publishTopic(powerTopic, writer -> writer.writeBoolean(isOn));
         this.channel.publishTopic(calibrationTopic, writer -> writer.write(calibration));
         return true;
+    }
+
+    @Override
+    public void startup() {
+        flashCount = 2;
     }
 
     public boolean onOverride(CharSequence charSequence, ChannelReader messageReader) {
@@ -76,11 +86,7 @@ public class LightingBehavior implements PubSubMethodListener {
 
     public boolean onDetected(CharSequence charSequence, ChannelReader messageReader) {
         messageReader.readInto(ambient);
-        if (this.actuatorPayload.power == -1.0) { // auto calibrate and st to 0
-            calibration.num = ambient.num / 2;
-            this.channel.publishTopic(calibrationTopic, writer -> writer.write(calibration));
-            determinedPower = 0.0;
-        } else if (ambient.num >= calibration.num) {
+        if (ambient.num >= calibration.num) {
             determinedPower = 0.0;
         } else {
             determinedPower = 1.0;
@@ -89,8 +95,28 @@ public class LightingBehavior implements PubSubMethodListener {
         return true;
     }
 
+    @Override
+    public void timeEvent(long time, int iteration) {
+        if (flashCount > 1 ) {
+            if ((time - flashStamp) >= 1000) {
+                flashStamp = time;
+                actuate();
+                flashCount++;
+                if (flashCount > 9) {
+                    flashCount = 1;
+                }
+            }
+        }
+    }
+
     private void actuate() {
-        Double updatePower = overridePower != null ? overridePower : determinedPower;
+        Double updatePower;
+        if (flashCount > 1 )  {
+            updatePower = (flashCount % 2 == 0) ? 1.0 : 0.0;
+        }
+        else {
+            updatePower = overridePower != null ? overridePower : determinedPower;
+        }
         if (updatePower != this.actuatorPayload.power) {
             this.actuatorPayload.power = updatePower;
             this.channel.publishTopic(actuatorTopic, writer -> writer.write(actuatorPayload));

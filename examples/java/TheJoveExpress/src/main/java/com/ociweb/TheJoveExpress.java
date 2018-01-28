@@ -21,23 +21,23 @@ public class TheJoveExpress implements FogApp
     private MQTTBridge mqttBridge;
 
     @Override
-    public void declareConnections(Hardware c) {
-        config = new TrainConfiguration(c);
+    public void declareConnections(Hardware hardware) {
+        config = new TrainConfiguration(hardware);
         
-        c.setDefaultRate(16_000_000);
+        hardware.setDefaultRate(16_000_000);
         
         I2CJFFIStage.debugCommands = false;
 
         if (config.mqttEnabled) {
-            this.mqttBridge = c.useMQTT(config.mqttBroker, config.mqttPort, config.mqttClientName, 40, 20000)
+            this.mqttBridge = hardware.useMQTT(config.mqttBroker, config.mqttPort, config.mqttClientName, 40, 20000)
                     .cleanSession(true)
                     .keepAliveSeconds(10);
         }
-        if (config.appServerEnabled) c.useHTTP1xServer(config.appServerPort); // TODO: heap problem on Pi0
-        if (config.lightsEnabled) c.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);
-        if (config.soundEnabled) c.useSerial(Baud.B_____9600);
-        if (config.engineEnabled || config.lightsEnabled) c.connect(MotorDriver);
-        if (config.billboardEnabled) /*c.connect(OLED_96x96);*/c.connect(OLED_128x64);
+        if (config.appServerEnabled) hardware.useHTTP1xServer(config.appServerPort); // TODO: heap problem on Pi0
+        if (config.lightsEnabled) hardware.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);
+        if (config.soundEnabled) hardware.useSerial(Baud.B_____9600);
+        if (config.engineEnabled || config.lightsEnabled) hardware.connect(MotorDriver);
+        if (config.billboardEnabled) /*c.connect(OLED_96x96);*/hardware.connect(OLED_128x64);
         if (config.faultDetectionEnabled) {
             //c.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readAccel, config.accelerometerReadFreq);
         }
@@ -48,22 +48,26 @@ public class TheJoveExpress implements FogApp
         switch (config.telemetryEnabled) {
             case on:
                 if (config.telemetryHost != null) {
-                    c.enableTelemetry(config.telemetryHost);
+                    hardware.enableTelemetry(config.telemetryHost);
                 }
                 else {
-                    c.enableTelemetry();
+                    hardware.enableTelemetry();
                 }
                 break;
             case latent:
-                if (c.isTestHardware()) {
+                if (hardware.isTestHardware()) {
                     if (config.telemetryHost != null) {
-                        c.enableTelemetry(config.telemetryHost);
+                        hardware.enableTelemetry(config.telemetryHost);
                     }
                     else {
-                        c.enableTelemetry();
+                        hardware.enableTelemetry();
                     }
                 }
                 break;
+        }
+
+        if (config.lightsEnabled) {
+            hardware.setTimerPulseRate(1000);
         }
     }
 
