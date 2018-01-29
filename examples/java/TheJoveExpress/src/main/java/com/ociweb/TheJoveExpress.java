@@ -37,10 +37,8 @@ public class TheJoveExpress implements FogApp
         if (config.lightsEnabled) hardware.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);
         if (config.soundEnabled) hardware.useSerial(Baud.B_____9600);
         if (config.engineEnabled || config.lightsEnabled) hardware.connect(MotorDriver);
-        if (config.billboardEnabled) /*c.connect(OLED_96x96);*/hardware.connect(OLED_128x64);
-        if (config.faultDetectionEnabled) {
-            //c.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readAccel, config.accelerometerReadFreq);
-        }
+        if (config.billboardEnabled) hardware.connect(OLED_128x64);/*c.connect(OLED_96x96);*/
+ //       if (config.faultDetectionEnabled) hardware.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readAccel, config.accelerometerReadFreq);
         if (config.cameraEnabled) ; //c.connect(pi-bus camera);
         if (config.soundEnabled) ; //c.connect(serial mp3 player);
 
@@ -90,6 +88,7 @@ public class TheJoveExpress implements FogApp
         final String accelerometerInternal = "accelerometer/internal";
         final String engineState = "engine/state/feedback";
         final String faultFeedback = "fault/feedback";
+        final String lightsPowerFeedback = "lights/power/feedback";
 
         if (config.engineEnabled || config.lightsEnabled) {
             final String actuatorPowerInternal = "actuator/power/internal";
@@ -116,7 +115,7 @@ public class TheJoveExpress implements FogApp
 
                 final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerInternal, config.lightActuatorPort,
                         pubSub.publish("lights/override/feedback", false, MQTTQoS.atMostOnce),
-                        pubSub.publish("lights/power/feedback", false, MQTTQoS.atMostOnce),
+                        pubSub.publish(lightsPowerFeedback, false, MQTTQoS.atMostOnce),
                         pubSub.publish("lights/calibration/feedback", false, MQTTQoS.atMostOnce));
                 pubSub.subscribe(lights, allFeedback, MQTTQoS.atMostOnce, lights::onAllFeedback);
                 pubSub.subscribe(lights, "lights/override/control", MQTTQoS.atMostOnce, lights::onOverride);
@@ -125,8 +124,8 @@ public class TheJoveExpress implements FogApp
             }
         }
         if (config.faultDetectionEnabled) {
-            //final AccelerometerBehavior accelerometerBehavior = new AccelerometerBehavior(runtime, accelerometerInternal);
-            //pubSub.registerBehavior(accelerometerBehavior);
+//            final AccelerometerBehavior accelerometerBehavior = new AccelerometerBehavior(runtime, accelerometerInternal);
+//            pubSub.registerBehavior(accelerometerBehavior);
         }
 
         if (config.faultDetectionEnabled) {
@@ -139,16 +138,17 @@ public class TheJoveExpress implements FogApp
         }
 
         if (config.billboardEnabled) {
+            final TextDisplay billboard = new TextDisplay(runtime,
+                    pubSub.publish("billboard/text/feedback", false, MQTTQoS.atMostOnce));
+            pubSub.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
+            pubSub.subscribe(billboard, "billboard/text/control", MQTTQoS.atMostOnce, billboard::onText);
+            pubSub.subscribe(billboard, lightsPowerFeedback, billboard::onLightsPower);
             /*
             final BillboardBehavior billboard = new BillboardBehavior(runtime,
                     pubSub.publish("billboard/spec/feedback", true, MQTTQoS.atMostOnce));
             pubSub.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
             pubSub.subscribe(billboard, "billboard/image/control", MQTTQoS.atMostOnce, billboard::onImage);
             */
-            final TextDisplay billboard = new TextDisplay(runtime,
-                    pubSub.publish("billboard/text/feedback", false, MQTTQoS.atMostOnce));
-            pubSub.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
-            pubSub.subscribe(billboard, "billboard/text/control", MQTTQoS.atMostOnce, billboard::onText);
         }
 
         if (config.cameraEnabled) {

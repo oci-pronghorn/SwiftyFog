@@ -51,7 +51,7 @@ public class BillboardBehavior implements PubSubMethodListener, StartupListener 
 
     public boolean onImage(CharSequence charSequence, ChannelReader ChannelReader) {
         ChannelReader.readInto(bmp);
-        display.display(display.newPreferredBmpScanner(bmp));
+        //display.display(display.newPreferredBmpScanner(bmp));
         return true;
     }
 }

@@ -61,6 +61,17 @@ public class TextDisplay implements PubSubMethodListener, StartupListener, Shutd
         return true;
     }
 
+    public boolean onLightsPower(CharSequence topic, ChannelReader payload) {
+        boolean powered = payload.readBoolean();
+        if (powered) {
+            display.inverseOn();
+        }
+        else {
+            display.inverseOff();
+        }
+        return true;
+    }
+
     private void displayText(String s) {
         final int c = blank.length();
         final int r = oldStrs.length;
@@ -103,7 +114,7 @@ public class TextDisplay implements PubSubMethodListener, StartupListener, Shutd
                 oldStrs[i] = newStrs[i];
                 display.setTextRowCol(i, 0);
                 display.printCharSequence(newStrs[i]);
-                System.out.println("[" + newStrs[i] + "]");
+                //System.out.println("[" + newStrs[i] + "]");
             }
             /*else {
                 System.out.println("|" + newStrs[i] + "|");

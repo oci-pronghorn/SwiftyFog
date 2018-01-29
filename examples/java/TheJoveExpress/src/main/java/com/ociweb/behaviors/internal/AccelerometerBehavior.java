@@ -9,22 +9,22 @@ public class AccelerometerBehavior implements PubSubMethodListener {
     private final FogCommandChannel channel;
     private final String stateTopic;
     private final SixAxisAccelerometer_Transducer accSensor;
-    private final AccelerometerValues magValues;
 
     public AccelerometerBehavior(FogRuntime runtime, String stateTopic) {
         this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
         this.stateTopic = stateTopic;
-        this.magValues = new AccelerometerValues() {
-            @Override
-            public void onChange(Changed change) {
-                valueChange();
+
+        AccelerometerListener listener = new AccelerometerListener() {
+            public void onChange(AccelerometerValues values, AccelerometerListener.Changed changed) {
+                valueChange(values, changed);
             }
         };
-        this.accSensor = new SixAxisAccelerometer_Transducer(runtime.newCommandChannel(FogRuntime.I2C_WRITER, 200), magValues, magValues, null);
+
+        this.accSensor = new SixAxisAccelerometer_Transducer(runtime.newCommandChannel(
+                FogRuntime.I2C_WRITER, 200), listener, listener, null);
     }
 
-    private void valueChange() {
-        channel.publishTopic(stateTopic, writer -> writer.write(magValues));
+    private void valueChange(AccelerometerValues values, AccelerometerListener.Changed changed) {
+        channel.publishTopic(stateTopic, writer -> writer.write(values));
     }
-
 }
