@@ -11,10 +11,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: com.ociweb:FogLight:0.1.3-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.ociweb:FogLight:0.1.4-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.ociweb:GreenLightning:0.1.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: com.ociweb:Pronghorn:0.0.15" level="project" />
-    <orderEntry type="library" name="Maven: com.ociweb:PronghornPipes:0.0.15" level="project" />
+    <orderEntry type="library" name="Maven: com.ociweb:Pronghorn:0.1.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.ociweb:PronghornPipes:0.1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.hdrhistogram:HdrHistogram:2.1.5" level="project" />
     <orderEntry type="library" name="Maven: com.ociweb:Ph-TLS-pureJava:0.0.6" level="project" />
     <orderEntry type="library" name="Maven: com.github.jnr:jnr-ffi:2.0.9" level="project" />
