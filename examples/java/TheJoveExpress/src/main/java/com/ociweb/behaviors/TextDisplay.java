@@ -1,6 +1,7 @@
 package com.ociweb.behaviors;
 
 import com.ociweb.gl.api.PubSubMethodListener;
+import com.ociweb.gl.api.PubSubService;
 import com.ociweb.gl.api.ShutdownListener;
 import com.ociweb.gl.api.StartupListener;
 import com.ociweb.iot.grove.oled.OLED_128x64_Transducer;
@@ -12,7 +13,7 @@ import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
 import static com.ociweb.iot.maker.FogRuntime.I2C_WRITER;
 
 public class TextDisplay implements PubSubMethodListener, StartupListener, ShutdownListener {
-    private final FogCommandChannel channel;
+    private final PubSubService pubSubService;
     private final String textFeedbackTopic;
     private final OLED_128x64_Transducer display;
     private String displayed;
@@ -22,9 +23,9 @@ public class TextDisplay implements PubSubMethodListener, StartupListener, Shutd
     private String[] newStrs = { "", "", "", "", "", "", "", ""};
 
     public TextDisplay(FogRuntime runtime, String textFeedbackTopic) {
-        this.channel = runtime.newCommandChannel();
+        FogCommandChannel channel = runtime.newCommandChannel();
         this.textFeedbackTopic = textFeedbackTopic;
-        this.channel.ensureDynamicMessaging();
+        this.pubSubService = channel.newPubSubService();
         display = OLED_128x64.newTransducer(runtime.newCommandChannel(I2C_WRITER,20000));
     }
 
@@ -51,7 +52,7 @@ public class TextDisplay implements PubSubMethodListener, StartupListener, Shutd
     }
 
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
-        this.channel.publishTopic(textFeedbackTopic, writer -> writer.writeUTF(displayed));
+        this.pubSubService.publishTopic(textFeedbackTopic, writer -> writer.writeUTF(displayed));
         return true;
     }
 
@@ -123,6 +124,6 @@ public class TextDisplay implements PubSubMethodListener, StartupListener, Shutd
         //System.out.println("+----------------+");
 
         displayed = s;
-        this.channel.publishTopic(textFeedbackTopic, writer -> writer.writeUTF(displayed));
+        this.pubSubService.publishTopic(textFeedbackTopic, writer -> writer.writeUTF(displayed));
     }
 }

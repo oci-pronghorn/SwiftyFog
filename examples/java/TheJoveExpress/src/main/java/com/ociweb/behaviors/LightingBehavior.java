@@ -1,6 +1,7 @@
 package com.ociweb.behaviors;
 
 import com.ociweb.gl.api.PubSubMethodListener;
+import com.ociweb.gl.api.PubSubService;
 import com.ociweb.gl.api.StartupListener;
 import com.ociweb.gl.api.TimeListener;
 import com.ociweb.iot.maker.*;
@@ -13,7 +14,7 @@ import static com.ociweb.behaviors.AmbientLightBehavior.maxSensorReading;
 import static com.ociweb.iot.maker.TriState.latent;
 
 public class LightingBehavior implements PubSubMethodListener, TimeListener, StartupListener {
-    private final FogCommandChannel channel;
+    private final PubSubService pubSubService;
     private final ActuatorDriverPayload actuatorPayload = new ActuatorDriverPayload();
     private final String actuatorTopic;
     private final String overrideTopic;
@@ -30,7 +31,8 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
     private long flashStamp = 0;
 
     public LightingBehavior(FogRuntime runtime, String actuatorTopic, ActuatorDriverPort port, String overrideTopic, String powerTopic, String calibrationTopic) {
-        this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
+        FogCommandChannel channel = runtime.newCommandChannel();
+        this.pubSubService = channel.newPubSubService();
         this.actuatorTopic = actuatorTopic;
         this.overrideTopic = overrideTopic;
         this.powerTopic = powerTopic;
@@ -42,9 +44,9 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
         boolean isOn = this.actuatorPayload.power > 0.0;
         TriState lightsOn = overridePower == null ? latent : overridePower == 0.0 ? TriState.on : TriState.off;
-        this.channel.publishTopic(overrideTopic, writer -> writer.writeInt(lightsOn.ordinal()));
-        this.channel.publishTopic(powerTopic, writer -> writer.writeBoolean(isOn));
-        this.channel.publishTopic(calibrationTopic, writer -> writer.write(calibration));
+        this.pubSubService.publishTopic(overrideTopic, writer -> writer.writeInt(lightsOn.ordinal()));
+        this.pubSubService.publishTopic(powerTopic, writer -> writer.writeBoolean(isOn));
+        this.pubSubService.publishTopic(calibrationTopic, writer -> writer.write(calibration));
         return true;
     }
 
@@ -67,14 +69,14 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
                 overridePower = null;
                 break;
         }
-        this.channel.publishTopic(overrideTopic, writer -> writer.writeInt(lightsOn.ordinal()));
+        this.pubSubService.publishTopic(overrideTopic, writer -> writer.writeInt(lightsOn.ordinal()));
         actuate();
         return true;
     }
 
     public boolean onCalibration(CharSequence charSequence, ChannelReader messageReader) {
         messageReader.readInto(this.calibration);
-        this.channel.publishTopic(calibrationTopic, writer -> writer.write(calibration));
+        this.pubSubService.publishTopic(calibrationTopic, writer -> writer.write(calibration));
         if (ambient.num >= calibration.num) {
             determinedPower = 0.0;
         } else {
@@ -119,9 +121,9 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
         }
         if (updatePower != this.actuatorPayload.power) {
             this.actuatorPayload.power = updatePower;
-            this.channel.publishTopic(actuatorTopic, writer -> writer.write(actuatorPayload));
+            this.pubSubService.publishTopic(actuatorTopic, writer -> writer.write(actuatorPayload));
             boolean isOn = this.actuatorPayload.power > 0.0;
-            this.channel.publishTopic(powerTopic, writer -> writer.writeBoolean(isOn));
+            this.pubSubService.publishTopic(powerTopic, writer -> writer.writeBoolean(isOn));
         }
     }
 }

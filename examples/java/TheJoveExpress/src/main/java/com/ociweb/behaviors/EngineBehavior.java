@@ -1,6 +1,7 @@
 package com.ociweb.behaviors;
 
 import com.ociweb.gl.api.PubSubMethodListener;
+import com.ociweb.gl.api.PubSubService;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.model.ActuatorDriverPayload;
@@ -10,7 +11,7 @@ import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
 public class EngineBehavior implements PubSubMethodListener {
-    private final FogCommandChannel channel;
+    private final PubSubService pubSubService;
     private final String actuatorTopic;
     private final String engineStateTopic;
     private final String powerTopic;
@@ -23,7 +24,8 @@ public class EngineBehavior implements PubSubMethodListener {
     private int engineState = 0;
 
     public EngineBehavior(FogRuntime runtime, String actuatorTopic, ActuatorDriverPort port, String enginePoweredTopic, String engineCalibratedTopic, String engineStateTopic) {
-        this.channel = runtime.newCommandChannel(DYNAMIC_MESSAGING);
+        FogCommandChannel channel = runtime.newCommandChannel();
+        this.pubSubService = channel.newPubSubService();
         this.actuatorTopic = actuatorTopic;
         this.engineStateTopic = engineStateTopic;
         this.actuatorPayload.port = port;
@@ -32,9 +34,9 @@ public class EngineBehavior implements PubSubMethodListener {
     }
 
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
-        this.channel.publishTopic(powerTopic, writer -> writer.write(enginePower));
-        this.channel.publishTopic(calibrationTopic, writer -> writer.write(calibration));
-        this.channel.publishTopic(engineStateTopic, writer -> writer.writeInt(engineState));
+        this.pubSubService.publishTopic(powerTopic, writer -> writer.write(enginePower));
+        this.pubSubService.publishTopic(calibrationTopic, writer -> writer.write(calibration));
+        this.pubSubService.publishTopic(engineStateTopic, writer -> writer.writeInt(engineState));
         return true;
     }
 
@@ -43,7 +45,7 @@ public class EngineBehavior implements PubSubMethodListener {
         if (motionFaults.hasFault()) {
             enginePower.num = 0;
             actuate();
-            this.channel.publishTopic(powerTopic, writer -> writer.write(enginePower));
+            this.pubSubService.publishTopic(powerTopic, writer -> writer.write(enginePower));
         }
         return true;
     }
@@ -51,14 +53,14 @@ public class EngineBehavior implements PubSubMethodListener {
     public boolean onPower(CharSequence charSequence, ChannelReader messageReader) {
         messageReader.readInto(enginePower);
         actuate();
-        this.channel.publishTopic(powerTopic, writer -> writer.write(enginePower));
+        this.pubSubService.publishTopic(powerTopic, writer -> writer.write(enginePower));
         return true;
     }
 
     public boolean onCalibration(CharSequence charSequence, ChannelReader messageReader) {
         messageReader.readInto(calibration);
         actuate();
-        this.channel.publishTopic(calibrationTopic, writer -> writer.write(calibration));
+        this.pubSubService.publishTopic(calibrationTopic, writer -> writer.write(calibration));
         return true;
     }
 
@@ -71,11 +73,11 @@ public class EngineBehavior implements PubSubMethodListener {
         int state = Double.compare(actualPower, 0.0);
         if (actualPower != actuatorPayload.power) {
             actuatorPayload.power = actualPower;
-            this.channel.publishTopic(actuatorTopic, writer -> writer.write(actuatorPayload));
+            this.pubSubService.publishTopic(actuatorTopic, writer -> writer.write(actuatorPayload));
         }
         if (state != engineState) {
             engineState = state;
-            this.channel.publishTopic(engineStateTopic, writer -> writer.writeInt(engineState));
+            this.pubSubService.publishTopic(engineStateTopic, writer -> writer.writeInt(engineState));
         }
     }
 }
