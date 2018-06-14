@@ -11,12 +11,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: com.ociweb:FogLight:0.1.4-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: com.ociweb:GreenLightning:0.1.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: com.ociweb:Pronghorn:0.1.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: com.ociweb:PronghornPipes:0.1.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: org.hdrhistogram:HdrHistogram:2.1.5" level="project" />
-    <orderEntry type="library" name="Maven: com.ociweb:Ph-TLS-pureJava:0.0.6" level="project" />
+    <orderEntry type="library" name="Maven: com.ociweb:foglight:1.0.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.ociweb:greenlightning:1.0.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.ociweb:pronghorn:1.0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.ociweb:pronghorn-pipes:1.0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.ociweb:ph-tls-pure-java:1.0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.github.jnr:jnr-ffi:2.0.9" level="project" />
     <orderEntry type="library" name="Maven: com.github.jnr:jffi:1.2.11" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.github.jnr:jffi:native:1.2.11" level="project" />

@@ -11,7 +11,7 @@ public class TrainConfiguration  {
 
     final String trainName;
 
-    final boolean mqttDefaultLocal = false;
+    final boolean mqttDefaultLocal = false; /* !!!!!!!!! TODO; set this to false when publishing! */
     final boolean mqttEnabled = true;
     final String mqttBroker;
     final String mqttClientName;
@@ -28,10 +28,14 @@ public class TrainConfiguration  {
     final boolean lightsEnabled = true;
     final int lightDetectFreq = 250;
     final Port lightSensorPort = A0;
+    final Port ledPort = D3;
     final ActuatorDriverPort lightActuatorPort = ActuatorDriverPort.B;
 
     final boolean billboardEnabled = true;
-    final boolean cameraEnabled = false;
+
+    boolean cameraEnabled = true;
+    final int cameraCaptureFPS = 12; //in ms
+    final String cameraOutputFormat = "/home/pi/pi-cam-test/image-%d.raw"; //where %d is the current timestamp
 
     final boolean faultDetectionEnabled = true;
     final int accelerometerReadFreq = 250;
@@ -43,10 +47,11 @@ public class TrainConfiguration  {
     final Port piezoPort = A1;
 
     TrainConfiguration(ArgumentProvider args) {
-        this.trainName = args.getArgumentValue("--name", "-n", "thejoveexpress");
+        this.trainName = args.getArgumentValue("--name", "-n", "joveexpress2");
         String localHostName = mqttDefaultLocal ? "localhost" : this.trainName + ".local";
         this.mqttBroker = args.getArgumentValue("--broker", "-b", localHostName);
         this.mqttClientName = trainName;
+        this.cameraEnabled = args.getArgumentValue("--camera", "-c", true);
         this.telemetryEnabled = Enum.valueOf(TriState.class, args.getArgumentValue("--telemetry", "-t", "latent"));
     }
 }

@@ -5,7 +5,9 @@ import com.ociweb.behaviors.internal.AccelerometerBehavior;
 import com.ociweb.behaviors.internal.ActuatorDriverBehavior;
 import com.ociweb.gl.api.MQTTBridge;
 import com.ociweb.gl.api.MQTTQoS;
+import com.ociweb.iot.camera.RaspiCam;
 import com.ociweb.iot.grove.simple_analog.SimpleAnalogTwig;
+import com.ociweb.iot.grove.simple_digital.SimpleDigitalTwig;
 import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometerTwig;
 import com.ociweb.iot.maker.*;
 import com.ociweb.model.PubSub;
@@ -25,6 +27,7 @@ public class TheJoveExpress implements FogApp
         config = new TrainConfiguration(hardware);
         
         hardware.setDefaultRate(16_000_000);
+        ///hardware.useI2C();
         
         I2CJFFIStage.debugCommands = false;
 
@@ -34,13 +37,18 @@ public class TheJoveExpress implements FogApp
                     .keepAliveSeconds(10);
         }
         if (config.appServerEnabled) hardware.useHTTP1xServer(config.appServerPort); // TODO: heap problem on Pi0
-        if (config.lightsEnabled) hardware.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);
+        if (config.lightsEnabled) {
+            hardware.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);
+            hardware.connect(SimpleDigitalTwig.LED, config.ledPort);
+        }
         if (config.soundEnabled) hardware.useSerial(Baud.B_____9600);
         if (config.engineEnabled || config.lightsEnabled) hardware.connect(MotorDriver);
         if (config.billboardEnabled) hardware.connect(OLED_128x64);/*c.connect(OLED_96x96);*/
  //       if (config.faultDetectionEnabled) hardware.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readAccel, config.accelerometerReadFreq);
-        if (config.cameraEnabled) ; //c.connect(pi-bus camera);
         if (config.soundEnabled) ; //c.connect(serial mp3 player);
+        if(config.cameraEnabled) {
+            hardware.setImageTriggerRate(config.cameraCaptureFPS);
+        }
 
         // TODO: move this logic into Hardware
         switch (config.telemetryEnabled) {
@@ -101,7 +109,7 @@ public class TheJoveExpress implements FogApp
                         pubSub.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
                         pubSub.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce),
                         pubSub.publish("engine/state/feedback", false, MQTTQoS.atMostOnce));
-                pubSub.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
+                //pubSub.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
                 pubSub.subscribe(engine, "engine/power/control", MQTTQoS.atMostOnce, engine::onPower);
                 pubSub.subscribe(engine, "engine/calibration/control", MQTTQoS.atMostOnce, engine::onCalibration);
                 pubSub.subscribe(engine, faultFeedback, engine::onFault);
@@ -113,7 +121,7 @@ public class TheJoveExpress implements FogApp
                         pubSub.publish(lightsAmbientFeedback, false, MQTTQoS.atMostOnce));
                 pubSub.subscribe(ambientLight, allFeedback, MQTTQoS.atMostOnce, ambientLight::onAllFeedback);
 
-                final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerInternal, config.lightActuatorPort,
+                final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerInternal, config.lightActuatorPort, config.ledPort,
                         pubSub.publish("lights/override/feedback", false, MQTTQoS.atMostOnce),
                         pubSub.publish(lightsPowerFeedback, false, MQTTQoS.atMostOnce),
                         pubSub.publish("lights/calibration/feedback", false, MQTTQoS.atMostOnce));
@@ -155,6 +163,11 @@ public class TheJoveExpress implements FogApp
             // mqtt inbound to take picture
             // save for web app server
             // runtime.registerListener(new CameraBehavior(runtime));
+            //System.err.println("Fix the no unique hashcode bug!");
+            final CameraBehavior camera = new CameraBehavior(runtime, config.cameraOutputFormat,
+                pubSub.publish("camera/capture/feedback", false, MQTTQoS.atLeastOnce));
+            // Doing subscribe instead of adding image listener!
+            pubSub.subscribe(camera, "camera/capture/control", MQTTQoS.atMostOnce, camera::onCapture);
         }
 
         if (config.soundEnabled) {
