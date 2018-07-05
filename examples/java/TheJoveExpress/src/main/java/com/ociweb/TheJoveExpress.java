@@ -3,6 +3,8 @@ package com.ociweb;
 import com.ociweb.behaviors.*;
 import com.ociweb.behaviors.internal.AccelerometerBehavior;
 import com.ociweb.behaviors.internal.ActuatorDriverBehavior;
+import com.ociweb.behaviors.location.LocationBehavior;
+import com.ociweb.behaviors.location.TrainingBehavior;
 import com.ociweb.gl.api.MQTTBridge;
 import com.ociweb.gl.api.MQTTQoS;
 import com.ociweb.iot.camera.RaspiCam;
@@ -12,6 +14,8 @@ import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometerTwig;
 import com.ociweb.iot.maker.*;
 import com.ociweb.model.PubSub;
 import com.ociweb.pronghorn.iot.i2c.I2CJFFIStage;
+
+import java.nio.file.Paths;
 
 import static com.ociweb.iot.grove.motor_driver.MotorDriverTwig.MotorDriver;
 import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
@@ -27,14 +31,18 @@ public class TheJoveExpress implements FogApp
         config = new TrainConfiguration(hardware);
         
         hardware.setDefaultRate(16_000_000);
+
+       // hardware.setTestImageSource(Paths.get("source_img"));
         ///hardware.useI2C();
         
         I2CJFFIStage.debugCommands = false;
 
         if (config.mqttEnabled) {
-            this.mqttBridge = hardware.useMQTT(config.mqttBroker, config.mqttPort, config.mqttClientName, 40, 20000)
+            this.mqttBridge = hardware.useMQTT(config.mqttBroker, config.mqttPort, config.mqttClientName, 40, 8000)
                     .cleanSession(true)
                     .keepAliveSeconds(10);
+            //hardware.definePrivateTopic("", "CameraBehavior", "");
+
         }
         if (config.appServerEnabled) hardware.useHTTP1xServer(config.appServerPort); // TODO: heap problem on Pi0
         if (config.lightsEnabled) {
@@ -46,9 +54,6 @@ public class TheJoveExpress implements FogApp
         if (config.billboardEnabled) hardware.connect(OLED_128x64);/*c.connect(OLED_96x96);*/
  //       if (config.faultDetectionEnabled) hardware.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readAccel, config.accelerometerReadFreq);
         if (config.soundEnabled) ; //c.connect(serial mp3 player);
-        if(config.cameraEnabled) {
-            hardware.setImageTriggerRate(config.cameraCaptureFPS);
-        }
 
         // TODO: move this logic into Hardware
         switch (config.telemetryEnabled) {
@@ -151,37 +156,19 @@ public class TheJoveExpress implements FogApp
             pubSub.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
             pubSub.subscribe(billboard, "billboard/text/control", MQTTQoS.atMostOnce, billboard::onText);
             pubSub.subscribe(billboard, lightsPowerFeedback, billboard::onLightsPower);
-            /*
-            final BillboardBehavior billboard = new BillboardBehavior(runtime,
-                    pubSub.publish("billboard/spec/feedback", true, MQTTQoS.atMostOnce));
-            pubSub.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
-            pubSub.subscribe(billboard, "billboard/image/control", MQTTQoS.atMostOnce, billboard::onImage);
-            */
         }
 
-        if (config.cameraEnabled) {
-            // mqtt inbound to take picture
-            // save for web app server
-            // runtime.registerListener(new CameraBehavior(runtime));
-            //System.err.println("Fix the no unique hashcode bug!");
-            final CameraBehavior camera = new CameraBehavior(runtime, config.cameraOutputFormat,
-                pubSub.publish("camera/capture/feedback", false, MQTTQoS.atLeastOnce));
-            // Doing subscribe instead of adding image listener!
-            pubSub.subscribe(camera, "camera/capture/control", MQTTQoS.atMostOnce, camera::onCapture);
-        }
+        if(config.locationEnabled) {
+            final String locationFeedback = "location/feedback";
+            final String accuracyFeedback = "location/accuracy/feedback";
 
-        if (config.soundEnabled) {
-//                final String soundPiezoControl = "sound/piezo/control";
-//                final SoundBehavior sound = new SoundBehavior(runtime, config.piezoPort);
-//                if (config.mqttEnabled) {
-//                    runtime.bridgeSubscription(soundPiezoControl, prefix + soundPiezoControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
-//                }
-//                runtime.registerListener(sound)
-//                        .addSubscription(soundPiezoControl, sound::onLevel);
-            // MQTT outbound with sound file listing
-            // MQTT outbound with play status
-            // MQTT inbound with play/stop/pause commands
-            // runtime.registerListener(new SoundBehavior(runtime));
+            final TrainingBehavior training = new TrainingBehavior(runtime);
+            pubSub.subscribe(training, "location/training/start", MQTTQoS.atLeastOnce, training::onTrainingStart);
+
+            final LocationBehavior location = new LocationBehavior(runtime,
+                    pubSub.publish(locationFeedback, false, MQTTQoS.atMostOnce),
+                    pubSub.publish(accuracyFeedback, false, MQTTQoS.atMostOnce));
+            runtime.registerListener(location);
         }
 
         if (config.appServerEnabled) {

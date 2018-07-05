@@ -33,11 +33,12 @@ public class TrainConfiguration  {
 
     final boolean billboardEnabled = true;
 
-    boolean cameraEnabled = true;
-    final int cameraCaptureFPS = 12; //in ms
-    final String cameraOutputFormat = "/home/pi/pi-cam-test/image-%d.raw"; //where %d is the current timestamp
+    //final boolean cameraEnabled = false;
+    //final String cameraOutputFormat = "/home/pi/pi-cam-test/image-%d.raw"; //where %d is the current timestamp
 
-    final boolean faultDetectionEnabled = true;
+    final boolean locationEnabled = true;
+
+    final boolean faultDetectionEnabled = false;
     final int accelerometerReadFreq = 250;
 
     final boolean appServerEnabled = false;
@@ -51,7 +52,6 @@ public class TrainConfiguration  {
         String localHostName = mqttDefaultLocal ? "localhost" : this.trainName + ".local";
         this.mqttBroker = args.getArgumentValue("--broker", "-b", localHostName);
         this.mqttClientName = trainName;
-        this.cameraEnabled = args.getArgumentValue("--camera", "-c", true);
         this.telemetryEnabled = Enum.valueOf(TriState.class, args.getArgumentValue("--telemetry", "-t", "latent"));
     }
 }

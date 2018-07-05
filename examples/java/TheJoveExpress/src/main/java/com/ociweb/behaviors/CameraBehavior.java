@@ -6,9 +6,11 @@ import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.ImageListener;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
+import java.io.Externalizable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Captures from camera on request and writes to file.
@@ -16,9 +18,9 @@ import java.io.IOException;
  * @author Tobi Schweiger
  * @author Brandon Sanders (capturing logic)
  */
+
 public class CameraBehavior implements ImageListener, PubSubMethodListener, StartupListener {
 
-    File workingFile = null;
     private byte[] frameBytes = null;
     private int frameBytesHead = 0;
 
@@ -30,9 +32,15 @@ public class CameraBehavior implements ImageListener, PubSubMethodListener, Star
 
     public CameraBehavior(FogRuntime runtime, String outputFormat, String captureFeedbackTopic) {
         FogCommandChannel channel = runtime.newCommandChannel();
-        this.pubSubService = channel.newPubSubService();
+        this.pubSubService = channel.newPubSubService(20, 20_000);
         this.captureFeedbackTopic = captureFeedbackTopic;
         this.outputFormat = outputFormat;
+    }
+
+    @Override
+    public void startup()
+    {
+        System.out.println("Started CameraBehavior.");
     }
 
     public boolean onCapture(CharSequence topic, ChannelReader channelReader) {
@@ -40,9 +48,10 @@ public class CameraBehavior implements ImageListener, PubSubMethodListener, Star
 
         // Here, start the recording.
         if (continuousRecording) {
-            System.out.println("Stopped continuous capture.");
+            System.out.println("Stopped live streaming.");
+
         } else {
-            System.out.println("Started continuous capture.");
+            System.out.println("Started live streaming.");
         }
         continuousRecording = !continuousRecording;
 
@@ -51,63 +60,53 @@ public class CameraBehavior implements ImageListener, PubSubMethodListener, Star
         return true;
     }
 
-    @Override
-    public void startup() {
-        System.out.println("Camera started up.");
-    }
+    long previousTime = 0;
+    private boolean sentFrameStart = false;
+
+    int rowNum = 0;
 
     /**
      * Captures a new image.
+     *
      * @param width
      * @param height
      * @param timestamp
      * @param frameBytesCount
      */
     @Override
-    public void onFrameStart(int width, int height, long timestamp, int frameBytesCount) {
-        if(!continuousRecording) return;
+    public boolean onFrameStart(int width, int height, long timestamp, int frameBytesCount) {
+        if (!continuousRecording) return true;
 
-        // Prepare file.
-        workingFile = new File(String.format(outputFormat, timestamp));
+        sentFrameStart = true;
+        System.out.printf("Duration from last header to this header: %d ms%n", timestamp - previousTime);
+        previousTime = timestamp;
 
-        // Prepare byte array.
-        if (frameBytes == null || frameBytes.length != frameBytesCount) {
-            frameBytes = new byte[frameBytesCount];
-            System.out.printf("Created new frame buffer for frames of size %dW x %dH with %d bytes.\n", width, height, frameBytesCount);
-        }
+        frameBytes = new byte[frameBytesCount];
+        System.out.printf("Created new frame buffer for frames of size %dW x %dH with %d bytes.\n", width, height, frameBytesCount);
 
-        System.out.printf("Started new frame (%d) @ %d.\n", timestamp, System.currentTimeMillis());
+        /*boolean status = this.pubSubService.publishTopic(liveFrameStartTopic, writer -> {
+            writer.writeInt(width);
+            writer.writeInt(height);
+        }, WaitFor.None);
 
-        frameBytesHead = 0;
+        if(status) {
+            frameBytesHead = 0;
+            rowNum = 0;
+        }*/
+        return true;
     }
 
     /**
      * Writes to the current image.
+     *
      * @param frameRowBytes
      */
     @Override
-    public void onFrameRow(byte[] frameRowBytes) {
-        if(!continuousRecording) return;
+    public boolean onFrameRow(byte[] frameRowBytes) {
+        if (!continuousRecording || !sentFrameStart) return true;
 
-        // Copy bytes.
-        System.arraycopy(frameRowBytes, 0, frameBytes, frameBytesHead, frameRowBytes.length);
-        frameBytesHead += frameRowBytes.length;
-
-        // Flush to disk if we have a full frame.
-        if (frameBytesHead >= frameBytes.length) {
-
-            // Write file.
-            try {
-                workingFile.createNewFile();
-                FileOutputStream fos = new FileOutputStream(workingFile);
-                fos.write(frameBytes);
-                fos.flush();
-                fos.close();
-                System.out.printf("Captured image to disk (%s) @ %d.\n", workingFile.getName(), System.currentTimeMillis());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
+        /*
+        return this.pubSubService.publishTopic(liveFrameRowTopic + (rowNum++), writer -> writer.write(frameRowBytes), WaitFor.None);*/
+        return true;
     }
 }
