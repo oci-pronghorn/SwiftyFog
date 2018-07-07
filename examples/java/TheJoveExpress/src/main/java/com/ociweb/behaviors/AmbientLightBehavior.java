@@ -20,19 +20,23 @@ public class AmbientLightBehavior implements PubSubMethodListener, AnalogListene
 
     public AmbientLightBehavior(FogRuntime runtime, Port lightSensorPort, String publishTopic) {
         FogCommandChannel channel = runtime.newCommandChannel();
+        System.out.println("Ambient behavior is started!");
         this.pubSubService = channel.newPubSubService();
         this.lightSensorPort = lightSensorPort;
         this.publishTopic = publishTopic;
     }
 
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
+        //System.out.println("Publishing ambient response");
         pubSubService.publishTopic(publishTopic, writer -> writer.write(oldValue));
         return true;
     }
 
     @Override
     public void analogEvent(Port port, long time, long durationMillis, int average, int value) {
+      //  System.out.println("Analog event called here!");
         if (port == lightSensorPort) {
+            //System.out.println("Correct light sensor!");
             if (value != oldValue.num) {
                 oldValue.num = value;
                 if (!pubSubService.publishTopic(publishTopic, writer -> writer.write(oldValue), WaitFor.None)) {

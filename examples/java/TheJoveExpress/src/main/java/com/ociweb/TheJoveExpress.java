@@ -3,13 +3,19 @@ package com.ociweb;
 import com.ociweb.behaviors.*;
 import com.ociweb.behaviors.internal.AccelerometerBehavior;
 import com.ociweb.behaviors.internal.ActuatorDriverBehavior;
+import com.ociweb.behaviors.location.LocationBehavior;
+import com.ociweb.behaviors.location.TrainingBehavior;
 import com.ociweb.gl.api.MQTTBridge;
 import com.ociweb.gl.api.MQTTQoS;
+import com.ociweb.iot.camera.RaspiCam;
 import com.ociweb.iot.grove.simple_analog.SimpleAnalogTwig;
+import com.ociweb.iot.grove.simple_digital.SimpleDigitalTwig;
 import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometerTwig;
 import com.ociweb.iot.maker.*;
 import com.ociweb.model.PubSub;
 import com.ociweb.pronghorn.iot.i2c.I2CJFFIStage;
+
+import java.nio.file.Paths;
 
 import static com.ociweb.iot.grove.motor_driver.MotorDriverTwig.MotorDriver;
 import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
@@ -25,21 +31,28 @@ public class TheJoveExpress implements FogApp
         config = new TrainConfiguration(hardware);
         
         hardware.setDefaultRate(16_000_000);
+
+       // hardware.setTestImageSource(Paths.get("source_img"));
+        ///hardware.useI2C();
         
         I2CJFFIStage.debugCommands = false;
 
         if (config.mqttEnabled) {
-            this.mqttBridge = hardware.useMQTT(config.mqttBroker, config.mqttPort, config.mqttClientName, 40, 20000)
+            this.mqttBridge = hardware.useMQTT(config.mqttBroker, config.mqttPort, config.mqttClientName, 40, 8000)
                     .cleanSession(true)
                     .keepAliveSeconds(10);
+            //hardware.definePrivateTopic("", "CameraBehavior", "");
+
         }
         if (config.appServerEnabled) hardware.useHTTP1xServer(config.appServerPort); // TODO: heap problem on Pi0
-        if (config.lightsEnabled) hardware.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);
+        if (config.lightsEnabled) {
+            hardware.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);
+            hardware.connect(SimpleDigitalTwig.LED, config.ledPort);
+        }
         if (config.soundEnabled) hardware.useSerial(Baud.B_____9600);
         if (config.engineEnabled || config.lightsEnabled) hardware.connect(MotorDriver);
         if (config.billboardEnabled) hardware.connect(OLED_128x64);/*c.connect(OLED_96x96);*/
  //       if (config.faultDetectionEnabled) hardware.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readAccel, config.accelerometerReadFreq);
-        if (config.cameraEnabled) ; //c.connect(pi-bus camera);
         if (config.soundEnabled) ; //c.connect(serial mp3 player);
 
         // TODO: move this logic into Hardware
@@ -101,7 +114,7 @@ public class TheJoveExpress implements FogApp
                         pubSub.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
                         pubSub.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce),
                         pubSub.publish("engine/state/feedback", false, MQTTQoS.atMostOnce));
-                pubSub.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
+                //pubSub.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
                 pubSub.subscribe(engine, "engine/power/control", MQTTQoS.atMostOnce, engine::onPower);
                 pubSub.subscribe(engine, "engine/calibration/control", MQTTQoS.atMostOnce, engine::onCalibration);
                 pubSub.subscribe(engine, faultFeedback, engine::onFault);
@@ -113,7 +126,7 @@ public class TheJoveExpress implements FogApp
                         pubSub.publish(lightsAmbientFeedback, false, MQTTQoS.atMostOnce));
                 pubSub.subscribe(ambientLight, allFeedback, MQTTQoS.atMostOnce, ambientLight::onAllFeedback);
 
-                final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerInternal, config.lightActuatorPort,
+                final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerInternal, config.lightActuatorPort, config.ledPort,
                         pubSub.publish("lights/override/feedback", false, MQTTQoS.atMostOnce),
                         pubSub.publish(lightsPowerFeedback, false, MQTTQoS.atMostOnce),
                         pubSub.publish("lights/calibration/feedback", false, MQTTQoS.atMostOnce));
@@ -143,32 +156,19 @@ public class TheJoveExpress implements FogApp
             pubSub.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
             pubSub.subscribe(billboard, "billboard/text/control", MQTTQoS.atMostOnce, billboard::onText);
             pubSub.subscribe(billboard, lightsPowerFeedback, billboard::onLightsPower);
-            /*
-            final BillboardBehavior billboard = new BillboardBehavior(runtime,
-                    pubSub.publish("billboard/spec/feedback", true, MQTTQoS.atMostOnce));
-            pubSub.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
-            pubSub.subscribe(billboard, "billboard/image/control", MQTTQoS.atMostOnce, billboard::onImage);
-            */
         }
 
-        if (config.cameraEnabled) {
-            // mqtt inbound to take picture
-            // save for web app server
-            // runtime.registerListener(new CameraBehavior(runtime));
-        }
+        if(config.locationEnabled) {
+            final String locationFeedback = "location/feedback";
+            final String accuracyFeedback = "location/accuracy/feedback";
 
-        if (config.soundEnabled) {
-//                final String soundPiezoControl = "sound/piezo/control";
-//                final SoundBehavior sound = new SoundBehavior(runtime, config.piezoPort);
-//                if (config.mqttEnabled) {
-//                    runtime.bridgeSubscription(soundPiezoControl, prefix + soundPiezoControl, mqttBridge).setQoS(MQTTQoS.atMostOnce);
-//                }
-//                runtime.registerListener(sound)
-//                        .addSubscription(soundPiezoControl, sound::onLevel);
-            // MQTT outbound with sound file listing
-            // MQTT outbound with play status
-            // MQTT inbound with play/stop/pause commands
-            // runtime.registerListener(new SoundBehavior(runtime));
+            final TrainingBehavior training = new TrainingBehavior(runtime);
+            pubSub.subscribe(training, "location/training/start", MQTTQoS.atLeastOnce, training::onTrainingStart);
+
+            final LocationBehavior location = new LocationBehavior(runtime,
+                    pubSub.publish(locationFeedback, false, MQTTQoS.atMostOnce),
+                    pubSub.publish(accuracyFeedback, false, MQTTQoS.atMostOnce));
+            runtime.registerListener(location);
         }
 
         if (config.appServerEnabled) {
