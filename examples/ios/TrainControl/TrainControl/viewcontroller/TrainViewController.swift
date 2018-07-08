@@ -71,7 +71,7 @@ class TrainViewController: UIViewController {
 extension TrainViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
+		/*
 		self.compass.scaleDescription = { (v, i) in
 			if v == 0 {
 				return "N".localized
@@ -84,7 +84,7 @@ extension TrainViewController {
 			}
 			return "W".localized
 		}
-		
+		*/
 		self.connectedImage.isHighlighted = mqttControl.connected
 		self.stopStartButton.isSelected = mqttControl.started
 		
