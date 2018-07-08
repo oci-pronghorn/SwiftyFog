@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 
-// TODO: port to swift and auto layout aware
+// TODO: port to swift, rethink layers, and auto layout aware
 
 /**
  * Styling enumerations
@@ -78,7 +78,7 @@ IB_DESIGNABLE
 @property (nonatomic) IBInspectable CGFloat scaleSubdivisions;
 @property (nonatomic) IBInspectable BOOL showScaleShadow;
 @property (nonatomic) IBInspectable BOOL scaleIgnoreRangeColors;
-@property (nonatomic) WMGaugeViewSubdivisionsAlignment scalesubdivisionsaligment;
+@property (nonatomic) WMGaugeViewSubdivisionsAlignment scaleSubdivisionsAligment;
 @property (nonatomic) IBInspectable CGFloat scaleDivisionsLength;
 @property (nonatomic) IBInspectable CGFloat scaleDivisionsWidth;
 @property (nonatomic) IBInspectable CGFloat scaleSubdivisionsLength;

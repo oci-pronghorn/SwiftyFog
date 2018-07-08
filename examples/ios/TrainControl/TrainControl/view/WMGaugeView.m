@@ -114,10 +114,10 @@
     [self invalidateNeedle];
 }
 - (NSInteger) scalesubdivisionsaligmentNum {
-	return _scalesubdivisionsaligment;
+	return _scaleSubdivisionsAligment;
 }
 - (void) setScalesubdivisionsaligmentNum: (NSInteger) value {
-	_scalesubdivisionsaligment = value;
+	_scaleSubdivisionsAligment = value;
     [self invalidateBackground];
 }
 
@@ -146,7 +146,7 @@
     _scaleSubdivisions = 10.0;
     _scaleIgnoreRangeColors = NO;
     _showScaleShadow = YES;
-    _scalesubdivisionsaligment = WMGaugeViewSubdivisionsAlignmentTop;
+    _scaleSubdivisionsAligment = WMGaugeViewSubdivisionsAlignmentTop;
     _scaleDivisionsLength = 0.045;
     _scaleDivisionsWidth = 0.01;
     _scaleSubdivisionsLength = 0.015;
@@ -183,7 +183,8 @@
     
     animationCompletion = nil;
 	
-    _indicatorSize = CGSizeMake(32, 32);
+    _indicatorSize = CGSizeMake(.16, .16);
+    _indicatorVerticalOffset = .3;
     _showIndicator = YES;
 
     [self initDrawingRects];
@@ -393,8 +394,8 @@
     for (int i = 0; i < totalTicks; i++)
     {
         CGFloat offset = 0.0;
-        if (_scalesubdivisionsaligment == WMGaugeViewSubdivisionsAlignmentCenter) offset = (_scaleDivisionsLength - _scaleSubdivisionsLength) / 2.0;
-        if (_scalesubdivisionsaligment == WMGaugeViewSubdivisionsAlignmentBottom) offset = _scaleDivisionsLength - _scaleSubdivisionsLength;
+        if (_scaleSubdivisionsAligment == WMGaugeViewSubdivisionsAlignmentCenter) offset = (_scaleDivisionsLength - _scaleSubdivisionsLength) / 2.0;
+        if (_scaleSubdivisionsAligment == WMGaugeViewSubdivisionsAlignmentBottom) offset = _scaleDivisionsLength - _scaleSubdivisionsLength;
         
         CGFloat y1 = scaleRect.origin.y;
         CGFloat y2 = y1 + _scaleSubdivisionsLength;
@@ -933,9 +934,9 @@
     [self invalidateBackground];
 }
 
-- (void)setScalesubdivisionsaligment:(WMGaugeViewSubdivisionsAlignment)scalesubdivisionsaligment
+- (void)setScalesubdivisionsaligment:(WMGaugeViewSubdivisionsAlignment)scaleSubdivisionsAligment
 {
-    _scalesubdivisionsaligment = scalesubdivisionsaligment;
+    _scaleSubdivisionsAligment = scaleSubdivisionsAligment;
     [self invalidateBackground];
 }
 
