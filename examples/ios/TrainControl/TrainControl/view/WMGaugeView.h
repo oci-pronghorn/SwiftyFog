@@ -114,6 +114,14 @@ IB_DESIGNABLE
 @property (nonatomic) IBInspectable NSInteger needleScrewStyleNum;
 @property (nonatomic) IBInspectable NSInteger scalesubdivisionsaligmentNum;
 
+@property (nonatomic) IBInspectable UIImage* indicatorImage;
+@property (nonatomic) IBInspectable UIImage* highlightedIndicatorImage;
+@property (nonatomic) IBInspectable CGFloat indicatorVerticalOffset;
+// TODO have configurable with more states
+@property (nonatomic, getter=isIndicatorHighlighted) BOOL indicatorHighlighted;
+@property (nonatomic) IBInspectable CGSize indicatorSize;
+@property (nonatomic) IBInspectable BOOL showIndicator;
+
 @property (nonatomic) ScaleDescription scaleDescription;
 
 /**

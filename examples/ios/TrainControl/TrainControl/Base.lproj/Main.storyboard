@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Xjm-3A-yj3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14295.6" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Xjm-3A-yj3">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14270.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -82,20 +80,9 @@
                                         <subviews>
                                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i1b-Ey-Udf" customClass="WMGaugeView">
                                                 <rect key="frame" x="0.0" y="0.0" width="182.66666666666666" height="182.66666666666666"/>
-                                                <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MotionIdle" translatesAutoresizingMaskIntoConstraints="NO" id="4w2-tJ-M4K" userLabel="Motion Indicator">
-                                                        <rect key="frame" x="75.333333333333329" y="38.666666666666671" width="32" height="32"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="32" id="9cO-M2-49H"/>
-                                                            <constraint firstAttribute="width" constant="32" id="fOk-7W-P8j"/>
-                                                        </constraints>
-                                                    </imageView>
-                                                </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstItem="4w2-tJ-M4K" firstAttribute="centerX" secondItem="i1b-Ey-Udf" secondAttribute="centerX" id="1Ko-9Z-d1M"/>
                                                     <constraint firstAttribute="width" secondItem="i1b-Ey-Udf" secondAttribute="height" multiplier="1:1" id="KWR-sZ-BOP"/>
-                                                    <constraint firstItem="4w2-tJ-M4K" firstAttribute="centerY" secondItem="i1b-Ey-Udf" secondAttribute="centerY" multiplier="0.6" id="ndY-ia-bjE"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="value">
@@ -119,7 +106,14 @@
                                                     <userDefinedRuntimeAttribute type="color" keyPath="rangeLabelsFontColor">
                                                         <color key="value" red="0.26663362979999999" green="0.26668566469999999" blue="0.26663035149999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="scaleIgnoreRangeColors" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="scaleIgnoreRangeColors" value="NO"/>
+                                                    <userDefinedRuntimeAttribute type="size" keyPath="indicatorSize">
+                                                        <size key="value" width="0.16" height="0.16"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="indicatorImage" value="MotionIdle"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="indicatorVerticalOffset">
+                                                        <real key="value" value="0.29999999999999999"/>
+                                                    </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <outletCollection property="ranges" destination="OZf-OR-qOJ" id="u5w-lq-K8q"/>
@@ -196,20 +190,9 @@
                                         <subviews>
                                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YEQ-Tl-lGJ" customClass="WMGaugeView">
                                                 <rect key="frame" x="0.0" y="0.0" width="207.33333333333334" height="207.33333333333334"/>
-                                                <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TorchOff" highlightedImage="TorchOn" translatesAutoresizingMaskIntoConstraints="NO" id="I8S-Am-1OA" userLabel="Light Indicator">
-                                                        <rect key="frame" x="87.666666666666657" y="46.333333333333343" width="32" height="32"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="32" id="IjV-V4-2na"/>
-                                                            <constraint firstAttribute="height" constant="32" id="Od5-Bj-c1S"/>
-                                                        </constraints>
-                                                    </imageView>
-                                                </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="YEQ-Tl-lGJ" secondAttribute="height" multiplier="1:1" id="8aQ-ag-OQc"/>
-                                                    <constraint firstItem="I8S-Am-1OA" firstAttribute="centerX" secondItem="YEQ-Tl-lGJ" secondAttribute="centerX" id="VbJ-hu-7fL"/>
-                                                    <constraint firstItem="I8S-Am-1OA" firstAttribute="centerY" secondItem="YEQ-Tl-lGJ" secondAttribute="centerY" multiplier="0.6" id="ZJu-06-PoL"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="value">
@@ -237,6 +220,14 @@
                                                     <userDefinedRuntimeAttribute type="number" keyPath="scaleSubdivisions">
                                                         <integer key="value" value="4"/>
                                                     </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="indicatorVerticalOffset">
+                                                        <real key="value" value="0.29999999999999999"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="size" keyPath="indicatorSize">
+                                                        <size key="value" width="0.16" height="0.16"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="indicatorImage" value="TorchOff"/>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="highlightedIndicatorImage" value="TorchOn"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <outletCollection property="ranges" destination="3zK-y4-4c8" id="twB-RA-HeP"/>
@@ -329,7 +320,7 @@
                                 <rect key="frame" x="207" y="458.66666666666669" width="0.0" height="0.0"/>
                                 <subviews>
                                     <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HlX-sg-fsK" customClass="WMGaugeView">
-                                        <rect key="frame" x="-207" y="-458.66666666666669" width="150" height="150"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="150" id="4oK-5c-ubT"/>
@@ -436,10 +427,8 @@
                         <outlet property="engineGauge" destination="i1b-Ey-Udf" id="30O-KE-jVv"/>
                         <outlet property="enginePower" destination="frG-rd-tNm" id="qK1-9D-qZL"/>
                         <outlet property="lightCalibration" destination="Ulu-J2-pss" id="Vzm-JV-9VR"/>
-                        <outlet property="lightIndicatorImage" destination="I8S-Am-1OA" id="oTj-7e-Fp7"/>
                         <outlet property="lightOverride" destination="N5j-RN-YrA" id="V9s-s2-1wZ"/>
                         <outlet property="lightingGauge" destination="YEQ-Tl-lGJ" id="XdX-qt-wSf"/>
-                        <outlet property="motionIndicatorImage" destination="4w2-tJ-M4K" id="L3w-Jz-RIW"/>
                         <outlet property="pulsator" destination="yHC-cU-IFW" id="Xw5-jJ-Fnb"/>
                         <outlet property="soundControl" destination="NOS-K5-A9v" id="ebE-BR-wXT"/>
                         <outlet property="stopStartButton" destination="Wpe-Ny-YbN" id="GnV-Hl-k0c"/>
@@ -457,6 +446,9 @@
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="number" keyPath="radius">
                             <real key="value" value="32"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
+                            <color key="value" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>

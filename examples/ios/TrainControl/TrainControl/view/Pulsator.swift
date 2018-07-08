@@ -28,8 +28,18 @@ class Pulsator: CAReplicatorLayer, CAAnimationDelegate {
 			}
         }
     }
+	
+	@IBInspectable var pulseColor: UIColor? {
+		get {
+            guard let backgroundColor = backgroundColor else { return nil }
+            return UIColor(cgColor: backgroundColor)
+		}
+		set {
+			self.backgroundColor = newValue?.cgColor
+		}
+	}
 
-    @IBInspectable override var backgroundColor: CGColor? {
+    override var backgroundColor: CGColor? {
         didSet {
             pulse.backgroundColor = backgroundColor
             guard let backgroundColor = backgroundColor else {return}

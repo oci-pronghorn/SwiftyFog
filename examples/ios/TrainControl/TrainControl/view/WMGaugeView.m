@@ -182,6 +182,9 @@
     };
     
     animationCompletion = nil;
+	
+    _indicatorSize = CGSizeMake(32, 32);
+    _showIndicator = YES;
 
     [self initDrawingRects];
     [self initScale];
@@ -272,6 +275,9 @@
     if (_showInnerBackground)
         [self drawFace:context];
 
+    if (_showIndicator)
+        [self drawIndicator:context];
+
     if (_showUnitOfMeasurement)
         [self drawText:context];
 
@@ -358,6 +364,20 @@
     NSAttributedString* attrStr = [[NSAttributedString alloc] initWithString:_unitOfMeasurement attributes:stringAttrs];
     CGSize fontWidth = [_unitOfMeasurement sizeWithAttributes:stringAttrs];
     [attrStr drawAtPoint:CGPointMake(0.5 - fontWidth.width / 2.0, _unitOfMeasurementVerticalOffset)];
+}
+
+-(void)drawIndicator: (CGContextRef)context
+{
+    UIImage* image = (_indicatorHighlighted ? _highlightedIndicatorImage : _indicatorImage);
+    if (image) {
+    	CGContextSetShadow(context, CGSizeMake(0.05, 0.05), 2.0);
+    	CGRect rect = CGRectMake(
+    		(faceRect.size.width - _indicatorSize.width) / 2.0,
+    		_indicatorVerticalOffset - _indicatorSize.height/2.0,
+    		_indicatorSize.width,
+    		_indicatorSize.height);
+        [image drawInRect: rect];
+    }
 }
 
 /**
@@ -1046,6 +1066,36 @@
 - (void)setRangeLabelsFontColor:(UIColor *)rangeLabelsFontColor
 {
     _rangeLabelsFontColor = rangeLabelsFontColor;
+    [self invalidateBackground];
+}
+
+-(void)setIndicatorSize:(CGSize)indicatorSize
+{
+	_indicatorSize = indicatorSize;
+    [self invalidateBackground];
+}
+
+-(void)setIndicatorVerticalOffset:(CGFloat)indicatorVerticalOffset
+{
+	_indicatorVerticalOffset = indicatorVerticalOffset;
+    [self invalidateBackground];
+}
+
+-(void)setIndicatorImage:(UIImage *)indicatorImage
+{
+	_indicatorImage = indicatorImage;
+    [self invalidateBackground];
+}
+
+-(void)setHighlightedIndicatorImage:(UIImage *)highlightedIndicatorImage
+{
+	_highlightedIndicatorImage = highlightedIndicatorImage;
+    [self invalidateBackground];
+}
+
+-(void)setIndicatorHighlighted:(BOOL)indicatorHighlighted
+{
+	_indicatorHighlighted = indicatorHighlighted;
     [self invalidateBackground];
 }
 

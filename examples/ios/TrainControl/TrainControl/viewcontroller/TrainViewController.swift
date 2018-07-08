@@ -27,12 +27,10 @@ class TrainViewController: UIViewController {
 	@IBOutlet weak var compass: WMGaugeView!
 	
 	@IBOutlet weak var lightOverride: UISegmentedControl!
-	@IBOutlet weak var lightIndicatorImage: UIImageView!
 	@IBOutlet weak var lightCalibration: UISlider!
 	@IBOutlet weak var lightingGauge: WMGaugeView!
 	
 	@IBOutlet weak var enginePower: ScrubControl!
-    @IBOutlet weak var motionIndicatorImage: UIImageView!
 	@IBOutlet weak var engineCalibration: UISlider!
 	@IBOutlet weak var engineGauge: WMGaugeView!
 	
@@ -295,11 +293,11 @@ extension TrainViewController:
     func engine(state: EngineState, _ asserted: Bool) {
         switch state {
             case .idle:
-                motionIndicatorImage?.image = #imageLiteral(resourceName: "MotionIdle")
+                engineGauge?.indicatorImage = #imageLiteral(resourceName: "MotionIdle")
             case .forward:
-                motionIndicatorImage?.image = #imageLiteral(resourceName: "MotionForward")
+                engineGauge?.indicatorImage = #imageLiteral(resourceName: "MotionForward")
             case .reverse:
-                motionIndicatorImage?.image = #imageLiteral(resourceName: "MotionReverse")
+                engineGauge?.indicatorImage = #imageLiteral(resourceName: "MotionReverse")
         }
     }
 	
@@ -318,7 +316,7 @@ extension TrainViewController:
 	}
 	
 	func lights(power: Bool, _ asserted: Bool) {
-		lightIndicatorImage?.isHighlighted = power
+		lightingGauge?.isIndicatorHighlighted = power
 	}
 	
 	func lights(calibration: TrainRational, _ asserted: Bool) {
