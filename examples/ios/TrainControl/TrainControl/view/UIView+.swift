@@ -9,6 +9,36 @@
 import Foundation
 
 public extension UIView {
+
+	@IBInspectable var cornerRadius: CGFloat {
+		get {
+			return self.layer.cornerRadius
+		}
+		set {
+			self.layer.cornerRadius = newValue
+		}
+	}
+
+	@IBInspectable var borderWidth: CGFloat {
+		get {
+			return self.layer.borderWidth
+		}
+		set {
+			self.layer.borderWidth = newValue
+		}
+	}
+
+	@IBInspectable var borderColor: UIColor? {
+		get {
+			if let borderColor = self.layer.borderColor {
+				return UIColor(cgColor: borderColor)
+			}
+			return nil
+		}
+		set {
+			self.layer.borderColor = newValue?.cgColor
+		}
+	}
 	
     /// Adds constraints to this `UIView` instances `superview` object to make sure this always has the same size as the superview.
     /// Please note that this has no effect if its `superview` is `nil` – add this `UIView` instance as a subview before calling this.
