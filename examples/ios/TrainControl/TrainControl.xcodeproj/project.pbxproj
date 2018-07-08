@@ -32,6 +32,16 @@
 		554348971F82D5B100C3C2CB /* ExerciseMotor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348961F82D5B100C3C2CB /* ExerciseMotor.swift */; };
 		5543489D1F82D65B00C3C2CB /* WMGaugeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 554348991F82D65A00C3C2CB /* WMGaugeView.m */; };
 		554348A01F82D6FE00C3C2CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */; };
+		55524C7020F11FA8004EBD8B /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55524C6E20F11FA8004EBD8B /* Interface.storyboard */; };
+		55524C7220F11FAA004EBD8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55524C7120F11FAA004EBD8B /* Assets.xcassets */; };
+		55524C7920F11FAA004EBD8B /* TrainConductor Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 55524C7820F11FAA004EBD8B /* TrainConductor Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		55524C7E20F11FAA004EBD8B /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55524C7D20F11FAA004EBD8B /* InterfaceController.swift */; };
+		55524C8020F11FAA004EBD8B /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55524C7F20F11FAA004EBD8B /* ExtensionDelegate.swift */; };
+		55524C8220F11FAA004EBD8B /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55524C8120F11FAA004EBD8B /* NotificationController.swift */; };
+		55524C8420F11FAA004EBD8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55524C8320F11FAA004EBD8B /* Assets.xcassets */; };
+		55524C8920F11FAA004EBD8B /* TrainConductor.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 55524C6C20F11FA8004EBD8B /* TrainConductor.app */; };
+		55BD0DD220F15955001E31C3 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BD0DD120F15954001E31C3 /* UIView+.swift */; };
+		55BD0DD420F15ABF001E31C3 /* AVAudioPlayer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BD0DD320F15ABF001E31C3 /* AVAudioPlayer+.swift */; };
 		55DA62DA1F8C1F140068D592 /* SwiftyFog_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554348951F82D4D700C3C2CB /* SwiftyFog_iOS.framework */; };
 		55DA62DB1F8C1F140068D592 /* SwiftyFog_iOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 554348951F82D4D700C3C2CB /* SwiftyFog_iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -51,9 +61,45 @@
 			remoteGlobalIDString = 554348341F82D3AD00C3C2CB;
 			remoteInfo = TrainControl;
 		};
+		55524C7A20F11FAA004EBD8B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5543482D1F82D3AD00C3C2CB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55524C7720F11FAA004EBD8B;
+			remoteInfo = "TrainConductor Extension";
+		};
+		55524C8720F11FAA004EBD8B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5543482D1F82D3AD00C3C2CB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55524C6B20F11FA8004EBD8B;
+			remoteInfo = TrainConductor;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		55524C8D20F11FAA004EBD8B /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				55524C7920F11FAA004EBD8B /* TrainConductor Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55524C9120F11FAA004EBD8B /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				55524C8920F11FAA004EBD8B /* TrainConductor.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		55DA62DC1F8C1F140068D592 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -71,7 +117,6 @@
 		22ABCF462010D40500AEAC1D /* MotionFaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionFaults.swift; sourceTree = "<group>"; };
 		22E11E2D20152E600034F382 /* glass break.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "glass break.mp3"; sourceTree = "<group>"; };
 		551AB9DE1F93B94A0080D37B /* FlipLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipLabel.swift; sourceTree = "<group>"; };
-		551AB9E01F9529B40080D37B /* GaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeView.swift; sourceTree = "<group>"; };
 		554348351F82D3AD00C3C2CB /* TrainControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrainControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		554348381F82D3AD00C3C2CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5543483D1F82D3AD00C3C2CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -103,6 +148,19 @@
 		554348991F82D65A00C3C2CB /* WMGaugeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMGaugeView.m; sourceTree = "<group>"; };
 		5543489A1F82D65A00C3C2CB /* WMGaugeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMGaugeView.h; sourceTree = "<group>"; };
 		5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		55524C6C20F11FA8004EBD8B /* TrainConductor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrainConductor.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		55524C6F20F11FA8004EBD8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		55524C7120F11FAA004EBD8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		55524C7320F11FAA004EBD8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55524C7820F11FAA004EBD8B /* TrainConductor Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "TrainConductor Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		55524C7D20F11FAA004EBD8B /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		55524C7F20F11FAA004EBD8B /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		55524C8120F11FAA004EBD8B /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		55524C8320F11FAA004EBD8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		55524C8520F11FAA004EBD8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55524C8620F11FAA004EBD8B /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		55BD0DD120F15954001E31C3 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
+		55BD0DD320F15ABF001E31C3 /* AVAudioPlayer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVAudioPlayer+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +186,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		55524C7520F11FAA004EBD8B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -137,6 +202,8 @@
 				554348371F82D3AD00C3C2CB /* TrainControl */,
 				5543484C1F82D3AD00C3C2CB /* TrainControlTests */,
 				554348571F82D3AD00C3C2CB /* TrainControlUITests */,
+				55524C6D20F11FA8004EBD8B /* TrainConductor */,
+				55524C7C20F11FAA004EBD8B /* TrainConductor Extension */,
 				554348361F82D3AD00C3C2CB /* Products */,
 				554348931F82D4D700C3C2CB /* Frameworks */,
 			);
@@ -148,6 +215,8 @@
 				554348351F82D3AD00C3C2CB /* TrainControl.app */,
 				554348491F82D3AD00C3C2CB /* TrainControlTests.xctest */,
 				554348541F82D3AD00C3C2CB /* TrainControlUITests.xctest */,
+				55524C6C20F11FA8004EBD8B /* TrainConductor.app */,
+				55524C7820F11FAA004EBD8B /* TrainConductor Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -220,10 +289,11 @@
 				554348761F82D46100C3C2CB /* Pulsator.swift */,
 				554348771F82D46100C3C2CB /* ScubControl.swift */,
 				551AB9DE1F93B94A0080D37B /* FlipLabel.swift */,
-				551AB9E01F9529B40080D37B /* GaugeView.swift */,
 				5543489A1F82D65A00C3C2CB /* WMGaugeView.h */,
 				554348991F82D65A00C3C2CB /* WMGaugeView.m */,
 				554348981F82D65900C3C2CB /* TrainControl-Bridging-Header.h */,
+				55BD0DD120F15954001E31C3 /* UIView+.swift */,
+				55BD0DD320F15ABF001E31C3 /* AVAudioPlayer+.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -234,6 +304,29 @@
 				554348951F82D4D700C3C2CB /* SwiftyFog_iOS.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		55524C6D20F11FA8004EBD8B /* TrainConductor */ = {
+			isa = PBXGroup;
+			children = (
+				55524C6E20F11FA8004EBD8B /* Interface.storyboard */,
+				55524C7120F11FAA004EBD8B /* Assets.xcassets */,
+				55524C7320F11FAA004EBD8B /* Info.plist */,
+			);
+			path = TrainConductor;
+			sourceTree = "<group>";
+		};
+		55524C7C20F11FAA004EBD8B /* TrainConductor Extension */ = {
+			isa = PBXGroup;
+			children = (
+				55524C7D20F11FAA004EBD8B /* InterfaceController.swift */,
+				55524C7F20F11FAA004EBD8B /* ExtensionDelegate.swift */,
+				55524C8120F11FAA004EBD8B /* NotificationController.swift */,
+				55524C8320F11FAA004EBD8B /* Assets.xcassets */,
+				55524C8520F11FAA004EBD8B /* Info.plist */,
+				55524C8620F11FAA004EBD8B /* PushNotificationPayload.apns */,
+			);
+			path = "TrainConductor Extension";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,10 +340,12 @@
 				554348321F82D3AD00C3C2CB /* Frameworks */,
 				554348331F82D3AD00C3C2CB /* Resources */,
 				55DA62DC1F8C1F140068D592 /* Embed Frameworks */,
+				55524C9120F11FAA004EBD8B /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				55524C8820F11FAA004EBD8B /* PBXTargetDependency */,
 			);
 			name = TrainControl;
 			productName = TrainControl;
@@ -293,30 +388,74 @@
 			productReference = 554348541F82D3AD00C3C2CB /* TrainControlUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		55524C6B20F11FA8004EBD8B /* TrainConductor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55524C8E20F11FAA004EBD8B /* Build configuration list for PBXNativeTarget "TrainConductor" */;
+			buildPhases = (
+				55524C6A20F11FA8004EBD8B /* Resources */,
+				55524C8D20F11FAA004EBD8B /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				55524C7B20F11FAA004EBD8B /* PBXTargetDependency */,
+			);
+			name = TrainConductor;
+			productName = TrainConductor;
+			productReference = 55524C6C20F11FA8004EBD8B /* TrainConductor.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		55524C7720F11FAA004EBD8B /* TrainConductor Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55524C8A20F11FAA004EBD8B /* Build configuration list for PBXNativeTarget "TrainConductor Extension" */;
+			buildPhases = (
+				55524C7420F11FAA004EBD8B /* Sources */,
+				55524C7520F11FAA004EBD8B /* Frameworks */,
+				55524C7620F11FAA004EBD8B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "TrainConductor Extension";
+			productName = "TrainConductor Extension";
+			productReference = 55524C7820F11FAA004EBD8B /* TrainConductor Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		5543482D1F82D3AD00C3C2CB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0910;
+				LastSwiftUpdateCheck = 1000;
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Object Computing Inc";
 				TargetAttributes = {
 					554348341F82D3AD00C3C2CB = {
 						CreatedOnToolsVersion = 9.1;
-						LastSwiftMigration = 0910;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 					};
 					554348481F82D3AD00C3C2CB = {
 						CreatedOnToolsVersion = 9.1;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 554348341F82D3AD00C3C2CB;
 					};
 					554348531F82D3AD00C3C2CB = {
 						CreatedOnToolsVersion = 9.1;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 554348341F82D3AD00C3C2CB;
+					};
+					55524C6B20F11FA8004EBD8B = {
+						CreatedOnToolsVersion = 10.0;
+						ProvisioningStyle = Automatic;
+					};
+					55524C7720F11FAA004EBD8B = {
+						CreatedOnToolsVersion = 10.0;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -336,6 +475,8 @@
 				554348341F82D3AD00C3C2CB /* TrainControl */,
 				554348481F82D3AD00C3C2CB /* TrainControlTests */,
 				554348531F82D3AD00C3C2CB /* TrainControlUITests */,
+				55524C6B20F11FA8004EBD8B /* TrainConductor */,
+				55524C7720F11FAA004EBD8B /* TrainConductor Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -367,6 +508,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		55524C6A20F11FA8004EBD8B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55524C7220F11FAA004EBD8B /* Assets.xcassets in Resources */,
+				55524C7020F11FA8004EBD8B /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55524C7620F11FAA004EBD8B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55524C8420F11FAA004EBD8B /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -380,10 +538,12 @@
 				554348831F82D46100C3C2CB /* TrainAppController.swift in Sources */,
 				5543487E1F82D46100C3C2CB /* Sound.swift in Sources */,
 				551AB9DF1F93B94A0080D37B /* FlipLabel.swift in Sources */,
+				55BD0DD220F15955001E31C3 /* UIView+.swift in Sources */,
 				5543487F1F82D46100C3C2CB /* Train.swift in Sources */,
 				554348861F82D46100C3C2CB /* MetalPanelView.swift in Sources */,
 				554348801F82D46100C3C2CB /* LogViewController.swift in Sources */,
 				554348871F82D46100C3C2CB /* Pulsator.swift in Sources */,
+				55BD0DD420F15ABF001E31C3 /* AVAudioPlayer+.swift in Sources */,
 				554348881F82D46100C3C2CB /* ScubControl.swift in Sources */,
 				5543487C1F82D46100C3C2CB /* Engine.swift in Sources */,
 				5543487D1F82D46100C3C2CB /* Lights.swift in Sources */,
@@ -411,6 +571,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		55524C7420F11FAA004EBD8B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55524C8220F11FAA004EBD8B /* NotificationController.swift in Sources */,
+				55524C8020F11FAA004EBD8B /* ExtensionDelegate.swift in Sources */,
+				55524C7E20F11FAA004EBD8B /* InterfaceController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -424,6 +594,16 @@
 			target = 554348341F82D3AD00C3C2CB /* TrainControl */;
 			targetProxy = 554348551F82D3AD00C3C2CB /* PBXContainerItemProxy */;
 		};
+		55524C7B20F11FAA004EBD8B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55524C7720F11FAA004EBD8B /* TrainConductor Extension */;
+			targetProxy = 55524C7A20F11FAA004EBD8B /* PBXContainerItemProxy */;
+		};
+		55524C8820F11FAA004EBD8B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55524C6B20F11FA8004EBD8B /* TrainConductor */;
+			targetProxy = 55524C8720F11FAA004EBD8B /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -433,6 +613,14 @@
 				5543483D1F82D3AD00C3C2CB /* Base */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		55524C6E20F11FA8004EBD8B /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				55524C6F20F11FA8004EBD8B /* Base */,
+			);
+			name = Interface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -488,7 +676,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -541,7 +729,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -562,7 +750,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "TrainControl/view/TrainControl-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -579,7 +767,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "TrainControl/view/TrainControl-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -595,7 +783,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControlTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrainControl.app/TrainControl";
 			};
@@ -612,7 +800,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControlTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrainControl.app/TrainControl";
 			};
@@ -628,7 +816,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControlUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = TrainControl;
 			};
@@ -644,9 +832,89 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControlUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = TrainControl;
+			};
+			name = Release;
+		};
+		55524C8B20F11FAA004EBD8B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
+				INFOPLIST_FILE = "TrainConductor Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControl.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 5.0;
+			};
+			name = Debug;
+		};
+		55524C8C20F11FAA004EBD8B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
+				INFOPLIST_FILE = "TrainConductor Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControl.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 5.0;
+			};
+			name = Release;
+		};
+		55524C8F20F11FAA004EBD8B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
+				IBSC_MODULE = TrainConductor_Extension;
+				INFOPLIST_FILE = TrainConductor/Info.plist;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControl.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 5.0;
+			};
+			name = Debug;
+		};
+		55524C9020F11FAA004EBD8B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
+				IBSC_MODULE = TrainConductor_Extension;
+				INFOPLIST_FILE = TrainConductor/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControl.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 5.0;
 			};
 			name = Release;
 		};
@@ -685,6 +953,24 @@
 			buildConfigurations = (
 				554348641F82D3AD00C3C2CB /* Debug */,
 				554348651F82D3AD00C3C2CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55524C8A20F11FAA004EBD8B /* Build configuration list for PBXNativeTarget "TrainConductor Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55524C8B20F11FAA004EBD8B /* Debug */,
+				55524C8C20F11FAA004EBD8B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55524C8E20F11FAA004EBD8B /* Build configuration list for PBXNativeTarget "TrainConductor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55524C8F20F11FAA004EBD8B /* Debug */,
+				55524C9020F11FAA004EBD8B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

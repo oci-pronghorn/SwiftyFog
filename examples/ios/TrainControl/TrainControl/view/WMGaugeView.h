@@ -7,6 +7,8 @@
 
 #import <UIKit/UIKit.h>
 
+// TODO: port to swift and auto layout aware
+
 /**
  * Styling enumerations
  */
@@ -36,6 +38,17 @@ typedef NS_ENUM(NSInteger, WMGaugeViewInnerBackgroundStyle)
 };
 
 typedef NSString* (^ScaleDescription)(float, NSInteger);
+
+@class WMGaugeView;
+
+IB_DESIGNABLE
+@interface WMGaugeRange: NSObject
+@property (nonatomic) IBInspectable CGFloat value;
+@property (nonatomic) IBInspectable UIColor *color;
+@property (nonatomic) IBInspectable NSString* label;
+@property (nonatomic) IBInspectable NSInteger order;
+@property (nonatomic, weak) WMGaugeView* owner;
+@end
 
 /**
  * WMGaugeView class
@@ -77,7 +90,6 @@ IB_DESIGNABLE
 
 @property (nonatomic) IBInspectable UIFont *scaleFont;
 
-
 @property (nonatomic) IBInspectable float value;
 @property (nonatomic) IBInspectable float minValue;
 @property (nonatomic) IBInspectable float maxValue;
@@ -89,9 +101,7 @@ IB_DESIGNABLE
 @property (nonatomic) IBInspectable CGFloat rangeLabelsFontKerning;
 @property (nonatomic) IBInspectable CGFloat rangeLabelsOffset;
 
-@property (nonatomic) NSArray<NSNumber*> *rangeValues;
-@property (nonatomic) NSArray<UIColor*> *rangeColors;
-@property (nonatomic) NSArray<NSString*> *rangeLabels;
+@property (nonatomic, strong) IBOutletCollection(WMGaugeRange) NSArray<WMGaugeRange*> *ranges;
 
 @property (nonatomic) IBInspectable UIColor *unitOfMeasurementColor;
 @property (nonatomic) IBInspectable CGFloat unitOfMeasurementVerticalOffset;

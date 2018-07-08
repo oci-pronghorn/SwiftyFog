@@ -46,7 +46,7 @@ public class Lights: FogFeedbackModel {
 		self.override = FogFeedbackValue(.auto)
 		self.power = FogFeedbackValue(false)
 		self.calibration = FogFeedbackValue(TrainRational(num: TrainRational.ValueType(128), den: 255))
-		self.ambient = FogFeedbackValue(FogRational())
+		self.ambient = self.calibration
     }
 	
 	public var hasFeedback: Bool {

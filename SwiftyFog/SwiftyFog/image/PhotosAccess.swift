@@ -85,7 +85,7 @@ public class PhotosAccess : NSObject, UIImagePickerControllerDelegate {
 		self.root.present(alert, animated: true)
 	}
 
-	public func selectImage(sourceType: UIImagePickerControllerSourceType, completion: @escaping (UIImage?, Bool)->()) {
+	public func selectImage(sourceType: UIImagePickerController.SourceType, completion: @escaping (UIImage?, Bool)->()) {
 		check(perform: { access in
 			if access {
 				let imagePicker = UIImagePickerController()

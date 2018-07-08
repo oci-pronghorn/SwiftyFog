@@ -49,6 +49,23 @@
     /* Annimation completion */
     void (^animationCompletion)(BOOL);
 }
+
+- (void)invalidateBackground;
+@end
+
+@implementation WMGaugeRange
+- (void) setValue:(CGFloat)value {
+	_value = value;
+	[_owner invalidateBackground];
+}
+- (void) setColor:(UIColor *)color {
+	_color = color;
+	[_owner invalidateBackground];
+}
+- (void) setLabel:(NSString *)label {
+	_label = label;
+	[_owner invalidateBackground];
+}
 @end
 
 @implementation WMGaugeView
@@ -148,9 +165,6 @@
     _rangeLabelsFontColor = [UIColor whiteColor];
     _rangeLabelsFontKerning = 1.0;
     _rangeLabelsOffset = 0.0;
-    _rangeValues = nil;
-    _rangeColors = nil;
-    _rangeLabels = nil;
     
     _scaleDivisionColor = RGB(68, 84, 105);
     _scaleSubDivisionColor = RGB(217, 217, 217);
@@ -374,7 +388,7 @@
 		if ((fabsf(mod - 0) < 0.000001) || (fabsf(mod - div) < 0.000001))
         {
             // Initialize Core Graphics settings
-            UIColor *color = (_rangeValues && _rangeColors && _scaleIgnoreRangeColors == false) ? [self rangeColorForValue:value] : _scaleDivisionColor;
+            UIColor *color = (_ranges && _scaleIgnoreRangeColors == false) ? [self rangeColorForValue:value] : _scaleDivisionColor;
             CGContextSetStrokeColorWithColor(context, color.CGColor);
             CGContextSetLineWidth(context, _scaleDivisionsWidth);
             CGContextSetShadow(context, CGSizeMake(0.05, 0.05), _showScaleShadow ? 2.0 : 0.0);
@@ -396,7 +410,7 @@
         else
         {
             // Initialize Core Graphics settings
-            UIColor *color = (_rangeValues && _rangeColors && _scaleIgnoreRangeColors == false) ? [self rangeColorForValue:value] : _scaleSubDivisionColor;
+            UIColor *color = (_ranges && _scaleIgnoreRangeColors == false) ? [self rangeColorForValue:value] : _scaleSubDivisionColor;
             CGContextSetStrokeColorWithColor(context, color.CGColor);
             CGContextSetLineWidth(context, _scaleSubdivisionsWidth);
             CGContextMoveToPoint(context, 0.5, y1);
@@ -426,23 +440,23 @@
     CGFloat maxAngle = _scaleEndAngle - _scaleStartAngle;
     CGFloat lastStartAngle = _rangeLabelsOffset;
 
-    for (int i = 0; i < _rangeValues.count; i ++)
+    for (int i = 0; i < _ranges.count; i ++)
     {
         // Range value
-        float value = ([_rangeValues objectAtIndex:i]).floatValue;
+        float value = [_ranges objectAtIndex:i].value;
         float valueAngle = (value - _minValue) / (_maxValue - _minValue) * maxAngle;
         
         // Range curved shape
         UIBezierPath *path = [UIBezierPath bezierPath];
         [path addArcWithCenter:center radius:rangeLabelsRect.size.width / 2.0 + 0.01 startAngle:DEGREES_TO_RADIANS(lastStartAngle) endAngle:DEGREES_TO_RADIANS(valueAngle) clockwise:YES];
         
-        UIColor *color = _rangeColors[i];
+        UIColor *color = _ranges[i].color;
         [color setStroke];
         path.lineWidth = _rangeLabelsWidth;
         [path stroke];
         
         // Range curved label
-        [self drawStringAtContext:context string:_rangeLabels[i] withCenter:center radius:rangeLabelsRect.size.width / 2.0 + 0.008 startAngle:DEGREES_TO_RADIANS(lastStartAngle) endAngle:DEGREES_TO_RADIANS(valueAngle)];
+        [self drawStringAtContext:context string:_ranges[i].label withCenter:center radius:rangeLabelsRect.size.width / 2.0 + 0.008 startAngle:DEGREES_TO_RADIANS(lastStartAngle) endAngle:DEGREES_TO_RADIANS(valueAngle)];
         
         lastStartAngle = valueAngle;
     }
@@ -621,14 +635,14 @@
  */
 - (UIColor*)rangeColorForValue:(float)value
 {
-    NSInteger length = _rangeValues.count;
+    NSInteger length = _ranges.count;
     for (int i = 0; i < length - 1; i++)
     {
-        if (value < [_rangeValues[i] floatValue])
-            return _rangeColors[i];
+        if (value < [_ranges[i] value])
+            return _ranges[i].color;
     }
-    if (value <= [_rangeValues[length - 1] floatValue])
-        return _rangeColors[length - 1];
+    if (value <= [_ranges[length - 1] value])
+        return _ranges[length - 1].color;
     return nil;
 }
 
@@ -971,22 +985,14 @@
     [self invalidateBackground];
 }
 
-- (void)setRangeValues:(NSArray *)rangeValues
+- (void) setRanges:(NSArray<WMGaugeRange *> *)ranges
 {
-    _rangeValues = rangeValues;
-    [self invalidateBackground];
-}
-
-- (void)setRangeColors:(NSArray *)rangeColors
-{
-    _rangeColors = rangeColors;
-    [self invalidateBackground];
-}
-
-- (void)setRangeLabels:(NSArray *)rangeLabels
-{
-    _rangeLabels = rangeLabels;
-    [self invalidateBackground];
+	_ranges = [ranges sortedArrayUsingComparator:^NSComparisonResult(WMGaugeRange*  obj1, WMGaugeRange* obj2) {
+		return obj1.order < obj2.order ? NSOrderedAscending : obj1.order > obj2.order ? NSOrderedDescending : NSOrderedSame;
+	}];
+	for (WMGaugeRange* r in _ranges) {
+		r.owner = self;
+	}
 }
 
 - (void)setUnitOfMeasurement:(NSString *)unitOfMeasurement

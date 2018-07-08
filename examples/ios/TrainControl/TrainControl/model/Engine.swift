@@ -31,7 +31,7 @@ public class Engine: FogFeedbackModel {
 	
 	public init() {
 		self.power = FogFeedbackValue(TrainRational(num: TrainRational.ValueType(0), den: 100))
-		self.calibration = FogFeedbackValue(TrainRational(num: TrainRational.ValueType(15), den: 100))
+		self.calibration = FogFeedbackValue(TrainRational(num: TrainRational.ValueType(30), den: 100))
         self.state = FogFeedbackValue(.idle)
 	}
 	

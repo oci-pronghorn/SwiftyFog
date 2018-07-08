@@ -5,7 +5,7 @@
   	Install Mosquitto on your Mac
   	https://mosquitto.org/download/
 
-  	Be certain to build SwiftyFog_iOS for simulator on any changes to library.
+  	Be certain to build SwiftyFog_iOS for simulator on making changes to the library.
 */
 
 import UIKit

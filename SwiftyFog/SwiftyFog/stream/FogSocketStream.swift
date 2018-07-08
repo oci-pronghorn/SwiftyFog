@@ -81,7 +81,7 @@ public final class FogSocketStream: NSObject, StreamDelegate {
 	
     private func endStream(_ aStream: Stream) {
 		aStream.close()
-		aStream.remove(from: RunLoop.current, forMode: .defaultRunLoopMode)
+		aStream.remove(from: RunLoop.current, forMode: RunLoop.Mode.default)
 		aStream.delegate = nil
 		if aStream === outputStream {
 			outputStream = nil
@@ -114,12 +114,12 @@ public final class FogSocketStream: NSObject, StreamDelegate {
 		}
 		
 		FogSocketStream.runloop.runLoop(label: label + ".in", qos: qos) {
-			hasInput.schedule(in: $0, forMode: .defaultRunLoopMode)
+			hasInput.schedule(in: $0, forMode: RunLoop.Mode.default)
 			hasInput.open()
 		}
 		
 		FogSocketStream.runloop.runLoop(label: label + ".out", qos: qos) {
-			hasOutput.schedule(in: $0, forMode: .defaultRunLoopMode)
+			hasOutput.schedule(in: $0, forMode: RunLoop.Mode.default)
 			hasOutput.open()
 		}
     }

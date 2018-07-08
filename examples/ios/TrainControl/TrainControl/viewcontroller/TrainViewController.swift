@@ -18,7 +18,6 @@ class TrainViewController: UIViewController {
 	let billboard = Billboard()
 	
 	@IBOutlet weak var trainAlive: UIImageView!
-	@IBOutlet weak var trainName: UILabel!
 	@IBOutlet weak var connectMetrics: FlipLabel!
 	@IBOutlet weak var connectedImage: UIImageView!
 	@IBOutlet weak var stopStartButton: UIButton!
@@ -39,11 +38,16 @@ class TrainViewController: UIViewController {
 	
 	@IBOutlet weak var soundControl: UISlider!
 	
-	let pulsator = Pulsator()
+	@IBOutlet var pulsator: Pulsator!
+	
     weak var crack: UIImageView?
     var player: AVAudioPlayer?
 	
 	var mqttControl: MQTTControl!
+	
+	var bypassFeed: Bool {
+		return !mqttControl.started // just so I can see stuff while debugging
+	}
 	
 	var mqtt: MQTTBridge! {
 		didSet {
@@ -62,54 +66,42 @@ class TrainViewController: UIViewController {
 			train.mqtt = mqtt
 		}
 	}
+}
 
+// MARK: Life Cycle
+
+extension TrainViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		self.codeUi()
+		
+		self.compass.scaleDescription = { (v, i) in
+			if v == 0 {
+				return "N".localized
+			}
+			else if v == 90 {
+				return "E".localized
+			}
+			else if v == 180 {
+				return "S".localized
+			}
+			return "W".localized
+		}
 		
 		self.connectedImage.isHighlighted = mqttControl.connected
 		self.stopStartButton.isSelected = mqttControl.started
 		
 		assertValues()
 	}
-	
-	func codeUi() {
-        connectedImage.layer.superlayer?.insertSublayer(pulsator, below: connectedImage.layer)
-        pulsator.animationDuration = 1
-		pulsator.backgroundColor = UIColor.blue.cgColor
-		pulsator.repeatCount = 1
-		
-		engineGauge.rangeLabels = ["Reverse", "Idle", "Forward"]
-		engineGauge.rangeColors = [UIColor.red, UIColor.yellow, UIColor.green]
-		lightingGauge.rangeLabels = ["Dark", "Light"]
-		lightingGauge.rangeColors = [UIColor.darkGray, UIColor.lightGray]
-		
-		compass.rangeLabels = ["North", "North East", "East", "South East", "South", "SouthWest", "West", "North West"]
-		compass.rangeValues = [22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5]/*, 382.5]*/
-		compass.rangeColors = [UIColor.white, UIColor.lightGray, UIColor.white, UIColor.lightGray, UIColor.white, UIColor.lightGray, UIColor.white, UIColor.lightGray]
-		compass.rangeLabelsOffset = -22.5
-		
-		compass.scaleDescription = { (v, i) in
-			if v == 0 {
-				return "N"
-			}
-			else if v == 90 {
-				return "E"
-			}
-			else if v == 180 {
-				return "S"
-			}
-			return "W"
-		}
-	}
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         view.layer.layoutIfNeeded()
+        // TODO get pulsator to do this automatically
         pulsator.position = connectedImage.layer.position
-        pulsator.radius = connectedImage.frame.width
     }
 }
+
+// MARK: Connection State
 
 extension TrainViewController {
 	func mqtt(connected: MQTTConnectedState) {
@@ -161,9 +153,7 @@ extension TrainViewController {
 				break
 		}
 	}
-}
-
-extension TrainViewController: UITextFieldDelegate {
+	
 	func feedbackCut() {
 		engine.reset()
 		lights.reset()
@@ -175,6 +165,11 @@ extension TrainViewController: UITextFieldDelegate {
 		lights.assertValues()
 		billboard.assertValues()
 	}
+}
+
+// MARK: UI Reactions
+
+extension TrainViewController: UITextFieldDelegate {
     
     @IBAction func stopStartConnecting(sender: UIButton?) {
         if mqttControl.started {
@@ -202,27 +197,42 @@ extension TrainViewController: UITextFieldDelegate {
     @IBAction
     func faultTrain(sender: UIButton?) {
         train.controlFault()
+		if bypassFeed {
+			self.train(faults: MotionFaults(withFault: crack == nil), false)
+		}
     }
 	
 	@IBAction
 	func doEnginePower(sender: ScrubControl?) {
 		engine.control(power: sender!.rational)
+		if bypassFeed {
+			self.engine(power: sender!.rational, false)
+		}
 	}
 	
 	@IBAction
 	func doEngineCalibration(sender: UISlider?) {
 		engine.control(calibration: sender!.rational)
+		if bypassFeed {
+			self.engine(calibration: sender!.rational, false)
+		}
 	}
 	
 	@IBAction
 	func doLightOverride(sender: UISegmentedControl?) {
 		let override = LightCommand(rawValue: Int32(sender!.selectedSegmentIndex))!
 		lights.control(override: override)
+		if bypassFeed {
+			self.lights(override: override, false)
+		}
 	}
 	
 	@IBAction
 	func doLightCalibration(sender: UISlider?) {
 		lights.control(calibration: sender!.rational)
+		if bypassFeed {
+			self.lights(calibration: sender!.rational, false)
+		}
 	}
 	
 	@IBAction
@@ -245,21 +255,7 @@ extension TrainViewController: UITextFieldDelegate {
 	}
 }
 
-extension UIView {
-    
-    /// Adds constraints to this `UIView` instances `superview` object to make sure this always has the same size as the superview.
-    /// Please note that this has no effect if its `superview` is `nil` – add this `UIView` instance as a subview before calling this.
-    func bindFrameToSuperviewBounds() {
-        guard let superview = self.superview else {
-            print("Error! `superview` was nil – call `addSubview(view: UIView)` before calling `bindFrameToSuperviewBounds()` to fix this.")
-            return
-        }
-        
-        self.translatesAutoresizingMaskIntoConstraints = false
-        superview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[subview]-0-|", options: .directionLeadingToTrailing, metrics: nil, views: ["subview": self]))
-        superview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[subview]-0-|", options: .directionLeadingToTrailing, metrics: nil, views: ["subview": self]))
-    }
-}
+// MARK: Model Extensions
 
 extension TrainViewController:
 		TrainDelegate,
@@ -279,37 +275,13 @@ extension TrainViewController:
             crack?.removeFromSuperview()
         }
         else if (self.crack == nil) {
-            playSound()
+            self.player = AVAudioPlayer.playSound()
             let crack = UIImageView(image: #imageLiteral(resourceName: "brokenglass"))
             crack.translatesAutoresizingMaskIntoConstraints = false
             crack.alpha = 0.25
             view.addSubview(crack)
             crack.bindFrameToSuperviewBounds()
             self.crack = crack
-        }
-    }
-    
-    func playSound() {
-        guard let url = Bundle.main.url(forResource: "glass break", withExtension: "mp3") else { return }
-        
-        do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            try AVAudioSession.sharedInstance().setActive(true)
-            
-            
-            
-            /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
-            player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
-            
-            /* iOS 10 and earlier require the following line:
-             player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileTypeMPEGLayer3) */
-            
-            guard let player = player else { return }
-            
-            player.play()
-            
-        } catch let error {
-            print(error.localizedDescription)
         }
     }
 	
@@ -332,7 +304,8 @@ extension TrainViewController:
     }
 	
 	func engine(calibration: TrainRational, _ asserted: Bool) {
-		engineGauge?.rangeValues = [NSNumber(value: -calibration.num), NSNumber(value: calibration.num), 100]
+		engineGauge?.ranges[0].value = CGFloat(-calibration.num)
+		engineGauge?.ranges[1].value = CGFloat(calibration.num)
 		if asserted {
 			self.engineCalibration.rational = calibration
 		}
@@ -349,7 +322,7 @@ extension TrainViewController:
 	}
 	
 	func lights(calibration: TrainRational, _ asserted: Bool) {
-		lightingGauge?.rangeValues = [NSNumber(value: calibration.num), 256]
+		lightingGauge?.ranges[0].value = CGFloat(calibration.num)
 		if asserted {
 			self.lightCalibration.rational = calibration
 		}

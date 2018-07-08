@@ -25,8 +25,8 @@ extension UIImagePickerController : UIImagePickerControllerDelegate, UINavigatio
         }
     }
 	
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-		let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+		let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
 		self.imageCompletion?(pickedImage, true)
 	}
 

@@ -146,7 +146,7 @@ public class FlipLabel: UIView {
 	private func flip(_ label: UILabel, toLetter letter: String, inNumberOfFlips flipsToDo: Int) {
 		label.isHidden = false
 		let duration = flipDuration + (TimeInterval(drand48()) * flipDurationRange * flipDuration)
-		UIView.transition(with: label, duration: duration, options: .transitionFlipFromTop,
+		UIView.transition(with: label, duration: duration, options: UIView.AnimationOptions.transitionFlipFromTop,
 			animations: {
 				label.text = flipsToDo == 1 ? letter : CharacterSet.alphanumerics.randomString(length: 1)
 			},

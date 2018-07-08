@@ -115,7 +115,6 @@ public  class ScrubControl : UIControl {
 		
 		if density > 0 {
 			
-
 			let t: CGFloat = bounds.origin.y
 			let l: CGFloat = bounds.origin.x
 			let h: CGFloat = scrubHeight
@@ -186,7 +185,7 @@ extension ScrubControl: UIGestureRecognizerDelegate {
 		let scaleX = viewPoint.x / self.bounds.width
 		let x = min(max(scaleX, 0.0), 1.0)
 		self.normValue = Float(x)
-		self.sendActions(for: .valueChanged)
+		self.sendActions(for: UIControl.Event.valueChanged)
 	}
 	
 	@objc private func scrubPanned(_ gestureRecognizer: UIPanGestureRecognizer) {
@@ -196,7 +195,7 @@ extension ScrubControl: UIGestureRecognizerDelegate {
 		let start = self.normValue
 		let m = start + d
 		self.normValue = min(max(m, 0.0), 1.0)
-		self.sendActions(for: .valueChanged)
+		self.sendActions(for: UIControl.Event.valueChanged)
 	}
 }
 

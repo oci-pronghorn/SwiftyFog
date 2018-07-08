@@ -18,6 +18,13 @@ public struct MotionFaults: FogExternalizable, Equatable {
     public var hasFault: Bool {
         return derailed || tipped || lifted || falling
     }
+	
+    public init(withFault: Bool) {
+        self.derailed = withFault
+        self.tipped = false
+        self.lifted = false
+        self.falling = false
+    }
     
     public init() {
         self.derailed = false
