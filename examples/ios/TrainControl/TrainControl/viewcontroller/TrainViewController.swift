@@ -85,21 +85,16 @@ extension TrainViewController {
 			return "W".localized
 		}
 		*/
-		self.connectedImage.isHighlighted = mqttControl.connected
-		self.stopStartButton.isSelected = mqttControl.started
 		
+		assertConnectionState()
 		assertValues()
 	}
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        //view.layer.layoutIfNeeded()
-    }
 }
 
 // MARK: Connection State
 
 extension TrainViewController {
+	
 	func mqtt(connected: MQTTConnectedState) {
 		switch connected {
 			case .started:
@@ -150,16 +145,21 @@ extension TrainViewController {
 		}
 	}
 	
-	func feedbackCut() {
-		engine.reset()
-		lights.reset()
-		billboard.reset()
+	func assertConnectionState() {
+		self.connectedImage.isHighlighted = mqttControl.connected
+		self.stopStartButton.isSelected = mqttControl.started
 	}
 
 	func assertValues() {
 		engine.assertValues()
 		lights.assertValues()
 		billboard.assertValues()
+	}
+	
+	func feedbackCut() {
+		engine.reset()
+		lights.reset()
+		billboard.reset()
 	}
 }
 
@@ -251,7 +251,7 @@ extension TrainViewController: UITextFieldDelegate {
 	}
 }
 
-// MARK: Model Extensions
+// MARK: Model Delegate
 
 extension TrainViewController:
 		TrainDelegate,

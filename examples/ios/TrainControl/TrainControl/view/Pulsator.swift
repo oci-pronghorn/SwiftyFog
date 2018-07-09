@@ -20,6 +20,7 @@ class Pulsator: CAReplicatorLayer, CAAnimationDelegate {
 	
     @IBOutlet weak var embedIn: UIView? {
 		didSet {
+			oldValue?.layer.removeObserver(self, forKeyPath: #keyPath(CALayer.position), context: nil)
 			if let embedIn = embedIn {
         		embedIn.layer.superlayer?.insertSublayer(self, below: embedIn.layer)
 				embedIn.layer.addObserver(self, forKeyPath: #keyPath(CALayer.position), options: .new, context: nil)
@@ -27,7 +28,6 @@ class Pulsator: CAReplicatorLayer, CAAnimationDelegate {
 			}
 			else  {
 				self.removeFromSuperlayer()
-				embedIn?.layer.removeObserver(self, forKeyPath: #keyPath(CALayer.position), context: nil)
 			}
         }
     }
