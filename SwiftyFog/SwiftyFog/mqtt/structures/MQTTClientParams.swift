@@ -41,14 +41,17 @@ public struct MQTTClientParams {
     }
 	
 	public init(cleanSession: Bool = true, keepAlive: UInt16 = 15) {
-    #if os(iOS)
       // 1 and 23 UTF-8 encoded bytes
       // Only "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-      let deviceID = UIDevice.current.identifierForVendor!.uuidString
-			let platform = "ios"
+    #if os(iOS)
+      	let deviceID = UIDevice.current.identifierForVendor!.uuidString
+		let platform = "iOS"
     #elseif os(OSX)
-      let deviceID = String.macUUID
-			let platform = "osx"
+      	let deviceID = String.macUUID
+		let platform = "OSX"
+	#elseif os(watchOS)
+      	let deviceID = UUID().uuidString
+		let platform = "watchOS"
     #endif
 		let appId = Bundle.main.bundleIdentifier!
 		let fullId = appId + "-" + deviceID
@@ -62,20 +65,16 @@ public struct MQTTClientParams {
 	}
 }
 
+#if os(OSX)
 private extension String {
-	
 	static var macUUID : String {
 		get
 		{
-			#if os(OSX)
 			var hwUUIDBytes: [UInt8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 			var ts = timespec(tv_sec: 0,tv_nsec: 0)
 			gethostuuid(&hwUUIDBytes, &ts)
 			return NSUUID(uuidBytes: hwUUIDBytes).uuidString
-			#elseif os(iOS)
-			return ""
-			#endif
 		}
 	}
-	
 }
+#endif

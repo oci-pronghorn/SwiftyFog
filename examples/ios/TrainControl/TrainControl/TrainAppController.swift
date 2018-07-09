@@ -7,7 +7,11 @@
 //
 
 import Foundation
+#if os(iOS)
 import SwiftyFog_iOS
+#elseif os(watchOS)
+import SwiftFog_watch
+#endif
 
 /*
 	The TrainAppController manages the high level business logic of the

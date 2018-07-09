@@ -41,8 +41,15 @@ public final class FogSocketStream: NSObject, StreamDelegate {
 	public init?(hostName: String, port: Int, qos: DispatchQoS) {
         var inputStreamHandle: InputStream?
         var outputStreamHandle: OutputStream?
+    #if os(iOS) || os(OSX)
         Stream.getStreamsToHost(withName: hostName, port: port, inputStream: &inputStreamHandle, outputStream: &outputStreamHandle)
-		
+	#else
+		var readStream: Unmanaged<CFReadStream>?
+		var writeStream: Unmanaged<CFWriteStream>?
+		CFStreamCreatePairWithSocketToHost(nil, hostName as CFString, UInt32(port), &readStream, &writeStream)
+		inputStreamHandle = readStream?.takeRetainedValue()
+		outputStreamHandle = writeStream?.takeRetainedValue()
+	#endif
         guard let hasInput = inputStreamHandle, let hasOutput = outputStreamHandle else { return nil }
 		
         var parts = hostName.components(separatedBy: ".")

@@ -6,7 +6,7 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-#if os(iOS)
+#if os(iOS) || os(watchOS)
 import UIKit
 #else
 import Cocoa

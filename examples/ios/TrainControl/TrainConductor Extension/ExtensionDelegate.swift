@@ -7,20 +7,27 @@
 //
 
 import WatchKit
+import SwiftFog_watch
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
+	var controller: TrainAppController!
 
     func applicationDidFinishLaunching() {
+		let trainName = "thejoveexpress"
+		controller = TrainAppController(trainName)
+		controller.delegate = self
         // Perform any final initialization of your application.
     }
 
     func applicationDidBecomeActive() {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+		controller.goForeground()
     }
 
     func applicationWillResignActive() {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, etc.
+		controller.goBackground()
     }
 
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
@@ -52,5 +59,13 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
             }
         }
     }
+}
 
+extension ExtensionDelegate: TrainAppControllerDelegate {
+	func on(log: String) {
+		print(log)
+	}
+
+	func on(connected: MQTTConnectedState) {
+	}
 }

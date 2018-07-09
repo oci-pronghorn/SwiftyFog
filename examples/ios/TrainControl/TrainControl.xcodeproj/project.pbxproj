@@ -40,6 +40,11 @@
 		55524C8220F11FAA004EBD8B /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55524C8120F11FAA004EBD8B /* NotificationController.swift */; };
 		55524C8420F11FAA004EBD8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55524C8320F11FAA004EBD8B /* Assets.xcassets */; };
 		55524C8920F11FAA004EBD8B /* TrainConductor.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 55524C6C20F11FA8004EBD8B /* TrainConductor.app */; };
+		5578608620F3B5EA00FC182D /* SwiftFog_watch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */; };
+		5578608720F3B5EA00FC182D /* SwiftFog_watch.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5578608820F3DCB200FC182D /* TrainAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348701F82D46100C3C2CB /* TrainAppController.swift */; };
+		5578608D20F3DF9A00FC182D /* PhotosAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578608B20F3DF9900FC182D /* PhotosAccess.swift */; };
+		5578608E20F3DF9A00FC182D /* UIImagePickerController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578608C20F3DF9A00FC182D /* UIImagePickerController+.swift */; };
 		55BD0DD220F15955001E31C3 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BD0DD120F15954001E31C3 /* UIView+.swift */; };
 		55BD0DD420F15ABF001E31C3 /* AVAudioPlayer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BD0DD320F15ABF001E31C3 /* AVAudioPlayer+.swift */; };
 		55DA62DA1F8C1F140068D592 /* SwiftyFog_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554348951F82D4D700C3C2CB /* SwiftyFog_iOS.framework */; };
@@ -98,6 +103,17 @@
 				55524C8920F11FAA004EBD8B /* TrainConductor.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5578608420F3B5C900FC182D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				5578608720F3B5EA00FC182D /* SwiftFog_watch.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		55DA62DC1F8C1F140068D592 /* Embed Frameworks */ = {
@@ -159,6 +175,9 @@
 		55524C8320F11FAA004EBD8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55524C8520F11FAA004EBD8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55524C8620F11FAA004EBD8B /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftFog_watch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5578608B20F3DF9900FC182D /* PhotosAccess.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosAccess.swift; sourceTree = "<group>"; };
+		5578608C20F3DF9A00FC182D /* UIImagePickerController+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImagePickerController+.swift"; sourceTree = "<group>"; };
 		55BD0DD120F15954001E31C3 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		55BD0DD320F15ABF001E31C3 /* AVAudioPlayer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVAudioPlayer+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -190,6 +209,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5578608620F3B5EA00FC182D /* SwiftFog_watch.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5578601C20F3A90700FC182D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,6 +226,7 @@
 		5543482C1F82D3AD00C3C2CB = {
 			isa = PBXGroup;
 			children = (
+				5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */,
 				554348371F82D3AD00C3C2CB /* TrainControl */,
 				5543484C1F82D3AD00C3C2CB /* TrainControlTests */,
 				554348571F82D3AD00C3C2CB /* TrainControlUITests */,
@@ -284,6 +312,8 @@
 		554348711F82D46100C3C2CB /* view */ = {
 			isa = PBXGroup;
 			children = (
+				5578608B20F3DF9900FC182D /* PhotosAccess.swift */,
+				5578608C20F3DF9A00FC182D /* UIImagePickerController+.swift */,
 				554348721F82D46100C3C2CB /* FogRationalUi.swift */,
 				554348751F82D46100C3C2CB /* MetalPanelView.swift */,
 				554348761F82D46100C3C2CB /* Pulsator.swift */,
@@ -394,6 +424,7 @@
 			buildPhases = (
 				55524C6A20F11FA8004EBD8B /* Resources */,
 				55524C8D20F11FAA004EBD8B /* Embed App Extensions */,
+				5578601C20F3A90700FC182D /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -412,6 +443,7 @@
 				55524C7420F11FAA004EBD8B /* Sources */,
 				55524C7520F11FAA004EBD8B /* Frameworks */,
 				55524C7620F11FAA004EBD8B /* Resources */,
+				5578608420F3B5C900FC182D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -536,6 +568,8 @@
 				554348841F82D46100C3C2CB /* FogRationalUi.swift in Sources */,
 				5543489D1F82D65B00C3C2CB /* WMGaugeView.m in Sources */,
 				554348831F82D46100C3C2CB /* TrainAppController.swift in Sources */,
+				5578608D20F3DF9A00FC182D /* PhotosAccess.swift in Sources */,
+				5578608E20F3DF9A00FC182D /* UIImagePickerController+.swift in Sources */,
 				5543487E1F82D46100C3C2CB /* Sound.swift in Sources */,
 				551AB9DF1F93B94A0080D37B /* FlipLabel.swift in Sources */,
 				55BD0DD220F15955001E31C3 /* UIView+.swift in Sources */,
@@ -577,6 +611,7 @@
 			files = (
 				55524C8220F11FAA004EBD8B /* NotificationController.swift in Sources */,
 				55524C8020F11FAA004EBD8B /* ExtensionDelegate.swift in Sources */,
+				5578608820F3DCB200FC182D /* TrainAppController.swift in Sources */,
 				55524C7E20F11FAA004EBD8B /* InterfaceController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -887,6 +922,7 @@
 				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
 				IBSC_MODULE = TrainConductor_Extension;
 				INFOPLIST_FILE = TrainConductor/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControl.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -908,6 +944,7 @@
 				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
 				IBSC_MODULE = TrainConductor_Extension;
 				INFOPLIST_FILE = TrainConductor/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControl.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;

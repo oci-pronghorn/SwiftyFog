@@ -7,7 +7,7 @@
 //
 
 import Foundation
-#if os(iOS)
+#if os(iOS) || os(watchOS)
 import UIKit
 #else
 import Cocoa
