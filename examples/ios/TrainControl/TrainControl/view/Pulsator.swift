@@ -22,10 +22,19 @@ class Pulsator: CAReplicatorLayer, CAAnimationDelegate {
 		didSet {
 			if let embedIn = embedIn {
         		embedIn.layer.superlayer?.insertSublayer(self, below: embedIn.layer)
+				embedIn.layer.addObserver(self, forKeyPath: #keyPath(CALayer.position), options: .new, context: nil)
+            	self.position = embedIn.layer.position
 			}
 			else  {
 				self.removeFromSuperlayer()
+				embedIn?.layer.removeObserver(self, forKeyPath: #keyPath(CALayer.position), context: nil)
 			}
+        }
+    }
+	
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if let objectView = object as? CALayer, objectView === embedIn?.layer, keyPath == #keyPath(CALayer.position) {
+            self.position = objectView.position
         }
     }
 	

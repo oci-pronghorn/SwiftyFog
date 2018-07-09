@@ -93,9 +93,7 @@ extension TrainViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        view.layer.layoutIfNeeded()
-        // TODO get pulsator to do this automatically
-        pulsator.position = connectedImage.layer.position
+        //view.layer.layoutIfNeeded()
     }
 }
 
