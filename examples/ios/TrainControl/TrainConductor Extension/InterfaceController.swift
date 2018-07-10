@@ -23,6 +23,10 @@ class InterfaceController: WKInterfaceController {
 	@IBOutlet weak var lightIndicator: WKInterfaceImage!
 	@IBOutlet weak var powerIndicator: WKInterfaceLabel!
 	
+	@IBOutlet weak var overrideOnIndicator: WKInterfaceLabel!
+	@IBOutlet weak var overrideOffIndicator: WKInterfaceLabel!
+	@IBOutlet weak var overrideAutoIndicator: WKInterfaceLabel!
+	
 // MARK: Life Cycle
 
 	static var mqtt: MQTTBridge!
@@ -68,6 +72,12 @@ class InterfaceController: WKInterfaceController {
 extension InterfaceController: WKCrownDelegate {
 	func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
 		engine.control(powerIncrement: rotationalDelta)
+	}
+	
+	@IBAction func stopMotor(sender: WKTapGestureRecognizer?) {
+		if sender?.state == WKGestureRecognizerState.ended {
+			engine.controlStop()
+		}
 	}
 	
 	@IBAction func lights(sender: WKInterfaceButton?) {
@@ -167,6 +177,20 @@ extension InterfaceController:
 	}
 	
 	func lights(override: LightCommand, _ asserted: Bool) {
+		switch override {
+		case .off:
+			overrideOnIndicator.setTextColor(UIColor.black)
+			overrideOffIndicator.setTextColor(UIColor.white)
+			overrideAutoIndicator.setTextColor(UIColor.black)
+		case .on:
+			overrideOnIndicator.setTextColor(UIColor.white)
+			overrideOffIndicator.setTextColor(UIColor.black)
+			overrideAutoIndicator.setTextColor(UIColor.black)
+		case .auto:
+			overrideOnIndicator.setTextColor(UIColor.black)
+			overrideOffIndicator.setTextColor(UIColor.black)
+			overrideAutoIndicator.setTextColor(UIColor.white)
+		}
 	}
 	
 	func lights(power: Bool, _ asserted: Bool) {

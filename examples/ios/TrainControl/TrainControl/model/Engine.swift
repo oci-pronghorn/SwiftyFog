@@ -63,6 +63,12 @@ public class Engine: FogFeedbackModel {
 		delegate?.engine(calibration: calibration.value, true)
 	}
 	
+	public func controlStop() {
+		var local = power.value
+		local.num = 0
+		self.control(power: local)
+	}
+	
 	public func control(powerIncrement: Double) {
 		var local = power.value
 		local.num += TrainRational.ValueType(powerIncrement * Double(local.den * 2))

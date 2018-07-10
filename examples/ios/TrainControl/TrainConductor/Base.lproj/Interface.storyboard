@@ -23,14 +23,42 @@
                                     </items>
                                 </group>
                                 <label height="44" alignment="center" verticalAlignment="center" text="-100" textAlignment="center" id="dzQ-Lg-8Mu">
+                                    <gestureRecognizers>
+                                        <tapGestureRecognizer numberOfTapsRequired="2" id="Jxo-mv-d3q">
+                                            <connections>
+                                                <action selector="stopMotorWithSender:" destination="U0Q-nI-cAQ" id="5Fh-bY-Qbd"/>
+                                            </connections>
+                                        </tapGestureRecognizer>
+                                    </gestureRecognizers>
                                     <accessibilityTraits key="accessibilityTraits" staticText="YES" updatesFrequently="YES"/>
                                     <fontDescription key="font" type="system" pointSize="40"/>
                                 </label>
-                                <button width="1" alignment="left" verticalAlignment="bottom" title="Lights" id="zuO-Yg-zGq">
-                                    <connections>
-                                        <action selector="lightsWithSender:" destination="U0Q-nI-cAQ" id="g5P-bf-2pA"/>
-                                    </connections>
-                                </button>
+                                <group width="1" alignment="center" verticalAlignment="bottom" id="Ohu-Ak-A3X" userLabel="Light Control">
+                                    <items>
+                                        <button alignment="center" verticalAlignment="center" title="Lights" id="zuO-Yg-zGq">
+                                            <connections>
+                                                <action selector="lightsWithSender:" destination="U0Q-nI-cAQ" id="g5P-bf-2pA"/>
+                                            </connections>
+                                        </button>
+                                        <group alignment="right" verticalAlignment="center" layout="vertical" spacing="0.0" id="2EG-u6-W2y" userLabel="Indicator">
+                                            <items>
+                                                <label alignment="left" text="Off" id="4Fj-ef-2Mt">
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <fontDescription key="font" type="system" weight="semibold" pointSize="10"/>
+                                                </label>
+                                                <label alignment="left" text="On" id="wGN-Uj-UIe">
+                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <fontDescription key="font" type="system" weight="semibold" pointSize="10"/>
+                                                </label>
+                                                <label alignment="left" text="Auto" id="xbf-Ob-5j8">
+                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <fontDescription key="font" type="system" weight="semibold" pointSize="10"/>
+                                                </label>
+                                            </items>
+                                        </group>
+                                    </items>
+                                    <edgeInsets key="margins" left="4" right="4" top="0.0" bottom="0.0"/>
+                                </group>
                             </items>
                         </group>
                     </items>
@@ -38,6 +66,9 @@
                         <outlet property="aliveIndicator" destination="2DS-bY-FJB" id="3sO-3X-a4u"/>
                         <outlet property="engineIndicator" destination="Vqt-zA-Afu" id="Fmp-Gw-PgN"/>
                         <outlet property="lightIndicator" destination="XOu-iA-2iY" id="GN6-4F-dbT"/>
+                        <outlet property="overrideAutoIndicator" destination="xbf-Ob-5j8" id="S6N-da-woH"/>
+                        <outlet property="overrideOffIndicator" destination="4Fj-ef-2Mt" id="VV5-3b-KKY"/>
+                        <outlet property="overrideOnIndicator" destination="wGN-Uj-UIe" id="cti-Lk-f27"/>
                         <outlet property="powerIndicator" destination="dzQ-Lg-8Mu" id="6Kl-G3-AkV"/>
                     </connections>
                 </controller>
