@@ -7,12 +7,23 @@
 //
 
 import Foundation
+#if os(iOS)
 import SwiftyFog_iOS
+#elseif os(watchOS)
+import SwiftFog_watch
+#endif
 
 public enum LightCommand: Int32 {
     case off = 0
     case on = 1
     case auto = 2
+	
+	func next() -> LightCommand {
+		if self == .auto {
+			return .off
+		}
+		return LightCommand(rawValue: self.rawValue + 1)!
+	}
 }
 
 public protocol LightsDelegate: class {
@@ -65,6 +76,10 @@ public class Lights: FogFeedbackModel {
 		delegate?.lights(power: power.value, true)
 		delegate?.lights(calibration: calibration.value, true)
 		delegate?.lights(ambient: ambient.value, true)
+	}
+	
+	public func controlNextOverride() {
+		self.control(override: override.value.next())
 	}
 	
 	public func control(override: LightCommand) {

@@ -7,7 +7,11 @@
 //
 
 import UIKit
+#if os(iOS)
 import SwiftyFog_iOS
+#elseif os(watchOS)
+import SwiftFog_watch
+#endif
 
 public protocol BillboardDelegate: class {
 	func billboard(layout: FogBitmapLayout)

@@ -7,7 +7,11 @@
 //
 
 import Foundation
+#if os(iOS)
 import SwiftyFog_iOS
+#elseif os(watchOS)
+import SwiftFog_watch
+#endif
 
 public struct MotionFaults: FogExternalizable, Equatable {
     public var derailed: Bool

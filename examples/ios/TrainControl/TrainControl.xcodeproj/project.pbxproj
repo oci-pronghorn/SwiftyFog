@@ -40,15 +40,24 @@
 		55524C8220F11FAA004EBD8B /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55524C8120F11FAA004EBD8B /* NotificationController.swift */; };
 		55524C8420F11FAA004EBD8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55524C8320F11FAA004EBD8B /* Assets.xcassets */; };
 		55524C8920F11FAA004EBD8B /* TrainConductor.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 55524C6C20F11FA8004EBD8B /* TrainConductor.app */; };
+		55632BF920F4520D008BCB09 /* Billboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348671F82D46100C3C2CB /* Billboard.swift */; };
 		5578608620F3B5EA00FC182D /* SwiftFog_watch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */; };
 		5578608720F3B5EA00FC182D /* SwiftFog_watch.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5578608820F3DCB200FC182D /* TrainAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348701F82D46100C3C2CB /* TrainAppController.swift */; };
 		5578608D20F3DF9A00FC182D /* PhotosAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578608B20F3DF9900FC182D /* PhotosAccess.swift */; };
 		5578608E20F3DF9A00FC182D /* UIImagePickerController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578608C20F3DF9A00FC182D /* UIImagePickerController+.swift */; };
+		5578608F20F4066D00FC182D /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348681F82D46100C3C2CB /* Engine.swift */; };
+		5578609220F406E700FC182D /* Train.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486B1F82D46100C3C2CB /* Train.swift */; };
+		5578609320F4070300FC182D /* MotionFaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ABCF462010D40500AEAC1D /* MotionFaults.swift */; };
+		5578609420F4070800FC182D /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486A1F82D46100C3C2CB /* Sound.swift */; };
+		5578609520F4070F00FC182D /* Lights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348691F82D46100C3C2CB /* Lights.swift */; };
+		5578609720F4078700FC182D /* glass break.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 22E11E2D20152E600034F382 /* glass break.mp3 */; };
+		557DD91520F4E4FA007F0AE9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5543488A1F82D48A00C3C2CB /* Images.xcassets */; };
 		55BD0DD220F15955001E31C3 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BD0DD120F15954001E31C3 /* UIView+.swift */; };
 		55BD0DD420F15ABF001E31C3 /* AVAudioPlayer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BD0DD320F15ABF001E31C3 /* AVAudioPlayer+.swift */; };
 		55DA62DA1F8C1F140068D592 /* SwiftyFog_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554348951F82D4D700C3C2CB /* SwiftyFog_iOS.framework */; };
 		55DA62DB1F8C1F140068D592 /* SwiftyFog_iOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 554348951F82D4D700C3C2CB /* SwiftyFog_iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		55DD5DC320F4FEA0001B93E0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5543488A1F82D48A00C3C2CB /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -259,9 +268,9 @@
 				5543486C1F82D46100C3C2CB /* viewcontroller */,
 				5543483C1F82D3AD00C3C2CB /* Main.storyboard */,
 				5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */,
-				22E11E2D20152E600034F382 /* glass break.mp3 */,
 				5543483F1F82D3AD00C3C2CB /* Assets.xcassets */,
 				5543488A1F82D48A00C3C2CB /* Images.xcassets */,
+				22E11E2D20152E600034F382 /* glass break.mp3 */,
 				554348441F82D3AD00C3C2CB /* Info.plist */,
 			);
 			path = TrainControl;
@@ -544,6 +553,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5578609720F4078700FC182D /* glass break.mp3 in Resources */,
+				557DD91520F4E4FA007F0AE9 /* Images.xcassets in Resources */,
 				55524C7220F11FAA004EBD8B /* Assets.xcassets in Resources */,
 				55524C7020F11FA8004EBD8B /* Interface.storyboard in Resources */,
 			);
@@ -554,6 +565,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				55524C8420F11FAA004EBD8B /* Assets.xcassets in Resources */,
+				55DD5DC320F4FEA0001B93E0 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -613,6 +625,12 @@
 				55524C8020F11FAA004EBD8B /* ExtensionDelegate.swift in Sources */,
 				5578608820F3DCB200FC182D /* TrainAppController.swift in Sources */,
 				55524C7E20F11FAA004EBD8B /* InterfaceController.swift in Sources */,
+				5578609220F406E700FC182D /* Train.swift in Sources */,
+				5578609320F4070300FC182D /* MotionFaults.swift in Sources */,
+				5578609520F4070F00FC182D /* Lights.swift in Sources */,
+				5578608F20F4066D00FC182D /* Engine.swift in Sources */,
+				5578609420F4070800FC182D /* Sound.swift in Sources */,
+				55632BF920F4520D008BCB09 /* Billboard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

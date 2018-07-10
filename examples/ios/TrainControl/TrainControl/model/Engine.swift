@@ -7,7 +7,11 @@
 //
 
 import Foundation
+#if os(iOS)
 import SwiftyFog_iOS
+#elseif os(watchOS)
+import SwiftFog_watch
+#endif
 
 public enum EngineState: Int32 {
     case reverse = -1
@@ -57,6 +61,12 @@ public class Engine: FogFeedbackModel {
 	public func assertValues() {
 		delegate?.engine(power: power.value, true)
 		delegate?.engine(calibration: calibration.value, true)
+	}
+	
+	public func control(powerIncrement: Double) {
+		var local = power.value
+		local.num += TrainRational.ValueType(powerIncrement * Double(local.den * 2))
+		self.control(power: local)
 	}
 	
 	public func control(power: TrainRational) {

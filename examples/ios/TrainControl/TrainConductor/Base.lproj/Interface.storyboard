@@ -1,51 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14113" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14295.6" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="U0Q-nI-cAQ">
     <device id="watch38" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14033"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14270.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14234.1"/>
     </dependencies>
     <scenes>
-        <!--Interface Controller-->
-        <scene sceneID="aou-V4-d1y">
+        <!--InterfaceController-->
+        <scene sceneID="pfk-U8-I0b">
             <objects>
-                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="TrainConductor" customModuleProvider="target"/>
-            </objects>
-            <point key="canvasLocation" x="220" y="345"/>
-        </scene>
-        <!--Static Notification Interface Controller-->
-        <scene sceneID="AEw-b0-oYE">
-            <objects>
-                <notificationController id="YCC-NB-fut">
+                <controller identifier="InterfaceController" backgroundImage="Metal" id="U0Q-nI-cAQ" customClass="InterfaceController" customModule="TrainConductor_Extension">
                     <items>
-                        <label alignment="left" text="Alert Label" numberOfLines="0" id="IdU-wH-bcW"/>
+                        <group width="1" alignment="left" id="BCd-fo-6nW">
+                            <items>
+                                <group alignment="center" id="skG-zr-bUe">
+                                    <items>
+                                        <imageView alignment="center" image="Dead" id="2DS-bY-FJB"/>
+                                        <imageView alignment="center" image="MotionIdle" id="Vqt-zA-Afu"/>
+                                        <imageView alignment="center" image="TorchOff" id="XOu-iA-2iY"/>
+                                    </items>
+                                    <edgeInsets key="margins" left="0.0" right="0.0" top="4" bottom="0.0"/>
+                                </group>
+                            </items>
+                        </group>
+                        <label height="44" alignment="center" verticalAlignment="center" text="-100" textAlignment="center" id="dzQ-Lg-8Mu">
+                            <accessibilityTraits key="accessibilityTraits" staticText="YES" updatesFrequently="YES"/>
+                            <fontDescription key="font" type="system" pointSize="40"/>
+                        </label>
+                        <button width="1" alignment="left" verticalAlignment="bottom" title="Lights" id="zuO-Yg-zGq">
+                            <connections>
+                                <action selector="lightsWithSender:" destination="U0Q-nI-cAQ" id="g5P-bf-2pA"/>
+                            </connections>
+                        </button>
                     </items>
-                    <notificationCategory key="notificationCategory" identifier="myCategory" id="JfB-70-Muf"/>
                     <connections>
-                        <outlet property="notificationAlertLabel" destination="IdU-wH-bcW" id="JKC-fr-R95"/>
-                        <segue destination="4sK-HA-Art" kind="relationship" relationship="dynamicNotificationInterface" id="kXh-Jw-8B1"/>
-                        <segue destination="eXb-UN-Cd0" kind="relationship" relationship="dynamicInteractiveNotificationInterface" id="mpB-YA-K8N"/>
+                        <outlet property="aliveIndicator" destination="2DS-bY-FJB" id="3sO-3X-a4u"/>
+                        <outlet property="engineIndicator" destination="Vqt-zA-Afu" id="Fmp-Gw-PgN"/>
+                        <outlet property="lightIndicator" destination="XOu-iA-2iY" id="GN6-4F-dbT"/>
+                        <outlet property="powerIndicator" destination="dzQ-Lg-8Mu" id="6Kl-G3-AkV"/>
                     </connections>
-                </notificationController>
+                </controller>
             </objects>
-            <point key="canvasLocation" x="220" y="643"/>
-        </scene>
-        <!--Notification Controller-->
-        <scene sceneID="ZPc-GJ-vnh">
-            <objects>
-                <controller id="4sK-HA-Art" customClass="NotificationController" customModule="TrainConductor" customModuleProvider="target"/>
-            </objects>
-            <point key="canvasLocation" x="557" y="643"/>
-        </scene>
-        <!--Notification Controller-->
-        <scene sceneID="Niz-AI-uX2">
-            <objects>
-                <controller id="eXb-UN-Cd0" customClass="NotificationController" customModule="TrainConductor" customModuleProvider="target"/>
-            </objects>
-            <point key="canvasLocation" x="557" y="345"/>
+            <point key="canvasLocation" x="124" y="201"/>
         </scene>
     </scenes>
 </document>

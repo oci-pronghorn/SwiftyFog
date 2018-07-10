@@ -151,12 +151,14 @@ extension TrainViewController {
 	}
 
 	func assertValues() {
+		train.assertValues()
 		engine.assertValues()
 		lights.assertValues()
 		billboard.assertValues()
 	}
 	
 	func feedbackCut() {
+		train.reset()
 		engine.reset()
 		lights.reset()
 		billboard.reset()

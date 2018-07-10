@@ -200,6 +200,8 @@
 		5578607120F3AAE600FC182D /* SwiftyFog.h in Headers */ = {isa = PBXBuildFile; fileRef = 5543474A1F82D0F600C3C2CB /* SwiftyFog.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5578607220F3AC0200FC182D /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347981F82D13700C3C2CB /* Other.swift */; };
 		5578608A20F3DD2100FC182D /* NetworkReachabilityStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A2AEFC1FCC641500676E1C /* NetworkReachabilityStub.swift */; };
+		5578609020F406AA00FC182D /* FogFeedbackValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347961F82D13700C3C2CB /* FogFeedbackValue.swift */; };
+		5578609120F406AE00FC182D /* FogRational.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347971F82D13700C3C2CB /* FogRational.swift */; };
 		558529881FC5EFE20045AE6E /* MQTTRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558529871FC5EFE20045AE6E /* MQTTRouter.swift */; };
 		55A2AF041FCC65C100676E1C /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347941F82D13700C3C2CB /* NetworkReachability.swift */; };
 		55A2AF051FCC65C100676E1C /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347941F82D13700C3C2CB /* NetworkReachability.swift */; };
@@ -863,6 +865,7 @@
 				5578605620F3AAAF00FC182D /* MQTTUnsubPacket.swift in Sources */,
 				5578604A20F3AA9B00FC182D /* fogSize.swift in Sources */,
 				5578604620F3AA9600FC182D /* MQTTControl.swift in Sources */,
+				5578609120F406AE00FC182D /* FogRational.swift in Sources */,
 				5578605420F3AAAF00FC182D /* MQTTPingPacket.swift in Sources */,
 				5578606620F3AAC000FC182D /* MQTTPingStatus.swift in Sources */,
 				5578606820F3AAC000FC182D /* MQTTRoutingParams.swift in Sources */,
@@ -870,6 +873,7 @@
 				5578604120F3AA8F00FC182D /* MQTTPacket.swift in Sources */,
 				5578603620F3AA8100FC182D /* MQTTSubscriber.swift in Sources */,
 				5578604E20F3AAA100FC182D /* FogPixel.swift in Sources */,
+				5578609020F406AA00FC182D /* FogFeedbackValue.swift in Sources */,
 				5578604720F3AA9600FC182D /* MQTTMetrics.swift in Sources */,
 				5578607020F3AADB00FC182D /* WeakHandle.swift in Sources */,
 				5578602F20F3AA8100FC182D /* MQTTConnection.swift in Sources */,

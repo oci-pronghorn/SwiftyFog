@@ -50,7 +50,7 @@ public struct FogBitMap: FogExternalizable, CustomStringConvertible {
 		}
 		return str
 	}
-#if os(iOS)
+#if os(iOS) || os(watchOS)
 	public mutating func imbue(_ source: UIImage) -> UIImage? {
 		let corrected = source.fogFixedOrientation()
 		let resized = corrected.fogResize(layout.size)

@@ -7,7 +7,11 @@
 //
 
 import Foundation
+#if os(iOS)
 import SwiftyFog_iOS
+#elseif os(watchOS)
+import SwiftFog_watch
+#endif
 
 class Sound {
 	private var piezo: FogFeedbackValue<TrainRational>
