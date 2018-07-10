@@ -1,5 +1,5 @@
 //
-//  NetworkReachability.swift
+//  FogNetworkReachability.swift
 //  SwiftyFog
 //
 //  Created by David Giovannini on 8/12/17.
@@ -9,8 +9,8 @@
 import SystemConfiguration
 import Foundation
 
-public final class NetworkReachability {
-    public typealias NetworkReachable = (NetworkReachabilityStatus) -> ()
+public final class FogNetworkReachability {
+    public typealias NetworkReachable = (FogNetworkReachabilityStatus) -> ()
 
     private var reachable: NetworkReachable?
     private let queue: DispatchQueue
@@ -19,8 +19,8 @@ public final class NetworkReachability {
     private var previousFlags: SCNetworkReachabilityFlags?
     private var notifierRunning = false
 	
-    public var status: NetworkReachabilityStatus {
-        return NetworkReachabilityStatus(reachabilityRef?.flags, allowsCellularConnection)
+    public var status: FogNetworkReachabilityStatus {
+        return FogNetworkReachabilityStatus(reachabilityRef?.flags, allowsCellularConnection)
     }
 	
     public init(
@@ -57,15 +57,15 @@ public final class NetworkReachability {
     }
 }
 
-private extension NetworkReachability {
+private extension FogNetworkReachability {
     private func startNotifier() {
         guard !notifierRunning else { return }
         if let reachabilityRef = reachabilityRef {
 			var context = SCNetworkReachabilityContext(version: 0, info: nil, retain: nil, release: nil, copyDescription: nil)
-			context.info = UnsafeMutableRawPointer(Unmanaged<NetworkReachability>.passUnretained(self).toOpaque())
+			context.info = UnsafeMutableRawPointer(Unmanaged<FogNetworkReachability>.passUnretained(self).toOpaque())
 			var success = SCNetworkReachabilitySetCallback(reachabilityRef, {(_, _, info) in
 				guard let info = info else { return }
-				let reachability = Unmanaged<NetworkReachability>.fromOpaque(info).takeUnretainedValue()
+				let reachability = Unmanaged<FogNetworkReachability>.fromOpaque(info).takeUnretainedValue()
 				reachability.reachabilityChanged()
 			}, &context)
 			if success {
@@ -92,9 +92,7 @@ private extension NetworkReachability {
     }
 }
 
-public enum NetworkReachabilityStatus: CustomStringConvertible {
-	case none, wifi, cellular, unknown
-	
+fileprivate extension FogNetworkReachabilityStatus {
 	fileprivate init(_ flags: SCNetworkReachabilityFlags?, _ allowsCellularConnection: Bool) {
 		guard let flags = flags else { self = .unknown; return }
 		guard flags.isReachableFlagSet else { self = .none; return }
@@ -102,7 +100,7 @@ public enum NetworkReachabilityStatus: CustomStringConvertible {
 		// If we're reachable, but not on an iOS device (i.e. simulator), we must be on WiFi
 		guard flags.isRunningOnDevice else { self = .wifi; return }
 
-		var connection = NetworkReachabilityStatus.none
+		var connection = FogNetworkReachabilityStatus.none
 		
 		if !flags.isConnectionRequiredFlagSet {
 			connection = .wifi
@@ -122,15 +120,6 @@ public enum NetworkReachabilityStatus: CustomStringConvertible {
 			}
 		}
 		self = connection
-	}
-	
-	public var description: String {
-		switch self {
-		case .cellular: return "Cellular"
-		case .wifi: return "WiFi"
-		case .none: return "No Connection"
-		case .unknown: return "Unknown"
-		}
 	}
 }
 

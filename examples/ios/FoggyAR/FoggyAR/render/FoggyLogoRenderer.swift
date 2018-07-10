@@ -14,6 +14,11 @@ import Vision
 import SwiftyFog_iOS
 #endif
 
+extension FloatingPoint {
+	var degreesToRadians: Self { return self * .pi / 180 }
+	var radiansToDegrees: Self { return self * 180 / .pi }
+}
+
 protocol FoggyLogoRendererDelegate:class {
 	func qrCodeDetected(code: String)
 	func loading(_ state : Bool)
@@ -188,7 +193,7 @@ extension SCNNode {
 	func setGeometryText(value : String) {
 		if let textGeometry = self.geometry as? SCNText {
 			textGeometry.string = value
-			textGeometry.alignmentMode = kCAAlignmentCenter
+			textGeometry.alignmentMode = convertFromCATextLayerAlignmentMode(CATextLayerAlignmentMode.center)
 		}
 	}
 	
@@ -307,3 +312,8 @@ extension FoggyLogoRenderer: QRDetectionDelegate  {
 	}
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromCATextLayerAlignmentMode(_ input: CATextLayerAlignmentMode) -> String {
+	return input.rawValue
+}

@@ -25,14 +25,14 @@ protocol TrainAppControllerDelegate: class {
 
 class TrainAppController {
 	let mqtt: (MQTTBridge & MQTTControl)!
-	let network: NetworkReachability
+	let network: FogNetworkReachability
 	let metrics: MQTTMetrics?
 	var wasStarted: Bool = true
 	
 	weak var delegate: TrainAppControllerDelegate?
 	
 	init(_ trainName: String) {
-		self.network = NetworkReachability()
+		self.network = FogNetworkReachability()
 	
 		// Setup metrics
 		self.metrics = MQTTMetrics()

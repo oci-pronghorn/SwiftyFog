@@ -16,9 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	var trainARViewer: FoggyViewController!
 	
-	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		
-		trainARViewer = (self.window!.rootViewController) as! FoggyViewController
+		trainARViewer = (self.window!.rootViewController) as? FoggyViewController
 		
 		// Select the train
 		let trainName = "thejoveexpress"

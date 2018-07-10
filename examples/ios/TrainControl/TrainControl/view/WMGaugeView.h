@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 
-// TODO: port to swift, rethink layers, and auto layout aware
+// TODO: port to swift, rethink layers, chnage property names for IB dipsplay, and auto layout aware
 
 /**
  * Styling enumerations
@@ -89,6 +89,7 @@ IB_DESIGNABLE
 @property (nonatomic) IBInspectable BOOL showLastTick;
 
 @property (nonatomic) IBInspectable UIFont *scaleFont;
+@property (nonatomic) ScaleDescription scaleDescription;
 
 @property (nonatomic) IBInspectable float value;
 @property (nonatomic) IBInspectable float minValue;
@@ -117,12 +118,9 @@ IB_DESIGNABLE
 @property (nonatomic) IBInspectable UIImage* indicatorImage;
 @property (nonatomic) IBInspectable UIImage* highlightedIndicatorImage;
 @property (nonatomic) IBInspectable CGFloat indicatorVerticalOffset;
-// TODO have configurable with more states
-@property (nonatomic, getter=isIndicatorHighlighted) BOOL indicatorHighlighted;
+@property (nonatomic, getter=isIndicatorHighlighted) BOOL indicatorHighlighted; // TODO have configurable with more states
 @property (nonatomic) IBInspectable CGSize indicatorSize;
 @property (nonatomic) IBInspectable BOOL showIndicator;
-
-@property (nonatomic) ScaleDescription scaleDescription;
 
 /**
  * WMGaugeView public functions

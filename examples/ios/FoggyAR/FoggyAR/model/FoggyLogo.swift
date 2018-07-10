@@ -7,9 +7,9 @@
 //
 
 import Foundation
-#if APP
 import SwiftyFog_iOS
-#endif
+
+public typealias TrainRational = FogRational<Int32>
 
 public protocol FoggyLogoDelegate: class {
 	func foggyLogo(lightsPower: Bool)

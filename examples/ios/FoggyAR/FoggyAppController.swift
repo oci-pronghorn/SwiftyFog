@@ -15,7 +15,7 @@ protocol FoggyAppControllerDelegate: class {
 
 class FoggyAppController {
 	let mqtt: (MQTTBridge & MQTTControl)!
-	let network: NetworkReachability
+	let network: FogNetworkReachability
 	
 	private var fakeHeading : CGFloat = 0
 	private var fakeHeadingTimer: DispatchSourceTimer?
@@ -23,7 +23,7 @@ class FoggyAppController {
 	weak var delegate: FoggyAppControllerDelegate?
 	
 	init(_ trainName: String) {
-		self.network = NetworkReachability()
+		self.network = FogNetworkReachability()
 		
 		let metrics = MQTTMetrics()
 		metrics.doPrintReceivePackets = true

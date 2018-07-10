@@ -20,7 +20,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		controller = ThermoAppController()
 		controller.delegate = self
 
-		helloWorldView = NSApplication.shared.mainWindow!.contentViewController as! HelloWorldViewController
+		helloWorldView = NSApplication.shared.mainWindow!.contentViewController as? HelloWorldViewController
 			
 		helloWorldView.mqtt = controller.mqtt
 		
