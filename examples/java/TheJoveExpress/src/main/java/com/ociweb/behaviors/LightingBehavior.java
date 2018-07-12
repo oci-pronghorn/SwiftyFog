@@ -1,23 +1,31 @@
 package com.ociweb.behaviors;
 
-import com.ociweb.gl.api.*;
-import com.ociweb.iot.maker.*;
+import static com.ociweb.behaviors.AmbientLightBehavior.maxSensorReading;
+import static com.ociweb.iot.maker.TriState.latent;
+
+import com.ociweb.gl.api.PubSubFixedTopicService;
+import com.ociweb.gl.api.PubSubMethodListener;
+import com.ociweb.gl.api.StartupListener;
+import com.ociweb.gl.api.TimeListener;
+import com.ociweb.iot.maker.FogCommandChannel;
+import com.ociweb.iot.maker.FogRuntime;
+import com.ociweb.iot.maker.Port;
+import com.ociweb.iot.maker.TriState;
 import com.ociweb.model.ActuatorDriverPayload;
 import com.ociweb.model.ActuatorDriverPort;
 import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
-import static com.ociweb.behaviors.AmbientLightBehavior.maxSensorReading;
-import static com.ociweb.iot.maker.TriState.latent;
-
 public class LightingBehavior implements PubSubMethodListener, TimeListener, StartupListener {
-    private final PubSubService pubSubService;
+    
+	private final PubSubFixedTopicService actuatorService;
+    private final PubSubFixedTopicService overrideService;
+    private final PubSubFixedTopicService powerService;    
+    private final PubSubFixedTopicService calibrationService;
+    
     private final ActuatorDriverPayload actuatorPayload = new ActuatorDriverPayload();
    // private final PinService ledPinService;
-    private final String actuatorTopic;
-    private final String overrideTopic;
-    private final String powerTopic;
-    private final String calibrationTopic;
+
     private final Port ledPort;
 
     private final RationalPayload calibration = new RationalPayload(maxSensorReading/2, maxSensorReading);
@@ -33,11 +41,11 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
         FogCommandChannel channel = runtime.newCommandChannel();
         //this.ledPinService = channel.newPinService();
         this.ledPort = ledPort;
-        this.pubSubService = channel.newPubSubService();
-        this.actuatorTopic = actuatorTopic;
-        this.overrideTopic = overrideTopic;
-        this.powerTopic = powerTopic;
-        this.calibrationTopic = calibrationTopic;
+        this.actuatorService = channel.newPubSubService(actuatorTopic);
+        this.overrideService = channel.newPubSubService(overrideTopic);
+        this.powerService = channel.newPubSubService(powerTopic);
+        this.calibrationService = channel.newPubSubService(calibrationTopic);
+        
         this.actuatorPayload.port = port;
         this.actuatorPayload.power = -1.0;
     }
@@ -45,9 +53,9 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
         boolean isOn = this.actuatorPayload.power > 0.0;
         TriState lightsOn = overridePower == null ? latent : overridePower == 0.0 ? TriState.on : TriState.off;
-        this.pubSubService.publishTopic(overrideTopic, writer -> writer.writeInt(lightsOn.ordinal()));
-        this.pubSubService.publishTopic(powerTopic, writer -> writer.writeBoolean(isOn));
-        this.pubSubService.publishTopic(calibrationTopic, writer -> writer.write(calibration));
+        this.overrideService.publishTopic( writer -> writer.writeInt(lightsOn.ordinal()));
+        this.powerService.publishTopic( writer -> writer.writeBoolean(isOn));
+        this.calibrationService.publishTopic( writer -> writer.write(calibration));
         return true;
     }
 
@@ -70,14 +78,14 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
                 overridePower = null;
                 break;
         }
-        this.pubSubService.publishTopic(overrideTopic, writer -> writer.writeInt(lightsOn.ordinal()));
+        this.overrideService.publishTopic( writer -> writer.writeInt(lightsOn.ordinal()));
         actuate();
         return true;
     }
 
     public boolean onCalibration(CharSequence charSequence, ChannelReader messageReader) {
         messageReader.readInto(this.calibration);
-        this.pubSubService.publishTopic(calibrationTopic, writer -> writer.write(calibration));
+        this.calibrationService.publishTopic( writer -> writer.write(calibration));
         if (ambient.num >= calibration.num) {
             determinedPower = 0.0;
         } else {
@@ -123,12 +131,12 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
         }
         if (updatePower != this.actuatorPayload.power) {
             this.actuatorPayload.power = updatePower;
-            this.pubSubService.publishTopic(actuatorTopic, writer -> writer.write(actuatorPayload));
+            this.actuatorService.publishTopic( writer -> writer.write(actuatorPayload));
             boolean isOn = this.actuatorPayload.power > 0.0;
 
             //ledPinService.setValue(ledPort, isOn);
 
-            this.pubSubService.publishTopic(powerTopic, writer -> writer.writeBoolean(isOn));
+            this.powerService.publishTopic( writer -> writer.writeBoolean(isOn));
 
             //System.out.println("Updating LED to " + isOn + "...");
 

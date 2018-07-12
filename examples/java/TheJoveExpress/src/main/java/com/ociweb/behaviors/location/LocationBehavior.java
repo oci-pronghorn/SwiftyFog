@@ -1,20 +1,20 @@
 package com.ociweb.behaviors.location;
 
-import com.ociweb.behaviors.CameraBehavior;
-import com.ociweb.gl.api.PubSubService;
+import com.ociweb.gl.api.PubSubFixedTopicService;
 import com.ociweb.gl.api.StartupListener;
-import com.ociweb.iot.maker.*;
+import com.ociweb.iot.maker.FogCommandChannel;
+import com.ociweb.iot.maker.FogRuntime;
+import com.ociweb.iot.maker.LocationListener;
 
 public class LocationBehavior implements LocationListener, StartupListener {
-    private final PubSubService pubSubService;
-    private final String locationFeedbackTopic;
-    private final String accuracyFeedbackTopic;
+    private final PubSubFixedTopicService locationService;
+    private final PubSubFixedTopicService accuracyService;
+    
 
     public LocationBehavior(FogRuntime runtime, String locationFeedbackTopic, String accuracyFeedbackTopic) {
         FogCommandChannel channel = runtime.newCommandChannel();
-        this.pubSubService = channel.newPubSubService();
-        this.locationFeedbackTopic = locationFeedbackTopic;
-        this.accuracyFeedbackTopic = accuracyFeedbackTopic;
+        this.locationService = channel.newPubSubService(locationFeedbackTopic);
+        this.accuracyService = channel.newPubSubService(accuracyFeedbackTopic);
     }
 
     @Override
@@ -25,8 +25,8 @@ public class LocationBehavior implements LocationListener, StartupListener {
     @Override
     public boolean location(int location, long oddsOfRightLocation, long totalSum) {
         System.out.printf("Location: %d | Accuracy: %d | Total Sum: %d", location, oddsOfRightLocation, totalSum);
-        this.pubSubService.publishTopic(locationFeedbackTopic, writer -> writer.writeInt(location));
-        this.pubSubService.publishTopic(accuracyFeedbackTopic, writer -> writer.writeLong(oddsOfRightLocation));
+        this.locationService.publishTopic(writer -> writer.writeInt(location));
+        this.accuracyService.publishTopic(writer -> writer.writeLong(oddsOfRightLocation));
         return true;
     }
 }

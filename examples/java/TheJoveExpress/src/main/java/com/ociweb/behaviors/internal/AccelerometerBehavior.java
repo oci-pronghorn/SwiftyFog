@@ -1,20 +1,22 @@
 package com.ociweb.behaviors.internal;
 
+import com.ociweb.gl.api.PubSubFixedTopicService;
 import com.ociweb.gl.api.PubSubMethodListener;
-import com.ociweb.gl.api.PubSubService;
-import com.ociweb.iot.grove.six_axis_accelerometer.*;
+import com.ociweb.iot.grove.six_axis_accelerometer.AccelerometerListener;
+import com.ociweb.iot.grove.six_axis_accelerometer.AccelerometerValues;
+import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometer_Transducer;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 
 public class AccelerometerBehavior implements PubSubMethodListener {
-    private final PubSubService pubSubService;
-    private final String stateTopic;
+    private final PubSubFixedTopicService stateTopicService;
+
     private final SixAxisAccelerometer_Transducer accSensor;
 
     public AccelerometerBehavior(FogRuntime runtime, String stateTopic) {
         FogCommandChannel channel = runtime.newCommandChannel();
-        pubSubService = channel.newPubSubService();
-        this.stateTopic = stateTopic;
+        stateTopicService = channel.newPubSubService(stateTopic);
+
 
         AccelerometerListener listener = new AccelerometerListener() {
             public void onChange(AccelerometerValues values, AccelerometerListener.Changed changed) {
@@ -27,6 +29,6 @@ public class AccelerometerBehavior implements PubSubMethodListener {
     }
 
     private void valueChange(AccelerometerValues values, AccelerometerListener.Changed changed) {
-        pubSubService.publishTopic(stateTopic, writer -> writer.write(values));
+        stateTopicService.publishTopic(writer -> writer.write(values));
     }
 }

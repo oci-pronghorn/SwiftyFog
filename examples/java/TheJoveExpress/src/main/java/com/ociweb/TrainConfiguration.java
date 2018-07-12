@@ -36,7 +36,7 @@ public class TrainConfiguration  {
     //final boolean cameraEnabled = false;
     //final String cameraOutputFormat = "/home/pi/pi-cam-test/image-%d.raw"; //where %d is the current timestamp
 
-    final boolean locationEnabled = true;
+    final boolean locationEnabled = false;
 
     final boolean faultDetectionEnabled = false;
     final int accelerometerReadFreq = 250;
