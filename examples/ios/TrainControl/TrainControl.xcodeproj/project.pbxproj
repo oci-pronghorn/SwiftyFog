@@ -54,6 +54,11 @@
 		5578609520F4070F00FC182D /* Lights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348691F82D46100C3C2CB /* Lights.swift */; };
 		5578609720F4078700FC182D /* glass break.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 22E11E2D20152E600034F382 /* glass break.mp3 */; };
 		557DD91520F4E4FA007F0AE9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5543488A1F82D48A00C3C2CB /* Images.xcassets */; };
+		55B912BC20FA71E800634B80 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 55B912BB20FA71E800634B80 /* Settings.bundle */; };
+		55B912BD20FA734400634B80 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 55B912BB20FA71E800634B80 /* Settings.bundle */; };
+		55B912BE20FA734400634B80 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 55B912BB20FA71E800634B80 /* Settings.bundle */; };
+		55B912C020FA77CE00634B80 /* UserDefaults+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B912BF20FA77CE00634B80 /* UserDefaults+.swift */; };
+		55B912C120FA794A00634B80 /* UserDefaults+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B912BF20FA77CE00634B80 /* UserDefaults+.swift */; };
 		55BD0DD220F15955001E31C3 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BD0DD120F15954001E31C3 /* UIView+.swift */; };
 		55BD0DD420F15ABF001E31C3 /* AVAudioPlayer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BD0DD320F15ABF001E31C3 /* AVAudioPlayer+.swift */; };
 		55DA62DA1F8C1F140068D592 /* SwiftyFog_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554348951F82D4D700C3C2CB /* SwiftyFog_iOS.framework */; };
@@ -189,6 +194,8 @@
 		5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftFog_watch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5578608B20F3DF9900FC182D /* PhotosAccess.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosAccess.swift; sourceTree = "<group>"; };
 		5578608C20F3DF9A00FC182D /* UIImagePickerController+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImagePickerController+.swift"; sourceTree = "<group>"; };
+		55B912BB20FA71E800634B80 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		55B912BF20FA77CE00634B80 /* UserDefaults+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+.swift"; sourceTree = "<group>"; };
 		55BD0DD120F15954001E31C3 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		55BD0DD320F15ABF001E31C3 /* AVAudioPlayer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVAudioPlayer+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -265,6 +272,7 @@
 			children = (
 				554348381F82D3AD00C3C2CB /* AppDelegate.swift */,
 				554348701F82D46100C3C2CB /* MqttClientAppController.swift */,
+				55B912BF20FA77CE00634B80 /* UserDefaults+.swift */,
 				554348661F82D46100C3C2CB /* model */,
 				554348711F82D46100C3C2CB /* view */,
 				5543486C1F82D46100C3C2CB /* viewcontroller */,
@@ -274,6 +282,7 @@
 				5543488A1F82D48A00C3C2CB /* Images.xcassets */,
 				22E11E2D20152E600034F382 /* glass break.mp3 */,
 				554348441F82D3AD00C3C2CB /* Info.plist */,
+				55B912BB20FA71E800634B80 /* Settings.bundle */,
 			);
 			path = TrainControl;
 			sourceTree = "<group>";
@@ -534,6 +543,7 @@
 				5543488B1F82D48A00C3C2CB /* Images.xcassets in Resources */,
 				554348401F82D3AD00C3C2CB /* Assets.xcassets in Resources */,
 				554348A01F82D6FE00C3C2CB /* LaunchScreen.storyboard in Resources */,
+				55B912BC20FA71E800634B80 /* Settings.bundle in Resources */,
 				5543483E1F82D3AD00C3C2CB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -558,6 +568,7 @@
 			files = (
 				5578609720F4078700FC182D /* glass break.mp3 in Resources */,
 				557DD91520F4E4FA007F0AE9 /* Images.xcassets in Resources */,
+				55B912BE20FA734400634B80 /* Settings.bundle in Resources */,
 				55524C7220F11FAA004EBD8B /* Assets.xcassets in Resources */,
 				55524C7020F11FA8004EBD8B /* Interface.storyboard in Resources */,
 			);
@@ -568,6 +579,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				55524C8420F11FAA004EBD8B /* Assets.xcassets in Resources */,
+				55B912BD20FA734400634B80 /* Settings.bundle in Resources */,
 				55DD5DC320F4FEA0001B93E0 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -591,6 +603,7 @@
 				55BD0DD220F15955001E31C3 /* UIView+.swift in Sources */,
 				5543487F1F82D46100C3C2CB /* Train.swift in Sources */,
 				554348861F82D46100C3C2CB /* MetalPanelView.swift in Sources */,
+				55B912C020FA77CE00634B80 /* UserDefaults+.swift in Sources */,
 				554348801F82D46100C3C2CB /* LogViewController.swift in Sources */,
 				554348871F82D46100C3C2CB /* Pulsator.swift in Sources */,
 				55BD0DD420F15ABF001E31C3 /* AVAudioPlayer+.swift in Sources */,
@@ -632,6 +645,7 @@
 				5578609220F406E700FC182D /* Train.swift in Sources */,
 				5578609320F4070300FC182D /* MotionFaults.swift in Sources */,
 				5578609520F4070F00FC182D /* Lights.swift in Sources */,
+				55B912C120FA794A00634B80 /* UserDefaults+.swift in Sources */,
 				5578608F20F4066D00FC182D /* Engine.swift in Sources */,
 				5578609420F4070800FC182D /* Sound.swift in Sources */,
 				55632BF920F4520D008BCB09 /* Billboard.swift in Sources */,
