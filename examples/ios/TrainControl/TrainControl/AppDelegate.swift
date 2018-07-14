@@ -24,13 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let trainName = UserDefaults.standard.string(forKey: "train_name_preference")!
 		let brokerName = UserDefaults.standard.string(forKey: "broker_host_preference")!
 		
+		controller = MqttClientAppController(mqttHost: brokerName)
+		controller.delegate = self
+		
 		let tbc = self.window!.rootViewController as! UITabBarController
 		self.testing = (tbc.viewControllers![1] as! TestingViewController)
 		self.trainControl = (tbc.viewControllers![0] as! TrainViewController)
 		self.logView = (tbc.viewControllers![2] as! LogViewController)
-
-		controller = MqttClientAppController(mqttHost: brokerName)
-		controller.delegate = self
 		
 		testing.mqtt = controller.mqtt
 		

@@ -38,37 +38,43 @@ class TrainViewController: UIViewController {
 	
 	@IBOutlet var pulsator: Pulsator!
 	
-    weak var crack: UIImageView?
-    var player: AVAudioPlayer?
-	
 	var mqttControl: MQTTControl!
-	
-	var bypassFeed: Bool {
-		return !mqttControl.started // just so I can see stuff while debugging
-	}
 	
 	var mqtt: MQTTBridge! {
 		didSet {
-			engine.delegate = self
-			engine.mqtt = mqtt.createBridge(subPath: "engine")
-			
-			lights.delegate = self
-			lights.mqtt = mqtt.createBridge(subPath: "lights")
-			
-			billboard.delegate = self
-			billboard.mqtt = mqtt.createBridge(subPath: "billboard")
-			
-			sound.mqtt = mqtt.createBridge(subPath: "sound")
-			
-			train.delegate = self
 			train.mqtt = mqtt
+			engine.mqtt = mqtt.createBridge(subPath: "engine")
+			lights.mqtt = mqtt.createBridge(subPath: "lights")
+			billboard.mqtt = mqtt.createBridge(subPath: "billboard")
+			sound.mqtt = mqtt.createBridge(subPath: "sound")
 		}
 	}
-}
+	
+	private var bypassFeed: Bool {
+		return !mqttControl.started // just so I can see stuff while debugging
+	}
+    private weak var crack: UIImageView?
+    private var player: AVAudioPlayer?
 
 // MARK: Life Cycle
+	
+	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+		commonInit()
+	}
+	
+	required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+		commonInit()
+	}
+	
+	private func commonInit() {
+		engine.delegate = self
+		lights.delegate = self
+		billboard.delegate = self
+		train.delegate = self
+	}
 
-extension TrainViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		/*
@@ -85,7 +91,6 @@ extension TrainViewController {
 			return "W".localized
 		}
 		*/
-		
 		assertConnectionState()
 		assertValues()
 	}
@@ -94,7 +99,7 @@ extension TrainViewController {
 // MARK: Connection State
 
 extension TrainViewController {
-	
+
 	func mqtt(connected: MQTTConnectedState) {
 		switch connected {
 			case .started:

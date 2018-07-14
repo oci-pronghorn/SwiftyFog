@@ -27,24 +27,25 @@ class InterfaceController: WKInterfaceController {
 	@IBOutlet weak var overrideOffIndicator: WKInterfaceLabel!
 	@IBOutlet weak var overrideAutoIndicator: WKInterfaceLabel!
 	
-// MARK: Life Cycle
-
 	static var mqtt: MQTTBridge!
 
 	var mqtt: MQTTBridge! {
 		didSet {
-			engine.delegate = self
-			engine.mqtt = mqtt.createBridge(subPath: "engine")
-			
-			lights.delegate = self
-			lights.mqtt = mqtt.createBridge(subPath: "lights")
-			
-			billboard.delegate = self
-			billboard.mqtt = mqtt.createBridge(subPath: "billboard")
-			
-			train.delegate = self
 			train.mqtt = mqtt
+			engine.mqtt = mqtt.createBridge(subPath: "engine")
+			lights.mqtt = mqtt.createBridge(subPath: "lights")
+			billboard.mqtt = mqtt.createBridge(subPath: "billboard")
 		}
+	}
+	
+// MARK: Life Cycle
+	
+	override init() {
+		super.init()
+		train.delegate = self
+		engine.delegate = self
+		lights.delegate = self
+		billboard.delegate = self
 	}
 
     override func awake(withContext context: Any?) {
