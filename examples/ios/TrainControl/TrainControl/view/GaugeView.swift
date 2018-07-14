@@ -4,10 +4,13 @@
 //
 //  Created by David Giovannini on 7/10/18.
 //  Based on WMGaugeView by William Markezana <william.markezana@me.com>
-//  Copyright © 2018 Object Computing Inc. All rights reserved.
+//  Copyright © 2018 Software by Jove. All rights reserved.
 //
 
 import UIKit
+
+// TODO: use polymorphism for element drawing
+// TODO: isolate hard-coded colors to those elements
 
 enum GaugeViewSubdivisionsAlignment : String {
     case top
@@ -85,22 +88,6 @@ class GaugeView: UIView {
 	@IBInspectable public var scaleDivisions: CGFloat = 12.0 { didSet { scaleMetricsChanged() } }
 	@IBInspectable public var scaleSubdivisions: CGFloat = 10.0 { didSet { scaleMetricsChanged() } }
 	
-// MARK: Ranges Properties
-	@IBInspectable public var showRangeLabels = true { didSet { recalcScaleRect() } }
-	@IBInspectable public var rangeLabelsWidth: CGFloat = 0.05 { didSet { recalcScaleRect() } }
-	@IBInspectable public var rangeLabelsFont: UIFont = UIFont(name: "Helvetica", size: 0.05)! { didSet { rangesChanged() } }
-	@IBInspectable public var rangeLabelsFontColor: UIColor = UIColor.black { didSet { rangesChanged() } }
-	@IBInspectable public var rangeLabelsFontKerning: CGFloat = 1.02 { didSet { rangesChanged() } }
-	@IBOutlet var ranges: [GaugeRange] {
-		get { return _ranges }
-		set { rangesOrderChanged(newValue) }
-	}
-	fileprivate var _ranges: [GaugeRange] = [] {
-		didSet {
-			for range in _ranges { range.owner = self }
-		}
-	}
-	
 // MARK: Scale Drawing Properties
 	@IBInspectable public var useScaleDivisionColor = false { didSet { scaleChanged() } }
 	public var scaleSubdivisionsAligment: GaugeViewSubdivisionsAlignment = .top { didSet { scaleChanged() } }
@@ -117,6 +104,22 @@ class GaugeView: UIView {
 	@IBInspectable public var cyclic = false { didSet { scaleChanged() } }
 	@IBInspectable public var scaleFont: UIFont = UIFont(name: "Helvetica-Bold", size: 0.05)! { didSet { scaleChanged() } }
 	public var scaleDescription: (CGFloat, Int) -> String = { value, _ in String(format: "%0.0f", value) } { didSet { scaleChanged() } }
+	
+// MARK: Ranges Properties
+	@IBInspectable public var showRangeLabels = true { didSet { recalcScaleRect() } }
+	@IBInspectable public var rangeLabelsWidth: CGFloat = 0.05 { didSet { recalcScaleRect() } }
+	@IBInspectable public var rangeLabelsFont: UIFont = UIFont(name: "Helvetica", size: 0.05)! { didSet { rangesChanged() } }
+	@IBInspectable public var rangeLabelsFontColor: UIColor = UIColor.black { didSet { rangesChanged() } }
+	@IBInspectable public var rangeLabelsFontKerning: CGFloat = 1.02 { didSet { rangesChanged() } }
+	@IBOutlet var ranges: [GaugeRange] {
+		get { return _ranges }
+		set { rangesOrderChanged(newValue) }
+	}
+	fileprivate var _ranges: [GaugeRange] = [] {
+		didSet {
+			for range in _ranges { range.owner = self }
+		}
+	}
 	
 // MARK: Indicator Properties
 	// Indicator // TODO have configurable with more states
@@ -169,6 +172,17 @@ class GaugeView: UIView {
     }
 	
 // MARK: Layers
+	override public func layoutSublayers(of layer: CALayer) {
+		if layer === self.layer {
+			if let sublayers = layer.sublayers {
+				let b = self.bounds
+				for subLayer in sublayers {
+					subLayer.frame = b
+				}
+			}
+		}
+	}
+	
 	private class DrawingLayer: CALayer {
 		var draw : ((CGContext)->())!
 		
@@ -208,7 +222,6 @@ class GaugeView: UIView {
 		}
 		self.layer.addSublayer(scaleLayer)
 		
-		//indicatorLayer.scales = false
 		indicatorLayer.draw = { [weak self] ctx in
 			self?.drawIndicator(in: ctx)
 			self?.drawLabel(in: ctx)
@@ -233,18 +246,7 @@ class GaugeView: UIView {
 		recalcFaceRect()
 	}
 	
-// MARK: Bounds
-	override public func layoutSublayers(of layer: CALayer) {
-		if layer == self.layer {
-			let b = self.bounds
-			self.backgroundLayer.frame = b
-			self.scaleLayer.frame = b
-			self.indicatorLayer.frame = b
-			self.rangeLayer.frame = b
-			self.needleLayer.frame = b
-			self.needleScrewLayer.frame = b
-		}
-	}
+// MARK: Rect cache
 	
 	private let fullCenter: CGPoint = CGPoint(x: 0.5, y: 0.5)
 	private let fullRect: CGRect = CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0)
@@ -258,8 +260,8 @@ class GaugeView: UIView {
 		let innerRimBorderWidth = self.showInnerRim ? self.innerRimBorderWidth : 0.0
 		let innerRimWidth = self.showInnerRim ? self.innerRimWidth : 0.0
 		innerRimRect = fullRect
-		innerRimBorderRect = CGRect(x: innerRimRect.origin.x + innerRimBorderWidth, y: innerRimRect.origin.y + innerRimBorderWidth, width: innerRimRect.size.width - 2 * innerRimBorderWidth, height: innerRimRect.size.height - 2 * innerRimBorderWidth)
-		faceRect = CGRect(x: innerRimRect.origin.x + innerRimWidth, y: innerRimRect.origin.y + innerRimWidth, width: innerRimRect.size.width - 2 * innerRimWidth, height: innerRimRect.size.height - 2 * innerRimWidth)
+		innerRimBorderRect = CGRect(x: innerRimRect.origin.x + innerRimBorderWidth, y: innerRimRect.origin.y + innerRimBorderWidth, width: innerRimRect.size.width - 2.0 * innerRimBorderWidth, height: innerRimRect.size.height - 2.0 * innerRimBorderWidth)
+		faceRect = CGRect(x: innerRimRect.origin.x + innerRimWidth, y: innerRimRect.origin.y + innerRimWidth, width: innerRimRect.size.width - 2.0 * innerRimWidth, height: innerRimRect.size.height - 2.0 * innerRimWidth)
 		backgroundChanged()
 		indicatorChanged()
 		recalcScaleRect()
@@ -318,6 +320,7 @@ class GaugeView: UIView {
 		}
 	}
 	
+	// TODO: draw outer rim
 	private func drawRim(in context: CGContext) {
 	/*	context.addEllipse(in: fullRect.insetBy(dx: innerRimBorderWidth, dy: innerRimBorderWidth))
 		context.setLineWidth(innerRimBorderWidth * 2)
@@ -473,12 +476,14 @@ class GaugeView: UIView {
 				context.setLineWidth(rangeLabelsWidth)
 				context.strokePath()
 				// Range curved label
+				// TODO: cleanup call-site
 				drawString(at: context, string: range.label, withCenter: fullCenter, radius: rangeLabelsRect.size.width / 2.0 + 0.008, startAngle: ((.pi * lastStartAngle) / 180), endAngle: ((.pi * valueAngle) / 180))
 				lastStartAngle = valueAngle
 			}
 		}
 	}
 
+	// TODO radius and baseline night quite right
 	func drawString(at context: CGContext, string text: String, withCenter center_: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat) {
 		guard startAngle < endAngle else { return }
 		context.saveGState()
@@ -489,7 +494,7 @@ class GaugeView: UIView {
 		let perimeter = 2.0 * .pi * radius
 		let textAngle = textSize.width / perimeter * 2.0 * .pi * rangeLabelsFontKerning
 		let offset = ((endAngle - startAngle) - CGFloat(textAngle)) / 2.0
-		var letterPosition: CGFloat = 0
+		var letterPosition: CGFloat = 0.0
 		var lastLetter = ""
 		context.rotate(fromCenter: center_, withAngle: startAngle + CGFloat(offset))
 		for character in text {
@@ -505,10 +510,10 @@ class GaugeView: UIView {
         	let letterPoint = CGPoint(x: (radius - charSize.height / 2.0) * cos(angle) + center_.x, y: (radius - charSize.height / 2.0) * sin(angle) + center_.y)
         	context.saveGState()
         	context.translateBy(x: letterPoint.x, y: letterPoint.y)
-			let rotationTransform = CGAffineTransform(rotationAngle: angle + .pi / 2)
+			let rotationTransform = CGAffineTransform(rotationAngle: angle + .pi / 2.0)
 			context.concatenate(rotationTransform)
 			context.translateBy(x: -letterPoint.x, y: -letterPoint.y)
-			attrStr.draw(at: CGPoint(x: letterPoint.x - charSize.width / 2, y: letterPoint.y - charSize.height))
+			attrStr.draw(at: CGPoint(x: letterPoint.x - charSize.width / 2.0, y: letterPoint.y - charSize.height))
        		context.restoreGState()
         	letterPosition += charSize.width / 2.0
         	lastLetter = letter
@@ -563,7 +568,7 @@ class GaugeView: UIView {
 				break
 			case .gradient:
 				// Screw drawing
-				let knob = CGRect(x: fullCenter.x - needleScrewRadius, y: fullCenter.y - needleScrewRadius, width: needleScrewRadius * 2, height: needleScrewRadius * 2)
+				let knob = CGRect(x: fullCenter.x - needleScrewRadius, y: fullCenter.y - needleScrewRadius, width: needleScrewRadius * 2.0, height: needleScrewRadius * 2.0)
 				context.addEllipse(in: knob)
 				context.setFillColor(UIColor(171, 171, 171).cgColor)
 				context.setStrokeColor(UIColor(81, 84, 89, 200).cgColor)
@@ -572,7 +577,7 @@ class GaugeView: UIView {
 				context.strokePath()
 			case .plain:
 				// Screw drawing
-				let knob = CGRect(x: fullCenter.x - needleScrewRadius, y: fullCenter.y - needleScrewRadius, width: needleScrewRadius * 2, height: needleScrewRadius * 2)
+				let knob = CGRect(x: fullCenter.x - needleScrewRadius, y: fullCenter.y - needleScrewRadius, width: needleScrewRadius * 2.0, height: needleScrewRadius * 2.0)
 				context.addEllipse(in: knob)
 				context.setFillColor(UIColor(68, 84, 105).cgColor)
 				context.fillPath()
@@ -589,11 +594,11 @@ class GaugeView: UIView {
 	private func ranged(value: CGFloat) -> CGFloat {
 		return value > maxValue ? maxValue : value < minValue ? minValue : value
 	}
-
+	// TODO: the CATransform3DMakeRotation is rvidually rotating more than just the Z axis
 	private func valueChanged() {
 		let radians = needleRadians(forValue: _value)
 		let finalTransform = CATransform3DMakeRotation(radians, 0.0, 0.0, 1.0)
-		needleLayer.transform = finalTransform
+		//needleLayer.transform = finalTransform
 	}
 	
 	public func setValue(_ newValue: CGFloat, animated: Bool, duration: TimeInterval = 0.8, completion: ((_ finished: Bool) -> Void)? = nil) {
@@ -604,6 +609,7 @@ class GaugeView: UIView {
 			let firstRadians = needleRadians(forValue: lastValue)
 			let lastRadians = needleRadians(forValue: _value)
 			let middleRadians: CGFloat
+			// TODO: make these work correctly
 			if cyclic {
 				middleRadians = lastValue + (((lastValue + (value - lastValue) / 2.0) >= 0) ? (value - lastValue) / 2.0 : (lastValue - _value) / 2.0)
 			}
@@ -611,16 +617,15 @@ class GaugeView: UIView {
 				middleRadians = (firstRadians + lastRadians) / 2.0
 				print("\(firstRadians) -> \(middleRadians) -> \(lastRadians)")
 			}
-			let firstTransform = CATransform3DMakeRotation(firstRadians, 0.0, 0.0, 1.0)
+			//let firstTransform = CATransform3DMakeRotation(firstRadians, 0.0, 0.0, 1.0)
 			// An intermediate "middle" value is used to make sure the needle will follow the right rotation direction
 			let middleTransform = CATransform3DMakeRotation(middleRadians, 0.0, 0.0, 1.0)
 			let finalTransform = CATransform3DMakeRotation(lastRadians, 0.0, 0.0, 1.0)
 			let animation = CAKeyframeAnimation(keyPath: "transform")
 			animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn)
 			animation.isRemovedOnCompletion = true
-			animation.duration = animated ? duration : 0.0
-			animation.values = [NSValue(caTransform3D: firstTransform), NSValue(caTransform3D: middleTransform), NSValue(caTransform3D: finalTransform)]
-			needleLayer.transform = finalTransform
+			animation.duration = duration
+			animation.values = [/*NSValue(caTransform3D: firstTransform),*/ NSValue(caTransform3D: middleTransform), NSValue(caTransform3D: finalTransform)]
 			//needleLayer.add(animation, forKey: kCATransition)
 		}
 		else {
