@@ -10,6 +10,8 @@
 		22ABCF472010D40500AEAC1D /* MotionFaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ABCF462010D40500AEAC1D /* MotionFaults.swift */; };
 		22E11E2E20152E600034F382 /* glass break.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 22E11E2D20152E600034F382 /* glass break.mp3 */; };
 		551AB9DF1F93B94A0080D37B /* FlipLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551AB9DE1F93B94A0080D37B /* FlipLabel.swift */; };
+		5536DFFF20FA8CF3006B4AE8 /* glass break.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 22E11E2D20152E600034F382 /* glass break.mp3 */; };
+		5536E00220FA934D006B4AE8 /* Settings-Watch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5536E00120FA934D006B4AE8 /* Settings-Watch.bundle */; };
 		553CC65320F57A8E0046D4A5 /* GaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CC65220F57A8E0046D4A5 /* GaugeView.swift */; };
 		554348391F82D3AD00C3C2CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348381F82D3AD00C3C2CB /* AppDelegate.swift */; };
 		5543483E1F82D3AD00C3C2CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5543483C1F82D3AD00C3C2CB /* Main.storyboard */; };
@@ -148,6 +150,7 @@
 		22ABCF462010D40500AEAC1D /* MotionFaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionFaults.swift; sourceTree = "<group>"; };
 		22E11E2D20152E600034F382 /* glass break.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "glass break.mp3"; sourceTree = "<group>"; };
 		551AB9DE1F93B94A0080D37B /* FlipLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipLabel.swift; sourceTree = "<group>"; };
+		5536E00120FA934D006B4AE8 /* Settings-Watch.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "Settings-Watch.bundle"; sourceTree = "<group>"; };
 		553CC65220F57A8E0046D4A5 /* GaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeView.swift; sourceTree = "<group>"; };
 		554348351F82D3AD00C3C2CB /* TrainControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrainControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		554348381F82D3AD00C3C2CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -376,6 +379,7 @@
 				55524C8320F11FAA004EBD8B /* Assets.xcassets */,
 				55524C8520F11FAA004EBD8B /* Info.plist */,
 				55524C8620F11FAA004EBD8B /* PushNotificationPayload.apns */,
+				5536E00120FA934D006B4AE8 /* Settings-Watch.bundle */,
 			);
 			path = "TrainConductor Extension";
 			sourceTree = "<group>";
@@ -578,6 +582,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5536DFFF20FA8CF3006B4AE8 /* glass break.mp3 in Resources */,
+				5536E00220FA934D006B4AE8 /* Settings-Watch.bundle in Resources */,
 				55524C8420F11FAA004EBD8B /* Assets.xcassets in Resources */,
 				55B912BD20FA734400634B80 /* Settings.bundle in Resources */,
 				55DD5DC320F4FEA0001B93E0 /* Images.xcassets in Resources */,

@@ -13,8 +13,11 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 	var controller: MqttClientAppController!
 
     func applicationDidFinishLaunching() {
-		let trainName = "thejoveexpress"
-		controller = MqttClientAppController(mqttHost: trainName + ".local")
+		UserDefaults.standard.loadDefaults()
+		let trainName = UserDefaults.standard.string(forKey: "train_name_preference")!
+		let brokerName = UserDefaults.standard.string(forKey: "broker_host_preference")!
+		
+		controller = MqttClientAppController(mqttHost: brokerName)
 		controller.delegate = self
 		
 		let scoped = controller.mqtt.createBridge(subPath: trainName)
