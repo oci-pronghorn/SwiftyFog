@@ -10,7 +10,7 @@
 import UIKit
 
 // TODO: use polymorphism for element drawing
-// TODO: isolate hard-coded colors to those elements
+// TODO: isolate hard-coded colors and dimensions to those elements
 
 enum GaugeViewSubdivisionsAlignment : String {
     case top
@@ -175,7 +175,7 @@ class GaugeView: UIView {
 	override public func layoutSublayers(of layer: CALayer) {
 		if layer === self.layer {
 			if let sublayers = layer.sublayers {
-				let b = self.bounds
+				let b = layer.bounds
 				for subLayer in sublayers {
 					subLayer.frame = b
 				}
@@ -188,11 +188,7 @@ class GaugeView: UIView {
 		
 		override func draw(in context: CGContext) {
 			UIGraphicsPushContext(context)
-			//context.saveGState()
-			defer {
-				//context.restoreGState()
-				UIGraphicsPopContext()
-			}
+			defer { UIGraphicsPopContext() }
 			let s = self.bounds.size
 			context.scaleBy(x: s.width, y: s.height)
         	draw(context)
@@ -247,7 +243,6 @@ class GaugeView: UIView {
 	}
 	
 // MARK: Rect cache
-	
 	private let fullCenter: CGPoint = CGPoint(x: 0.5, y: 0.5)
 	private let fullRect: CGRect = CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0)
 	private var faceRect: CGRect = CGRect.zero
@@ -322,10 +317,6 @@ class GaugeView: UIView {
 	
 	// TODO: draw outer rim
 	private func drawRim(in context: CGContext) {
-	/*	context.addEllipse(in: fullRect.insetBy(dx: innerRimBorderWidth, dy: innerRimBorderWidth))
-		context.setLineWidth(innerRimBorderWidth * 2)
-		context.setStrokeColor(UIColor.cyan.cgColor)
-		context.strokePath()*/
 	}
 	
 // MARK: Scale
@@ -476,27 +467,27 @@ class GaugeView: UIView {
 				context.setLineWidth(rangeLabelsWidth)
 				context.strokePath()
 				// Range curved label
-				// TODO: cleanup call-site
-				drawString(at: context, string: range.label, withCenter: fullCenter, radius: rangeLabelsRect.size.width / 2.0 + 0.008, startAngle: ((.pi * lastStartAngle) / 180), endAngle: ((.pi * valueAngle) / 180))
+				drawString(at: context, string: range.label, startAngle: lastStartAngle.degToRad, endAngle: valueAngle.degToRad)
 				lastStartAngle = valueAngle
 			}
 		}
 	}
 
-	// TODO radius and baseline night quite right
-	func drawString(at context: CGContext, string text: String, withCenter center_: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat) {
+	func drawString(at context: CGContext, string text: String, startAngle: CGFloat, endAngle: CGFloat) {
 		guard startAngle < endAngle else { return }
 		context.saveGState()
 		defer { context.restoreGState() }
 		
+	// TODO radius and baseline not quite right
 		let stringAttrs: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: rangeLabelsFont, NSAttributedString.Key.foregroundColor: rangeLabelsFontColor]
 		let textSize = text.size(withAttributes: stringAttrs)
+		let radius = rangeLabelsRect.size.width / 2.0 + 0.008
 		let perimeter = 2.0 * .pi * radius
 		let textAngle = textSize.width / perimeter * 2.0 * .pi * rangeLabelsFontKerning
 		let offset = ((endAngle - startAngle) - CGFloat(textAngle)) / 2.0
 		var letterPosition: CGFloat = 0.0
 		var lastLetter = ""
-		context.rotate(fromCenter: center_, withAngle: startAngle + CGFloat(offset))
+		context.rotate(fromCenter: fullCenter, withAngle: startAngle + CGFloat(offset))
 		for character in text {
 			let letter = String(character)
 			let attrStr = NSAttributedString(string: letter, attributes: stringAttrs)
@@ -507,7 +498,7 @@ class GaugeView: UIView {
 			let kerning = (lastLetterWidth) != 0.0 ? 0.0 : ((currentLetterWidth + lastLetterWidth) - totalWidth)
 			letterPosition += (charSize.width / 2.0) - kerning
        		let angle = (letterPosition / perimeter * 2 * .pi) * rangeLabelsFontKerning
-        	let letterPoint = CGPoint(x: (radius - charSize.height / 2.0) * cos(angle) + center_.x, y: (radius - charSize.height / 2.0) * sin(angle) + center_.y)
+        	let letterPoint = CGPoint(x: (radius - charSize.height / 2.0) * cos(angle) + fullCenter.x, y: (radius - charSize.height / 2.0) * sin(angle) + fullCenter.y)
         	context.saveGState()
         	context.translateBy(x: letterPoint.x, y: letterPoint.y)
 			let rotationTransform = CGAffineTransform(rotationAngle: angle + .pi / 2.0)
