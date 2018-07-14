@@ -7,8 +7,6 @@
 
 #import <UIKit/UIKit.h>
 
-// TODO: port to swift, rethink layers, chnage property names for IB dipsplay, and auto layout aware
-
 /**
  * Styling enumerations
  */

@@ -584,19 +584,99 @@
                                     <action selector="unsubAll" destination="fV6-iJ-f1p" eventType="touchUpInside" id="sbc-Fs-FTn"/>
                                 </connections>
                             </button>
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I2y-nC-Kwi" customClass="GaugeView" customModule="TrainControl">
+                                <rect key="frame" x="85.666666666666686" y="186" width="243" height="243"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="GW4-CJ-t7G"/>
+                                    <constraint firstAttribute="width" constant="243" id="KEB-Xs-Sl1"/>
+                                    <constraint firstAttribute="width" secondItem="I2y-nC-Kwi" secondAttribute="height" multiplier="1:1" id="T49-4I-bhJ"/>
+                                    <constraint firstAttribute="width" secondItem="I2y-nC-Kwi" secondAttribute="height" multiplier="1:1" id="kec-Mp-NQD"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="label" value="Power"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="value">
+                                        <integer key="value" value="-100"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="minValue">
+                                        <real key="value" value="-100"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="maxValue">
+                                        <real key="value" value="100"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="scaleDivisions">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="useScaleDivisionColor" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="indicatorImage" value="MotionIdle"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outletCollection property="ranges" destination="ETI-FT-Ofc" collectionClass="NSMutableArray" id="aH7-xu-3UV"/>
+                                    <outletCollection property="ranges" destination="Cvt-w3-de9" collectionClass="NSMutableArray" id="LnK-eR-6iA"/>
+                                    <outletCollection property="ranges" destination="EvY-su-5bX" collectionClass="NSMutableArray" id="0ko-9W-TDG"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Yb0-mG-QZ9" firstAttribute="centerX" secondItem="uST-wk-6Gm" secondAttribute="centerX" id="1Wh-OZ-rp3"/>
                             <constraint firstItem="uST-wk-6Gm" firstAttribute="top" secondItem="Yb0-mG-QZ9" secondAttribute="bottom" constant="-114" id="FV6-vn-sDQ"/>
                             <constraint firstItem="amV-JQ-ofh" firstAttribute="centerX" secondItem="uST-wk-6Gm" secondAttribute="centerX" id="Pc6-bb-VWD"/>
+                            <constraint firstItem="I2y-nC-Kwi" firstAttribute="centerX" secondItem="uST-wk-6Gm" secondAttribute="centerX" id="T5Y-Qb-f85"/>
+                            <constraint firstItem="I2y-nC-Kwi" firstAttribute="width" secondItem="I2y-nC-Kwi" secondAttribute="height" multiplier="1:1" id="fn6-28-u6X"/>
                             <constraint firstItem="amV-JQ-ofh" firstAttribute="top" secondItem="Yb0-mG-QZ9" secondAttribute="bottom" constant="8" id="pin-Fv-IeM"/>
+                            <constraint firstItem="I2y-nC-Kwi" firstAttribute="top" secondItem="amV-JQ-ofh" secondAttribute="bottom" constant="14" id="zJb-50-8kD"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="uST-wk-6Gm"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="Remote" id="pJ9-Ed-7ez"/>
+                    <connections>
+                        <outlet property="gauge" destination="I2y-nC-Kwi" id="gMn-4c-4vE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VGR-hs-tvm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="Cvt-w3-de9" userLabel="Idle" customClass="GaugeRange" customModule="test" customModuleProvider="target">
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="color">
+                            <color key="value" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="value">
+                            <real key="value" value="30"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="string" keyPath="label" value="Idle"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="order">
+                            <integer key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </customObject>
+                <customObject id="EvY-su-5bX" userLabel="Forward" customClass="GaugeRange" customModule="test" customModuleProvider="target">
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="color">
+                            <color key="value" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="value">
+                            <real key="value" value="100"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="string" keyPath="label" value="Forward"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="order">
+                            <integer key="value" value="2"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </customObject>
+                <customObject id="ETI-FT-Ofc" userLabel="Reverse" customClass="GaugeRange" customModule="test" customModuleProvider="target">
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="color">
+                            <color key="value" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="value">
+                            <real key="value" value="-30"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="string" keyPath="label" value="Reverse"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="order">
+                            <integer key="value" value="0"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="1466" y="-47"/>
         </scene>

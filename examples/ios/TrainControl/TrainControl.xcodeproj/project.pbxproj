@@ -10,6 +10,7 @@
 		22ABCF472010D40500AEAC1D /* MotionFaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ABCF462010D40500AEAC1D /* MotionFaults.swift */; };
 		22E11E2E20152E600034F382 /* glass break.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 22E11E2D20152E600034F382 /* glass break.mp3 */; };
 		551AB9DF1F93B94A0080D37B /* FlipLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551AB9DE1F93B94A0080D37B /* FlipLabel.swift */; };
+		553CC65320F57A8E0046D4A5 /* GaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CC65220F57A8E0046D4A5 /* GaugeView.swift */; };
 		554348391F82D3AD00C3C2CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348381F82D3AD00C3C2CB /* AppDelegate.swift */; };
 		5543483E1F82D3AD00C3C2CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5543483C1F82D3AD00C3C2CB /* Main.storyboard */; };
 		554348401F82D3AD00C3C2CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5543483F1F82D3AD00C3C2CB /* Assets.xcassets */; };
@@ -142,6 +143,7 @@
 		22ABCF462010D40500AEAC1D /* MotionFaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionFaults.swift; sourceTree = "<group>"; };
 		22E11E2D20152E600034F382 /* glass break.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "glass break.mp3"; sourceTree = "<group>"; };
 		551AB9DE1F93B94A0080D37B /* FlipLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipLabel.swift; sourceTree = "<group>"; };
+		553CC65220F57A8E0046D4A5 /* GaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeView.swift; sourceTree = "<group>"; };
 		554348351F82D3AD00C3C2CB /* TrainControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrainControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		554348381F82D3AD00C3C2CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5543483D1F82D3AD00C3C2CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -328,6 +330,7 @@
 				554348761F82D46100C3C2CB /* Pulsator.swift */,
 				554348771F82D46100C3C2CB /* ScubControl.swift */,
 				551AB9DE1F93B94A0080D37B /* FlipLabel.swift */,
+				553CC65220F57A8E0046D4A5 /* GaugeView.swift */,
 				5543489A1F82D65A00C3C2CB /* WMGaugeView.h */,
 				554348991F82D65A00C3C2CB /* WMGaugeView.m */,
 				554348981F82D65900C3C2CB /* TrainControl-Bridging-Header.h */,
@@ -584,6 +587,7 @@
 				5578608E20F3DF9A00FC182D /* UIImagePickerController+.swift in Sources */,
 				5543487E1F82D46100C3C2CB /* Sound.swift in Sources */,
 				551AB9DF1F93B94A0080D37B /* FlipLabel.swift in Sources */,
+				553CC65320F57A8E0046D4A5 /* GaugeView.swift in Sources */,
 				55BD0DD220F15955001E31C3 /* UIView+.swift in Sources */,
 				5543487F1F82D46100C3C2CB /* Train.swift in Sources */,
 				554348861F82D46100C3C2CB /* MetalPanelView.swift in Sources */,
@@ -907,7 +911,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 5.0;
+				WATCHOS_DEPLOYMENT_TARGET = 4.3;
 			};
 			name = Debug;
 		};
@@ -926,7 +930,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 5.0;
+				WATCHOS_DEPLOYMENT_TARGET = 4.3;
 			};
 			name = Release;
 		};
@@ -948,7 +952,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 5.0;
+				WATCHOS_DEPLOYMENT_TARGET = 4.3;
 			};
 			name = Debug;
 		};
@@ -969,7 +973,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 5.0;
+				WATCHOS_DEPLOYMENT_TARGET = 4.3;
 			};
 			name = Release;
 		};
