@@ -1,5 +1,5 @@
 //
-//  TrainSelectViewController.swift
+//  TestingViewController.swift
 //  TrainControl
 //
 //  Created by David Giovannini on 8/21/17.
@@ -9,7 +9,7 @@
 import UIKit
 import SwiftyFog_iOS
 
-class TrainSelectViewController: UIViewController {
+class TestingViewController: UIViewController {
 	var mqtt: MQTTBridge!
 	var subscription: MQTTSubscription?
 	

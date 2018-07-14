@@ -14,15 +14,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
 	var controller: TrainAppController!
 	
-	var trainSelect: TrainSelectViewController!
+	var testing: TestingViewController!
 	var trainControl: TrainViewController!
 	var logView: LogViewController!
 
 	internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		
-		trainSelect = ((self.window!.rootViewController as! UITabBarController).viewControllers![1] as! TrainSelectViewController)
-		trainControl = ((self.window!.rootViewController as! UITabBarController).viewControllers![0] as! TrainViewController)
-		logView = ((self.window!.rootViewController as! UITabBarController).viewControllers![2] as! LogViewController)
+		let tbc = self.window!.rootViewController as! UITabBarController
+		self.testing = (tbc.viewControllers![1] as! TestingViewController)
+		self.trainControl = (tbc.viewControllers![0] as! TrainViewController)
+		self.logView = (tbc.viewControllers![2] as! LogViewController)
 		
 		// Select the train
 		let trainName = "thejoveexpress"
@@ -32,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		// This view controller is specific to a train topic
 		// Create an MQTTBridge specific to the selected train
-		trainSelect.mqtt = controller.mqtt
+		testing.mqtt = controller.mqtt
 		let scoped = controller.mqtt.createBridge(subPath: trainName)
 		trainControl.mqtt = scoped
 		trainControl.mqttControl = controller.mqtt
