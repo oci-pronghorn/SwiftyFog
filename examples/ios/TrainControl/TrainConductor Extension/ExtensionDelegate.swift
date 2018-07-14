@@ -10,11 +10,11 @@ import WatchKit
 import SwiftFog_watch
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
-	var controller: TrainAppController!
+	var controller: MqttClientAppController!
 
     func applicationDidFinishLaunching() {
 		let trainName = "thejoveexpress"
-		controller = TrainAppController(trainName)
+		controller = MqttClientAppController(mqttHost: trainName + ".local")
 		controller.delegate = self
 		
 		let scoped = controller.mqtt.createBridge(subPath: trainName)
@@ -64,7 +64,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
     }
 }
 
-extension ExtensionDelegate: TrainAppControllerDelegate {
+extension ExtensionDelegate: MqttClientAppControllerDelegate {
 	func on(log: String) {
 		print(log)
 	}

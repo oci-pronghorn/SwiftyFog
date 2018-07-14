@@ -12,7 +12,7 @@ import SwiftyFog_iOS
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
-	var controller: TrainAppController!
+	var controller: MqttClientAppController!
 	
 	var testing: TestingViewController!
 	var trainControl: TrainViewController!
@@ -28,12 +28,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Select the train
 		let trainName = "thejoveexpress"
 
-		controller = TrainAppController(trainName)
+		controller = MqttClientAppController(mqttHost: trainName + ".local")
 		controller.delegate = self
+		
+		testing.mqtt = controller.mqtt
 		
 		// This view controller is specific to a train topic
 		// Create an MQTTBridge specific to the selected train
-		testing.mqtt = controller.mqtt
 		let scoped = controller.mqtt.createBridge(subPath: trainName)
 		trainControl.mqtt = scoped
 		trainControl.mqttControl = controller.mqtt
@@ -62,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 }
 
-extension AppDelegate: TrainAppControllerDelegate {
+extension AppDelegate: MqttClientAppControllerDelegate {
 	func on(log: String) {
 		logView.onLog(log)
 	}

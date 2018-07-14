@@ -24,7 +24,7 @@
 		554348801F82D46100C3C2CB /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486D1F82D46100C3C2CB /* LogViewController.swift */; };
 		554348811F82D46100C3C2CB /* TestingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486E1F82D46100C3C2CB /* TestingViewController.swift */; };
 		554348821F82D46100C3C2CB /* TrainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486F1F82D46100C3C2CB /* TrainViewController.swift */; };
-		554348831F82D46100C3C2CB /* TrainAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348701F82D46100C3C2CB /* TrainAppController.swift */; };
+		554348831F82D46100C3C2CB /* MqttClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348701F82D46100C3C2CB /* MqttClientAppController.swift */; };
 		554348841F82D46100C3C2CB /* FogRationalUi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348721F82D46100C3C2CB /* FogRationalUi.swift */; };
 		554348861F82D46100C3C2CB /* MetalPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348751F82D46100C3C2CB /* MetalPanelView.swift */; };
 		554348871F82D46100C3C2CB /* Pulsator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348761F82D46100C3C2CB /* Pulsator.swift */; };
@@ -44,7 +44,7 @@
 		55632BF920F4520D008BCB09 /* Billboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348671F82D46100C3C2CB /* Billboard.swift */; };
 		5578608620F3B5EA00FC182D /* SwiftFog_watch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */; };
 		5578608720F3B5EA00FC182D /* SwiftFog_watch.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5578608820F3DCB200FC182D /* TrainAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348701F82D46100C3C2CB /* TrainAppController.swift */; };
+		5578608820F3DCB200FC182D /* MqttClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348701F82D46100C3C2CB /* MqttClientAppController.swift */; };
 		5578608D20F3DF9A00FC182D /* PhotosAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578608B20F3DF9900FC182D /* PhotosAccess.swift */; };
 		5578608E20F3DF9A00FC182D /* UIImagePickerController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578608C20F3DF9A00FC182D /* UIImagePickerController+.swift */; };
 		5578608F20F4066D00FC182D /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348681F82D46100C3C2CB /* Engine.swift */; };
@@ -163,7 +163,7 @@
 		5543486D1F82D46100C3C2CB /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		5543486E1F82D46100C3C2CB /* TestingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestingViewController.swift; sourceTree = "<group>"; };
 		5543486F1F82D46100C3C2CB /* TrainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainViewController.swift; sourceTree = "<group>"; };
-		554348701F82D46100C3C2CB /* TrainAppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainAppController.swift; sourceTree = "<group>"; };
+		554348701F82D46100C3C2CB /* MqttClientAppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttClientAppController.swift; sourceTree = "<group>"; };
 		554348721F82D46100C3C2CB /* FogRationalUi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogRationalUi.swift; sourceTree = "<group>"; };
 		554348751F82D46100C3C2CB /* MetalPanelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalPanelView.swift; sourceTree = "<group>"; };
 		554348761F82D46100C3C2CB /* Pulsator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pulsator.swift; sourceTree = "<group>"; };
@@ -264,7 +264,7 @@
 			isa = PBXGroup;
 			children = (
 				554348381F82D3AD00C3C2CB /* AppDelegate.swift */,
-				554348701F82D46100C3C2CB /* TrainAppController.swift */,
+				554348701F82D46100C3C2CB /* MqttClientAppController.swift */,
 				554348661F82D46100C3C2CB /* model */,
 				554348711F82D46100C3C2CB /* view */,
 				5543486C1F82D46100C3C2CB /* viewcontroller */,
@@ -582,7 +582,7 @@
 				554348811F82D46100C3C2CB /* TestingViewController.swift in Sources */,
 				554348841F82D46100C3C2CB /* FogRationalUi.swift in Sources */,
 				5543489D1F82D65B00C3C2CB /* WMGaugeView.m in Sources */,
-				554348831F82D46100C3C2CB /* TrainAppController.swift in Sources */,
+				554348831F82D46100C3C2CB /* MqttClientAppController.swift in Sources */,
 				5578608D20F3DF9A00FC182D /* PhotosAccess.swift in Sources */,
 				5578608E20F3DF9A00FC182D /* UIImagePickerController+.swift in Sources */,
 				5543487E1F82D46100C3C2CB /* Sound.swift in Sources */,
@@ -627,7 +627,7 @@
 			files = (
 				55524C8220F11FAA004EBD8B /* NotificationController.swift in Sources */,
 				55524C8020F11FAA004EBD8B /* ExtensionDelegate.swift in Sources */,
-				5578608820F3DCB200FC182D /* TrainAppController.swift in Sources */,
+				5578608820F3DCB200FC182D /* MqttClientAppController.swift in Sources */,
 				55524C7E20F11FAA004EBD8B /* InterfaceController.swift in Sources */,
 				5578609220F406E700FC182D /* Train.swift in Sources */,
 				5578609320F4070300FC182D /* MotionFaults.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  TrainAppController.swift
+//  MqttClientAppController.swift
 //  TrainControl
 //
 //  Created by David Giovannini on 9/4/17.
@@ -14,24 +14,24 @@ import SwiftFog_watch
 #endif
 
 /*
-	The TrainAppController manages the high level business logic of the
+	The MqttClientAppController manages the high level business logic of the
 	application without managing the UI nor being the Cocoa AppDelegate.
 */
 
-protocol TrainAppControllerDelegate: class {
+protocol MqttClientAppControllerDelegate: class {
 	func on(log: String)
 	func on(connected: MQTTConnectedState)
 }
 
-class TrainAppController {
+class MqttClientAppController {
 	let mqtt: (MQTTBridge & MQTTControl)!
 	let network: FogNetworkReachability
 	let metrics: MQTTMetrics?
 	var wasStarted: Bool = true
 	
-	weak var delegate: TrainAppControllerDelegate?
+	weak var delegate: MqttClientAppControllerDelegate?
 	
-	init(_ trainName: String) {
+	init(mqttHost: String) {
 		self.network = FogNetworkReachability()
 	
 		// Setup metrics
@@ -46,7 +46,7 @@ class TrainAppController {
 		client.detectServerDeath = 2
 		let mqtt = MQTTClient(
 			client: client,
-			host: MQTTHostParams(host: trainName + ".local", port: .standard),
+			host: MQTTHostParams(host: mqttHost, port: .standard),
 			reconnect: MQTTReconnectParams(),
 			metrics: metrics)
 		
@@ -79,7 +79,7 @@ class TrainAppController {
 
 // The mqtt client will broadcast important events to the controller.
 // The invoking thread is not known.
-extension TrainAppController: MQTTClientDelegate {
+extension MqttClientAppController: MQTTClientDelegate {
 	func mqtt(client: MQTTClient, connected: MQTTConnectedState) {
 		let log: String
 		switch connected {
