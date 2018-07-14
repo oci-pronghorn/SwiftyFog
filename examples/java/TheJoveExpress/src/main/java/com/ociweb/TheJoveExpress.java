@@ -104,20 +104,24 @@ public class TheJoveExpress implements FogApp
         final String lightsPowerFeedback = "lights/power/feedback";
 
         if (config.engineEnabled || config.lightsEnabled) {
-            final String actuatorPowerInternal = "actuator/power/internal";
-
+            final String actuatorPowerAInternal = "actuator/power/a/internal";
+            final String actuatorPowerBInternal = "actuator/power/b/internal";
+            
             final ActuatorDriverBehavior actuator = new ActuatorDriverBehavior(runtime);
-            pubSub.subscribe(actuator, actuatorPowerInternal, actuator::setPower);
-
+            pubSub.subscribe(actuator, actuatorPowerAInternal, actuator::setPower);
+            pubSub.subscribe(actuator, actuatorPowerBInternal, actuator::setPower);
+            
             if (config.engineEnabled) {
-                final EngineBehavior engine = new EngineBehavior(runtime, actuatorPowerInternal, config.engineActuatorPort,
+                final EngineBehavior engine = new EngineBehavior(runtime, actuatorPowerAInternal, config.engineActuatorPort,
                         pubSub.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
                         pubSub.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce),
                         pubSub.publish("engine/state/feedback", false, MQTTQoS.atMostOnce));
                 //pubSub.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
                 pubSub.subscribe(engine, "engine/power/control", MQTTQoS.atMostOnce, engine::onPower);
                 pubSub.subscribe(engine, "engine/calibration/control", MQTTQoS.atMostOnce, engine::onCalibration);
-                pubSub.subscribe(engine, faultFeedback, engine::onFault);
+                if (config.faultDetectionEnabled) {
+                	pubSub.subscribe(engine, faultFeedback, engine::onFault);
+                }
             }
 
             if (config.lightsEnabled) {
@@ -126,7 +130,7 @@ public class TheJoveExpress implements FogApp
                         pubSub.publish(lightsAmbientFeedback, false, MQTTQoS.atMostOnce));
                 pubSub.subscribe(ambientLight, allFeedback, MQTTQoS.atMostOnce, ambientLight::onAllFeedback);
 
-                final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerInternal, config.lightActuatorPort, config.ledPort,
+                final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerBInternal, config.lightActuatorPort, config.ledPort,
                         pubSub.publish("lights/override/feedback", false, MQTTQoS.atMostOnce),
                         pubSub.publish(lightsPowerFeedback, false, MQTTQoS.atMostOnce),
                         pubSub.publish("lights/calibration/feedback", false, MQTTQoS.atMostOnce));

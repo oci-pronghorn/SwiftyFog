@@ -1,16 +1,12 @@
 package com.ociweb.behaviors;
 
-import com.ociweb.gl.api.*;
+import com.ociweb.gl.api.PubSubFixedTopicService;
+import com.ociweb.gl.api.PubSubMethodListener;
+import com.ociweb.gl.api.StartupListener;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.ImageListener;
 import com.ociweb.pronghorn.pipe.ChannelReader;
-
-import java.io.Externalizable;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Captures from camera on request and writes to file.
@@ -26,14 +22,12 @@ public class CameraBehavior implements ImageListener, PubSubMethodListener, Star
 
     private boolean continuousRecording = false;
 
-    private final PubSubService pubSubService;
-    private final String captureFeedbackTopic;
+    private final PubSubFixedTopicService pubSubService;
     private final String outputFormat;
 
     public CameraBehavior(FogRuntime runtime, String outputFormat, String captureFeedbackTopic) {
         FogCommandChannel channel = runtime.newCommandChannel();
-        this.pubSubService = channel.newPubSubService(20, 20_000);
-        this.captureFeedbackTopic = captureFeedbackTopic;
+        this.pubSubService = channel.newPubSubService(captureFeedbackTopic, 20, 20_000);
         this.outputFormat = outputFormat;
     }
 
@@ -56,7 +50,7 @@ public class CameraBehavior implements ImageListener, PubSubMethodListener, Star
         continuousRecording = !continuousRecording;
 
         // Broadcast the status of our capture
-        this.pubSubService.publishTopic(captureFeedbackTopic, writer -> writer.writeBoolean(success));
+        this.pubSubService.publishTopic(writer -> writer.writeBoolean(success));
         return true;
     }
 

@@ -1,7 +1,6 @@
 package com.ociweb.behaviors;
 
 import com.ociweb.gl.api.PubSubMethodListener;
-import com.ociweb.gl.api.PubSubService;
 import com.ociweb.gl.api.StartupListener;
 import com.ociweb.gl.api.Writable;
 import com.ociweb.iot.maker.FogCommandChannel;
@@ -9,7 +8,6 @@ import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.Port;
 import com.ociweb.iot.maker.SerialService;
 import com.ociweb.pronghorn.pipe.ChannelReader;
-import com.ociweb.pronghorn.pipe.ChannelWriter;
 
 public class SoundBehavior implements PubSubMethodListener, StartupListener {
     private final SerialService serialService;

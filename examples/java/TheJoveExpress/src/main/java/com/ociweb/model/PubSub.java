@@ -8,8 +8,6 @@ import com.ociweb.iot.maker.ListenerFilterIoT;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO: finish and move to GL
-
 // Accumulates MQTT pubs and subs so maker does not have to reason duplicates across behaviors
 // Attempts DRY principle with topic names
 // Combines data routed MQTT pub/sub and FogLight pub/sub into one declaration
@@ -80,7 +78,7 @@ public class PubSub {
     }
 
     public void subscribe(PubSubMethodListener listener, String topic, CallableMethod method) {
-        ListenerFilter filter = registeredListeners.computeIfAbsent(listener, (k) -> runtime.registerListener(k));
+        ListenerFilter filter = registeredListeners.computeIfAbsent(listener, (k) -> runtime.registerListener(listener.getClass().getSimpleName(), k));
         registeredListeners.put(listener, filter.addSubscription(topic, method));
     }
 
