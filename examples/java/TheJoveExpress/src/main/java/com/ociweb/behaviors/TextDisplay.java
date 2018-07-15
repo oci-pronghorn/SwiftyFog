@@ -1,8 +1,5 @@
 package com.ociweb.behaviors;
 
-import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
-import static com.ociweb.iot.maker.FogRuntime.I2C_WRITER;
-
 import com.ociweb.gl.api.PubSubFixedTopicService;
 import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.gl.api.ShutdownListener;
@@ -12,16 +9,21 @@ import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
+import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
+import static com.ociweb.iot.maker.FogRuntime.I2C_WRITER;
+
 public class TextDisplay implements PubSubMethodListener, StartupListener, ShutdownListener {
     private final PubSubFixedTopicService pubSubService;
     private final OLED_128x64_Transducer display;
+    private final String initialText;
     private String displayed;
 
     private final String blank = "                ";
     private String[] oldStrs = { "", "", "", "", "", "", "", ""};
     private String[] newStrs = { "", "", "", "", "", "", "", ""};
 
-    public TextDisplay(FogRuntime runtime, String textFeedbackTopic) {
+    public TextDisplay(FogRuntime runtime, String initialText, String textFeedbackTopic) {
+        this.initialText = initialText;
         FogCommandChannel channel = runtime.newCommandChannel();
 
         this.pubSubService = channel.newPubSubService(textFeedbackTopic);
@@ -41,7 +43,7 @@ public class TextDisplay implements PubSubMethodListener, StartupListener, Shutd
                 "0123456789ABCDEF" +
                 "garbage";
         displayText(s);*/
-        displayText("OpenEdge Train");
+        displayText(initialText);
     }
 
     @Override

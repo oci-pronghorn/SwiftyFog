@@ -1,25 +1,23 @@
 package com.ociweb;
 
 import com.ociweb.behaviors.*;
-import com.ociweb.behaviors.internal.AccelerometerBehavior;
 import com.ociweb.behaviors.internal.ActuatorDriverBehavior;
 import com.ociweb.behaviors.location.LocationBehavior;
 import com.ociweb.behaviors.location.TrainingBehavior;
 import com.ociweb.gl.api.MQTTBridge;
 import com.ociweb.gl.api.MQTTQoS;
-import com.ociweb.iot.camera.RaspiCam;
 import com.ociweb.iot.grove.simple_analog.SimpleAnalogTwig;
 import com.ociweb.iot.grove.simple_digital.SimpleDigitalTwig;
-import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometerTwig;
-import com.ociweb.iot.maker.*;
+import com.ociweb.iot.maker.Baud;
+import com.ociweb.iot.maker.FogApp;
+import com.ociweb.iot.maker.FogRuntime;
+import com.ociweb.iot.maker.Hardware;
 import com.ociweb.model.PubSub;
 import com.ociweb.pronghorn.iot.i2c.I2CJFFIStage;
-
-import java.nio.file.Paths;
+import com.ociweb.pronghorn.stage.scheduling.GraphManager;
 
 import static com.ociweb.iot.grove.motor_driver.MotorDriverTwig.MotorDriver;
 import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
-import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_96x96;
 
 public class TheJoveExpress implements FogApp
 {
@@ -32,17 +30,17 @@ public class TheJoveExpress implements FogApp
         
         hardware.setDefaultRate(16_000_000);
 
-       // hardware.setTestImageSource(Paths.get("source_img"));
-        ///hardware.useI2C();
-        
+        //hardware.setTestImageSource(Paths.get("source_img"));
+        //hardware.useI2C();
+
+        GraphManager.showThreadIdOnTelemetry = true;
         I2CJFFIStage.debugCommands = false;
 
         if (config.mqttEnabled) {
-            this.mqttBridge = hardware.useMQTT(config.mqttBroker, config.mqttPort, config.mqttClientName, 40, 8000)
+            this.mqttBridge = hardware.useMQTT(config.mqttBrokerHost, config.mqttPort, config.mqttClientName, 40, 8000)
                     .cleanSession(true)
                     .keepAliveSeconds(10);
             //hardware.definePrivateTopic("", "CameraBehavior", "");
-
         }
         if (config.appServerEnabled) hardware.useHTTP1xServer(config.appServerPort); // TODO: heap problem on Pi0
         if (config.lightsEnabled) {
@@ -55,26 +53,8 @@ public class TheJoveExpress implements FogApp
  //       if (config.faultDetectionEnabled) hardware.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readAccel, config.accelerometerReadFreq);
         if (config.soundEnabled) ; //c.connect(serial mp3 player);
 
-        // TODO: move this logic into Hardware
-        switch (config.telemetryEnabled) {
-            case on:
-                if (config.telemetryHost != null) {
-                    hardware.enableTelemetry(config.telemetryHost);
-                }
-                else {
-                    hardware.enableTelemetry();
-                }
-                break;
-            case latent:
-                if (hardware.isTestHardware()) {
-                    if (config.telemetryHost != null) {
-                        hardware.enableTelemetry(config.telemetryHost);
-                    }
-                    else {
-                        hardware.enableTelemetry();
-                    }
-                }
-                break;
+        if (config.telemetryEnabled) {
+            hardware.enableTelemetry(config.telemetryHost);
         }
 
         if (config.lightsEnabled) {
@@ -116,7 +96,7 @@ public class TheJoveExpress implements FogApp
                         pubSub.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
                         pubSub.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce),
                         pubSub.publish("engine/state/feedback", false, MQTTQoS.atMostOnce));
-                //pubSub.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
+                pubSub.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
                 pubSub.subscribe(engine, "engine/power/control", MQTTQoS.atMostOnce, engine::onPower);
                 pubSub.subscribe(engine, "engine/calibration/control", MQTTQoS.atMostOnce, engine::onCalibration);
                 if (config.faultDetectionEnabled) {
@@ -155,7 +135,7 @@ public class TheJoveExpress implements FogApp
         }
 
         if (config.billboardEnabled) {
-            final TextDisplay billboard = new TextDisplay(runtime,
+            final TextDisplay billboard = new TextDisplay(runtime, config.trainDisplayName,
                     pubSub.publish("billboard/text/feedback", false, MQTTQoS.atMostOnce));
             pubSub.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
             pubSub.subscribe(billboard, "billboard/text/control", MQTTQoS.atMostOnce, billboard::onText);

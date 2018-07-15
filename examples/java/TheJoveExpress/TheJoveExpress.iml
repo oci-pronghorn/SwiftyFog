@@ -16,6 +16,11 @@
     <orderEntry type="library" name="Maven: com.ociweb:pronghorn:1.0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.ociweb:pronghorn-pipes:1.0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.ociweb:ph-tls-pure-java:1.0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.ociweb:foglight:1.0.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.ociweb:greenlightning:1.0.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.ociweb:pronghorn:1.0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.ociweb:pronghorn-pipes:1.0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.ociweb:ph-tls-pure-java:1.0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.github.jnr:jnr-ffi:2.0.9" level="project" />
     <orderEntry type="library" name="Maven: com.github.jnr:jffi:1.2.11" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.github.jnr:jffi:native:1.2.11" level="project" />

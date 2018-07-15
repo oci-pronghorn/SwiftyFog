@@ -1,8 +1,5 @@
 package com.ociweb.behaviors;
 
-import static com.ociweb.behaviors.AmbientLightBehavior.maxSensorReading;
-import static com.ociweb.iot.maker.TriState.latent;
-
 import com.ociweb.gl.api.PubSubFixedTopicService;
 import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.gl.api.StartupListener;
@@ -16,17 +13,18 @@ import com.ociweb.model.ActuatorDriverPort;
 import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
+import static com.ociweb.behaviors.AmbientLightBehavior.maxSensorReading;
+import static com.ociweb.iot.maker.TriState.latent;
+
 public class LightingBehavior implements PubSubMethodListener, TimeListener, StartupListener {
-    
 	private final PubSubFixedTopicService actuatorService;
     private final PubSubFixedTopicService overrideService;
     private final PubSubFixedTopicService powerService;    
     private final PubSubFixedTopicService calibrationService;
     
     private final ActuatorDriverPayload actuatorPayload = new ActuatorDriverPayload();
-   // private final PinService ledPinService;
-
-    private final Port ledPort;
+    //private final PinService ledPinService;
+    //private final Port ledPort;
 
     private final RationalPayload calibration = new RationalPayload(maxSensorReading/2, maxSensorReading);
     private final RationalPayload ambient = new RationalPayload(maxSensorReading, maxSensorReading);
@@ -40,7 +38,7 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
     public LightingBehavior(FogRuntime runtime, String actuatorTopic, ActuatorDriverPort port, Port ledPort, String overrideTopic, String powerTopic, String calibrationTopic) {
         FogCommandChannel channel = runtime.newCommandChannel();
         //this.ledPinService = channel.newPinService();
-        this.ledPort = ledPort;
+        //this.ledPort = ledPort;
         this.actuatorService = channel.newPubSubService(actuatorTopic);
         this.overrideService = channel.newPubSubService(overrideTopic);
         this.powerService = channel.newPubSubService(powerTopic);
@@ -121,7 +119,6 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
     }
 
     private void actuate() {
-        //System.out.println("Asked to actuate on LED.");
         Double updatePower;
         if (flashCount > 1 )  {
             updatePower = (flashCount % 2 == 0) ? 1.0 : 0.0;
@@ -137,8 +134,6 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
             //ledPinService.setValue(ledPort, isOn);
 
             this.powerService.publishTopic( writer -> writer.writeBoolean(isOn));
-
-            //System.out.println("Updating LED to " + isOn + "...");
 
         }
         //ledPinService.setValue(ledPort, updatePower == 1.0);
