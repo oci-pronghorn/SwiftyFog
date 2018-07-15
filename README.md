@@ -7,6 +7,7 @@ SwiftyFog is a specification compliant robust and performant MQTT client impleme
 * Optional behaviors in specification exposed
 * Resource conscious
 * Non-trivial example demonstrating usage and patterns
+* No global state
 
 There are couple remaining TODOs.
 * Better packet retry configuration
@@ -18,15 +19,21 @@ There are couple remaining TODOs.
 
 ## Examples
 
-The iOS example is written to work with the FogLight Java application, also in the examples directory.
+The iOS/WatchKit example is written to work with the FogLight Java application, also in the examples directory.
 The Mac example demonstrates similar concepts for the desktop. 
 The AR example demonstrates integration of ARKit and FogLight/SwiftyFog.
+
+## Instructions
+To build the Java train application
+
+mvn install
+scp target/TheJoveExpress.jar pi@thejoveexpress.local:/home/pi/FogLight
 
 ## Requirements
 
 ## Author
 
-dsjove, giovanninid@objectcomputing.com
+dsjove, dsjove@gmail.com
 
 tobischw, schweigert@objectcomputing.com (MacOS integration/AR demo)
 
