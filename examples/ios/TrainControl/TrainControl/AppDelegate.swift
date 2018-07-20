@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 import SwiftyFog_iOS
 
 @UIApplicationMain
@@ -43,7 +44,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Start up the client
 		controller.goForeground()
 		
+		NotificationCenter.default.addObserver(self, selector: #selector(settingChanged(notification:)), name: UserDefaults.didChangeNotification, object: nil)
 		return true
+	}
+	
+	@objc func settingChanged(notification: NSNotification) {
+		print("changed")
+	}
+	
+	@IBAction func gotoSettings(sender: Any?) {
+		//let options = [UIApplication.OpenExternalURLOptionsKey : Any]()
+		let settingsUrl = URL(string: UIApplication.openSettingsURLString)!
+		UIApplication.shared.open(settingsUrl)//, options: options)
 	}
 
 	func applicationWillResignActive(_ application: UIApplication) {
@@ -61,6 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 
 	func applicationWillTerminate(_ application: UIApplication) {
+		NotificationCenter.default.removeObserver(self, name: UserDefaults.didChangeNotification, object: nil)
 	}
 }
 

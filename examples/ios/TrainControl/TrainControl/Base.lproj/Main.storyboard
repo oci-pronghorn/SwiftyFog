@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14295.6" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Xjm-3A-yj3">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14270.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,11 +15,11 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="TrainViewController" customModule="TrainControl" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="MetalPanelView" customModule="TrainControl" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="C7y-xd-CAj" userLabel="Connect Status Stack">
-                                <rect key="frame" x="8" y="28" width="584" height="50"/>
+                                <rect key="frame" x="8" y="28" width="359" height="50"/>
                                 <subviews>
                                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Dead" highlightedImage="Alive" translatesAutoresizingMaskIntoConstraints="NO" id="28I-X8-rcw">
                                         <rect key="frame" x="0.0" y="9" width="32" height="32"/>
@@ -29,7 +33,7 @@
                                         </connections>
                                     </imageView>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="n8M-qB-QXO">
-                                        <rect key="frame" x="36" y="10" width="390" height="30"/>
+                                        <rect key="frame" x="36" y="10" width="165" height="30"/>
                                         <color key="backgroundColor" white="1" alpha="0.25587007705479453" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -51,14 +55,14 @@
                                         </connections>
                                     </textField>
                                     <view opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4cK-ON-aes" customClass="FlipLabel" customModule="TrainControl" customModuleProvider="target">
-                                        <rect key="frame" x="430" y="0.0" width="82" height="50"/>
+                                        <rect key="frame" x="205" y="0.0" width="82" height="50"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="text" value="0.0.0"/>
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Disconnected" highlightedImage="Connected" translatesAutoresizingMaskIntoConstraints="NO" id="4zZ-K8-b71">
-                                        <rect key="frame" x="516" y="9" width="32" height="32"/>
+                                        <rect key="frame" x="291" y="9" width="32" height="32"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="32" id="3VN-HX-69l"/>
@@ -66,7 +70,7 @@
                                         </constraints>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wpe-Ny-YbN">
-                                        <rect key="frame" x="552" y="9" width="32" height="32"/>
+                                        <rect key="frame" x="327" y="9" width="32" height="32"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="32" id="H5f-f4-yYD"/>
                                             <constraint firstAttribute="width" constant="32" id="tN9-NR-RBW"/>
@@ -80,13 +84,13 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="0P7-i3-PrJ" userLabel="Control Stack">
-                                <rect key="frame" x="8" y="88" width="584" height="469.5"/>
+                                <rect key="frame" x="8" y="88" width="359" height="357"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="jch-e0-4v6" userLabel="Engine Stack">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="469.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="175.5" height="357"/>
                                         <subviews>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="Engine Status" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T7m-Q3-XdO" userLabel="Engine Status">
-                                                <rect key="frame" x="0.0" y="0.0" width="288" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="175.5" height="20.5"/>
                                                 <color key="backgroundColor" white="1" alpha="0.080000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="17"/>
                                                 <nil key="textColor"/>
@@ -101,7 +105,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i1b-Ey-Udf" customClass="WMGaugeView">
-                                                <rect key="frame" x="0.0" y="32.5" width="288" height="288"/>
+                                                <rect key="frame" x="0.0" y="32.5" width="175.5" height="175.5"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="i1b-Ey-Udf" secondAttribute="height" multiplier="1:1" id="KWR-sZ-BOP"/>
@@ -144,7 +148,7 @@
                                                 </connections>
                                             </view>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="Set Power" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nVf-wt-Idx">
-                                                <rect key="frame" x="0.0" y="332.5" width="288" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="220" width="175.5" height="20.5"/>
                                                 <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="0.080000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="17"/>
                                                 <nil key="textColor"/>
@@ -159,7 +163,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="frG-rd-tNm" customClass="ScrubControl" customModule="TrainControl" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="365" width="288" height="29"/>
+                                                <rect key="frame" x="0.0" y="252.5" width="175.5" height="29"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="engineControl"/>
                                                 <constraints>
@@ -196,7 +200,7 @@
                                                 </connections>
                                             </view>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Calibrate Amps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wDB-dE-Erh" userLabel="Calibrate Amps">
-                                                <rect key="frame" x="0.0" y="406" width="288" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="293.5" width="175.5" height="20.5"/>
                                                 <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="0.080000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="17"/>
                                                 <nil key="textColor"/>
@@ -211,7 +215,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="15" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="5SJ-Xc-cNf" userLabel="Calibrate Power">
-                                                <rect key="frame" x="-2" y="438.5" width="292" height="32"/>
+                                                <rect key="frame" x="-2" y="326" width="179.5" height="32"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="engineCalibrationControl"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="31" id="SLG-Ty-MMt"/>
@@ -226,10 +230,10 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="fI1-eS-yQm" userLabel="Lights Stack">
-                                        <rect key="frame" x="296" y="0.0" width="288" height="469.5"/>
+                                        <rect key="frame" x="183.5" y="0.0" width="175.5" height="357"/>
                                         <subviews>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Light Status" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Ul-92-ZN7">
-                                                <rect key="frame" x="0.0" y="0.0" width="288" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="175.5" height="20.5"/>
                                                 <color key="backgroundColor" white="1" alpha="0.080000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="17"/>
                                                 <nil key="textColor"/>
@@ -244,7 +248,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YEQ-Tl-lGJ" customClass="WMGaugeView">
-                                                <rect key="frame" x="0.0" y="32.5" width="288" height="288"/>
+                                                <rect key="frame" x="0.0" y="32.5" width="175.5" height="175.5"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="YEQ-Tl-lGJ" secondAttribute="height" multiplier="1:1" id="8aQ-ag-OQc"/>
@@ -290,7 +294,7 @@
                                                 </connections>
                                             </view>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set Lights" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o3U-1e-7NP">
-                                                <rect key="frame" x="0.0" y="332.5" width="288" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="220" width="175.5" height="20.5"/>
                                                 <color key="backgroundColor" white="1" alpha="0.080000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="17"/>
                                                 <nil key="textColor"/>
@@ -305,7 +309,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="2" translatesAutoresizingMaskIntoConstraints="NO" id="N5j-RN-YrA">
-                                                <rect key="frame" x="0.0" y="365" width="288" height="30"/>
+                                                <rect key="frame" x="0.0" y="252.5" width="175.5" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="29" id="WfO-HG-Z4m"/>
                                                 </constraints>
@@ -320,7 +324,7 @@
                                                 </connections>
                                             </segmentedControl>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Calibrate Light Sensor" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fO5-SL-NbC" userLabel="Calibrate Amps">
-                                                <rect key="frame" x="0.0" y="406" width="288" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="293.5" width="175.5" height="20.5"/>
                                                 <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="0.080000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="17"/>
                                                 <nil key="textColor"/>
@@ -335,7 +339,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="128" minValue="0.0" maxValue="256" translatesAutoresizingMaskIntoConstraints="NO" id="Ulu-J2-pss" userLabel="Light Calibration">
-                                                <rect key="frame" x="-2" y="438.5" width="292" height="32"/>
+                                                <rect key="frame" x="-2" y="326" width="179.5" height="32"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="lightCalibrationControl"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="31" id="hzN-xz-WJS"/>
@@ -356,7 +360,7 @@
                                 <variation key="heightClass=regular-widthClass=regular" spacing="16"/>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sxl-aJ-Zwu" userLabel="Fault">
-                                <rect key="frame" x="276" y="495" width="48" height="48"/>
+                                <rect key="frame" x="163.5" y="562" width="48" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="48" id="7qf-Cn-Aqa"/>
                                     <constraint firstAttribute="height" constant="48" id="q5K-zI-6hJ"/>
@@ -366,9 +370,18 @@
                                     <action selector="faultTrainWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gOp-A1-R98"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nhm-dL-E9Y">
+                                <rect key="frame" x="302" y="580" width="57" height="30"/>
+                                <state key="normal" title="Settings"/>
+                                <connections>
+                                    <action selector="gotoSettingsWithSender:" destination="dkx-z0-nzr" eventType="touchUpInside" id="d6W-91-SnW"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="nhm-dL-E9Y" secondAttribute="bottom" constant="8" id="62j-YR-Wks"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="nhm-dL-E9Y" secondAttribute="trailing" constant="16" id="Oc3-Tt-mfk"/>
                             <constraint firstItem="sxl-aJ-Zwu" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-8" id="a50-3A-I6e"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="eBe-4Q-Ytg"/>
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="top" secondItem="C7y-xd-CAj" secondAttribute="bottom" constant="10" id="gdp-td-0mE">
@@ -507,11 +520,11 @@
             <objects>
                 <viewController id="fV6-iJ-f1p" customClass="TestingViewController" customModule="TrainControl" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GSs-BE-N53">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Yb0-mG-QZ9" userLabel="Test Stack">
-                                <rect key="frame" x="213" y="66" width="174" height="68"/>
+                                <rect key="frame" x="100.5" y="66" width="174" height="68"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Nhj-yY-0hc">
                                         <rect key="frame" x="0.0" y="0.0" width="54" height="68"/>
@@ -573,7 +586,7 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="amV-JQ-ofh">
-                                <rect key="frame" x="271" y="142" width="58" height="30"/>
+                                <rect key="frame" x="158.5" y="142" width="58" height="30"/>
                                 <state key="normal" title="Unsub #"/>
                                 <connections>
                                     <action selector="unsubAll" destination="VGR-hs-tvm" eventType="touchUpInside" id="9JQ-t9-MMe"/>
@@ -581,7 +594,7 @@
                                 </connections>
                             </button>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I2y-nC-Kwi" customClass="GaugeView" customModule="TrainControl">
-                                <rect key="frame" x="178.5" y="186" width="243" height="243"/>
+                                <rect key="frame" x="66" y="186" width="243" height="243"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="GW4-CJ-t7G"/>
@@ -631,7 +644,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VGR-hs-tvm" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="Cvt-w3-de9" userLabel="Idle" customClass="GaugeRange" customModule="test" customModuleProvider="target">
+                <customObject id="Cvt-w3-de9" userLabel="Idle" customClass="GaugeRange" customModule="TrainControl" customModuleProvider="target">
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="color" keyPath="color">
                             <color key="value" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -645,7 +658,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </customObject>
-                <customObject id="EvY-su-5bX" userLabel="Forward" customClass="GaugeRange" customModule="test" customModuleProvider="target">
+                <customObject id="EvY-su-5bX" userLabel="Forward" customClass="GaugeRange" customModule="TrainControl" customModuleProvider="target">
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="color" keyPath="color">
                             <color key="value" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -659,7 +672,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </customObject>
-                <customObject id="ETI-FT-Ofc" userLabel="Reverse" customClass="GaugeRange" customModule="test" customModuleProvider="target">
+                <customObject id="ETI-FT-Ofc" userLabel="Reverse" customClass="GaugeRange" customModule="TrainControl" customModuleProvider="target">
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="color" keyPath="color">
                             <color key="value" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -681,11 +694,11 @@
             <objects>
                 <viewController id="p7y-jt-jyH" customClass="LogViewController" customModule="TrainControl" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5be-nD-Odl">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="0X2-YR-r96">
-                                <rect key="frame" x="0.0" y="20" width="600" height="531"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="598"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
