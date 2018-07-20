@@ -366,7 +366,7 @@ class GaugeView: UIView {
 			let div = (maxValue - minValue) / scaleDivisions
 			let mod = CGFloat(Int(value) % Int(div))
 			// Division
-			if (fabs(mod - 0) < 0.000001) || (fabs(mod - div) < 0.000001) {
+			if (abs(mod - 0) < 0.000001) || (abs(mod - div) < 0.000001) {
             	// Initialize Core Graphics settings
 				let color = useScaleDivisionColor ? scaleDivisionColor : rangeColor(forValue: value) ?? scaleDivisionColor
 				context.setStrokeColor(color.cgColor)

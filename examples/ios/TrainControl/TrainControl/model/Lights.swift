@@ -44,12 +44,12 @@ public class Lights: FogFeedbackModel {
 	
     public var mqtt: MQTTBridge! {
 		didSet {
-			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
+			broadcaster.assign(mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("override/feedback", .atMostOnce, Lights.feedbackOverride),
 				("power/feedback", .atMostOnce, Lights.feedbackPower),
 				("calibration/feedback", .atMostOnce, Lights.feedbackCalibration),
 				("ambient/feedback", .atMostOnce, Lights.feedbackAmbient),
-			])
+			]))
 		}
     }
 	

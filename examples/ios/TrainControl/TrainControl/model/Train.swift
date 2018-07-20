@@ -28,12 +28,12 @@ public class Train: FogFeedbackModel {
 	
     public var mqtt: MQTTBridge! {
 		didSet {
-			broadcaster = mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
+			broadcaster.assign(mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("lifecycle/feedback", .atLeastOnce, Train.feedbackLifecycle),
                 ("fault/feedback", .atLeastOnce, Train.feedbackFault)
 			]) { listener, status in
 				print("***Subscription Status: \(status)")
-			}
+			})
 		}
     }
 	

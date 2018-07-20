@@ -24,6 +24,7 @@ protocol MqttClientAppControllerDelegate: class {
 }
 
 class MqttClientAppController {
+	let mqttHost: String
 	let mqtt: (MQTTBridge & MQTTControl)!
 	let network: FogNetworkReachability
 	let metrics: MQTTMetrics?
@@ -32,6 +33,7 @@ class MqttClientAppController {
 	weak var delegate: MqttClientAppControllerDelegate?
 	
 	init(mqttHost: String) {
+		self.mqttHost = mqttHost
 		self.network = FogNetworkReachability()
 	
 		// Setup metrics

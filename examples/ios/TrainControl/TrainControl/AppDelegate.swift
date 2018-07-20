@@ -20,42 +20,54 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	var logView: LogViewController!
 
 	internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-		
-		UserDefaults.standard.loadDefaults()
-		let trainName = UserDefaults.standard.string(forKey: "train_name_preference")!
-		let brokerName = UserDefaults.standard.string(forKey: "broker_host_preference")!
-		
-		controller = MqttClientAppController(mqttHost: brokerName)
-		controller.delegate = self
-		
+	
 		let tbc = self.window!.rootViewController as! UITabBarController
 		self.testing = (tbc.viewControllers![1] as! TestingViewController)
 		self.trainControl = (tbc.viewControllers![0] as! TrainViewController)
 		self.logView = (tbc.viewControllers![2] as! LogViewController)
 		
-		testing.mqtt = controller.mqtt
-		
-		// This view controller is specific to a train topic
-		// Create an MQTTBridge specific to the selected train
-		let scoped = controller.mqtt.createBridge(subPath: trainName)
-		trainControl.mqtt = scoped
-		trainControl.mqttControl = controller.mqtt
-		
-		// Start up the client
-		controller.goForeground()
-		
+		UserDefaults.standard.loadDefaults()
 		NotificationCenter.default.addObserver(self, selector: #selector(settingChanged(notification:)), name: UserDefaults.didChangeNotification, object: nil)
+		
+		assignBroker()
 		return true
 	}
 	
 	@objc func settingChanged(notification: NSNotification) {
-		print("changed")
+		assignBroker()
+	}
+	
+	// This belong somewhere else
+	var trainName: String = ""
+	
+	func assignBroker() {
+		let newBrokerHost = UserDefaults.standard.string(forKey: "broker_host_preference")!
+		var brokerChanged = self.controller == nil || (self.controller?.mqttHost ?? "") != newBrokerHost
+		if brokerChanged {
+			// TODO: We currently have a crashing bug tearing down an existing controller. It is likely recent reference rule changes with deinits
+			self.controller.assign(MqttClientAppController(mqttHost: newBrokerHost))
+			self.controller.delegate = self
+			
+			self.testing.mqtt = controller.mqtt
+			brokerChanged = true
+		}
+		
+		let newTrainName = UserDefaults.standard.string(forKey: "train_name_preference")!
+		if newTrainName != trainName || brokerChanged {
+			let scoped = controller.mqtt.createBridge(subPath: newTrainName)
+			trainName = newTrainName
+			self.trainControl.mqtt = scoped
+			self.trainControl.mqttControl = controller.mqtt
+		}
+		
+		if brokerChanged {
+			controller.goForeground()
+		}
 	}
 	
 	@IBAction func gotoSettings(sender: Any?) {
-		//let options = [UIApplication.OpenExternalURLOptionsKey : Any]()
 		let settingsUrl = URL(string: UIApplication.openSettingsURLString)!
-		UIApplication.shared.open(settingsUrl)//, options: options)
+		UIApplication.shared.open(settingsUrl)
 	}
 
 	func applicationWillResignActive(_ application: UIApplication) {
