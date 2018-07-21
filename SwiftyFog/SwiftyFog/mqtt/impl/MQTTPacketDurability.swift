@@ -38,15 +38,24 @@ final class MQTTPacketDurability: MQTTPacketIssuer {
 		self.queuePubOnDisconnect = queuePubOnDisconnect
 		self.resendInterval = resendInterval
 		self.resendLimit = resendLimit
-		resendTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
-		resendTimer?.setEventHandler { [weak self] in
+		let resendTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
+		resendTimer.setEventHandler { [weak self] in
 			self?.resendPulse()
 		}
+		// TODO: crashes on deinit iOS11 workaround https://forums.developer.apple.com/thread/81445
+		struct Handle {
+			var timer: DispatchSourceTimer?
+		}
+		var h = Handle(timer: resendTimer)
+		resendTimer.setCancelHandler(handler: {
+			h.timer = nil
+		})
+		self.resendTimer = resendTimer
 	}
 	
 	deinit {
 		resendTimer?.cancel()
-	} // TODO: crashes here
+	}
 	
 	// TODO: not working yet - has to be > 0.0 and works with queuePubOnDisconnect
 	// TODO: pre-subscriptions count on the retry. Do we allow pre-subscriptions if retry == 0
