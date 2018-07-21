@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension Optional where Wrapped: AnyObject {
+public extension Optional {
 	public mutating func assign(_ factory: @autoclosure ()->(Wrapped?)) {
 		self = nil // Execute deinit of old wrapped before factory (init of new wrapped)
 		self = factory()

@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14295.6" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="U0Q-nI-cAQ">
-    <device id="watch38" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14306.4" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="U0Q-nI-cAQ">
     <dependencies>
-        <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14270.1"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14234.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14278.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14237"/>
     </dependencies>
     <scenes>
         <!--InterfaceController-->
         <scene sceneID="pfk-U8-I0b">
             <objects>
-                <controller identifier="InterfaceController" backgroundImage="Metal" id="U0Q-nI-cAQ" customClass="InterfaceController" customModule="TrainConductor_Extension">
+                <controller identifier="InterfaceController" backgroundImage="Metal" id="U0Q-nI-cAQ" customClass="TrainInterfaceController" customModule="TrainConductor_Extension">
                     <items>
                         <group width="1" height="1" alignment="center" verticalAlignment="center" layout="vertical" id="BCd-fo-6nW">
                             <items>

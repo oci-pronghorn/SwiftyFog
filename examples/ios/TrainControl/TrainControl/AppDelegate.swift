@@ -13,7 +13,7 @@ import SwiftyFog_iOS
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
-	var controller: MqttClientAppController!
+	var controller = MqttClientAppController(metrics: MqttClientAppController.verboseMetrics())
 	
 	var testing: TestingViewController!
 	var trainControl: TrainViewController!
@@ -26,6 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		self.trainControl = (tbc.viewControllers![0] as! TrainViewController)
 		self.logView = (tbc.viewControllers![2] as! LogViewController)
 		
+		self.controller.delegate = self
+		
 		UserDefaults.standard.loadDefaults()
 		NotificationCenter.default.addObserver(self, selector: #selector(settingChanged(notification:)), name: UserDefaults.didChangeNotification, object: nil)
 		
@@ -37,28 +39,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		assignBroker()
 	}
 	
-	// This belong somewhere else
-	var trainName: String = ""
-	
 	func assignBroker() {
 		let newBrokerHost = UserDefaults.standard.string(forKey: "broker_host_preference")!
-		var brokerChanged = self.controller == nil || (self.controller?.mqttHost ?? "") != newBrokerHost
+		let brokerChanged = self.controller.mqttHost != newBrokerHost
 		if brokerChanged {
-			// TODO: We currently have a crashing bug tearing down an existing controller. It is likely recent reference rule changes with deinits
-			self.controller.assign(MqttClientAppController(mqttHost: newBrokerHost))
-			self.controller.delegate = self
-			
-			self.testing.mqtt = controller.mqtt
-			brokerChanged = true
+			self.controller.mqttHost = newBrokerHost
+			self.testing.mqtt = controller.client
+			self.trainControl.mqttControl = controller.client
 		}
 		
 		let newTrainName = UserDefaults.standard.string(forKey: "train_name_preference")!
-		if newTrainName != trainName || brokerChanged {
-			let scoped = controller.mqtt.createBridge(subPath: newTrainName)
-			trainName = newTrainName
-			self.trainControl.mqtt = scoped
-			self.trainControl.mqttControl = controller.mqtt
-		}
+		
+		self.trainControl.setTrain(named: newTrainName, bridging: controller.client!, force: brokerChanged)
 		
 		if brokerChanged {
 			controller.goForeground()

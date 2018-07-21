@@ -18,42 +18,59 @@ import SwiftFog_watch
 	application without managing the UI nor being the Cocoa AppDelegate.
 */
 
-protocol MqttClientAppControllerDelegate: class {
+public protocol MqttClientAppControllerDelegate: class {
 	func on(log: String)
 	func on(connected: MQTTConnectedState)
 }
 
-class MqttClientAppController {
-	let mqttHost: String
-	let mqtt: (MQTTBridge & MQTTControl)!
-	let network: FogNetworkReachability
-	let metrics: MQTTMetrics?
-	var wasStarted: Bool = true
+public class MqttClientAppController {
+	public private(set) var client: (MQTTBridge & MQTTControl)?
+	private let network: FogNetworkReachability
+	private let metrics: MQTTMetrics?
+	private var wasStarted: Bool = true
 	
-	weak var delegate: MqttClientAppControllerDelegate?
+	public weak var delegate: MqttClientAppControllerDelegate?
 	
-	init(mqttHost: String) {
-		self.mqttHost = mqttHost
-		self.network = FogNetworkReachability()
-	
-		// Setup metrics
-		self.metrics = MQTTMetrics()
-		self.metrics?.doPrintSendPackets = true
-		self.metrics?.doPrintReceivePackets = true
-		//metrics?.doPrintWireData = true
-		self.metrics?.debugOut = {print("\(Date.nowInSeconds()) MQTT \($0)")}
-
-		// Create the concrete MQTTClient to connect to a specific broker
-		var client = MQTTClientParams()
-		client.detectServerDeath = 2
-		let mqtt = MQTTClient(
-			client: client,
-			host: MQTTHostParams(host: mqttHost, port: .standard),
-			reconnect: MQTTReconnectParams(),
-			metrics: metrics)
+	public static func verboseMetrics() -> MQTTMetrics {
+		let metrics = MQTTMetrics()
+		metrics.doPrintSendPackets = true
+		metrics.doPrintReceivePackets = true
+		metrics.debugOut = {
+		print("\(Date.nowInSeconds()) MQTT \($0)")}
 		
-		self.mqtt = mqtt
-		mqtt.delegate = self
+		return metrics
+	}
+	
+	public static func pedanticMetrics() -> MQTTMetrics {
+		let metrics = MQTTMetrics()
+		metrics.doPrintSendPackets = true
+		metrics.doPrintReceivePackets = true
+		metrics.doPrintWireData = true
+		metrics.debugOut = {print("\(Date.nowInSeconds()) MQTT \($0)")}
+		return metrics
+	}
+	
+	public init(metrics: MQTTMetrics? = nil) {
+		self.network = FogNetworkReachability()
+		self.metrics = metrics
+	}
+	
+	public var mqttHost: String = "" {
+		didSet {
+			if mqttHost != oldValue {
+				var client = MQTTClientParams()
+				client.detectServerDeath = 2
+				let newClient = MQTTClient(
+					client: client,
+					host: MQTTHostParams(host: mqttHost, port: .standard),
+					reconnect: MQTTReconnectParams(),
+					metrics: metrics)
+				
+			// TODO: We currently have a crashing bug tearing down an existing controller. It is likely recent reference rule changes with deinits
+				self.client.assign(newClient)
+				newClient.delegate = self
+			}
+		}
 	}
 	
 	public func goForeground() {
@@ -62,10 +79,10 @@ class MqttClientAppController {
 			// Network reachability can detect a disconnected state before the client
 			network.start { [weak self] status in
 				if status != .none {
-					self?.mqtt.start()
+					self?.client?.start()
 				}
 				else {
-					self?.mqtt.stop()
+					self?.client?.stop()
 				}
 			}
 		}
@@ -73,8 +90,8 @@ class MqttClientAppController {
 	
 	public func goBackground() {
 		// Be a good iOS citizen and shutdown the connection and timers
-		wasStarted = mqtt.started
-		mqtt.stop()
+		wasStarted = client?.started ?? false
+		client?.stop()
 		network.stop()
 	}
 }
@@ -82,7 +99,7 @@ class MqttClientAppController {
 // The mqtt client will broadcast important events to the controller.
 // The invoking thread is not known.
 extension MqttClientAppController: MQTTClientDelegate {
-	func mqtt(client: MQTTClient, connected: MQTTConnectedState) {
+	public func mqtt(client: MQTTClient, connected: MQTTConnectedState) {
 		let log: String
 		switch connected {
 			case .started:
@@ -110,13 +127,13 @@ extension MqttClientAppController: MQTTClientDelegate {
 		}
 	}
 	
-	func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage) {
+	public func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage) {
 		DispatchQueue.main.async {
 			self.delegate?.on(log: "Unhandled \(unhandledMessage)")
 		}
 	}
 	
-	func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription]) {
+	public func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription]) {
 		DispatchQueue.main.async {
 		}
 	}

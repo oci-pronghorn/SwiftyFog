@@ -10,19 +10,35 @@ import WatchKit
 import SwiftFog_watch
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
-	var controller: MqttClientAppController!
+	var controller = MqttClientAppController()
 
     func applicationDidFinishLaunching() {
-		UserDefaults.standard.loadDefaults()
-		let trainName = UserDefaults.standard.string(forKey: "train_name_preference")!
-		let brokerName = UserDefaults.standard.string(forKey: "broker_host_preference")!
-		
-		controller = MqttClientAppController(mqttHost: brokerName)
 		controller.delegate = self
 		
-		let scoped = controller.mqtt.createBridge(subPath: trainName)
-		InterfaceController.mqtt = scoped
+		UserDefaults.standard.loadDefaults()
+		NotificationCenter.default.addObserver(self, selector: #selector(settingChanged(notification:)), name: UserDefaults.didChangeNotification, object: nil)
+		
+		assignBroker()
     }
+	
+	@objc func settingChanged(notification: NSNotification) {
+		assignBroker()
+	}
+	
+	func assignBroker() {
+		let newBrokerHost = UserDefaults.standard.string(forKey: "broker_host_preference")!
+		let brokerChanged = self.controller.mqttHost != newBrokerHost
+		if brokerChanged {
+			self.controller.mqttHost = newBrokerHost
+		}
+		
+		let newTrainName = UserDefaults.standard.string(forKey: "train_name_preference")!
+		TrainInterfaceController.setTrain(named: newTrainName, bridging: controller.client!, force: brokerChanged)
+		
+		if brokerChanged {
+			controller.goForeground()
+		}
+	}
 
     func applicationDidBecomeActive() {
 		controller.goForeground()
@@ -31,6 +47,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
     func applicationWillResignActive() {
 		controller.goBackground()
     }
+	
 
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
         // Sent when the system needs to launch the application in the background to process tasks. Tasks arrive in a set, so loop through and process each one.
@@ -73,6 +90,6 @@ extension ExtensionDelegate: MqttClientAppControllerDelegate {
 	}
 
 	func on(connected: MQTTConnectedState) {
-		(WKExtension.shared().rootInterfaceController as! InterfaceController).mqtt(connected: connected)
+		(WKExtension.shared().rootInterfaceController as! TrainInterfaceController).mqtt(connected: connected)
 	}
 }

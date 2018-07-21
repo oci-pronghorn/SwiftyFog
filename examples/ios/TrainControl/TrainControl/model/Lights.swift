@@ -26,7 +26,7 @@ public enum LightCommand: Int32 {
 	}
 }
 
-public protocol LightsDelegate: class {
+public protocol LightsDelegate: class, SubscriptionLogging {
 	func lights(override: LightCommand, _ asserted: Bool)
 	func lights(power: Bool, _ asserted: Bool)
 	func lights(calibration: TrainRational, _ asserted: Bool)
@@ -49,7 +49,7 @@ public class Lights: FogFeedbackModel {
 				("power/feedback", .atMostOnce, Lights.feedbackPower),
 				("calibration/feedback", .atMostOnce, Lights.feedbackCalibration),
 				("ambient/feedback", .atMostOnce, Lights.feedbackAmbient),
-			]))
+			]) {[weak self] (_, status) in self?.delegate?.onSubscriptionAck(status: status)})
 		}
     }
 	

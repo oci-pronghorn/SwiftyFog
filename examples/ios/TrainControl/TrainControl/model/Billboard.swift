@@ -13,7 +13,7 @@ import SwiftyFog_iOS
 import SwiftFog_watch
 #endif
 
-public protocol BillboardDelegate: class {
+public protocol BillboardDelegate: class, SubscriptionLogging {
 	func billboard(layout: FogBitmapLayout)
 	func billboard(image: UIImage)
     func billboard(text: String, _ asserted: Bool)
@@ -31,7 +31,7 @@ public class Billboard: FogFeedbackModel {
 			broadcaster.assign(mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("spec/feedback", .atMostOnce, Billboard.feedbackSpec),
                 ("text/feedback", .atMostOnce, Billboard.feedbackText)
-			]))
+			]) {[weak self] (_, status) in self?.delegate?.onSubscriptionAck(status: status)})
 		}
     }
 	

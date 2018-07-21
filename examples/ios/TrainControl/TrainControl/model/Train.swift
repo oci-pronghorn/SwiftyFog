@@ -15,7 +15,7 @@ import SwiftFog_watch
 
 public typealias TrainRational = FogRational<Int32>
 
-public protocol TrainDelegate: class {
+public protocol TrainDelegate: class, SubscriptionLogging {
 	func train(alive: Bool)
     func train(faults: MotionFaults, _ asserted: Bool)
 }
@@ -31,9 +31,7 @@ public class Train: FogFeedbackModel {
 			broadcaster.assign(mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("lifecycle/feedback", .atLeastOnce, Train.feedbackLifecycle),
                 ("fault/feedback", .atLeastOnce, Train.feedbackFault)
-			]) { listener, status in
-				print("***Subscription Status: \(status)")
-			})
+			]) {[weak self] (_, status) in self?.delegate?.onSubscriptionAck(status: status)})
 		}
     }
 	

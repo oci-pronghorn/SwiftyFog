@@ -8,13 +8,42 @@
 
 import Foundation
 
-public enum MQTTSubscriptionStatus {
-	case subPending
+public enum MQTTSubscriptionStatus : CustomStringConvertible {
+	case subPending([(String, MQTTQoS)])
 	case subscribed([(String, MQTTQoS, MQTTQoS?)])
-	case unsubPending
-	case unsubFailed
-	case unsubscribed
-	case suspended
+	case unsubPending([String])
+	case unsubFailed([String])
+	case unsubscribed([String])
+	case suspended([String])
+	
+	public var description: String {
+		switch self {
+		case .subPending(let list):
+			return list.reduce("pending [\n", { (a, v) in
+				return a + "\t'\(v.0)' <\(v.1)>\n"
+			}) + "]"
+		case .subscribed(let list):
+			return list.reduce("subscribed [\n", { (a, v) in
+				return a + "\t'\(v.0)' <\(v.1)> -> <\(v.2?.description ?? "")>\n"
+			}) + "]"
+		case .unsubPending(let list):
+			return list.reduce("unsubscribe pending [\n", { (a, v) in
+				return a + "\t'\(v)'\n"
+			}) + "]"
+		case .unsubFailed(let list):
+			return list.reduce("failed unsubscribe [\n", { (a, v) in
+				return a + "\t'\(v)'\n"
+			}) + "]"
+		case .unsubscribed(let list):
+			return list.reduce("unsubscribed [\n", { (a, v) in
+				return a + "\t'\(v)'\n"
+			}) + "]"
+		case .suspended(let list):
+			return list.reduce("suspended [\n", { (a, v) in
+				return a + "\t'\(v)'\n"
+			}) + "]"
+		}
+	}
 }
 
 public typealias SubscriptionAcknowledged = (MQTTSubscriptionStatus)->()
@@ -94,7 +123,7 @@ final class MQTTSubscriber {
 			// Inform ack callbacks
 			for token in knownSubscriptions.keys.sorted().reversed() {
 				if let subscription = knownSubscriptions[token] {
-					subscription.ack?(.suspended)
+					subscription.ack?(.suspended(subscription.topics.map{$0.0}))
 				}
 				// cleanup if we can
 				else {
@@ -117,16 +146,13 @@ final class MQTTSubscriber {
 	
 	private func startSubscription(_ subscription: MQTTSubscriptionDetail) {
 		// In Mutex already
-		subscription.ack?(.subPending)
+		subscription.ack?(.subPending(subscription.topics))
 		issuer.send(packet: {MQTTSubPacket(topics: subscription.topics, messageID: $0)})  { [weak self] p, s in
 			if (s) {
 				self?.mutex.writing { self?.deferredSubscriptions[p.messageID] = subscription }
 			}
 			else {
-				if let ack = subscription.ack {
-					let result = subscription.topics.map { ($0.0, $0.1, nil as MQTTQoS?) }
-					ack(.subscribed(result))
-				}
+				subscription.ack?(.subscribed(subscription.topics.map { ($0.0, $0.1, nil as MQTTQoS?) }))
 			}
 		}
 	}
@@ -135,15 +161,13 @@ final class MQTTSubscriber {
 		mutex.writing {
 			knownSubscriptions[subscription.token] = nil
 			let topicStrings = subscription.topics.map({$0.0})
-			subscription.ack?(.unsubPending)
+			subscription.ack?(.unsubPending(subscription.topics.map{$0.0}))
 			issuer.send(packet: {MQTTUnsubPacket(topics: topicStrings, messageID: $0)}) { [weak self] p, s in
 				if (s) {
 					self?.mutex.writing { self?.deferredUnSubscriptions[p.messageID] = subscription }
 				}
 				else {
-					if let ack = subscription.ack {
-						ack(.unsubFailed)
-					}
+					subscription.ack?(.unsubFailed(subscription.topics.map{$0.0}))
 				}
 			}
 		}
@@ -153,16 +177,13 @@ final class MQTTSubscriber {
 		switch packet {
 			case let packet as MQTTSubAckPacket:
 				if let element = mutex.writing({deferredSubscriptions.removeValue(forKey:packet.messageID)}) {
-					if let ack = element.ack {
-						let result = zip(element.topics, packet.maxQoS).map { ($0.0.0, $0.0.1, $0.1) }
-						ack(.subscribed(result))
-					}
+					element.ack?(.subscribed(zip(element.topics, packet.maxQoS).map { ($0.0.0, $0.0.1, $0.1) }))
 				}
 				issuer.received(acknolwedgment: packet, releaseId: true)
 				return true
 			case let packet as MQTTUnsubAckPacket:
 				if let element = mutex.writing({deferredUnSubscriptions.removeValue(forKey:packet.messageID)}) {
-					element.ack?(.unsubscribed)
+					element.ack?(.unsubscribed(element.topics.map { $0.0 }))
 				}
 				issuer.received(acknolwedgment: packet, releaseId: true)
 				return true

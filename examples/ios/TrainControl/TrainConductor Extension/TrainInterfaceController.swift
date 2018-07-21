@@ -1,5 +1,5 @@
 //
-//  InterfaceController.swift
+//  TrainInterfaceController.swift
 //  TrainConductor Extension
 //
 //  Created by David Giovannini on 7/7/18.
@@ -10,7 +10,7 @@ import WatchKit
 import Foundation
 import SwiftFog_watch
 
-class InterfaceController: WKInterfaceController {
+class TrainInterfaceController: WKInterfaceController {
 	let train = Train()
 	let engine = Engine()
 	let lights = Lights()
@@ -28,6 +28,15 @@ class InterfaceController: WKInterfaceController {
 	@IBOutlet weak var overrideAutoIndicator: WKInterfaceLabel!
 	
 	static var mqtt: MQTTBridge!
+	static var trainName: String = ""
+	
+	static func setTrain(named name: String, bridging: MQTTBridge, force: Bool) {
+		if trainName != name || force {
+			self.trainName = name
+			let scoped = bridging.createBridge(subPath: trainName)
+			TrainInterfaceController.mqtt = scoped
+		}
+	}
 
 	var mqtt: MQTTBridge! {
 		didSet {
@@ -51,7 +60,7 @@ class InterfaceController: WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
 		self.crownSequencer.delegate = self
-    	self.mqtt = InterfaceController.mqtt
+    	self.mqtt = TrainInterfaceController.mqtt
     }
     
     override func willActivate() {
@@ -70,7 +79,7 @@ class InterfaceController: WKInterfaceController {
 
 // MARK: UI Reactions
 
-extension InterfaceController: WKCrownDelegate {
+extension TrainInterfaceController: WKCrownDelegate {
 	func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
 		engine.control(powerIncrement: rotationalDelta)
 	}
@@ -88,7 +97,7 @@ extension InterfaceController: WKCrownDelegate {
 
 // MARK: Connection State
 
-extension InterfaceController {
+extension TrainInterfaceController {
 	func mqtt(connected: MQTTConnectedState) {
 		switch connected {
 			case .started:
@@ -141,11 +150,14 @@ extension InterfaceController {
 
 // MARK: Model Delegate
 
-extension InterfaceController:
+extension TrainInterfaceController:
 		TrainDelegate,
 		EngineDelegate,
 		LightsDelegate,
-        BillboardDelegate {
+		BillboardDelegate {
+
+	func onSubscriptionAck(status: MQTTSubscriptionStatus) {
+	}
 	
 	func train(alive: Bool) {
 		if alive == false {

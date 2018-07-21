@@ -11,7 +11,11 @@ import Foundation
 extension UserDefaults {
 	func loadDefaults() {
 		let pathStr = Bundle.main.bundlePath
+#if os(iOS)
 		let settingsBundlePath = (pathStr as NSString).appendingPathComponent("Settings.bundle")
+#elseif os(watchOS)
+		let settingsBundlePath = (pathStr as NSString).appendingPathComponent("Settings-Watch.bundle")
+#endif
 		let finalPath = (settingsBundlePath as NSString).appendingPathComponent("Root.plist")
 		let settingsDict = NSDictionary(contentsOfFile: finalPath)
 		guard let prefSpecifierArray = settingsDict?.object(forKey: "PreferenceSpecifiers") as? [[String: Any]] else {

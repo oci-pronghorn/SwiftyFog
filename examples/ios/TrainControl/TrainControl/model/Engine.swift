@@ -19,7 +19,7 @@ public enum EngineState: Int32 {
     case forward = 1
 }
 
-public protocol EngineDelegate: class {
+public protocol EngineDelegate: class, SubscriptionLogging {
 	func engine(power: TrainRational, _ asserted: Bool)
 	func engine(calibration: TrainRational, _ asserted: Bool)
     func engine(state: EngineState, _ asserted: Bool)
@@ -45,7 +45,7 @@ public class Engine: FogFeedbackModel {
                 ("power/feedback", .atMostOnce, Engine.feedbackPower),
                 ("calibration/feedback", .atMostOnce, Engine.feedbackCalibration),
                 ("state/feedback", .atMostOnce, Engine.feedbackState)
-			]))
+			]) {[weak self] (_, status) in self?.delegate?.onSubscriptionAck(status: status)})
 		}
     }
 	

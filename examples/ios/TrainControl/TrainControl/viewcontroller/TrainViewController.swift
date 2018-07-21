@@ -40,6 +40,16 @@ class TrainViewController: UIViewController {
 	
 	var mqttControl: MQTTControl!
 	
+	var trainName: String = ""
+	
+	func setTrain(named name: String, bridging: MQTTBridge, force: Bool) {
+		if trainName != name || force {
+			self.trainName = name
+			let scoped = bridging.createBridge(subPath: trainName)
+			self.mqtt = scoped
+		}
+	}
+	
 	var mqtt: MQTTBridge! {
 		didSet {
 			train.mqtt = mqtt
@@ -264,7 +274,11 @@ extension TrainViewController:
 		TrainDelegate,
 		EngineDelegate,
 		LightsDelegate,
-        BillboardDelegate {
+		BillboardDelegate {
+
+	func onSubscriptionAck(status: MQTTSubscriptionStatus) {
+		//print("***Subscription Status: \(status)")
+	}
 	
 	func train(alive: Bool) {
 		if alive == false {
