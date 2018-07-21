@@ -49,6 +49,10 @@ public final class MQTTClient {
 }
 
 extension MQTTClient: MQTTControl {
+	public var hostName: String {
+		return self.connect.hostName
+	}
+	
 	public var started: Bool {
 		return self.connect.started
 	}

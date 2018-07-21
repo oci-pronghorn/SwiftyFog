@@ -13,7 +13,7 @@ import SwiftyFog_iOS
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
-	var controller = MQTTClientAppController(metrics: MQTTClientAppController.verboseMetrics())
+	var controller = MQTTClientAppController(metrics: MQTTMetrics.verbose())
 	
 	var testing: TestingViewController!
 	var trainControl: TrainViewController!
@@ -78,11 +78,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate: MQTTClientAppControllerDelegate {
-	func on(log: String) {
+	func on(mqttClient: (MQTTBridge & MQTTControl), log: String) {
 		logView.onLog(log)
 	}
 
-	func on(connected: MQTTConnectedState) {
+	func on(mqttClient: (MQTTBridge & MQTTControl), connected: MQTTConnectedState) {
 		self.trainControl.mqtt(connected: connected)
 	}
 }

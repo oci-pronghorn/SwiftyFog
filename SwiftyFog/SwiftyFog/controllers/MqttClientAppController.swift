@@ -14,8 +14,8 @@ import Foundation
 */
 
 public protocol MQTTClientAppControllerDelegate: class {
-	func on(log: String)
-	func on(connected: MQTTConnectedState)
+	func on(mqttClient: (MQTTBridge & MQTTControl), log: String)
+	func on(mqttClient: (MQTTBridge & MQTTControl), connected: MQTTConnectedState)
 }
 
 public class MQTTClientAppController {
@@ -25,25 +25,6 @@ public class MQTTClientAppController {
 	private var wasStarted: Bool = true
 	
 	public weak var delegate: MQTTClientAppControllerDelegate?
-	
-	public static func verboseMetrics() -> MQTTMetrics {
-		let metrics = MQTTMetrics()
-		metrics.doPrintSendPackets = true
-		metrics.doPrintReceivePackets = true
-		metrics.debugOut = {
-		print("\(Date.nowInSeconds()) MQTT \($0)")}
-		
-		return metrics
-	}
-	
-	public static func pedanticMetrics() -> MQTTMetrics {
-		let metrics = MQTTMetrics()
-		metrics.doPrintSendPackets = true
-		metrics.doPrintReceivePackets = true
-		metrics.doPrintWireData = true
-		metrics.debugOut = {print("\(Date.nowInSeconds()) MQTT \($0)")}
-		return metrics
-	}
 	
 	public init(metrics: MQTTMetrics? = nil) {
 		self.network = FogNetworkReachability()
@@ -94,19 +75,17 @@ public class MQTTClientAppController {
 	}
 }
 
-// The mqtt client will broadcast important events to the controller.
-// The invoking thread is not known.
 extension MQTTClientAppController: MQTTClientDelegate {
 	public func mqtt(client: MQTTClient, connected: MQTTConnectedState) {
 		DispatchQueue.main.async {
-			self.delegate?.on(log: connected.description)
-			self.delegate?.on(connected: connected)
+			self.delegate?.on(mqttClient: client, log: connected.description)
+			self.delegate?.on(mqttClient: client, connected: connected)
 		}
 	}
 	
 	public func mqtt(client: MQTTClient, unhandledMessage: MQTTMessage) {
 		DispatchQueue.main.async {
-			self.delegate?.on(log: "Unhandled \(unhandledMessage)")
+			self.delegate?.on(mqttClient: client, log: "Unhandled \(unhandledMessage)")
 		}
 	}
 	
@@ -115,4 +94,3 @@ extension MQTTClientAppController: MQTTClientDelegate {
 		}
 	}
 }
-

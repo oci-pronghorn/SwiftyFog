@@ -19,6 +19,8 @@
 		55130BD321035AF4001D2E3F /* MQTTClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BD221035AF4001D2E3F /* MQTTClientAppController.swift */; };
 		55130BD621035BC6001D2E3F /* MQTTClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BD221035AF4001D2E3F /* MQTTClientAppController.swift */; };
 		55130BD721035BCB001D2E3F /* MQTTMultiClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BCE21035AE4001D2E3F /* MQTTMultiClientAppController.swift */; };
+		55130BD821035E33001D2E3F /* MQTTClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BD221035AF4001D2E3F /* MQTTClientAppController.swift */; };
+		55130BD921035E36001D2E3F /* MQTTMultiClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BCE21035AE4001D2E3F /* MQTTMultiClientAppController.swift */; };
 		5543474C1F82D0F600C3C2CB /* SwiftyFog.h in Headers */ = {isa = PBXBuildFile; fileRef = 5543474A1F82D0F600C3C2CB /* SwiftyFog.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		554347A11F82D13700C3C2CB /* FogBitMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347531F82D13700C3C2CB /* FogBitMap.swift */; };
 		554347A21F82D13700C3C2CB /* FogBitmapLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347541F82D13700C3C2CB /* FogBitmapLayout.swift */; };
@@ -827,9 +829,11 @@
 				554347FE1F82D1DA00C3C2CB /* MQTTPingStatus.swift in Sources */,
 				554348231F82D1FB00C3C2CB /* MQTTClient.swift in Sources */,
 				5543480D1F82D1E900C3C2CB /* MQTTSubPacket.swift in Sources */,
+				55130BD921035E36001D2E3F /* MQTTMultiClientAppController.swift in Sources */,
 				554348091F82D1E500C3C2CB /* MQTTUnsubAckPacket.swift in Sources */,
 				554348191F82D1F700C3C2CB /* MQTTDistributer.swift in Sources */,
 				554348201F82D1F700C3C2CB /* MQTTTopicScope.swift in Sources */,
+				55130BD821035E33001D2E3F /* MQTTClientAppController.swift in Sources */,
 				554347FF1F82D1DA00C3C2CB /* MQTTReconnectParams.swift in Sources */,
 				554348111F82D1EC00C3C2CB /* MQTTPacket.swift in Sources */,
 				5543480F1F82D1EC00C3C2CB /* Data+MQTT.swift in Sources */,

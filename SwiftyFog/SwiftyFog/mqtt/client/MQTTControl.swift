@@ -9,6 +9,8 @@
 import Foundation
 
 public protocol MQTTControl {
+	var hostName: String { get }
+	
 	func start()
 	
 	var started: Bool { get }

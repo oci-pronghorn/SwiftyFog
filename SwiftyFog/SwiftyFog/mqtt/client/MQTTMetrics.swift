@@ -59,6 +59,25 @@ public final class MQTTMetrics: MQTTWireMetrics, MQTTIdMetrics, MQTTClientMetric
 	
 	public var debugOut: ((String)->())?
 	
+	public static func verbose() -> MQTTMetrics {
+		let metrics = MQTTMetrics()
+		metrics.doPrintSendPackets = true
+		metrics.doPrintReceivePackets = true
+		metrics.debugOut = {
+		print("\(Date.nowInSeconds()) MQTT \($0)")}
+		
+		return metrics
+	}
+	
+	public static func pedantic() -> MQTTMetrics {
+		let metrics = MQTTMetrics()
+		metrics.doPrintSendPackets = true
+		metrics.doPrintReceivePackets = true
+		metrics.doPrintWireData = true
+		metrics.debugOut = {print("\(Date.nowInSeconds()) MQTT \($0)")}
+		return metrics
+	}
+	
 	public init() {
 	}
 	

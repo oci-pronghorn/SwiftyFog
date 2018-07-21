@@ -81,11 +81,11 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 }
 
 extension ExtensionDelegate: MQTTClientAppControllerDelegate {
-	func on(log: String) {
+	func on(mqttClient: (MQTTBridge & MQTTControl), log: String) {
 		print(log)
 	}
-
-	func on(connected: MQTTConnectedState) {
+	
+	func on(mqttClient: (MQTTBridge & MQTTControl), connected: MQTTConnectedState) {
 		(WKExtension.shared().rootInterfaceController as! TrainInterfaceController).mqtt(connected: connected)
 	}
 }

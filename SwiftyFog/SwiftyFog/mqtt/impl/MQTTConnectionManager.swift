@@ -29,6 +29,10 @@ public final class MQTTConnectionManager {
 	private var connectionCounter = 0
 	private var madeInitialConnection = false
 	
+	public var hostName: String {
+		return self.host.host
+	}
+	
     public weak var delegate: MQTTConnectionManagerDelegate?
 
 	public init(
