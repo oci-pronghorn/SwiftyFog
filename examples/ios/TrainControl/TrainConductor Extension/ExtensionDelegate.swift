@@ -10,7 +10,7 @@ import WatchKit
 import SwiftFog_watch
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
-	var controller = MqttClientAppController()
+	var controller = MQTTClientAppController()
 
     func applicationDidFinishLaunching() {
 		controller.delegate = self
@@ -80,7 +80,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
     }
 }
 
-extension ExtensionDelegate: MqttClientAppControllerDelegate {
+extension ExtensionDelegate: MQTTClientAppControllerDelegate {
 	func on(log: String) {
 		print(log)
 	}

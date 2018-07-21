@@ -1,37 +1,30 @@
 //
-//  MqttClientAppController.swift
-//  TrainControl
+//  MQTTClientAppController.swift
+//  SwiftyFog
 //
 //  Created by David Giovannini on 9/4/17.
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
 import Foundation
-#if os(iOS)
-import SwiftyFog_iOS
-#elseif os(watchOS)
-import SwiftFog_watch
-#endif
 
 /*
-	The MqttClientAppController manages the high level business logic of the
+	The MQTTClientAppController manages the high level business logic of the
 	application without managing the UI nor being the Cocoa AppDelegate.
-
-	TODO: move into SwiftyFog after supporting multiple connections
 */
 
-public protocol MqttClientAppControllerDelegate: class {
+public protocol MQTTClientAppControllerDelegate: class {
 	func on(log: String)
 	func on(connected: MQTTConnectedState)
 }
 
-public class MqttClientAppController {
+public class MQTTClientAppController {
 	public private(set) var client: (MQTTBridge & MQTTControl)?
 	private let network: FogNetworkReachability
 	private let metrics: MQTTMetrics?
 	private var wasStarted: Bool = true
 	
-	public weak var delegate: MqttClientAppControllerDelegate?
+	public weak var delegate: MQTTClientAppControllerDelegate?
 	
 	public static func verboseMetrics() -> MQTTMetrics {
 		let metrics = MQTTMetrics()
@@ -68,7 +61,6 @@ public class MqttClientAppController {
 					reconnect: MQTTReconnectParams(),
 					metrics: metrics)
 				
-			// TODO: We currently have a crashing bug tearing down an existing controller. It is likely recent reference rule changes with deinits
 				self.client.assign(newClient)
 				newClient.delegate = self
 				
@@ -104,7 +96,7 @@ public class MqttClientAppController {
 
 // The mqtt client will broadcast important events to the controller.
 // The invoking thread is not known.
-extension MqttClientAppController: MQTTClientDelegate {
+extension MQTTClientAppController: MQTTClientDelegate {
 	public func mqtt(client: MQTTClient, connected: MQTTConnectedState) {
 		DispatchQueue.main.async {
 			self.delegate?.on(log: connected.description)

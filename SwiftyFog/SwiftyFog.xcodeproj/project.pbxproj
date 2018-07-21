@@ -15,6 +15,10 @@
 		55130BB8210224DB001D2E3F /* Optional+RAII.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BB7210224DB001D2E3F /* Optional+RAII.swift */; };
 		55130BB9210224DB001D2E3F /* Optional+RAII.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BB7210224DB001D2E3F /* Optional+RAII.swift */; };
 		55130BBA210224DB001D2E3F /* Optional+RAII.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BB7210224DB001D2E3F /* Optional+RAII.swift */; };
+		55130BCF21035AE4001D2E3F /* MQTTMultiClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BCE21035AE4001D2E3F /* MQTTMultiClientAppController.swift */; };
+		55130BD321035AF4001D2E3F /* MQTTClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BD221035AF4001D2E3F /* MQTTClientAppController.swift */; };
+		55130BD621035BC6001D2E3F /* MQTTClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BD221035AF4001D2E3F /* MQTTClientAppController.swift */; };
+		55130BD721035BCB001D2E3F /* MQTTMultiClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BCE21035AE4001D2E3F /* MQTTMultiClientAppController.swift */; };
 		5543474C1F82D0F600C3C2CB /* SwiftyFog.h in Headers */ = {isa = PBXBuildFile; fileRef = 5543474A1F82D0F600C3C2CB /* SwiftyFog.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		554347A11F82D13700C3C2CB /* FogBitMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347531F82D13700C3C2CB /* FogBitMap.swift */; };
 		554347A21F82D13700C3C2CB /* FogBitmapLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347541F82D13700C3C2CB /* FogBitmapLayout.swift */; };
@@ -216,6 +220,8 @@
 		5500657B1FC5F71F00EEC1CE /* MQTTRoutingParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTRoutingParams.swift; sourceTree = "<group>"; };
 		5501BBE71FC72BFE00E68C9D /* MQTTConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTConnectionManager.swift; sourceTree = "<group>"; };
 		55130BB7210224DB001D2E3F /* Optional+RAII.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+RAII.swift"; sourceTree = "<group>"; };
+		55130BCE21035AE4001D2E3F /* MQTTMultiClientAppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTMultiClientAppController.swift; sourceTree = "<group>"; };
+		55130BD221035AF4001D2E3F /* MQTTClientAppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTClientAppController.swift; sourceTree = "<group>"; };
 		554347471F82D0F600C3C2CB /* SwiftyFog_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyFog_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5543474A1F82D0F600C3C2CB /* SwiftyFog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftyFog.h; sourceTree = "<group>"; };
 		5543474B1F82D0F600C3C2CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -317,6 +323,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		55130BC921035A6B001D2E3F /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				55130BD221035AF4001D2E3F /* MQTTClientAppController.swift */,
+				55130BCE21035AE4001D2E3F /* MQTTMultiClientAppController.swift */,
+			);
+			path = controllers;
+			sourceTree = "<group>";
+		};
 		5543473D1F82D0F600C3C2CB = {
 			isa = PBXGroup;
 			children = (
@@ -340,6 +355,7 @@
 		554347491F82D0F600C3C2CB /* SwiftyFog */ = {
 			isa = PBXGroup;
 			children = (
+				55130BC921035A6B001D2E3F /* controllers */,
 				554347991F82D13700C3C2CB /* externalizable */,
 				554347521F82D13700C3C2CB /* image */,
 				5543475A1F82D13700C3C2CB /* mqtt */,
@@ -748,6 +764,7 @@
 				554347B21F82D13700C3C2CB /* MQTTPublisher.swift in Sources */,
 				554347A61F82D13700C3C2CB /* UIImage+Fog.swift in Sources */,
 				55130BB8210224DB001D2E3F /* Optional+RAII.swift in Sources */,
+				55130BD321035AF4001D2E3F /* MQTTClientAppController.swift in Sources */,
 				554347DB1F82D13700C3C2CB /* Extensions.swift in Sources */,
 				554347C31F82D13700C3C2CB /* MQTTUnsubPacket.swift in Sources */,
 				554347AD1F82D13700C3C2CB /* MQTTConnection.swift in Sources */,
@@ -756,6 +773,7 @@
 				554347DF1F82D13700C3C2CB /* ReadWriteMutex.swift in Sources */,
 				554347D41F82D13700C3C2CB /* MQTTReconnectParams.swift in Sources */,
 				554347C51F82D13700C3C2CB /* MQTTPingAckPacket.swift in Sources */,
+				55130BCF21035AE4001D2E3F /* MQTTMultiClientAppController.swift in Sources */,
 				5501BBE81FC72BFE00E68C9D /* MQTTConnectionManager.swift in Sources */,
 				554347C11F82D13700C3C2CB /* MQTTPingPacket.swift in Sources */,
 				554347B01F82D13700C3C2CB /* MQTTPacketDurability.swift in Sources */,
@@ -890,6 +908,7 @@
 				5578604220F3AA8F00FC182D /* MQTTPacketFactory.swift in Sources */,
 				5578603920F3AA8100FC182D /* MQTTConnectionManager.swift in Sources */,
 				558D656720F50E1200CFD226 /* FogNetworkReachabilityStub.swift in Sources */,
+				55130BD621035BC6001D2E3F /* MQTTClientAppController.swift in Sources */,
 				5578603420F3AA8100FC182D /* MQTTPublisher.swift in Sources */,
 				5578603C20F3AA8A00FC182D /* MQTTPublishPacket.swift in Sources */,
 				5578604B20F3AAA100FC182D /* FogBitMap.swift in Sources */,
@@ -897,6 +916,7 @@
 				55130BBA210224DB001D2E3F /* Optional+RAII.swift in Sources */,
 				5578605020F3AAA100FC182D /* UIImage+Fog.swift in Sources */,
 				5578605B20F3AABC00FC182D /* MQTTConnAckResponse.swift in Sources */,
+				55130BD721035BCB001D2E3F /* MQTTMultiClientAppController.swift in Sources */,
 				5578603F20F3AA8F00FC182D /* Data+MQTT.swift in Sources */,
 				558D656220F50E0500CFD226 /* FogNetworkReachabilityStatus.swift in Sources */,
 				5578605520F3AAAF00FC182D /* MQTTSubPacket.swift in Sources */,
