@@ -46,7 +46,7 @@ final class MQTTPacketDurability: MQTTPacketIssuer {
 	
 	deinit {
 		resendTimer?.cancel()
-	}
+	} // TODO: crashes here
 	
 	// TODO: not working yet - has to be > 0.0 and works with queuePubOnDisconnect
 	// TODO: pre-subscriptions count on the retry. Do we allow pre-subscriptions if retry == 0

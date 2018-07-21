@@ -76,12 +76,12 @@ public final class FogSocketStream: NSObject, StreamDelegate {
 		// Make certain no more callbacks happen
 		if let input = inputStream {
 			inputStream = nil
-			input.delegate = nil
+			input.delegate = nil // unowned unsafe
 			input.close()
 		}
 		if let output = outputStream {
 			outputStream = nil
-			output.delegate = nil
+			output.delegate = nil // unowned unsafe
 			output.close()
 		}
     }

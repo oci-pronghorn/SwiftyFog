@@ -28,7 +28,9 @@ extension UserDefaults {
 			guard let key = prefItem["Key"] as? String else {
 				continue
 			}
-			defaults[key] = prefItem["DefaultValue"]
+			if defaults[key] == nil {
+				defaults[key] = prefItem["DefaultValue"]
+			}
 		}
 		self.register(defaults: defaults)
 	}

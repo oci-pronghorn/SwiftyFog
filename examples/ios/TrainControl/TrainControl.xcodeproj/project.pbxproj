@@ -11,9 +11,9 @@
 		22E11E2E20152E600034F382 /* glass break.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 22E11E2D20152E600034F382 /* glass break.mp3 */; };
 		55130BBE210271E4001D2E3F /* SubscriptionLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BBD210271E4001D2E3F /* SubscriptionLogging.swift */; };
 		55130BBF21027234001D2E3F /* SubscriptionLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BBD210271E4001D2E3F /* SubscriptionLogging.swift */; };
-		55130BC121027564001D2E3F /* Settings-Watch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5536E00120FA934D006B4AE8 /* Settings-Watch.bundle */; };
 		55130BC62102C9CF001D2E3F /* Settings-Watch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5536E00120FA934D006B4AE8 /* Settings-Watch.bundle */; };
 		55130BC72102C9D0001D2E3F /* Settings-Watch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5536E00120FA934D006B4AE8 /* Settings-Watch.bundle */; };
+		55130BC821034B4D001D2E3F /* Settings-Watch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5536E00120FA934D006B4AE8 /* Settings-Watch.bundle */; };
 		551AB9DF1F93B94A0080D37B /* FlipLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551AB9DE1F93B94A0080D37B /* FlipLabel.swift */; };
 		5536DFFF20FA8CF3006B4AE8 /* glass break.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 22E11E2D20152E600034F382 /* glass break.mp3 */; };
 		553CC65320F57A8E0046D4A5 /* GaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CC65220F57A8E0046D4A5 /* GaugeView.swift */; };
@@ -277,8 +277,8 @@
 			isa = PBXGroup;
 			children = (
 				554348381F82D3AD00C3C2CB /* AppDelegate.swift */,
-				554348701F82D46100C3C2CB /* MqttClientAppController.swift */,
 				55B912BF20FA77CE00634B80 /* UserDefaults+.swift */,
+				554348701F82D46100C3C2CB /* MqttClientAppController.swift */,
 				554348661F82D46100C3C2CB /* model */,
 				554348711F82D46100C3C2CB /* view */,
 				5543486C1F82D46100C3C2CB /* viewcontroller */,
@@ -548,7 +548,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22E11E2E20152E600034F382 /* glass break.mp3 in Resources */,
-				55130BC121027564001D2E3F /* Settings-Watch.bundle in Resources */,
+				55130BC821034B4D001D2E3F /* Settings-Watch.bundle in Resources */,
 				5543488B1F82D48A00C3C2CB /* Images.xcassets in Resources */,
 				554348401F82D3AD00C3C2CB /* Assets.xcassets in Resources */,
 				554348A01F82D6FE00C3C2CB /* LaunchScreen.storyboard in Resources */,

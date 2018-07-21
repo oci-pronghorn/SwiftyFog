@@ -51,10 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let newTrainName = UserDefaults.standard.string(forKey: "train_name_preference")!
 		
 		self.trainControl.setTrain(named: newTrainName, bridging: controller.client!, force: brokerChanged)
-		
-		if brokerChanged {
-			controller.goForeground()
-		}
 	}
 	
 	@IBAction func gotoSettings(sender: Any?) {

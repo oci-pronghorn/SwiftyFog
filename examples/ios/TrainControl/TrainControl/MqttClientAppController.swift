@@ -16,6 +16,8 @@ import SwiftFog_watch
 /*
 	The MqttClientAppController manages the high level business logic of the
 	application without managing the UI nor being the Cocoa AppDelegate.
+
+	TODO: move into SwiftyFog after supporting multiple connections
 */
 
 public protocol MqttClientAppControllerDelegate: class {
@@ -69,6 +71,10 @@ public class MqttClientAppController {
 			// TODO: We currently have a crashing bug tearing down an existing controller. It is likely recent reference rule changes with deinits
 				self.client.assign(newClient)
 				newClient.delegate = self
+				
+				if wasStarted {
+					self.client?.start()
+				}
 			}
 		}
 	}
@@ -100,29 +106,8 @@ public class MqttClientAppController {
 // The invoking thread is not known.
 extension MqttClientAppController: MQTTClientDelegate {
 	public func mqtt(client: MQTTClient, connected: MQTTConnectedState) {
-		let log: String
-		switch connected {
-			case .started:
-				log = "Started"
-				break
-			case .connected(_, _, _, let counter):
-				log = "Connected \(counter)"
-				break
-			case .pinged(let status):
-				log = "Ping \(status)"
-				break
-			case .retry(_, let rescus, let attempt, _):
-				log = "Connection Attempt \(rescus).\(attempt)"
-				break
-			case .retriesFailed(let counter, let rescus, _):
-				log = "Connection Failed \(counter).\(rescus)"
-				break
-			case .disconnected(_, let reason, let error):
-				log = "Disconnected \(reason) \(error?.localizedDescription ?? "")"
-				break
-		}
 		DispatchQueue.main.async {
-			self.delegate?.on(log: log)
+			self.delegate?.on(log: connected.description)
 			self.delegate?.on(connected: connected)
 		}
 	}
