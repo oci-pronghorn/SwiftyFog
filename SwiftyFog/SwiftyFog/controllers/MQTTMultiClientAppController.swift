@@ -92,6 +92,7 @@ public class MQTTMultiClientAppController {
 	
 	fileprivate func releaseClient(hostedOn: String) {
 		if let client = clients[hostedOn], client.1 == 1 {
+			client.0.stop()
 			clients.removeValue(forKey: hostedOn)
 		}
 	}

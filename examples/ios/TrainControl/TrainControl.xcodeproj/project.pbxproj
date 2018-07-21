@@ -38,6 +38,7 @@
 		554348971F82D5B100C3C2CB /* ExerciseMotor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348961F82D5B100C3C2CB /* ExerciseMotor.swift */; };
 		5543489D1F82D65B00C3C2CB /* WMGaugeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 554348991F82D65A00C3C2CB /* WMGaugeView.m */; };
 		554348A01F82D6FE00C3C2CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */; };
+		554E71482103751200AAE25E /* ScrewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554E71472103751200AAE25E /* ScrewsView.swift */; };
 		55524C7020F11FA8004EBD8B /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55524C6E20F11FA8004EBD8B /* Interface.storyboard */; };
 		55524C7220F11FAA004EBD8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55524C7120F11FAA004EBD8B /* Assets.xcassets */; };
 		55524C7920F11FAA004EBD8B /* TrainConductor Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 55524C7820F11FAA004EBD8B /* TrainConductor Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -183,6 +184,7 @@
 		554348991F82D65A00C3C2CB /* WMGaugeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMGaugeView.m; sourceTree = "<group>"; };
 		5543489A1F82D65A00C3C2CB /* WMGaugeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMGaugeView.h; sourceTree = "<group>"; };
 		5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		554E71472103751200AAE25E /* ScrewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrewsView.swift; sourceTree = "<group>"; };
 		55524C6C20F11FA8004EBD8B /* TrainConductor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrainConductor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55524C6F20F11FA8004EBD8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		55524C7120F11FAA004EBD8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -348,6 +350,7 @@
 				554348981F82D65900C3C2CB /* TrainControl-Bridging-Header.h */,
 				55BD0DD120F15954001E31C3 /* UIView+.swift */,
 				55BD0DD320F15ABF001E31C3 /* AVAudioPlayer+.swift */,
+				554E71472103751200AAE25E /* ScrewsView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -605,6 +608,7 @@
 				5543487E1F82D46100C3C2CB /* Sound.swift in Sources */,
 				551AB9DF1F93B94A0080D37B /* FlipLabel.swift in Sources */,
 				55130BBE210271E4001D2E3F /* SubscriptionLogging.swift in Sources */,
+				554E71482103751200AAE25E /* ScrewsView.swift in Sources */,
 				553CC65320F57A8E0046D4A5 /* GaugeView.swift in Sources */,
 				55BD0DD220F15955001E31C3 /* UIView+.swift in Sources */,
 				5543487F1F82D46100C3C2CB /* Train.swift in Sources */,
