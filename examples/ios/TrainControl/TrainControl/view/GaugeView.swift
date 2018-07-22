@@ -124,9 +124,8 @@ class GaugeView: UIView {
 // MARK: Indicator Properties
 	// Indicator // TODO have configurable with more states
 	@IBInspectable public var indicatorImage: UIImage? { didSet { indicatorChanged() } }
-	@IBInspectable public var highlightedIndicatorImage: UIImage? { didSet { indicatorChanged() } }
+	@IBInspectable public var indicatorTint: UIColor? { didSet { indicatorChanged() } }
 	@IBInspectable public var indicatorVerticalOffset: CGFloat = 0.3 { didSet { indicatorChanged() } }
-	@IBInspectable public var indicatorHighlighted = false { didSet { indicatorChanged() } }
 	@IBInspectable public var indicatorSize = CGSize(width: 0.16, height: 0.16) { didSet { indicatorChanged() } }
 
 // MARK: Label Properties
@@ -405,8 +404,10 @@ class GaugeView: UIView {
 	}
 	
 	private func drawIndicator(in context: CGContext) {
-		let image: UIImage? = (indicatorHighlighted ? highlightedIndicatorImage : indicatorImage)
-		if let image = image {
+		if var image = self.indicatorImage {
+			if let tint = self.indicatorTint {
+				image = image.tinted(with: tint)!
+			}
 			let rect = CGRect(
 				x: fullCenter.x - indicatorSize.width / 2.0,
 				y: indicatorVerticalOffset - indicatorSize.height / 2.0,

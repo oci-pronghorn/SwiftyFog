@@ -310,14 +310,16 @@ extension TrainViewController:
 	}
     
     func engine(state: EngineState, _ asserted: Bool) {
+    	let colorName: String
         switch state {
             case .idle:
-                engineGauge?.indicatorImage = #imageLiteral(resourceName: "MotionIdle")
+                colorName = "Idle"
             case .forward:
-                engineGauge?.indicatorImage = #imageLiteral(resourceName: "MotionForward")
+                colorName = "Forward"
             case .reverse:
-                engineGauge?.indicatorImage = #imageLiteral(resourceName: "MotionReverse")
+                colorName = "Reverse"
         }
+		engineGauge?.indicatorTint = UIColor(named: colorName)
     }
 	
 	func engine(calibration: TrainRational, _ asserted: Bool) {
@@ -335,7 +337,7 @@ extension TrainViewController:
 	}
 	
 	func lights(power: Bool, _ asserted: Bool) {
-		lightingGauge?.isIndicatorHighlighted = power
+		lightingGauge?.indicatorTint = power ? UIColor(named: "LightsOn")! : UIColor(named: "LightsOff")!
 	}
 	
 	func lights(calibration: TrainRational, _ asserted: Bool) {

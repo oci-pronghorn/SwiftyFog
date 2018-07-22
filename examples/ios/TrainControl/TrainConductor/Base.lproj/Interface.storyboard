@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14306.4" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="U0Q-nI-cAQ">
+    <device id="watch38" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
+        <deployment identifier="watchOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14278.2"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14237"/>
     </dependencies>
@@ -15,8 +19,8 @@
                                 <group alignment="center" spacing="8" id="skG-zr-bUe" userLabel="Initicators">
                                     <items>
                                         <imageView alignment="center" image="Dead" id="2DS-bY-FJB"/>
-                                        <imageView alignment="center" image="MotionIdle" id="Vqt-zA-Afu"/>
-                                        <imageView alignment="center" image="TorchOff" id="XOu-iA-2iY"/>
+                                        <imageView alignment="center" image="Motion" id="Vqt-zA-Afu"/>
+                                        <imageView alignment="center" image="Torch" id="XOu-iA-2iY"/>
                                     </items>
                                 </group>
                                 <label alignment="center" verticalAlignment="center" text="-100" textAlignment="center" id="dzQ-Lg-8Mu">

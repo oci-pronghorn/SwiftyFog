@@ -176,14 +176,16 @@ extension TrainInterfaceController:
 	}
 			
     func engine(state: EngineState, _ asserted: Bool) {
+    	let colorName: String
         switch state {
             case .idle:
-                engineIndicator.setImage(#imageLiteral(resourceName: "MotionIdle"))
+            	colorName = "Idle"
             case .forward:
-                engineIndicator.setImage(#imageLiteral(resourceName: "MotionForward"))
+            	colorName = "Forward"
             case .reverse:
-                engineIndicator.setImage(#imageLiteral(resourceName: "MotionReverse"))
+            	colorName = "Reverse"
         }
+	engineIndicator.setImage(#imageLiteral(resourceName: "Motion").tinted(with: UIColor(named: colorName)!))
     }
 	
 	func engine(calibration: TrainRational, _ asserted: Bool) {
@@ -207,7 +209,7 @@ extension TrainInterfaceController:
 	}
 	
 	func lights(power: Bool, _ asserted: Bool) {
-		lightIndicator.setImage(power ? #imageLiteral(resourceName: "TorchOn") : #imageLiteral(resourceName: "TorchOff"))
+		lightIndicator.setImage(#imageLiteral(resourceName: "Torch").tinted(with: UIColor(named: power ? "LightsOn" : "LightsOff")!))
 	}
 	
 	func lights(calibration: TrainRational, _ asserted: Bool) {

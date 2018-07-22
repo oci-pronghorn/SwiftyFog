@@ -6,6 +6,7 @@
  */
 
 #import "WMGaugeView.h"
+#import "TrainControl-Swift.h"
 
 /* Degrees to radians conversion macro */
 #define DEGREES_TO_RADIANS(degrees) (degrees) / 180.0 * M_PI
@@ -369,8 +370,11 @@
 
 -(void)drawIndicator: (CGContextRef)context
 {
-    UIImage* image = (_indicatorHighlighted ? _highlightedIndicatorImage : _indicatorImage);
+    UIImage* image = self.indicatorImage;
     if (image) {
+    	if (self.indicatorTint) {
+    		image = [image tintedWith: self.indicatorTint];
+    	}
     	CGContextSetShadow(context, CGSizeMake(0.05, 0.05), 2.0);
     	CGRect rect = CGRectMake(
     		(faceRect.size.width - _indicatorSize.width) / 2.0,
@@ -1088,15 +1092,9 @@
     [self invalidateBackground];
 }
 
--(void)setHighlightedIndicatorImage:(UIImage *)highlightedIndicatorImage
+-(void)setIndicatorTint:(UIColor *)indicatorTint
 {
-	_highlightedIndicatorImage = highlightedIndicatorImage;
-    [self invalidateBackground];
-}
-
--(void)setIndicatorHighlighted:(BOOL)indicatorHighlighted
-{
-	_indicatorHighlighted = indicatorHighlighted;
+	_indicatorTint = indicatorTint;
     [self invalidateBackground];
 }
 

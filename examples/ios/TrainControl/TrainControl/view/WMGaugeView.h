@@ -114,9 +114,8 @@ IB_DESIGNABLE
 @property (nonatomic) IBInspectable NSInteger scalesubdivisionsaligmentNum;
 
 @property (nonatomic) IBInspectable UIImage* indicatorImage;
-@property (nonatomic) IBInspectable UIImage* highlightedIndicatorImage;
+@property (nonatomic) IBInspectable UIColor* indicatorTint;
 @property (nonatomic) IBInspectable CGFloat indicatorVerticalOffset;
-@property (nonatomic, getter=isIndicatorHighlighted) BOOL indicatorHighlighted; // TODO have configurable with more states
 @property (nonatomic) IBInspectable CGSize indicatorSize;
 @property (nonatomic) IBInspectable BOOL showIndicator;
 

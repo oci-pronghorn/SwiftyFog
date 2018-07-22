@@ -15,6 +15,11 @@
 		55130BC72102C9D0001D2E3F /* Settings-Watch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5536E00120FA934D006B4AE8 /* Settings-Watch.bundle */; };
 		55130BC821034B4D001D2E3F /* Settings-Watch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5536E00120FA934D006B4AE8 /* Settings-Watch.bundle */; };
 		551AB9DF1F93B94A0080D37B /* FlipLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551AB9DE1F93B94A0080D37B /* FlipLabel.swift */; };
+		5526A5872104EE2E005AF2C6 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5526A5862104EE2E005AF2C6 /* UIImage+.swift */; };
+		5526A5882104EE3F005AF2C6 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5526A5862104EE2E005AF2C6 /* UIImage+.swift */; };
+		5526A58A2104FAF0005AF2C6 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5526A5892104FAF0005AF2C6 /* Color.xcassets */; };
+		5526A58B2104FB5E005AF2C6 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5526A5892104FAF0005AF2C6 /* Color.xcassets */; };
+		5526A58C2104FB5E005AF2C6 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5526A5892104FAF0005AF2C6 /* Color.xcassets */; };
 		5536DFFF20FA8CF3006B4AE8 /* glass break.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 22E11E2D20152E600034F382 /* glass break.mp3 */; };
 		553CC65320F57A8E0046D4A5 /* GaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CC65220F57A8E0046D4A5 /* GaugeView.swift */; };
 		554348391F82D3AD00C3C2CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348381F82D3AD00C3C2CB /* AppDelegate.swift */; };
@@ -152,6 +157,8 @@
 		22E11E2D20152E600034F382 /* glass break.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "glass break.mp3"; sourceTree = "<group>"; };
 		55130BBD210271E4001D2E3F /* SubscriptionLogging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionLogging.swift; sourceTree = "<group>"; };
 		551AB9DE1F93B94A0080D37B /* FlipLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipLabel.swift; sourceTree = "<group>"; };
+		5526A5862104EE2E005AF2C6 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
+		5526A5892104FAF0005AF2C6 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		5536E00120FA934D006B4AE8 /* Settings-Watch.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "Settings-Watch.bundle"; sourceTree = "<group>"; };
 		553CC65220F57A8E0046D4A5 /* GaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeView.swift; sourceTree = "<group>"; };
 		554348351F82D3AD00C3C2CB /* TrainControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrainControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -284,6 +291,7 @@
 				5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */,
 				5543483F1F82D3AD00C3C2CB /* Assets.xcassets */,
 				5543488A1F82D48A00C3C2CB /* Images.xcassets */,
+				5526A5892104FAF0005AF2C6 /* Color.xcassets */,
 				22E11E2D20152E600034F382 /* glass break.mp3 */,
 				554348441F82D3AD00C3C2CB /* Info.plist */,
 				55B912BB20FA71E800634B80 /* Settings.bundle */,
@@ -351,6 +359,7 @@
 				55BD0DD120F15954001E31C3 /* UIView+.swift */,
 				55BD0DD320F15ABF001E31C3 /* AVAudioPlayer+.swift */,
 				554E71472103751200AAE25E /* ScrewsView.swift */,
+				5526A5862104EE2E005AF2C6 /* UIImage+.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -547,6 +556,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22E11E2E20152E600034F382 /* glass break.mp3 in Resources */,
+				5526A58A2104FAF0005AF2C6 /* Color.xcassets in Resources */,
 				55130BC821034B4D001D2E3F /* Settings-Watch.bundle in Resources */,
 				5543488B1F82D48A00C3C2CB /* Images.xcassets in Resources */,
 				554348401F82D3AD00C3C2CB /* Assets.xcassets in Resources */,
@@ -579,6 +589,7 @@
 				557DD91520F4E4FA007F0AE9 /* Images.xcassets in Resources */,
 				55524C7220F11FAA004EBD8B /* Assets.xcassets in Resources */,
 				55524C7020F11FA8004EBD8B /* Interface.storyboard in Resources */,
+				5526A58B2104FB5E005AF2C6 /* Color.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -588,6 +599,7 @@
 			files = (
 				5536DFFF20FA8CF3006B4AE8 /* glass break.mp3 in Resources */,
 				55524C8420F11FAA004EBD8B /* Assets.xcassets in Resources */,
+				5526A58C2104FB5E005AF2C6 /* Color.xcassets in Resources */,
 				55130BC72102C9D0001D2E3F /* Settings-Watch.bundle in Resources */,
 				55DD5DC320F4FEA0001B93E0 /* Images.xcassets in Resources */,
 			);
@@ -617,6 +629,7 @@
 				554348801F82D46100C3C2CB /* LogViewController.swift in Sources */,
 				554348871F82D46100C3C2CB /* Pulsator.swift in Sources */,
 				55BD0DD420F15ABF001E31C3 /* AVAudioPlayer+.swift in Sources */,
+				5526A5872104EE2E005AF2C6 /* UIImage+.swift in Sources */,
 				554348881F82D46100C3C2CB /* ScubControl.swift in Sources */,
 				5543487C1F82D46100C3C2CB /* Engine.swift in Sources */,
 				5543487D1F82D46100C3C2CB /* Lights.swift in Sources */,
@@ -657,6 +670,7 @@
 				55B912C120FA794A00634B80 /* UserDefaults+.swift in Sources */,
 				55130BBF21027234001D2E3F /* SubscriptionLogging.swift in Sources */,
 				5578608F20F4066D00FC182D /* Engine.swift in Sources */,
+				5526A5882104EE3F005AF2C6 /* UIImage+.swift in Sources */,
 				5578609420F4070800FC182D /* Sound.swift in Sources */,
 				55632BF920F4520D008BCB09 /* Billboard.swift in Sources */,
 			);
