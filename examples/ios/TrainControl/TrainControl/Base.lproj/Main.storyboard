@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14278.2"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,13 +22,19 @@
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="C7y-xd-CAj" userLabel="Connect Status Stack">
                                 <rect key="frame" x="8" y="28" width="359" height="50"/>
                                 <subviews>
-                                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Dead" highlightedImage="Alive" translatesAutoresizingMaskIntoConstraints="NO" id="28I-X8-rcw">
+                                    <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Dead" highlightedImage="Alive" translatesAutoresizingMaskIntoConstraints="NO" id="28I-X8-rcw">
                                         <rect key="frame" x="0.0" y="9" width="32" height="32"/>
+                                        <color key="backgroundColor" name="Gold"/>
                                         <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="32" id="Btc-Yt-R6H"/>
                                             <constraint firstAttribute="height" constant="32" id="Jv5-2V-ve8"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="16"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outletCollection property="gestureRecognizers" destination="96s-Uf-foB" appends="YES" id="nTi-mL-SU7"/>
                                         </connections>
@@ -43,7 +50,7 @@
                                                 <real key="value" value="1"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="value" name="Border"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                 <real key="value" value="3"/>
@@ -54,20 +61,43 @@
                                             <outlet property="delegate" destination="BYZ-38-t0r" id="c5J-k0-pT7"/>
                                         </connections>
                                     </textField>
-                                    <view opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4cK-ON-aes" customClass="FlipLabel" customModule="TrainControl" customModuleProvider="target">
+                                    <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4cK-ON-aes" customClass="FlipLabel" customModule="TrainControl" customModuleProvider="target">
                                         <rect key="frame" x="205" y="0.0" width="82" height="50"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="text" value="0.0.0"/>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="flipBackGroundColor">
+                                                <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                <real key="value" value="0.5"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="3"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" name="Border"/>
+                                            </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Disconnected" highlightedImage="Connected" translatesAutoresizingMaskIntoConstraints="NO" id="4zZ-K8-b71">
+                                    <imageView opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Disconnected" highlightedImage="Connected" translatesAutoresizingMaskIntoConstraints="NO" id="4zZ-K8-b71">
                                         <rect key="frame" x="291" y="9" width="32" height="32"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" name="Gold"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="32" id="3VN-HX-69l"/>
                                             <constraint firstAttribute="width" constant="32" id="yP0-Kq-eiq"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                <real key="value" value="0.5"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" name="Border"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="16"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wpe-Ny-YbN">
                                         <rect key="frame" x="327" y="9" width="32" height="32"/>
@@ -84,10 +114,10 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="0P7-i3-PrJ" userLabel="Control Stack">
-                                <rect key="frame" x="8" y="88" width="359" height="357"/>
+                                <rect key="frame" x="8" y="88" width="359" height="360"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="jch-e0-4v6" userLabel="Engine Stack">
-                                        <rect key="frame" x="0.0" y="0.0" width="175.5" height="357"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="175.5" height="360"/>
                                         <subviews>
                                             <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="unr-Cy-oQt" userLabel="Engine Screws View" customClass="ScrewsView" customModule="TrainControl" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="175.5" height="20.5"/>
@@ -105,7 +135,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.15298587328767124" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" name="Gold"/>
                                                 <constraints>
                                                     <constraint firstItem="T7m-Q3-XdO" firstAttribute="centerY" secondItem="unr-Cy-oQt" secondAttribute="centerY" id="aMf-xv-pGr"/>
                                                     <constraint firstItem="T7m-Q3-XdO" firstAttribute="width" secondItem="unr-Cy-oQt" secondAttribute="width" constant="-15" id="cAf-aH-hIV"/>
@@ -124,7 +154,7 @@
                                                         <real key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.34928831335616439" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="value" name="Border"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                                         <real key="value" value="0.5"/>
@@ -190,7 +220,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.15298587329999999" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" name="Gold"/>
                                                 <constraints>
                                                     <constraint firstItem="zuq-6i-PLt" firstAttribute="centerY" secondItem="9kY-FW-tWH" secondAttribute="centerY" id="TId-pu-l7x"/>
                                                     <constraint firstItem="zuq-6i-PLt" firstAttribute="width" secondItem="9kY-FW-tWH" secondAttribute="width" constant="-15" id="a9V-pj-FDy"/>
@@ -209,19 +239,21 @@
                                                         <real key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.34928831335616439" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="value" name="Border"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                                         <real key="value" value="0.5"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="frG-rd-tNm" customClass="ScrubControl" customModule="TrainControl" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="252.5" width="175.5" height="29"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="frG-rd-tNm" customClass="ScrubControl" customModule="TrainControl" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="252.5" width="175.5" height="32"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="engineControl"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="29" id="sbe-2N-IEB"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="6X5-DV-X2B"/>
+                                                    <constraint firstAttribute="height" constant="32" id="yYY-aj-kuz"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="normValue">
@@ -234,19 +266,25 @@
                                                         <real key="value" value="100"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="cursorColor">
-                                                        <color key="value" red="0.98362404108047485" green="0.067858457565307617" blue="0.11636645346879959" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="value" name="Reverse"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="tickBackground">
-                                                        <color key="value" red="0.52291509826132598" green="0.51503969834658458" blue="0.51648942595411507" alpha="0.62959055656934304" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="tickColor">
-                                                        <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cursorThickness">
-                                                        <real key="value" value="5"/>
+                                                        <real key="value" value="7"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="velocityAdjustWidthFactor">
                                                         <real key="value" value="40"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="3"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" name="Border"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                        <real key="value" value="1"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
@@ -254,7 +292,7 @@
                                                 </connections>
                                             </view>
                                             <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Vsg-UG-5hC" userLabel="Amps Screws View" customClass="ScrewsView" customModule="TrainControl" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="293.5" width="175.5" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="296.5" width="175.5" height="20.5"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="Calibrate Amps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jtN-zX-g4t" userLabel="Calibrate Amps">
                                                         <rect key="frame" x="7.5" y="0.0" width="160.5" height="20.5"/>
@@ -269,7 +307,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.15298587329999999" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" name="Gold"/>
                                                 <constraints>
                                                     <constraint firstItem="jtN-zX-g4t" firstAttribute="centerX" secondItem="Vsg-UG-5hC" secondAttribute="centerX" id="9Me-2P-4wf"/>
                                                     <constraint firstItem="jtN-zX-g4t" firstAttribute="centerY" secondItem="Vsg-UG-5hC" secondAttribute="centerY" id="Py9-lr-EWi"/>
@@ -288,22 +326,22 @@
                                                         <real key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.34928831335616439" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="value" name="Border"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                                         <real key="value" value="0.5"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="15" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="5SJ-Xc-cNf" userLabel="Calibrate Power">
-                                                <rect key="frame" x="-2" y="326" width="179.5" height="32"/>
+                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="30" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="5SJ-Xc-cNf" userLabel="Calibrate Power">
+                                                <rect key="frame" x="-2" y="329" width="179.5" height="32"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="engineCalibrationControl"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="31" id="SLG-Ty-MMt"/>
                                                 </constraints>
-                                                <color key="minimumTrackTintColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                <color key="maximumTrackTintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                <color key="thumbTintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="minimumTrackTintColor" name="Idle"/>
+                                                <color key="maximumTrackTintColor" name="Reverse"/>
+                                                <color key="thumbTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
                                                     <action selector="doEngineCalibrationWithSender:" destination="BYZ-38-t0r" eventType="valueChanged" id="Zjw-vy-lkf"/>
                                                 </connections>
@@ -311,7 +349,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="fI1-eS-yQm" userLabel="Lights Stack">
-                                        <rect key="frame" x="183.5" y="0.0" width="175.5" height="357"/>
+                                        <rect key="frame" x="183.5" y="0.0" width="175.5" height="360"/>
                                         <subviews>
                                             <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="WfJ-3O-gkV" userLabel="Lights Screws View" customClass="ScrewsView" customModule="TrainControl" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="175.5" height="20.5"/>
@@ -329,7 +367,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.15298587329999999" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" name="Gold"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" secondItem="Wcu-c3-gwV" secondAttribute="height" id="Nag-UF-R2v"/>
                                                     <constraint firstItem="Wcu-c3-gwV" firstAttribute="centerY" secondItem="WfJ-3O-gkV" secondAttribute="centerY" id="ctE-Or-ehd"/>
@@ -348,7 +386,7 @@
                                                         <real key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.34928831335616439" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="value" name="Border"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                                         <real key="value" value="0.5"/>
@@ -417,7 +455,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.15298587329999999" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" name="Gold"/>
                                                 <constraints>
                                                     <constraint firstItem="UfY-57-8Ib" firstAttribute="width" secondItem="j5l-eA-gvh" secondAttribute="width" constant="-15" id="NKZ-Xy-zaO"/>
                                                     <constraint firstItem="UfY-57-8Ib" firstAttribute="centerX" secondItem="j5l-eA-gvh" secondAttribute="centerX" id="NdM-sL-ivT"/>
@@ -436,30 +474,36 @@
                                                         <real key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.34928831335616439" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="value" name="Border"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                                         <real key="value" value="0.5"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="2" translatesAutoresizingMaskIntoConstraints="NO" id="N5j-RN-YrA">
-                                                <rect key="frame" x="0.0" y="252.5" width="175.5" height="30"/>
+                                            <segmentedControl opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="2" translatesAutoresizingMaskIntoConstraints="NO" id="N5j-RN-YrA">
+                                                <rect key="frame" x="0.0" y="252.5" width="175.5" height="33"/>
+                                                <color key="backgroundColor" name="Border"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="29" id="WfO-HG-Z4m"/>
+                                                    <constraint firstAttribute="height" constant="32" id="Vz6-UZ-54C"/>
                                                 </constraints>
                                                 <segments>
                                                     <segment title="Off"/>
                                                     <segment title="On"/>
                                                     <segment title="Auto"/>
                                                 </segments>
-                                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="3"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="doLightOverrideWithSender:" destination="BYZ-38-t0r" eventType="valueChanged" id="b9T-7d-x40"/>
                                                 </connections>
                                             </segmentedControl>
                                             <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="dv2-zR-C8c" userLabel="Sensor Screws View" customClass="ScrewsView" customModule="TrainControl" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="293.5" width="175.5" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="296.5" width="175.5" height="20.5"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="Calibrate Lights" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9jM-96-QJ4">
                                                         <rect key="frame" x="7.5" y="0.0" width="160.5" height="20.5"/>
@@ -474,7 +518,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.15298587329999999" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" name="Gold"/>
                                                 <constraints>
                                                     <constraint firstItem="9jM-96-QJ4" firstAttribute="centerX" secondItem="dv2-zR-C8c" secondAttribute="centerX" id="Jqx-5N-Aop"/>
                                                     <constraint firstItem="9jM-96-QJ4" firstAttribute="width" secondItem="dv2-zR-C8c" secondAttribute="width" constant="-15" id="KZS-JA-cR2"/>
@@ -493,7 +537,7 @@
                                                         <real key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.34928831335616439" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="value" name="Border"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                                         <real key="value" value="0.5"/>
@@ -501,14 +545,14 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="128" minValue="0.0" maxValue="256" translatesAutoresizingMaskIntoConstraints="NO" id="Ulu-J2-pss" userLabel="Light Calibration">
-                                                <rect key="frame" x="-2" y="326" width="179.5" height="32"/>
+                                                <rect key="frame" x="-2" y="329" width="179.5" height="32"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="lightCalibrationControl"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="31" id="hzN-xz-WJS"/>
                                                 </constraints>
                                                 <color key="minimumTrackTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="maximumTrackTintColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <color key="thumbTintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="thumbTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
                                                     <action selector="doLightCalibrationWithSender:" destination="BYZ-38-t0r" eventType="valueChanged" id="SFj-Z3-aTg"/>
                                                 </connections>
@@ -919,6 +963,18 @@
         <image name="TorchOn" width="32" height="32"/>
         <image name="Train" width="30" height="30"/>
         <image name="screwhead" width="16" height="16"/>
+        <namedColor name="Border">
+            <color red="0.0" green="0.0" blue="0.0" alpha="0.40000000596046448" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Gold">
+            <color red="0.83137254901960789" green="0.68627450980392157" blue="0.21568627450980393" alpha="0.20600000023841858" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Idle">
+            <color red="1" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Reverse">
+            <color red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
     <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
 </document>

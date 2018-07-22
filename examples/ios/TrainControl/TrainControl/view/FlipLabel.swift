@@ -43,10 +43,10 @@ public class FlipLabel: UIView {
     @IBInspectable public var flipDurationRange: TimeInterval = 0.0
 	
 	// The flipping label's text color
-    @IBInspectable public var flipTextColor = UIColor.white
+    @IBInspectable public var flipTextColor: UIColor = UIColor.white
 	
 	// The flipping label's background color
-    @IBInspectable public var flipBackGroundColor = UIColor.black
+    @IBInspectable public var flipBackGroundColor: UIColor = UIColor.black
 	
 	@IBInspectable public var text: String = "" {
 		didSet {

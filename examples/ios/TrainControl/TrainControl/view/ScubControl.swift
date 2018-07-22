@@ -78,13 +78,7 @@ public  class ScrubControl : UIControl {
 			self.setNeedsDisplay()
 		}
 	}
-	
-	@IBInspectable var tickColor: UIColor = UIColor.black.withAlphaComponent(0.5) {
-		didSet {
-			self.setNeedsDisplay()
-		}
-	}
-	
+
 	@IBInspectable var tickBackground: UIColor = UIColor.black.withAlphaComponent(0.15) {
 		didSet {
 			self.setNeedsDisplay()
@@ -128,7 +122,7 @@ public  class ScrubControl : UIControl {
 			let w1 = w * (1.0 - value)
 		
 			context.setLineWidth(tickThickness)
-			context.setStrokeColor(tickColor.cgColor)
+			context.setStrokeColor(self.tintColor.cgColor)
 		
 			let count2 = CGFloat(density) * CGFloat(density)
 			
@@ -155,12 +149,13 @@ public  class ScrubControl : UIControl {
 
 		context.setLineWidth(cursorThickness)
 		context.setStrokeColor(cursorColor.cgColor)
+		context.setLineCap(CGLineCap.round)
 		
 		let scaleX = self.bounds.width
 		let scaleY = (self.bounds.height - scrubHeight)
 		let v = value * scaleX
-		context.move(to: CGPoint(x: v, y: 0.0))
-		context.addLine(to: CGPoint(x: v, y: scaleY + scrubHeight))
+		context.move(to: CGPoint(x: v, y: cursorThickness / 2.0))
+		context.addLine(to: CGPoint(x: v, y: scaleY + scrubHeight - cursorThickness / 2.0))
 		context.strokePath()
 	}
 }
