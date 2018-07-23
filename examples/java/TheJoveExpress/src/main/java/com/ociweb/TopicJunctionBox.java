@@ -1,4 +1,4 @@
-package com.ociweb.model;
+package com.ociweb;
 
 import com.ociweb.gl.api.*;
 import com.ociweb.gl.impl.stage.CallableMethod;
