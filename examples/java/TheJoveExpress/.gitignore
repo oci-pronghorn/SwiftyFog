@@ -10,3 +10,4 @@ target/
 #####
 # DotEnv files
 .env
+/pi@joveexpress2.local
