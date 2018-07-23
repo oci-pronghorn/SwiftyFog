@@ -12,6 +12,7 @@ import com.ociweb.iot.maker.Baud;
 import com.ociweb.iot.maker.FogApp;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.Hardware;
+import com.ociweb.iot.maker.Port;
 import com.ociweb.pronghorn.iot.i2c.I2CJFFIStage;
 import com.ociweb.pronghorn.stage.scheduling.GraphManager;
 
@@ -86,37 +87,95 @@ public class TheJoveExpress implements FogApp
             final String actuatorPowerAInternal = "actuator/power/a/internal";
             final String actuatorPowerBInternal = "actuator/power/b/internal";
 
-            final ActuatorDriverBehavior actuator = new ActuatorDriverBehavior(runtime);
-            topics.subscribe(actuator, actuatorPowerAInternal, actuator::setPower);
-            topics.subscribe(actuator, actuatorPowerBInternal, actuator::setPower);
+            /////////
+            /////////
+            
+            if (config.sharedAcutatorEnabled) {
+            
+            	final ActuatorDriverBehavior actuator = new ActuatorDriverBehavior(runtime);
+            	topics.subscribe(actuator, actuatorPowerAInternal, actuator::setPower);
+            	topics.subscribe(actuator, actuatorPowerBInternal, actuator::setPower);
+            
+            }           
+            
 
             if (config.engineEnabled) {
-                final EngineBehavior engine = new EngineBehavior(runtime, actuatorPowerAInternal, config.engineActuatorPort,
-                        topics.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
-                        topics.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce),
-                        topics.publish("engine/state/feedback", false, MQTTQoS.atMostOnce));
-                topics.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
-                topics.subscribe(engine, "engine/power/control", MQTTQoS.atMostOnce, engine::onPower);
-                topics.subscribe(engine, "engine/calibration/control", MQTTQoS.atMostOnce, engine::onCalibration);
-                if (config.faultDetectionEnabled) {
-                	topics.subscribe(engine, faultFeedback, engine::onFault);
-                }
+                
+            	if (config.sharedAcutatorEnabled) { 
+	            	final EngineBehavior engine = new EngineBehavior(runtime, actuatorPowerAInternal, config.engineActuatorPort,
+	                        topics.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
+	                        topics.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce),
+	                        topics.publish("engine/state/feedback", false, MQTTQoS.atMostOnce));
+	                            	
+	            	topics.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
+	                topics.subscribe(engine, "engine/power/control", MQTTQoS.atMostOnce, engine::onPower);
+	                topics.subscribe(engine, "engine/calibration/control", MQTTQoS.atMostOnce, engine::onCalibration);
+	                if (config.faultDetectionEnabled) {
+	                	topics.subscribe(engine, faultFeedback, engine::onFault);
+	                }
+            	} else {
+					//simple PwM control
+            		Port enginePowerPort     = Port.D5; //TODO: move into config once we get this working...
+            		Port engineDirectionPort = Port.D7;
+            		
+	            	final EngineBehaviorPWM engine = new EngineBehaviorPWM(runtime, enginePowerPort, engineDirectionPort,
+	                        topics.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
+	                        topics.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce),
+	                        topics.publish("engine/state/feedback", false, MQTTQoS.atMostOnce));
+	                            	
+	            	topics.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
+	                topics.subscribe(engine, "engine/power/control", MQTTQoS.atMostOnce, engine::onPower);
+	                topics.subscribe(engine, "engine/calibration/control", MQTTQoS.atMostOnce, engine::onCalibration);
+	                if (config.faultDetectionEnabled) {
+	                	topics.subscribe(engine, faultFeedback, engine::onFault);
+	                }
+            		
+            	}
+                
             }
 
             if (config.lightsEnabled) {
-                final String lightsAmbientFeedback = "lights/ambient/feedback";
-                final AmbientLightBehavior ambientLight = new AmbientLightBehavior(runtime, config.lightSensorPort,
-                        topics.publish(lightsAmbientFeedback, false, MQTTQoS.atMostOnce));
-                topics.subscribe(ambientLight, allFeedback, MQTTQoS.atMostOnce, ambientLight::onAllFeedback);
-
-                final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerBInternal, config.lightActuatorPort, config.ledPort,
-                        topics.publish("lights/override/feedback", false, MQTTQoS.atMostOnce),
-                        topics.publish(lightsPowerFeedback, false, MQTTQoS.atMostOnce),
-                        topics.publish("lights/calibration/feedback", false, MQTTQoS.atMostOnce));
-                topics.subscribe(lights, allFeedback, MQTTQoS.atMostOnce, lights::onAllFeedback);
-                topics.subscribe(lights, "lights/override/control", MQTTQoS.atMostOnce, lights::onOverride);
-                topics.subscribe(lights, "lights/calibration/control", MQTTQoS.atMostOnce, lights::onCalibration);
-                topics.subscribe(lights, lightsAmbientFeedback, lights::onDetected);
+                
+            	if (config.sharedAcutatorEnabled) { 
+	            	final String lightsAmbientFeedback = "lights/ambient/feedback";
+	                final AmbientLightBehavior ambientLight = new AmbientLightBehavior(runtime, config.lightSensorPort,
+	                        topics.publish(lightsAmbientFeedback, false, MQTTQoS.atMostOnce));
+	                topics.subscribe(ambientLight, allFeedback, MQTTQoS.atMostOnce, ambientLight::onAllFeedback);
+	
+	                final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerBInternal, config.lightActuatorPort, 
+	                		topics.publish("lights/override/feedback", false, MQTTQoS.atMostOnce),
+	                        topics.publish(lightsPowerFeedback, false, MQTTQoS.atMostOnce),
+	                        topics.publish("lights/calibration/feedback", false, MQTTQoS.atMostOnce));
+	                
+	                
+	                topics.subscribe(lights, allFeedback, MQTTQoS.atMostOnce, lights::onAllFeedback);
+	                topics.subscribe(lights, "lights/override/control", MQTTQoS.atMostOnce, lights::onOverride);
+	                topics.subscribe(lights, "lights/calibration/control", MQTTQoS.atMostOnce, lights::onCalibration);
+	                topics.subscribe(lights, lightsAmbientFeedback, lights::onDetected);
+            	} else {
+            		Port lightPort = Port.D3; //TODO: move once this works.
+            		
+            		
+	            	final String lightsAmbientFeedback = "lights/ambient/feedback";
+	                final AmbientLightBehavior ambientLight = new AmbientLightBehavior(runtime, config.lightSensorPort,
+	                        topics.publish(lightsAmbientFeedback, false, MQTTQoS.atMostOnce));
+	                topics.subscribe(ambientLight, allFeedback, MQTTQoS.atMostOnce, ambientLight::onAllFeedback);
+	
+					final LightingBehaviorPWM lights = new LightingBehaviorPWM(runtime, lightPort, 
+	                		topics.publish("lights/override/feedback", false, MQTTQoS.atMostOnce),
+	                        topics.publish(lightsPowerFeedback, false, MQTTQoS.atMostOnce),
+	                        topics.publish("lights/calibration/feedback", false, MQTTQoS.atMostOnce));
+	                
+	                
+	                topics.subscribe(lights, allFeedback, MQTTQoS.atMostOnce, lights::onAllFeedback);
+	                topics.subscribe(lights, "lights/override/control", MQTTQoS.atMostOnce, lights::onOverride);
+	                topics.subscribe(lights, "lights/calibration/control", MQTTQoS.atMostOnce, lights::onCalibration);
+	                topics.subscribe(lights, lightsAmbientFeedback, lights::onDetected);
+            		
+            		
+            	}
+                
+                
             }
         }
         if (config.faultDetectionEnabled) {
