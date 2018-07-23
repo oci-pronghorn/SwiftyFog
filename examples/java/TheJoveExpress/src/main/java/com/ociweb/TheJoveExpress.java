@@ -62,18 +62,18 @@ public class TheJoveExpress implements FogApp
     }
 
     public void declareBehavior(FogRuntime runtime) {
-        TopicJunctionBox pubSub = new TopicJunctionBox(config.trainName, runtime, config.mqttEnabled ? mqttBridge : null);
+        TopicJunctionBox topics = new TopicJunctionBox(config.trainName, runtime, config.mqttEnabled ? mqttBridge : null);
 
         if (config.lifecycleEnabled) {
             final String lifeCycleFeedback = "lifecycle/feedback";
             final String internalMqttConnect = "MQTT/Connection";
             final String shutdownControl = "lifecycle/control/shutdown";
-            pubSub.lastWill(lifeCycleFeedback, true, MQTTQoS.atLeastOnce, blobWriter -> blobWriter.writeBoolean(false)); // TODO remove immutable check
-            pubSub.connectionFeedbackTopic(internalMqttConnect);
+            topics.lastWill(lifeCycleFeedback, true, MQTTQoS.atLeastOnce, blobWriter -> blobWriter.writeBoolean(false)); // TODO remove immutable check
+            topics.connectionFeedbackTopic(internalMqttConnect);
             LifeCycleBehavior lifeCycle = new LifeCycleBehavior(runtime,
-                    pubSub.publish(lifeCycleFeedback, true, MQTTQoS.atLeastOnce));
-            pubSub.subscribe(lifeCycle, internalMqttConnect, MQTTQoS.atLeastOnce, lifeCycle::onMQTTConnect);
-            pubSub.subscribe(lifeCycle, shutdownControl, MQTTQoS.atMostOnce, lifeCycle::onShutdown);
+                    topics.publish(lifeCycleFeedback, true, MQTTQoS.atLeastOnce));
+            topics.subscribe(lifeCycle, internalMqttConnect, MQTTQoS.atLeastOnce, lifeCycle::onMQTTConnect);
+            topics.subscribe(lifeCycle, shutdownControl, MQTTQoS.atMostOnce, lifeCycle::onShutdown);
         }
 
         final String allFeedback = "feedback";
@@ -85,38 +85,38 @@ public class TheJoveExpress implements FogApp
         if (config.engineEnabled || config.lightsEnabled) {
             final String actuatorPowerAInternal = "actuator/power/a/internal";
             final String actuatorPowerBInternal = "actuator/power/b/internal";
-            
+
             final ActuatorDriverBehavior actuator = new ActuatorDriverBehavior(runtime);
-            pubSub.subscribe(actuator, actuatorPowerAInternal, actuator::setPower);
-            pubSub.subscribe(actuator, actuatorPowerBInternal, actuator::setPower);
-            
+            topics.subscribe(actuator, actuatorPowerAInternal, actuator::setPower);
+            topics.subscribe(actuator, actuatorPowerBInternal, actuator::setPower);
+
             if (config.engineEnabled) {
                 final EngineBehavior engine = new EngineBehavior(runtime, actuatorPowerAInternal, config.engineActuatorPort,
-                        pubSub.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
-                        pubSub.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce),
-                        pubSub.publish("engine/state/feedback", false, MQTTQoS.atMostOnce));
-                pubSub.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
-                pubSub.subscribe(engine, "engine/power/control", MQTTQoS.atMostOnce, engine::onPower);
-                pubSub.subscribe(engine, "engine/calibration/control", MQTTQoS.atMostOnce, engine::onCalibration);
+                        topics.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
+                        topics.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce),
+                        topics.publish("engine/state/feedback", false, MQTTQoS.atMostOnce));
+                topics.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
+                topics.subscribe(engine, "engine/power/control", MQTTQoS.atMostOnce, engine::onPower);
+                topics.subscribe(engine, "engine/calibration/control", MQTTQoS.atMostOnce, engine::onCalibration);
                 if (config.faultDetectionEnabled) {
-                	pubSub.subscribe(engine, faultFeedback, engine::onFault);
+                	topics.subscribe(engine, faultFeedback, engine::onFault);
                 }
             }
 
             if (config.lightsEnabled) {
                 final String lightsAmbientFeedback = "lights/ambient/feedback";
                 final AmbientLightBehavior ambientLight = new AmbientLightBehavior(runtime, config.lightSensorPort,
-                        pubSub.publish(lightsAmbientFeedback, false, MQTTQoS.atMostOnce));
-                pubSub.subscribe(ambientLight, allFeedback, MQTTQoS.atMostOnce, ambientLight::onAllFeedback);
+                        topics.publish(lightsAmbientFeedback, false, MQTTQoS.atMostOnce));
+                topics.subscribe(ambientLight, allFeedback, MQTTQoS.atMostOnce, ambientLight::onAllFeedback);
 
                 final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerBInternal, config.lightActuatorPort, config.ledPort,
-                        pubSub.publish("lights/override/feedback", false, MQTTQoS.atMostOnce),
-                        pubSub.publish(lightsPowerFeedback, false, MQTTQoS.atMostOnce),
-                        pubSub.publish("lights/calibration/feedback", false, MQTTQoS.atMostOnce));
-                pubSub.subscribe(lights, allFeedback, MQTTQoS.atMostOnce, lights::onAllFeedback);
-                pubSub.subscribe(lights, "lights/override/control", MQTTQoS.atMostOnce, lights::onOverride);
-                pubSub.subscribe(lights, "lights/calibration/control", MQTTQoS.atMostOnce, lights::onCalibration);
-                pubSub.subscribe(lights, lightsAmbientFeedback, lights::onDetected);
+                        topics.publish("lights/override/feedback", false, MQTTQoS.atMostOnce),
+                        topics.publish(lightsPowerFeedback, false, MQTTQoS.atMostOnce),
+                        topics.publish("lights/calibration/feedback", false, MQTTQoS.atMostOnce));
+                topics.subscribe(lights, allFeedback, MQTTQoS.atMostOnce, lights::onAllFeedback);
+                topics.subscribe(lights, "lights/override/control", MQTTQoS.atMostOnce, lights::onOverride);
+                topics.subscribe(lights, "lights/calibration/control", MQTTQoS.atMostOnce, lights::onCalibration);
+                topics.subscribe(lights, lightsAmbientFeedback, lights::onDetected);
             }
         }
         if (config.faultDetectionEnabled) {
@@ -126,19 +126,19 @@ public class TheJoveExpress implements FogApp
 
         if (config.faultDetectionEnabled) {
             final MotionFaultBehavior motionFault = new MotionFaultBehavior(runtime,
-                    pubSub.publish(faultFeedback, false, MQTTQoS.atMostOnce));
-            pubSub.subscribe(motionFault, allFeedback, MQTTQoS.atMostOnce, motionFault::onAllFeedback);
-            pubSub.subscribe(motionFault, "fault/control", MQTTQoS.atMostOnce, motionFault::onForceFault);
-            pubSub.subscribe(motionFault, accelerometerInternal, motionFault::onAccelerometer);
-            pubSub.subscribe(motionFault, engineState, motionFault::onEngineState);
+                    topics.publish(faultFeedback, false, MQTTQoS.atMostOnce));
+            topics.subscribe(motionFault, allFeedback, MQTTQoS.atMostOnce, motionFault::onAllFeedback);
+            topics.subscribe(motionFault, "fault/control", MQTTQoS.atMostOnce, motionFault::onForceFault);
+            topics.subscribe(motionFault, accelerometerInternal, motionFault::onAccelerometer);
+            topics.subscribe(motionFault, engineState, motionFault::onEngineState);
         }
 
         if (config.billboardEnabled) {
             final TextDisplay billboard = new TextDisplay(runtime, config.trainDisplayName,
-                    pubSub.publish("billboard/text/feedback", false, MQTTQoS.atMostOnce));
-            pubSub.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
-            pubSub.subscribe(billboard, "billboard/text/control", MQTTQoS.atMostOnce, billboard::onText);
-            pubSub.subscribe(billboard, lightsPowerFeedback, billboard::onLightsPower);
+                    topics.publish("billboard/text/feedback", false, MQTTQoS.atMostOnce));
+            topics.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
+            topics.subscribe(billboard, "billboard/text/control", MQTTQoS.atMostOnce, billboard::onText);
+            topics.subscribe(billboard, lightsPowerFeedback, billboard::onLightsPower);
         }
 
         if(config.locationEnabled) {
@@ -146,11 +146,11 @@ public class TheJoveExpress implements FogApp
             final String accuracyFeedback = "location/accuracy/feedback";
 
             final TrainingBehavior training = new TrainingBehavior(runtime);
-            pubSub.subscribe(training, "location/training/start", MQTTQoS.atLeastOnce, training::onTrainingStart);
+            topics.subscribe(training, "location/training/start", MQTTQoS.atLeastOnce, training::onTrainingStart);
 
             final LocationBehavior location = new LocationBehavior(runtime,
-                    pubSub.publish(locationFeedback, false, MQTTQoS.atMostOnce),
-                    pubSub.publish(accuracyFeedback, false, MQTTQoS.atMostOnce));
+                    topics.publish(locationFeedback, false, MQTTQoS.atMostOnce),
+                    topics.publish(accuracyFeedback, false, MQTTQoS.atMostOnce));
             runtime.registerListener(location);
         }
 
@@ -158,6 +158,6 @@ public class TheJoveExpress implements FogApp
             runtime.addFileServer("").includeAllRoutes(); // TODO: use resource folder
         }
 
-        pubSub.finish();
+        topics.close();
     }
 }
