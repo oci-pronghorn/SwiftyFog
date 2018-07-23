@@ -43,12 +43,15 @@ public class TrainConfiguration  {
 
     final boolean soundEnabled = false;
 
-	final boolean sharedAcutatorEnabled = true;;
+	final boolean sharedAcutatorEnabled = true;
+
+	final int engineCalibration;
 
     TrainConfiguration(ArgumentProvider args) {
         this.trainName = args.getArgumentValue("--name", "-n", "thejoveexpress");
         this.mqttBrokerHost = args.getArgumentValue("--broker", "-b", this.trainName + ".local");
         this.mqttClientName = trainName;
         this.trainDisplayName = args.getArgumentValue("--display", "-d", "The Jove Express");
+        this.engineCalibration = args.getArgumentValue("--calibrartion", "-c", 30);
     }
 }

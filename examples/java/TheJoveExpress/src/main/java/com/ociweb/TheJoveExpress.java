@@ -102,7 +102,7 @@ public class TheJoveExpress implements FogApp
             if (config.engineEnabled) {
                 
             	if (config.sharedAcutatorEnabled) { 
-	            	final EngineBehavior engine = new EngineBehavior(runtime, actuatorPowerAInternal, config.engineActuatorPort,
+	            	final EngineBehavior engine = new EngineBehavior(runtime, config.engineCalibration, actuatorPowerAInternal, config.engineActuatorPort,
 	                        topics.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
 	                        topics.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce),
 	                        topics.publish("engine/state/feedback", false, MQTTQoS.atMostOnce));
