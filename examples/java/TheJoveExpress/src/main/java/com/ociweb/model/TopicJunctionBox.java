@@ -15,7 +15,7 @@ import java.util.Map;
 // Encapsulates internal/external mapping for mqtt
 // MQTT can be disabled (optional null)
 
-public class PubSub {
+public class TopicJunctionBox {
     private final CharSequence externalScope;
     private final MQTTBridge mqttBridge;
     private final MsgRuntime<HardwareImpl, ListenerFilterIoT> runtime;
@@ -29,7 +29,7 @@ public class PubSub {
     private final Map<String, MQTTQoS> accumeMQTTSubscriptions = new HashMap<>();
     private final Map<String, Trans> accumeMQTTTransmissions = new HashMap<>();
 
-    public PubSub(String externalScope, MsgRuntime<HardwareImpl, ListenerFilterIoT> runtime, MQTTBridge mqttBridge) {
+    public TopicJunctionBox(String externalScope, MsgRuntime<HardwareImpl, ListenerFilterIoT> runtime, MQTTBridge mqttBridge) {
         this.externalScope = externalScope + "/";
         this.mqttBridge = mqttBridge;
         this.runtime = runtime;
