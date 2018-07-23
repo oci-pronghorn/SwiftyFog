@@ -35,7 +35,7 @@ public class TrainConfiguration  {
 
     final boolean locationEnabled = false;
 
-    final boolean faultDetectionEnabled = false;
+    final boolean faultDetectionEnabled = true;
     final int accelerometerReadFreq = 250;
 
     final boolean appServerEnabled = false;
