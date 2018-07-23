@@ -18,13 +18,13 @@ public class EngineBehavior implements PubSubMethodListener {
     
     private final ActuatorDriverPayload actuatorPayload = new ActuatorDriverPayload();
     private final RationalPayload enginePower = new RationalPayload(0, 100);
-    private final RationalPayload calibration = new RationalPayload(30, 100);
+    private final RationalPayload calibration;
     private final MotionFaults motionFaults = new MotionFaults();
     private int engineState = 0;
 
-    public EngineBehavior(FogRuntime runtime, String actuatorTopic, ActuatorDriverPort port, String enginePoweredTopic, String engineCalibratedTopic, String engineStateTopic) {
+    public EngineBehavior(FogRuntime runtime, int calibration, String actuatorTopic, ActuatorDriverPort port, String enginePoweredTopic, String engineCalibratedTopic, String engineStateTopic) {
         FogCommandChannel channel = runtime.newCommandChannel();
-        
+        this.calibration = new RationalPayload(calibration, 100);
         this.actuatorService = channel.newPubSubService(actuatorTopic);
         this.engineStateService = channel.newPubSubService(engineStateTopic);
         this.powerService = channel.newPubSubService(enginePoweredTopic);

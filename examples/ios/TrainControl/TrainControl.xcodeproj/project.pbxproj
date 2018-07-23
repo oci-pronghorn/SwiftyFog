@@ -53,6 +53,8 @@
 		55524C8220F11FAA004EBD8B /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55524C8120F11FAA004EBD8B /* NotificationController.swift */; };
 		55524C8420F11FAA004EBD8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55524C8320F11FAA004EBD8B /* Assets.xcassets */; };
 		55524C8920F11FAA004EBD8B /* TrainConductor.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 55524C6C20F11FA8004EBD8B /* TrainConductor.app */; };
+		555C84B5210659A700326675 /* TrainSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555C84B4210659A700326675 /* TrainSelection.swift */; };
+		555C84B6210659A700326675 /* TrainSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555C84B4210659A700326675 /* TrainSelection.swift */; };
 		55632BF920F4520D008BCB09 /* Billboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348671F82D46100C3C2CB /* Billboard.swift */; };
 		5578608620F3B5EA00FC182D /* SwiftFog_watch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */; };
 		5578608720F3B5EA00FC182D /* SwiftFog_watch.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -203,6 +205,7 @@
 		55524C8320F11FAA004EBD8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55524C8520F11FAA004EBD8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55524C8620F11FAA004EBD8B /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		555C84B4210659A700326675 /* TrainSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainSelection.swift; sourceTree = "<group>"; };
 		5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftFog_watch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5578608B20F3DF9900FC182D /* PhotosAccess.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosAccess.swift; sourceTree = "<group>"; };
 		5578608C20F3DF9A00FC182D /* UIImagePickerController+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImagePickerController+.swift"; sourceTree = "<group>"; };
@@ -342,6 +345,7 @@
 				5543486B1F82D46100C3C2CB /* Train.swift */,
 				22ABCF462010D40500AEAC1D /* MotionFaults.swift */,
 				55130BBD210271E4001D2E3F /* SubscriptionLogging.swift */,
+				555C84B4210659A700326675 /* TrainSelection.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -621,6 +625,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				554348811F82D46100C3C2CB /* TestingViewController.swift in Sources */,
+				555C84B5210659A700326675 /* TrainSelection.swift in Sources */,
 				554348841F82D46100C3C2CB /* FogRationalUi.swift in Sources */,
 				5543489D1F82D65B00C3C2CB /* WMGaugeView.m in Sources */,
 				5578608E20F3DF9A00FC182D /* UIImagePickerController+.swift in Sources */,
@@ -670,6 +675,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				55524C8220F11FAA004EBD8B /* NotificationController.swift in Sources */,
+				555C84B6210659A700326675 /* TrainSelection.swift in Sources */,
 				55524C8020F11FAA004EBD8B /* ExtensionDelegate.swift in Sources */,
 				55524C7E20F11FAA004EBD8B /* TrainInterfaceController.swift in Sources */,
 				5578609220F406E700FC182D /* Train.swift in Sources */,
