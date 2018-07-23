@@ -35,7 +35,7 @@ public class TrainConfiguration  {
 
     final boolean locationEnabled = false;
 
-    final boolean faultDetectionEnabled = true;
+    final boolean faultDetectionEnabled = false; //NOTE: warning the accelerometer is never found to be publishing if this is on...
     final int accelerometerReadFreq = 250;
 
     final boolean appServerEnabled = false;
@@ -43,7 +43,10 @@ public class TrainConfiguration  {
 
     final boolean soundEnabled = false;
 
-	final boolean sharedAcutatorEnabled = true;;
+	final boolean sharedAcutatorEnabled = true;
+	
+	final Port enginePowerPort     = Port.D5; 
+	final Port engineDirectionPort = Port.D7;
 
     TrainConfiguration(ArgumentProvider args) {
         this.trainName = args.getArgumentValue("--name", "-n", "thejoveexpress");

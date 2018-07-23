@@ -8,10 +8,14 @@ import com.ociweb.gl.api.MQTTBridge;
 import com.ociweb.gl.api.MQTTQoS;
 import com.ociweb.iot.grove.simple_analog.SimpleAnalogTwig;
 import com.ociweb.iot.grove.simple_digital.SimpleDigitalTwig;
+import com.ociweb.iot.hardware.ADIODevice;
+import com.ociweb.iot.hardware.I2CConnection;
 import com.ociweb.iot.maker.Baud;
 import com.ociweb.iot.maker.FogApp;
+import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.Hardware;
+import com.ociweb.iot.maker.IODeviceTransducer;
 import com.ociweb.iot.maker.Port;
 import com.ociweb.pronghorn.iot.i2c.I2CJFFIStage;
 import com.ociweb.pronghorn.stage.scheduling.GraphManager;
@@ -23,6 +27,8 @@ public class TheJoveExpress implements FogApp
 {
     private TrainConfiguration config;
     private MQTTBridge mqttBridge;
+
+
 
     @Override
     public void declareConnections(Hardware hardware) {
@@ -44,11 +50,10 @@ public class TheJoveExpress implements FogApp
         }
         if (config.appServerEnabled) hardware.useHTTP1xServer(config.appServerPort); // TODO: heap problem on Pi0
         if (config.lightsEnabled) {
-            hardware.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);
-            hardware.connect(SimpleDigitalTwig.LED, config.ledPort);
+            hardware.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);  
         }
         if (config.soundEnabled) hardware.useSerial(Baud.B_____9600);
-        if (config.engineEnabled || config.lightsEnabled) hardware.connect(MotorDriver);
+
         if (config.billboardEnabled) hardware.connect(OLED_128x64);/*c.connect(OLED_96x96);*/
  //       if (config.faultDetectionEnabled) hardware.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readAccel, config.accelerometerReadFreq);
         if (config.soundEnabled) ; //c.connect(serial mp3 player);
@@ -60,6 +65,21 @@ public class TheJoveExpress implements FogApp
         if (config.lightsEnabled) {
             hardware.setTimerPulseRate(1000);
         }
+        
+        if (config.sharedAcutatorEnabled) {
+        	if (config.engineEnabled || config.lightsEnabled) {
+        		hardware.connect(MotorDriver);
+        	}        	
+        } else {
+        	if (config.lightsEnabled) {
+                hardware.connect(SimpleDigitalTwig.LED, config.ledPort);
+        	}
+        	if (config.engineEnabled) {
+        		hardware.connect(SimpleDigitalTwig.MDDS30Power, config.enginePowerPort);
+        		hardware.connect(SimpleDigitalTwig.MDDS30Direction, config.engineDirectionPort);
+        	}
+        }
+        
     }
 
     public void declareBehavior(FogRuntime runtime) {
@@ -114,11 +134,8 @@ public class TheJoveExpress implements FogApp
 	                	topics.subscribe(engine, faultFeedback, engine::onFault);
 	                }
             	} else {
-					//simple PwM control
-            		Port enginePowerPort     = Port.D5; //TODO: move into config once we get this working...
-            		Port engineDirectionPort = Port.D7;
-            		
-	            	final EngineBehaviorPWM engine = new EngineBehaviorPWM(runtime, enginePowerPort, engineDirectionPort,
+					//simple PwM control          		
+	            	final EngineBehaviorPWM engine = new EngineBehaviorPWM(runtime, config.enginePowerPort, config.engineDirectionPort,
 	                        topics.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
 	                        topics.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce),
 	                        topics.publish("engine/state/feedback", false, MQTTQoS.atMostOnce));
@@ -153,15 +170,14 @@ public class TheJoveExpress implements FogApp
 	                topics.subscribe(lights, "lights/calibration/control", MQTTQoS.atMostOnce, lights::onCalibration);
 	                topics.subscribe(lights, lightsAmbientFeedback, lights::onDetected);
             	} else {
-            		Port lightPort = Port.D3; //TODO: move once this works.
-            		
+
             		
 	            	final String lightsAmbientFeedback = "lights/ambient/feedback";
 	                final AmbientLightBehavior ambientLight = new AmbientLightBehavior(runtime, config.lightSensorPort,
 	                        topics.publish(lightsAmbientFeedback, false, MQTTQoS.atMostOnce));
 	                topics.subscribe(ambientLight, allFeedback, MQTTQoS.atMostOnce, ambientLight::onAllFeedback);
 	
-					final LightingBehaviorPWM lights = new LightingBehaviorPWM(runtime, lightPort, 
+					final LightingBehaviorPWM lights = new LightingBehaviorPWM(runtime, config.ledPort, 
 	                		topics.publish("lights/override/feedback", false, MQTTQoS.atMostOnce),
 	                        topics.publish(lightsPowerFeedback, false, MQTTQoS.atMostOnce),
 	                        topics.publish("lights/calibration/feedback", false, MQTTQoS.atMostOnce));

@@ -2,6 +2,7 @@ package com.ociweb.behaviors;
 
 import com.ociweb.gl.api.PubSubFixedTopicService;
 import com.ociweb.gl.api.PubSubMethodListener;
+import com.ociweb.gl.api.StartupListener;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.PinService;
 import com.ociweb.iot.maker.Port;
@@ -9,12 +10,11 @@ import com.ociweb.model.MotionFaults;
 import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
-public class EngineBehaviorPWM implements PubSubMethodListener {
+public class EngineBehaviorPWM implements PubSubMethodListener, StartupListener {
 
-    private final int twigRange = 1024;
     private final Port enginePowerPort; 
     private final Port engineDirectionPort;
-    
+    private final int powerMax;
     
 	private final PubSubFixedTopicService engineStateService;
     private final PubSubFixedTopicService powerService;
@@ -35,7 +35,11 @@ public class EngineBehaviorPWM implements PubSubMethodListener {
                 
         this.pwmService = runtime.newCommandChannel().newPinService();
         this.enginePowerPort = enginePowerPort;
-        this.engineDirectionPort = engineDirectionPort;       
+        this.engineDirectionPort = engineDirectionPort; 
+        
+        this.powerMax = runtime.builder.getConnectedDevice(enginePowerPort).range()-1;
+        
+        
 
     }
 
@@ -78,8 +82,12 @@ public class EngineBehaviorPWM implements PubSubMethodListener {
         }
         int state = Double.compare(actualPower, 0.0);
 
+       // System.out.println("engine:  "+(actualPower>=0)+"  "+(powerMax*Math.abs(actualPower)) );
+        
         pwmService.setValue(engineDirectionPort, actualPower>=0);
-        if (pwmService.setValue(enginePowerPort, (int)(twigRange*Math.abs(actualPower)))) {
+        
+        
+        if (pwmService.setValue(enginePowerPort, (int)(powerMax*Math.abs(actualPower)))) {
 
 	        if (state != engineState) {
 	            engineState = state;
@@ -87,4 +95,11 @@ public class EngineBehaviorPWM implements PubSubMethodListener {
 	        }
         }
     }
+
+	@Override
+	public void startup() {
+		//must be zero on startup or hardware will report an error, (double blink)
+		pwmService.setValue(engineDirectionPort, 0);
+		pwmService.setValue(enginePowerPort, 0);
+	}
 }
