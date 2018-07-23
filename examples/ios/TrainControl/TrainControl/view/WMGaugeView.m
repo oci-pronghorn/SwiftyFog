@@ -174,7 +174,7 @@
     
     _unitOfMeasurementVerticalOffset = 0.6;
     _unitOfMeasurementColor = [UIColor whiteColor];
-    _unitOfMeasurementFont = [UIFont fontWithName:@"Helvetica" size:0.04];
+    _unitOfMeasurementFont = [UIFont fontWithName:@"Helvetica" size:0.06];
     _unitOfMeasurement = @"";
     _showUnitOfMeasurement = NO;
 	
