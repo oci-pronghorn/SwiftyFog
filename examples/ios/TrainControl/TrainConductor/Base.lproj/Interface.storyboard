@@ -7,6 +7,7 @@
         <deployment identifier="watchOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14278.2"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14237"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
     </dependencies>
     <scenes>
         <!--InterfaceController-->
@@ -37,6 +38,7 @@
                                 <group width="1" alignment="center" verticalAlignment="bottom" id="Ohu-Ak-A3X" userLabel="Light Control">
                                     <items>
                                         <button alignment="center" verticalAlignment="center" title="Lights" id="zuO-Yg-zGq">
+                                            <color key="backgroundColor" name="Border"/>
                                             <connections>
                                                 <action selector="lightsWithSender:" destination="U0Q-nI-cAQ" id="g5P-bf-2pA"/>
                                             </connections>
@@ -77,4 +79,9 @@
             <point key="canvasLocation" x="124" y="201"/>
         </scene>
     </scenes>
+    <resources>
+        <namedColor name="Border">
+            <color red="0.0" green="0.070000000298023224" blue="0.097999997437000275" alpha="0.40000000596046448" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>

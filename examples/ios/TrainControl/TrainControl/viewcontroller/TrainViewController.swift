@@ -313,7 +313,7 @@ extension TrainViewController:
     	let colorName: String
         switch state {
             case .idle:
-                colorName = "Idle"
+                colorName = "NoPower"
             case .forward:
                 colorName = "Forward"
             case .reverse:
@@ -337,7 +337,7 @@ extension TrainViewController:
 	}
 	
 	func lights(power: Bool, _ asserted: Bool) {
-		lightingGauge?.indicatorTint = power ? UIColor(named: "LightsOn")! : UIColor(named: "LightsOff")!
+		lightingGauge?.indicatorTint = power ? UIColor(named: "LightsOn")! : UIColor(named: "NoPower")!
 	}
 	
 	func lights(calibration: TrainRational, _ asserted: Bool) {

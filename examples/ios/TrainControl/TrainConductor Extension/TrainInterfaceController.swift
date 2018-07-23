@@ -179,7 +179,7 @@ extension TrainInterfaceController:
     	let colorName: String
         switch state {
             case .idle:
-            	colorName = "Idle"
+            	colorName = "NoPower"
             case .forward:
             	colorName = "Forward"
             case .reverse:
@@ -209,7 +209,7 @@ extension TrainInterfaceController:
 	}
 	
 	func lights(power: Bool, _ asserted: Bool) {
-		lightIndicator.setImage(#imageLiteral(resourceName: "Torch").tinted(with: UIColor(named: power ? "LightsOn" : "LightsOff")!))
+		lightIndicator.setImage(#imageLiteral(resourceName: "Torch").tinted(with: UIColor(named: power ? "LightsOn" : "NoPower")!))
 	}
 	
 	func lights(calibration: TrainRational, _ asserted: Bool) {

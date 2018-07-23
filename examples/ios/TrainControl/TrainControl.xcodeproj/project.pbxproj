@@ -15,6 +15,7 @@
 		55130BC72102C9D0001D2E3F /* Settings-Watch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5536E00120FA934D006B4AE8 /* Settings-Watch.bundle */; };
 		55130BC821034B4D001D2E3F /* Settings-Watch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5536E00120FA934D006B4AE8 /* Settings-Watch.bundle */; };
 		551AB9DF1F93B94A0080D37B /* FlipLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551AB9DE1F93B94A0080D37B /* FlipLabel.swift */; };
+		5522F85A210570AE0035A047 /* PhotosAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578608B20F3DF9900FC182D /* PhotosAccess.swift */; };
 		5526A5872104EE2E005AF2C6 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5526A5862104EE2E005AF2C6 /* UIImage+.swift */; };
 		5526A5882104EE3F005AF2C6 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5526A5862104EE2E005AF2C6 /* UIImage+.swift */; };
 		5526A58A2104FAF0005AF2C6 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5526A5892104FAF0005AF2C6 /* Color.xcassets */; };
@@ -55,7 +56,6 @@
 		55632BF920F4520D008BCB09 /* Billboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348671F82D46100C3C2CB /* Billboard.swift */; };
 		5578608620F3B5EA00FC182D /* SwiftFog_watch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */; };
 		5578608720F3B5EA00FC182D /* SwiftFog_watch.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5578608D20F3DF9A00FC182D /* PhotosAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578608B20F3DF9900FC182D /* PhotosAccess.swift */; };
 		5578608E20F3DF9A00FC182D /* UIImagePickerController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578608C20F3DF9A00FC182D /* UIImagePickerController+.swift */; };
 		5578608F20F4066D00FC182D /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348681F82D46100C3C2CB /* Engine.swift */; };
 		5578609220F406E700FC182D /* Train.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486B1F82D46100C3C2CB /* Train.swift */; };
@@ -253,6 +253,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5522F8592105701D0035A047 /* extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5578608B20F3DF9900FC182D /* PhotosAccess.swift */,
+				5578608C20F3DF9A00FC182D /* UIImagePickerController+.swift */,
+				554348721F82D46100C3C2CB /* FogRationalUi.swift */,
+				55BD0DD120F15954001E31C3 /* UIView+.swift */,
+				55BD0DD320F15ABF001E31C3 /* AVAudioPlayer+.swift */,
+				5526A5862104EE2E005AF2C6 /* UIImage+.swift */,
+			);
+			path = extensions;
+			sourceTree = "<group>";
+		};
 		5543482C1F82D3AD00C3C2CB = {
 			isa = PBXGroup;
 			children = (
@@ -287,6 +300,7 @@
 				554348661F82D46100C3C2CB /* model */,
 				554348711F82D46100C3C2CB /* view */,
 				5543486C1F82D46100C3C2CB /* viewcontroller */,
+				5522F8592105701D0035A047 /* extensions */,
 				5543483C1F82D3AD00C3C2CB /* Main.storyboard */,
 				5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */,
 				5543483F1F82D3AD00C3C2CB /* Assets.xcassets */,
@@ -345,9 +359,6 @@
 		554348711F82D46100C3C2CB /* view */ = {
 			isa = PBXGroup;
 			children = (
-				5578608B20F3DF9900FC182D /* PhotosAccess.swift */,
-				5578608C20F3DF9A00FC182D /* UIImagePickerController+.swift */,
-				554348721F82D46100C3C2CB /* FogRationalUi.swift */,
 				554348751F82D46100C3C2CB /* MetalPanelView.swift */,
 				554348761F82D46100C3C2CB /* Pulsator.swift */,
 				554348771F82D46100C3C2CB /* ScubControl.swift */,
@@ -356,10 +367,7 @@
 				5543489A1F82D65A00C3C2CB /* WMGaugeView.h */,
 				554348991F82D65A00C3C2CB /* WMGaugeView.m */,
 				554348981F82D65900C3C2CB /* TrainControl-Bridging-Header.h */,
-				55BD0DD120F15954001E31C3 /* UIView+.swift */,
-				55BD0DD320F15ABF001E31C3 /* AVAudioPlayer+.swift */,
 				554E71472103751200AAE25E /* ScrewsView.swift */,
-				5526A5862104EE2E005AF2C6 /* UIImage+.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -615,7 +623,6 @@
 				554348811F82D46100C3C2CB /* TestingViewController.swift in Sources */,
 				554348841F82D46100C3C2CB /* FogRationalUi.swift in Sources */,
 				5543489D1F82D65B00C3C2CB /* WMGaugeView.m in Sources */,
-				5578608D20F3DF9A00FC182D /* PhotosAccess.swift in Sources */,
 				5578608E20F3DF9A00FC182D /* UIImagePickerController+.swift in Sources */,
 				5543487E1F82D46100C3C2CB /* Sound.swift in Sources */,
 				551AB9DF1F93B94A0080D37B /* FlipLabel.swift in Sources */,
@@ -637,6 +644,7 @@
 				22ABCF472010D40500AEAC1D /* MotionFaults.swift in Sources */,
 				5543487B1F82D46100C3C2CB /* Billboard.swift in Sources */,
 				554348391F82D3AD00C3C2CB /* AppDelegate.swift in Sources */,
+				5522F85A210570AE0035A047 /* PhotosAccess.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
