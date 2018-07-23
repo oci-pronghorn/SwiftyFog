@@ -44,14 +44,11 @@ public class TrainConfiguration  {
     final boolean soundEnabled = false;
 
 	final boolean sharedAcutatorEnabled = true;
-<<<<<<< HEAD
-	
+
 	final Port enginePowerPort     = Port.D5; 
 	final Port engineDirectionPort = Port.D7;
-=======
 
 	final int engineCalibration;
->>>>>>> branch 'master' of https://github.com/oci-pronghorn/SwiftyFog.git
 
     TrainConfiguration(ArgumentProvider args) {
         this.trainName = args.getArgumentValue("--name", "-n", "thejoveexpress");
