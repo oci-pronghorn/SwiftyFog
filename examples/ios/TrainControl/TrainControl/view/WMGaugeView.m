@@ -774,7 +774,7 @@
 /**
  * Update gauge value with animation
  */
-- (void)setValue:(float)value animated:(BOOL)animated
+- (void)setValue:(CGFloat)value animated:(BOOL)animated
 {
     [self setValue:value animated:animated duration:0.8];
 }
@@ -782,7 +782,7 @@
 /**
  * Update gauge value with animation and fire a completion block
  */
-- (void)setValue:(float)value animated:(BOOL)animated completion:(void (^)(BOOL finished))completion
+- (void)setValue:(CGFloat)value animated:(BOOL)animated completion:(void (^)(BOOL finished))completion
 {
     [self setValue:value animated:animated duration:0.8 completion:completion];
 }
@@ -790,7 +790,7 @@
 /**
  * Update gauge value with animation and duration
  */
-- (void)setValue:(float)value animated:(BOOL)animated duration:(NSTimeInterval)duration
+- (void)setValue:(CGFloat)value animated:(BOOL)animated duration:(NSTimeInterval)duration
 {
     [self setValue:value animated:animated duration:duration completion:nil];
 }
@@ -798,7 +798,7 @@
 /**
  * Update gauge value with animation, duration and fire a completion block
  */
-- (void)setValue:(float)value animated:(BOOL)animated duration:(NSTimeInterval)duration completion:(void (^)(BOOL finished))completion
+- (void)setValue:(CGFloat)value animated:(BOOL)animated duration:(NSTimeInterval)duration completion:(void (^)(BOOL finished))completion
 {
     animationCompletion = completion;
     

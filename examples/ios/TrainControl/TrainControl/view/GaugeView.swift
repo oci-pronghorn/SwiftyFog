@@ -601,7 +601,7 @@ class GaugeView: UIView {
 	public func setValue(_ newValue: CGFloat, animated: Bool, duration: TimeInterval = 0.8, completion: ((_ finished: Bool) -> Void)? = nil) {
 		let lastValue = _value
 		_value = newValue
-		if false && animated {
+		if animated {
 			// Needle animation to target value
 			let firstRadians = needleRadians(forValue: lastValue)
 			let lastRadians = needleRadians(forValue: _value)
@@ -619,11 +619,11 @@ class GaugeView: UIView {
 			let middleTransform = CATransform3DMakeRotation(middleRadians, 0.0, 0.0, 1.0)
 			let finalTransform = CATransform3DMakeRotation(lastRadians, 0.0, 0.0, 1.0)
 			let animation = CAKeyframeAnimation(keyPath: "transform")
-			animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn)
+			animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
 			animation.isRemovedOnCompletion = true
 			animation.duration = duration
 			animation.values = [/*NSValue(caTransform3D: firstTransform),*/ NSValue(caTransform3D: middleTransform), NSValue(caTransform3D: finalTransform)]
-			//needleLayer.add(animation, forKey: kCATransition)
+			needleLayer.add(animation, forKey: kCATransition)
 		}
 		else {
 			valueChanged()

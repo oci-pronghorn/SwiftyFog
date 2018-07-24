@@ -303,7 +303,7 @@ extension TrainViewController:
     }
 	
 	func engine(power: TrainRational, _ asserted: Bool) {
-		engineGauge?.setValue(Float(power.num), animated: true, duration: 0.5)
+		engineGauge?.setValue(CGFloat(power.num), animated: true, duration: 0.5)
 		if asserted {
 			self.enginePower.rational = power
 		}
@@ -348,7 +348,7 @@ extension TrainViewController:
 	}
 	
 	func lights(ambient: TrainRational, _ asserted: Bool) {
-		self.lightingGauge?.setValue(Float(ambient.num), animated: true, duration: 0.5)
+		self.lightingGauge?.setValue(CGFloat(ambient.num), animated: true, duration: 0.5)
 		if asserted {
 		}
 	}
