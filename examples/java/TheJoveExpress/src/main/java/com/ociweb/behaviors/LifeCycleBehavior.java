@@ -34,7 +34,7 @@ public class LifeCycleBehavior implements PubSubMethodListener {
     public boolean onMQTTConnect(CharSequence topic, ChannelReader payload) {
         payload.readInto(connected);
         if (connected.status == MQTTConnectionStatus.connected) {
-            pubSubService.publishTopic( writer -> writer.writeBoolean(true));
+            return pubSubService.publishTopic( writer -> writer.writeBoolean(true));
         }
         return true;
     }

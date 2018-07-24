@@ -24,8 +24,7 @@ public class AmbientLightBehavior implements PubSubMethodListener, AnalogListene
     }
 
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
-        pubSubService.publishTopic(writer -> writer.write(oldValue));
-        return true;
+        return pubSubService.publishTopic(writer -> writer.write(oldValue));
     }
 
     @Override
