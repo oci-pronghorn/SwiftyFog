@@ -44,12 +44,20 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
     }
 
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
-        boolean isOn = this.actuatorPayload.power > 0.0;
-        TriState lightsOn = overridePower == null ? latent : overridePower == 0.0 ? TriState.on : TriState.off;
-        this.overrideService.publishTopic( writer -> writer.writeInt(lightsOn.ordinal()));
-        this.powerService.publishTopic( writer -> writer.writeBoolean(isOn));
-        this.calibrationService.publishTopic( writer -> writer.write(calibration));
-        return true;
+    	
+    	if (this.overrideService.hasRoomFor(1)
+    	   && this.powerService.hasRoomFor(1)
+    	   && this.calibrationService.hasRoomFor(1)) {
+    	
+	        boolean isOn = this.actuatorPayload.power > 0.0;
+	        TriState lightsOn = overridePower == null ? latent : overridePower == 0.0 ? TriState.on : TriState.off;
+	        this.overrideService.publishTopic( writer -> writer.writeInt(lightsOn.ordinal()));
+	        this.powerService.publishTopic( writer -> writer.writeBoolean(isOn));
+	        this.calibrationService.publishTopic( writer -> writer.write(calibration));
+	        return true;
+    	} else {
+    		return false;
+    	}
     }
 
     @Override
@@ -58,46 +66,69 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
     }
 
     public boolean onOverride(CharSequence charSequence, ChannelReader messageReader) {
-        int state = messageReader.readInt();
-        TriState lightsOn = TriState.values()[state];
-        switch (lightsOn) {
-            case on:
-                overridePower = 1.0;
-                break;
-            case off:
-                overridePower = 0.0;
-                break;
-            case latent:
-                overridePower = null;
-                break;
-        }
-        this.overrideService.publishTopic( writer -> writer.writeInt(lightsOn.ordinal()));
-        actuate();
-        return true;
+    	
+    	
+    	if (this.overrideService.hasRoomFor(1)
+    	   && this.powerService.hasRoomFor(1)
+    	   && this.actuatorService.hasRoomFor(1)) {
+    		
+	        int state = messageReader.readInt();
+	        TriState lightsOn = TriState.values()[state];
+	        switch (lightsOn) {
+	            case on:
+	                overridePower = 1.0;
+	                break;
+	            case off:
+	                overridePower = 0.0;
+	                break;
+	            case latent:
+	                overridePower = null;
+	                break;
+	        }
+	        this.overrideService.publishTopic( writer -> writer.writeInt(lightsOn.ordinal()));
+	        actuate();
+	        return true;
+    	} else {
+    		return false;
+    	}
     }
 
     public boolean onCalibration(CharSequence charSequence, ChannelReader messageReader) {
-        messageReader.readInto(this.calibration);
-        this.calibrationService.publishTopic( writer -> writer.write(calibration));
-        if (ambient.num >= calibration.num) {
-            determinedPower = 0.0;
-        } else {
-            determinedPower = 1.0;
-        }
-        actuate();
-        return true;
+    	
+    	if (this.calibrationService.hasRoomFor(1)
+    	   && this.powerService.hasRoomFor(1)
+    	   && this.actuatorService.hasRoomFor(1)) {
+    	    	
+	        messageReader.readInto(this.calibration);
+	        this.calibrationService.publishTopic( writer -> writer.write(calibration));
+	        if (ambient.num >= calibration.num) {
+	            determinedPower = 0.0;
+	        } else {
+	            determinedPower = 1.0;
+	        }
+	        actuate();
+	        return true;
+    	} else {
+    		return false;
+    	}
     }
 
     public boolean onDetected(CharSequence charSequence, ChannelReader messageReader) {
-        messageReader.readInto(ambient);
-        if (ambient.num >= calibration.num) {
-            determinedPower = 0.0;
-        } else {
-            determinedPower = 1.0;
-        }
-        actuate();
-        return true;
-    }
+    	if (          this.powerService.hasRoomFor(1)
+    	    	   && this.actuatorService.hasRoomFor(1)) {
+    		
+	    	messageReader.readInto(ambient);
+	        if (ambient.num >= calibration.num) {
+	            determinedPower = 0.0;
+	        } else {
+	            determinedPower = 1.0;
+	        }
+	        actuate();
+	        return true;
+	    } else {
+	    	return false;
+	    }
+	}
 
     @Override
     public void timeEvent(long time, int iteration) {
@@ -125,12 +156,7 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
             this.actuatorPayload.power = updatePower;
             this.actuatorService.publishTopic( writer -> writer.write(actuatorPayload));
             boolean isOn = this.actuatorPayload.power > 0.0;
-
-            //ledPinService.setValue(ledPort, isOn);
-
             this.powerService.publishTopic( writer -> writer.writeBoolean(isOn));
-
         }
-        //ledPinService.setValue(ledPort, updatePower == 1.0);
     }
 }
