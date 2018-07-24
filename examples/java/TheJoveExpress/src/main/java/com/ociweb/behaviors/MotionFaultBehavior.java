@@ -20,20 +20,22 @@ public class MotionFaultBehavior implements PubSubMethodListener {
     }
 
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader channelReader) {
-        pubSubService.publishTopic( writer -> writer.write(motionFaults));
-        return true;
+        return pubSubService.publishTopic( writer -> writer.write(motionFaults));
     }
 
     public boolean onForceFault(CharSequence charSequence, ChannelReader channelReader) {
-        motionFaults.derailed = !motionFaults.derailed;
-        pubSubService.publishTopic( writer -> writer.write(motionFaults));
-        return true;
+    	if (pubSubService.publishTopic( writer -> writer.write(motionFaults))) {    	
+	        motionFaults.derailed = !motionFaults.derailed;
+	        return true;
+    	} else {
+    		return false;
+    	}
     }
 
     public boolean onEngineState(CharSequence charSequence, ChannelReader channelReader) {
         int state = channelReader.readInt();
         if (motionFaults.accept(state)) {
-            pubSubService.publishTopic( writer -> writer.write(motionFaults));
+            return pubSubService.publishTopic( writer -> writer.write(motionFaults));
         }
         return true;
     }
@@ -41,7 +43,7 @@ public class MotionFaultBehavior implements PubSubMethodListener {
     public boolean onAccelerometer(CharSequence charSequence, ChannelReader channelReader) {
         channelReader.readInto(accel);
         if (motionFaults.accept(accel)) {
-            pubSubService.publishTopic( writer -> writer.write(motionFaults));
+            return pubSubService.publishTopic( writer -> writer.write(motionFaults));
         }
         return true;
     }

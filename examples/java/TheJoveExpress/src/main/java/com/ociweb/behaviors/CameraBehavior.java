@@ -50,8 +50,7 @@ public class CameraBehavior implements ImageListener, PubSubMethodListener, Star
         continuousRecording = !continuousRecording;
 
         // Broadcast the status of our capture
-        this.pubSubService.publishTopic(writer -> writer.writeBoolean(success));
-        return true;
+        return this.pubSubService.publishTopic(writer -> writer.writeBoolean(success));
     }
 
     long previousTime = 0;

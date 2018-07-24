@@ -41,8 +41,7 @@ public class BillboardBehavior implements PubSubMethodListener, StartupListener 
     }
 
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
-        allFeedbackService.publishTopic(writer-> writer.write(display.newBmpLayout()));
-        return true;
+        return allFeedbackService.publishTopic(writer-> writer.write(display.newBmpLayout()));
     }
 
     private void sendTestImage() {

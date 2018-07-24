@@ -67,47 +67,66 @@ public class LightingBehaviorPWM implements PubSubMethodListener, TimeListener, 
     }
 
     public boolean onOverride(CharSequence charSequence, ChannelReader messageReader) {
-    	
-        int state = messageReader.readInt();
-        TriState lightsOn = TriState.values()[state];
-        switch (lightsOn) {
-            case on:
-                overridePower = 1.0;
-                break;
-            case off:
-                overridePower = 0.0;
-                break;
-            case latent:
-                overridePower = null;
-                break;
-        }
-        this.overrideService.publishTopic( writer -> writer.writeInt(lightsOn.ordinal()));
-        actuate();
-        return true;
+    	if (overrideService.hasRoomFor(1)
+    	 && powerService.hasRoomFor(1)
+    	 && pwmService.hasRoomFor(1)) {
+    	    	
+	        int state = messageReader.readInt();
+	        TriState lightsOn = TriState.values()[state];
+	        switch (lightsOn) {
+	            case on:
+	                overridePower = 1.0;
+	                break;
+	            case off:
+	                overridePower = 0.0;
+	                break;
+	            case latent:
+	                overridePower = null;
+	                break;
+	        }
+	        this.overrideService.publishTopic( writer -> writer.writeInt(lightsOn.ordinal()));
+	        actuate();
+	        return true;
+    	} else {
+    		return false;
+    	}
 
     }
 
     public boolean onCalibration(CharSequence charSequence, ChannelReader messageReader) {
-        messageReader.readInto(this.calibration);
-        this.calibrationService.publishTopic( writer -> writer.write(calibration));
-        if (ambient.num >= calibration.num) {
-            determinedPower = 0.0;
-        } else {
-            determinedPower = 1.0;
-        }
-        actuate();
-        return true;
+    	if (calibrationService.hasRoomFor(1)
+    	    	 && powerService.hasRoomFor(1)
+    	    	 && pwmService.hasRoomFor(1)) {
+	    	    	    	
+	        messageReader.readInto(this.calibration);
+	        this.calibrationService.publishTopic( writer -> writer.write(calibration));
+	        if (ambient.num >= calibration.num) {
+	            determinedPower = 0.0;
+	        } else {
+	            determinedPower = 1.0;
+	        }
+	        actuate();
+	        return true;
+    	} else {
+    		return false;
+    	}
     }
 
     public boolean onDetected(CharSequence charSequence, ChannelReader messageReader) {
-        messageReader.readInto(ambient);
-        if (ambient.num >= calibration.num) {
-            determinedPower = 0.0;
-        } else {
-            determinedPower = 1.0;
-        }
-        actuate();
-        return true;
+    	if (    powerService.hasRoomFor(1)
+   	    	 && pwmService.hasRoomFor(1)) {
+	    	    	    
+	        messageReader.readInto(ambient);
+	        if (ambient.num >= calibration.num) {
+	            determinedPower = 0.0;
+	        } else {
+	            determinedPower = 1.0;
+	        }
+	        actuate();
+	        return true;
+    	} else {
+    		return false;
+    	}
     }
 
     @Override
