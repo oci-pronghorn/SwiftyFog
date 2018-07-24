@@ -10,6 +10,7 @@ import com.ociweb.model.MotionFaults;
 import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
+// TODO: use existing EngineBehavior with PWNActuatorDriverBehavior instead of this class
 public class EngineBehaviorPWM implements PubSubMethodListener, StartupListener {
 
     private final Port enginePowerPort; 

@@ -4,19 +4,17 @@ import com.ociweb.gl.api.PubSubFixedTopicService;
 import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.gl.api.StartupListener;
 import com.ociweb.gl.api.TimeListener;
-import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.PinService;
 import com.ociweb.iot.maker.Port;
 import com.ociweb.iot.maker.TriState;
-import com.ociweb.model.ActuatorDriverPayload;
-import com.ociweb.model.ActuatorDriverPort;
 import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
 import static com.ociweb.behaviors.AmbientLightBehavior.maxSensorReading;
 import static com.ociweb.iot.maker.TriState.latent;
 
+// TODO: use existing LightingBehavior with PWNActuatorDriverBehavior instead of this class
 public class LightingBehaviorPWM implements PubSubMethodListener, TimeListener, StartupListener {
 
     private final PubSubFixedTopicService overrideService;
@@ -159,7 +157,5 @@ public class LightingBehaviorPWM implements PubSubMethodListener, TimeListener, 
 				this.powerService.publishTopic( writer -> writer.writeBoolean(isOn));
 			}
 		}
-        
-        
     }
 }

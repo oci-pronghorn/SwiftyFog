@@ -2,13 +2,13 @@ package com.ociweb;
 
 import com.ociweb.behaviors.*;
 import com.ociweb.behaviors.internal.AccelerometerBehavior;
+import com.ociweb.behaviors.internal.PWMActuatorDriverBehavior;
 import com.ociweb.behaviors.internal.SharedActuatorDriverBehavior;
 import com.ociweb.behaviors.location.LocationBehavior;
 import com.ociweb.behaviors.location.TrainingBehavior;
 import com.ociweb.gl.api.MQTTBridge;
 import com.ociweb.gl.api.MQTTQoS;
 import com.ociweb.iot.grove.simple_analog.SimpleAnalogTwig;
-import com.ociweb.iot.grove.simple_digital.SimpleDigitalTwig;
 import com.ociweb.iot.maker.Baud;
 import com.ociweb.iot.maker.FogApp;
 import com.ociweb.iot.maker.FogRuntime;
@@ -64,13 +64,11 @@ public class TheJoveExpress implements FogApp
         if (config.sharedAcutatorEnabled) {
             SharedActuatorDriverBehavior.connectHardaware(hardware,config.lightsEnabled || config.engineEnabled)    ;
         } else {
-        	if (config.lightsEnabled) {
-                hardware.connect(SimpleDigitalTwig.LED, config.ledPort);
-        	}
-        	if (config.engineEnabled) {
-        		hardware.connect(SimpleDigitalTwig.MDDS30Power, config.enginePowerPort);
-        		hardware.connect(SimpleDigitalTwig.MDDS30Direction, config.engineDirectionPort);
-        	}
+            PWMActuatorDriverBehavior.connectHardware(hardware,
+                    config.engineEnabled ? config.enginePowerPort : null,
+                    config.engineEnabled ? config.engineDirectionPort : null,
+                    config.lightsEnabled ? config.ledPort : null);
+
         }
     }
 
@@ -103,13 +101,15 @@ public class TheJoveExpress implements FogApp
             /////////
             
             if (config.sharedAcutatorEnabled) {
-            
             	final SharedActuatorDriverBehavior actuator = new SharedActuatorDriverBehavior(runtime);
             	topics.subscribe(actuator, actuatorPowerAInternal, actuator::setPower);
             	topics.subscribe(actuator, actuatorPowerBInternal, actuator::setPower);
-            
-            }           
-            
+            }
+        /*    else {
+                final PWMActuatorDriverBehavior actuator = new PWMActuatorDriverBehavior(runtime, config.engineActuatorPort);
+                topics.subscribe(actuator, actuatorPowerAInternal, actuator::setPower);
+                topics.subscribe(actuator, actuatorPowerBInternal, actuator::setPower);
+            }*/
 
             if (config.engineEnabled) {
                 
