@@ -43,7 +43,7 @@ public class TrainConfiguration  {
 
     final boolean soundEnabled = false;
 
-	final boolean sharedAcutatorEnabled = true;
+	final boolean sharedAcutatorEnabled;
 
 	final Port enginePowerPort     = Port.D5; 
 	final Port engineDirectionPort = Port.D7;
@@ -51,10 +51,12 @@ public class TrainConfiguration  {
 	final int engineCalibration;
 
     TrainConfiguration(ArgumentProvider args) {
+        // TODO: we need to come up with a better way to customize per train
         this.trainName = args.getArgumentValue("--name", "-n", "thejoveexpress");
         this.mqttBrokerHost = args.getArgumentValue("--broker", "-b", this.trainName + ".local");
         this.mqttClientName = trainName;
         this.trainDisplayName = args.getArgumentValue("--display", "-d", "The Jove Express");
         this.engineCalibration = args.getArgumentValue("--calibrartion", "-c", 30);
+        this.sharedAcutatorEnabled = args.getArgumentValue("--sharedact", "-sa", true);
     }
 }

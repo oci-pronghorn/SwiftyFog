@@ -4,7 +4,6 @@ import com.ociweb.gl.api.PubSubFixedTopicService;
 import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.gl.api.StartupListener;
 import com.ociweb.gl.api.TimeListener;
-import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.TriState;
 import com.ociweb.model.ActuatorDriverPayload;
@@ -14,6 +13,14 @@ import com.ociweb.pronghorn.pipe.ChannelReader;
 
 import static com.ociweb.behaviors.AmbientLightBehavior.maxSensorReading;
 import static com.ociweb.iot.maker.TriState.latent;
+
+/*
+    LightingBehavior encapsulates all the business logic for managing the interaction
+    between the light sensor, the light, actuator, and external commands.
+    It broadcasts feedback whenever state changes.
+
+    The actuator behaviors perform the hardware tasks.
+ */
 
 public class LightingBehavior implements PubSubMethodListener, TimeListener, StartupListener {
 	private final PubSubFixedTopicService actuatorService;
@@ -54,19 +61,18 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
 	        this.powerService.publishTopic( writer -> writer.writeBoolean(isOn));
 	        this.calibrationService.publishTopic( writer -> writer.write(calibration));
 	        return true;
-    	} else {
-    		return false;
     	}
+    	return false;
     }
 
     @Override
+	// Is there a better way to flash the lights on system ready?
     public void startup() {
         flashCount = 2;
     }
 
     public boolean onOverride(CharSequence charSequence, ChannelReader messageReader) {
-    	
-    	
+
     	if (this.overrideService.hasRoomFor(1)
     	   && this.powerService.hasRoomFor(1)
     	   && this.actuatorService.hasRoomFor(1)) {
@@ -87,9 +93,8 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
 	        this.overrideService.publishTopic( writer -> writer.writeInt(lightsOn.ordinal()));
 	        actuate();
 	        return true;
-    	} else {
-    		return false;
     	}
+		return false;
     }
 
     public boolean onCalibration(CharSequence charSequence, ChannelReader messageReader) {
@@ -107,15 +112,13 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
 	        }
 	        actuate();
 	        return true;
-    	} else {
-    		return false;
     	}
+    	return false;
     }
 
     public boolean onDetected(CharSequence charSequence, ChannelReader messageReader) {
-    	if (          this.powerService.hasRoomFor(1)
-    	    	   && this.actuatorService.hasRoomFor(1)) {
-    		
+
+    	if (this.powerService.hasRoomFor(1) && this.actuatorService.hasRoomFor(1)) {
 	    	messageReader.readInto(ambient);
 	        if (ambient.num >= calibration.num) {
 	            determinedPower = 0.0;
@@ -124,9 +127,8 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
 	        }
 	        actuate();
 	        return true;
-	    } else {
-	    	return false;
 	    }
+		return false;
 	}
 
     @Override

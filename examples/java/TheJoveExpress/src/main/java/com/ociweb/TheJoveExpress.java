@@ -1,18 +1,8 @@
 package com.ociweb;
 
-import static com.ociweb.iot.grove.motor_driver.MotorDriverTwig.MotorDriver;
-import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
-
-import com.ociweb.behaviors.AmbientLightBehavior;
-import com.ociweb.behaviors.EngineBehavior;
-import com.ociweb.behaviors.EngineBehaviorPWM;
-import com.ociweb.behaviors.LifeCycleBehavior;
-import com.ociweb.behaviors.LightingBehavior;
-import com.ociweb.behaviors.LightingBehaviorPWM;
-import com.ociweb.behaviors.MotionFaultBehavior;
-import com.ociweb.behaviors.TextDisplay;
+import com.ociweb.behaviors.*;
 import com.ociweb.behaviors.internal.AccelerometerBehavior;
-import com.ociweb.behaviors.internal.ActuatorDriverBehavior;
+import com.ociweb.behaviors.internal.SharedActuatorDriverBehavior;
 import com.ociweb.behaviors.location.LocationBehavior;
 import com.ociweb.behaviors.location.TrainingBehavior;
 import com.ociweb.gl.api.MQTTBridge;
@@ -25,6 +15,8 @@ import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.Hardware;
 import com.ociweb.pronghorn.iot.i2c.I2CJFFIStage;
 import com.ociweb.pronghorn.stage.scheduling.GraphManager;
+
+import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
 
 public class TheJoveExpress implements FogApp
 {
@@ -70,9 +62,7 @@ public class TheJoveExpress implements FogApp
         }
         
         if (config.sharedAcutatorEnabled) {
-        	if (config.engineEnabled || config.lightsEnabled) {
-        		hardware.connect(MotorDriver);
-        	}        	
+            SharedActuatorDriverBehavior.connectHardaware(hardware,config.lightsEnabled || config.engineEnabled)    ;
         } else {
         	if (config.lightsEnabled) {
                 hardware.connect(SimpleDigitalTwig.LED, config.ledPort);
@@ -82,7 +72,6 @@ public class TheJoveExpress implements FogApp
         		hardware.connect(SimpleDigitalTwig.MDDS30Direction, config.engineDirectionPort);
         	}
         }
-        
     }
 
     public void declareBehavior(FogRuntime runtime) {
@@ -115,7 +104,7 @@ public class TheJoveExpress implements FogApp
             
             if (config.sharedAcutatorEnabled) {
             
-            	final ActuatorDriverBehavior actuator = new ActuatorDriverBehavior(runtime);
+            	final SharedActuatorDriverBehavior actuator = new SharedActuatorDriverBehavior(runtime);
             	topics.subscribe(actuator, actuatorPowerAInternal, actuator::setPower);
             	topics.subscribe(actuator, actuatorPowerBInternal, actuator::setPower);
             
