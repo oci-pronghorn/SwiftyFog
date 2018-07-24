@@ -33,11 +33,10 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
     private long flashStamp = 0;
 
     public LightingBehavior(FogRuntime runtime, String actuatorTopic, ActuatorDriverPort port, String overrideTopic, String powerTopic, String calibrationTopic) {
-        FogCommandChannel channel = runtime.newCommandChannel();
-        this.actuatorService = channel.newPubSubService(actuatorTopic);
-        this.overrideService = channel.newPubSubService(overrideTopic);
-        this.powerService = channel.newPubSubService(powerTopic);
-        this.calibrationService = channel.newPubSubService(calibrationTopic);
+        this.actuatorService = runtime.newCommandChannel().newPubSubService(actuatorTopic);
+        this.overrideService = runtime.newCommandChannel().newPubSubService(overrideTopic);
+        this.powerService = runtime.newCommandChannel().newPubSubService(powerTopic);
+        this.calibrationService = runtime.newCommandChannel().newPubSubService(calibrationTopic);
         
         this.actuatorPayload.port = port;
         this.actuatorPayload.power = -1.0;

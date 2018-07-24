@@ -23,46 +23,74 @@ public class EngineBehavior implements PubSubMethodListener {
     private int engineState = 0;
 
     public EngineBehavior(FogRuntime runtime, int calibration, String actuatorTopic, ActuatorDriverPort port, String enginePoweredTopic, String engineCalibratedTopic, String engineStateTopic) {
-        FogCommandChannel channel = runtime.newCommandChannel();
         this.calibration = new RationalPayload(calibration, 100);
-        this.actuatorService = channel.newPubSubService(actuatorTopic);
-        this.engineStateService = channel.newPubSubService(engineStateTopic);
-        this.powerService = channel.newPubSubService(enginePoweredTopic);
-        this.calibrationService = channel.newPubSubService(engineCalibratedTopic);
+        this.actuatorService = runtime.newCommandChannel().newPubSubService(actuatorTopic);
+        this.engineStateService = runtime.newCommandChannel().newPubSubService(engineStateTopic);
+        this.powerService = runtime.newCommandChannel().newPubSubService(enginePoweredTopic);
+        this.calibrationService = runtime.newCommandChannel().newPubSubService(engineCalibratedTopic);
                 
         this.actuatorPayload.port = port;
 
     }
 
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
-        this.powerService.publishTopic( writer -> writer.write(enginePower));
-        this.calibrationService.publishTopic( writer -> writer.write(calibration));
-        this.engineStateService.publishTopic( writer -> writer.writeInt(engineState));
-        return true;
+    	if (this.powerService.hasRoomFor(1)
+    	   	 && this.calibrationService.hasRoomFor(1)
+    	   	 && this.engineStateService.hasRoomFor(1)
+    	    			) { 
+	        this.powerService.publishTopic( writer -> writer.write(enginePower));
+	        this.calibrationService.publishTopic( writer -> writer.write(calibration));
+	        this.engineStateService.publishTopic( writer -> writer.writeInt(engineState));
+	        return true;
+    	} else {
+    		return false;
+    	}
     }
 
     public boolean onFault(CharSequence charSequence, ChannelReader messageReader) {
-        messageReader.readInto(motionFaults);
-        if (motionFaults.hasFault()) {
-            enginePower.num = 0;
-            actuate();
-            this.powerService.publishTopic( writer -> writer.write(enginePower));
-        }
-        return true;
-    }
+    	if (this.powerService.hasRoomFor(1)
+    	    	 && this.actuatorService.hasRoomFor(1)
+    	    	 && this.engineStateService.hasRoomFor(1)
+    	    			) { 
+    		
+	        messageReader.readInto(motionFaults);
+	        if (motionFaults.hasFault()) {
+	            enginePower.num = 0;
+	            actuate();
+	            this.powerService.publishTopic( writer -> writer.write(enginePower));
+	        }
+	        return true;
+	    } else {
+	    	return false;
+	    }
+	}
 
     public boolean onPower(CharSequence charSequence, ChannelReader messageReader) {
-        messageReader.readInto(enginePower);
-        actuate();
-        this.powerService.publishTopic( writer -> writer.write(enginePower));
-        return true;
+    	if (this.powerService.hasRoomFor(1)
+   	    	 && this.actuatorService.hasRoomFor(1)
+   	    	 && this.engineStateService.hasRoomFor(1)
+   	    			) { 
+	        messageReader.readInto(enginePower);
+	        actuate();
+	        this.powerService.publishTopic( writer -> writer.write(enginePower));
+	        return true;
+    	} else {
+    		return false;
+    	}
     }
 
     public boolean onCalibration(CharSequence charSequence, ChannelReader messageReader) {
-        messageReader.readInto(calibration);
-        actuate();	
-        this.calibrationService.publishTopic( writer -> writer.write(calibration));
-        return true;
+    	if (this.calibrationService.hasRoomFor(1)
+   	    	 && this.actuatorService.hasRoomFor(1)
+   	    	 && this.engineStateService.hasRoomFor(1)
+   	    			) { 
+	        messageReader.readInto(calibration);
+	        actuate();	
+	        this.calibrationService.publishTopic( writer -> writer.write(calibration));
+	        return true;
+    	} else {
+    		return false;
+    	}
     }
 
     private void actuate() {

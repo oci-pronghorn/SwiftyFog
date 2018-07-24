@@ -44,34 +44,61 @@ public class EngineBehaviorPWM implements PubSubMethodListener, StartupListener 
     }
 
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
-        this.powerService.publishTopic( writer -> writer.write(enginePower));
-        this.calibrationService.publishTopic( writer -> writer.write(calibration));
-        this.engineStateService.publishTopic( writer -> writer.writeInt(engineState));
-        return true;
+    	if (this.powerService.hasRoomFor(1)
+    	 && this.calibrationService.hasRoomFor(1)
+    	 && this.engineStateService.hasRoomFor(1)
+    			) {    	
+	        this.powerService.publishTopic( writer -> writer.write(enginePower));
+	        this.calibrationService.publishTopic( writer -> writer.write(calibration));
+	        this.engineStateService.publishTopic( writer -> writer.writeInt(engineState));
+	        
+	        return true;
+    	} else {
+    		return false;
+    	}
     }
 
     public boolean onFault(CharSequence charSequence, ChannelReader messageReader) {
-        messageReader.readInto(motionFaults);
-        if (motionFaults.hasFault()) {
-            enginePower.num = 0;
-            actuate();
-            this.powerService.publishTopic( writer -> writer.write(enginePower));
-        }
-        return true;
+    	if (this.pwmService.hasRoomFor(1)
+    		&& this.engineStateService.hasRoomFor(1)) {
+    		
+    		messageReader.readInto(motionFaults);
+    		if (motionFaults.hasFault()) {
+    			enginePower.num = 0;
+    			actuate();
+    			return this.powerService.publishTopic( writer -> writer.write(enginePower));
+    		}
+    		return true;    		
+    	} else {
+    		return false;
+    	}
     }
 
     public boolean onPower(CharSequence charSequence, ChannelReader messageReader) {
-        messageReader.readInto(enginePower);
-        actuate();
-        this.powerService.publishTopic( writer -> writer.write(enginePower));
-        return true;
+    	if (this.pwmService.hasRoomFor(1)
+        	&& this.engineStateService.hasRoomFor(1)
+        	&& this.powerService.hasRoomFor(1)) {
+	        messageReader.readInto(enginePower);
+	        actuate();
+	        this.powerService.publishTopic( writer -> writer.write(enginePower));
+	        return true;
+    	} else {
+    		return false;
+    	}
     }
 
     public boolean onCalibration(CharSequence charSequence, ChannelReader messageReader) {
-        messageReader.readInto(calibration);
-        actuate();	
-        this.calibrationService.publishTopic( writer -> writer.write(calibration));
-        return true;
+    	if (this.pwmService.hasRoomFor(1)
+       		&& this.engineStateService.hasRoomFor(1)
+       		&& this.calibrationService.hasRoomFor(1)
+    	   ) {
+	        messageReader.readInto(calibration);
+	        actuate();	
+	        this.calibrationService.publishTopic( writer -> writer.write(calibration));
+	        return true;
+    	} else {
+    		return false;
+    	}
     }
 
     private void actuate() {
