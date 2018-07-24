@@ -48,33 +48,28 @@ public class TextDisplay implements PubSubMethodListener, StartupListener, Shutd
 
     @Override
     public boolean acceptShutdown() {
-        displayText("");
-        return true;
+        return displayText("");
     }
 
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
-        this.pubSubService.publishTopic( writer -> writer.writeUTF(displayed));
-        return true;
+        return this.pubSubService.publishTopic( writer -> writer.writeUTF(displayed));
     }
 
     public boolean onText(CharSequence topic, ChannelReader payload) {
-        String s = payload.readUTF();
-        displayText(s);
-        return true;
+        return displayText(payload.readUTF());
     }
 
     public boolean onLightsPower(CharSequence topic, ChannelReader payload) {
         boolean powered = payload.readBoolean();
         if (powered) {
-            display.inverseOn();
+            return display.inverseOn();
         }
         else {
-            display.inverseOff();
+            return display.inverseOff();
         }
-        return true;
     }
 
-    private void displayText(String s) {
+    private boolean displayText(String s) {
         final int c = blank.length();
         final int r = oldStrs.length;
         final int m = c * r;
@@ -114,8 +109,12 @@ public class TextDisplay implements PubSubMethodListener, StartupListener, Shutd
         for (int i = 0; i < newStrs.length; i++) {
             if (!oldStrs[i].equals(newStrs[i])) {
                 oldStrs[i] = newStrs[i];
-                display.setTextRowCol(i, 0);
-                display.printCharSequence(newStrs[i]);
+                if (!display.setTextRowCol(i, 0)) {
+                	return false;
+                };
+                if (!display.printCharSequence(newStrs[i])) {
+                	return false;
+                };
                 //System.out.println("[" + newStrs[i] + "]");
             }
             /*else {
@@ -125,6 +124,6 @@ public class TextDisplay implements PubSubMethodListener, StartupListener, Shutd
         //System.out.println("+----------------+");
 
         displayed = s;
-        this.pubSubService.publishTopic( writer -> writer.writeUTF(displayed));
+        return this.pubSubService.publishTopic( writer -> writer.writeUTF(displayed));
     }
 }
