@@ -826,7 +826,7 @@
                                         <real key="value" value="10"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="useScaleDivisionColor" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="image" keyPath="indicatorImage" value="MotionIdle"/>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="indicatorImage" value="Motion"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outletCollection property="ranges" destination="ETI-FT-Ofc" collectionClass="NSMutableArray" id="aH7-xu-3UV"/>
@@ -959,7 +959,6 @@
         <image name="Log" width="32" height="32"/>
         <image name="MakeFault" width="48" height="48"/>
         <image name="Motion" width="32" height="32"/>
-        <image name="MotionIdle" width="32" height="32"/>
         <image name="Off" width="32" height="32"/>
         <image name="On" width="32" height="32"/>
         <image name="Remote" width="30" height="30"/>

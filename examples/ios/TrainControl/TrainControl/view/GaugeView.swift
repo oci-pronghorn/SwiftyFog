@@ -173,12 +173,7 @@ class GaugeView: UIView {
 // MARK: Layers
 	override public func layoutSublayers(of layer: CALayer) {
 		if layer === self.layer {
-			if let sublayers = layer.sublayers {
-				let b = layer.bounds
-				for subLayer in sublayers {
-					subLayer.frame = b
-				}
-			}
+			backgroundLayer.alignTo(boounds: layer.bounds)
 		}
 	}
 	
@@ -191,6 +186,16 @@ class GaugeView: UIView {
 			let s = self.bounds.size
 			context.scaleBy(x: s.width, y: s.height)
         	draw(context)
+        }
+		
+        func alignTo(boounds: CGRect) {
+        	self.transform = CATransform3DIdentity
+			self.frame = boounds
+			self.sublayers?.forEach {
+				if let layer = $0 as? DrawingLayer {
+					layer.alignTo(boounds: self.bounds)
+				}
+			}
         }
 	}
 	
@@ -215,28 +220,28 @@ class GaugeView: UIView {
 		scaleLayer.draw = { [weak self] ctx in
 			self?.drawScale(in: ctx)
 		}
-		self.layer.addSublayer(scaleLayer)
+		self.backgroundLayer.addSublayer(scaleLayer)
 		
 		indicatorLayer.draw = { [weak self] ctx in
 			self?.drawIndicator(in: ctx)
 			self?.drawLabel(in: ctx)
 		}
-		self.layer.addSublayer(indicatorLayer)
+		self.backgroundLayer.addSublayer(indicatorLayer)
 		
 		rangeLayer.draw = { [weak self] ctx in
 			self?.drawRangeLabels(in: ctx)
 		}
-		self.layer.addSublayer(rangeLayer)
+		self.backgroundLayer.addSublayer(rangeLayer)
 		
 		needleLayer.draw = { [weak self] ctx in
 			self?.drawNeedle(in: ctx)
 		}
-		self.layer.addSublayer(needleLayer)
+		self.backgroundLayer.addSublayer(needleLayer)
 		
 		needleScrewLayer.draw = { [weak self] ctx in
 			self?.drawNeedleScrew(in: ctx)
 		}
-		self.layer.addSublayer(needleScrewLayer)
+		self.backgroundLayer.addSublayer(needleScrewLayer)
 		
 		recalcFaceRect()
 	}
@@ -590,13 +595,13 @@ class GaugeView: UIView {
 	private func valueChanged() {
 		let radians = needleRadians(forValue: _value)
 		let finalTransform = CATransform3DMakeRotation(radians, 0.0, 0.0, 1.0)
-		//needleLayer.transform = finalTransform
+		needleLayer.transform = finalTransform
 	}
 	
 	public func setValue(_ newValue: CGFloat, animated: Bool, duration: TimeInterval = 0.8, completion: ((_ finished: Bool) -> Void)? = nil) {
 		let lastValue = _value
 		_value = newValue
-		if animated {
+		if false && animated {
 			// Needle animation to target value
 			let firstRadians = needleRadians(forValue: lastValue)
 			let lastRadians = needleRadians(forValue: _value)
