@@ -23,8 +23,7 @@ public class ActuatorDriverBehavior implements PubSubMethodListener, ShutdownLis
 
     @Override
     public boolean acceptShutdown() {
-        motorControl.setPower(0, 0);
-        return true;
+        return motorControl.setPower(0, 0);
     }
 
     public boolean setPower(CharSequence charSequence, ChannelReader ChannelReader) {
