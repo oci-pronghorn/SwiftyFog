@@ -12,25 +12,9 @@ import SwiftyFog_iOS
 class TestingViewController: UIViewController {
 	var mqtt: MQTTBridge!
 	var subscription: MQTTSubscription?
-	
-	@IBOutlet weak var gauge: GaugeView!
-	var timer: Timer!
-	var iter: CGFloat = 0
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		iter = gauge.minValue
-		timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true, block: { [weak self] t in
-			self?.doit()
-		})
-	}
-	
-	func doit() {
-		gauge.value = iter
-		iter += 1
-		if iter > gauge.maxValue {
-			iter = gauge.minValue
-		}
 	}
 
 	@IBAction func publishQos0() {

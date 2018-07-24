@@ -161,7 +161,7 @@
                                                     <userDefinedRuntimeAttribute type="image" keyPath="screwImage" value="Screwhead"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i1b-Ey-Udf" customClass="WMGaugeView">
+                                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i1b-Ey-Udf" customClass="GaugeView" customModule="TrainControl" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="32.5" width="175.5" height="175.5"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -183,25 +183,18 @@
                                                     <userDefinedRuntimeAttribute type="color" keyPath="scaleDivisionColor">
                                                         <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showUnitOfMeasurement" value="YES"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="unitOfMeasurement" value="Power"/>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showRangeLabels" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="rangeLabelsFontColor">
                                                         <color key="value" red="0.26663362979999999" green="0.26668566469999999" blue="0.26663035149999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="scaleIgnoreRangeColors" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="size" keyPath="indicatorSize">
-                                                        <size key="value" width="0.16" height="0.16"/>
-                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="useScaleDivisionColor" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="image" keyPath="indicatorImage" value="Motion"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="indicatorVerticalOffset">
-                                                        <real key="value" value="0.29999999999999999"/>
-                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="label" value="Power"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <outletCollection property="ranges" destination="OZf-OR-qOJ" id="u5w-lq-K8q"/>
-                                                    <outletCollection property="ranges" destination="w00-G6-iTt" id="EGb-fc-NaD"/>
-                                                    <outletCollection property="ranges" destination="3dO-lV-mTx" id="bst-7w-Rgk"/>
+                                                    <outletCollection property="ranges" destination="OZf-OR-qOJ" collectionClass="NSMutableArray" id="u5w-lq-K8q"/>
+                                                    <outletCollection property="ranges" destination="w00-G6-iTt" collectionClass="NSMutableArray" id="EGb-fc-NaD"/>
+                                                    <outletCollection property="ranges" destination="3dO-lV-mTx" collectionClass="NSMutableArray" id="bst-7w-Rgk"/>
                                                 </connections>
                                             </view>
                                             <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="9kY-FW-tWH" userLabel="Power Screws View" customClass="ScrewsView" customModule="TrainControl" customModuleProvider="target">
@@ -396,7 +389,7 @@
                                                     <userDefinedRuntimeAttribute type="image" keyPath="screwImage" value="Screwhead"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YEQ-Tl-lGJ" customClass="WMGaugeView">
+                                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YEQ-Tl-lGJ" customClass="GaugeView" customModule="TrainControl" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="32.5" width="175.5" height="175.5"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -418,27 +411,20 @@
                                                     <userDefinedRuntimeAttribute type="color" keyPath="scaleDivisionColor">
                                                         <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showUnitOfMeasurement" value="YES"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="unitOfMeasurement" value="Lighting"/>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showRangeLabels" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="rangeLabelsFontColor">
                                                         <color key="value" red="0.26663362979999999" green="0.26668566469999999" blue="0.26663035149999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="scaleIgnoreRangeColors" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="useScaleDivisionColor" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="scaleSubdivisions">
                                                         <integer key="value" value="4"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="indicatorVerticalOffset">
-                                                        <real key="value" value="0.29999999999999999"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="size" keyPath="indicatorSize">
-                                                        <size key="value" width="0.16" height="0.16"/>
-                                                    </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="image" keyPath="indicatorImage" value="Torch"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="label" value="Lighting"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <outletCollection property="ranges" destination="3zK-y4-4c8" id="twB-RA-HeP"/>
-                                                    <outletCollection property="ranges" destination="OWz-o0-5J4" id="WxI-iv-app"/>
+                                                    <outletCollection property="ranges" destination="3zK-y4-4c8" collectionClass="NSMutableArray" id="twB-RA-HeP"/>
+                                                    <outletCollection property="ranges" destination="OWz-o0-5J4" collectionClass="NSMutableArray" id="WxI-iv-app"/>
                                                 </connections>
                                             </view>
                                             <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="j5l-eA-gvh" userLabel="Override Screws View" customClass="ScrewsView" customModule="TrainControl" customModuleProvider="target">
@@ -646,7 +632,7 @@
                         <outlet property="embedIn" destination="4zZ-K8-b71" id="uf3-Vz-QYi"/>
                     </connections>
                 </customObject>
-                <customObject id="OZf-OR-qOJ" userLabel="Engine Reverse" customClass="WMGaugeRange">
+                <customObject id="OZf-OR-qOJ" userLabel="Engine Reverse" customClass="GaugeRange" customModule="TrainControl" customModuleProvider="target">
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="label" value="Reverse"/>
                         <userDefinedRuntimeAttribute type="color" keyPath="color">
@@ -660,7 +646,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </customObject>
-                <customObject id="w00-G6-iTt" userLabel="Engine Idle" customClass="WMGaugeRange">
+                <customObject id="w00-G6-iTt" userLabel="Engine Idle" customClass="GaugeRange" customModule="TrainControl" customModuleProvider="target">
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="label" value="Idle"/>
                         <userDefinedRuntimeAttribute type="color" keyPath="color">
@@ -674,7 +660,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </customObject>
-                <customObject id="3dO-lV-mTx" userLabel="Engine Forward" customClass="WMGaugeRange">
+                <customObject id="3dO-lV-mTx" userLabel="Engine Forward" customClass="GaugeRange" customModule="TrainControl" customModuleProvider="target">
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="label" value="Forward"/>
                         <userDefinedRuntimeAttribute type="color" keyPath="color">
@@ -688,7 +674,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </customObject>
-                <customObject id="3zK-y4-4c8" userLabel="Light Dark" customClass="WMGaugeRange">
+                <customObject id="3zK-y4-4c8" userLabel="Light Dark" customClass="GaugeRange" customModule="TrainControl" customModuleProvider="target">
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="label" value="Dark"/>
                         <userDefinedRuntimeAttribute type="color" keyPath="color">
@@ -702,7 +688,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </customObject>
-                <customObject id="OWz-o0-5J4" userLabel="Light Light" customClass="WMGaugeRange">
+                <customObject id="OWz-o0-5J4" userLabel="Light Light" customClass="GaugeRange" customModule="TrainControl" customModuleProvider="target">
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="label" value="Light"/>
                         <userDefinedRuntimeAttribute type="color" keyPath="color">
@@ -802,55 +788,17 @@
                                     <action selector="unsubAll" destination="fV6-iJ-f1p" eventType="touchUpInside" id="sbc-Fs-FTn"/>
                                 </connections>
                             </button>
-                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I2y-nC-Kwi" customClass="GaugeView" customModule="TrainControl">
-                                <rect key="frame" x="66" y="186" width="243" height="243"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="GW4-CJ-t7G"/>
-                                    <constraint firstAttribute="width" constant="243" id="KEB-Xs-Sl1"/>
-                                    <constraint firstAttribute="width" secondItem="I2y-nC-Kwi" secondAttribute="height" multiplier="1:1" id="T49-4I-bhJ"/>
-                                    <constraint firstAttribute="width" secondItem="I2y-nC-Kwi" secondAttribute="height" multiplier="1:1" id="kec-Mp-NQD"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="label" value="Power"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="value">
-                                        <integer key="value" value="-100"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="minValue">
-                                        <real key="value" value="-100"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="maxValue">
-                                        <real key="value" value="100"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="scaleDivisions">
-                                        <real key="value" value="10"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="useScaleDivisionColor" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="image" keyPath="indicatorImage" value="Motion"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <outletCollection property="ranges" destination="ETI-FT-Ofc" collectionClass="NSMutableArray" id="aH7-xu-3UV"/>
-                                    <outletCollection property="ranges" destination="Cvt-w3-de9" collectionClass="NSMutableArray" id="LnK-eR-6iA"/>
-                                    <outletCollection property="ranges" destination="EvY-su-5bX" collectionClass="NSMutableArray" id="0ko-9W-TDG"/>
-                                </connections>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Yb0-mG-QZ9" firstAttribute="centerX" secondItem="uST-wk-6Gm" secondAttribute="centerX" id="1Wh-OZ-rp3"/>
                             <constraint firstItem="uST-wk-6Gm" firstAttribute="top" secondItem="Yb0-mG-QZ9" secondAttribute="bottom" constant="-114" id="FV6-vn-sDQ"/>
                             <constraint firstItem="amV-JQ-ofh" firstAttribute="centerX" secondItem="uST-wk-6Gm" secondAttribute="centerX" id="Pc6-bb-VWD"/>
-                            <constraint firstItem="I2y-nC-Kwi" firstAttribute="centerX" secondItem="uST-wk-6Gm" secondAttribute="centerX" id="T5Y-Qb-f85"/>
-                            <constraint firstItem="I2y-nC-Kwi" firstAttribute="width" secondItem="I2y-nC-Kwi" secondAttribute="height" multiplier="1:1" id="fn6-28-u6X"/>
                             <constraint firstItem="amV-JQ-ofh" firstAttribute="top" secondItem="Yb0-mG-QZ9" secondAttribute="bottom" constant="8" id="pin-Fv-IeM"/>
-                            <constraint firstItem="I2y-nC-Kwi" firstAttribute="top" secondItem="amV-JQ-ofh" secondAttribute="bottom" constant="14" id="zJb-50-8kD"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="uST-wk-6Gm"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="Remote" id="pJ9-Ed-7ez"/>
-                    <connections>
-                        <outlet property="gauge" destination="I2y-nC-Kwi" id="gMn-4c-4vE"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VGR-hs-tvm" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <customObject id="Cvt-w3-de9" userLabel="Idle" customClass="GaugeRange" customModule="TrainControl" customModuleProvider="target">

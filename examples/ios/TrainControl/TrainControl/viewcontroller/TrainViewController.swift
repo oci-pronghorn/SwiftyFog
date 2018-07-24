@@ -24,15 +24,15 @@ class TrainViewController: UIViewController {
     @IBOutlet weak var billboardText: UITextField!
 	
 	@IBOutlet weak var billboardImage: UIImageView!
-	@IBOutlet weak var compass: WMGaugeView!
+	@IBOutlet weak var compass: GaugeView!
 	
 	@IBOutlet weak var lightOverride: UISegmentedControl!
 	@IBOutlet weak var lightCalibration: UISlider!
-	@IBOutlet weak var lightingGauge: WMGaugeView!
+	@IBOutlet weak var lightingGauge: GaugeView!
 	
 	@IBOutlet weak var enginePower: ScrubControl!
 	@IBOutlet weak var engineCalibration: UISlider!
-	@IBOutlet weak var engineGauge: WMGaugeView!
+	@IBOutlet weak var engineGauge: GaugeView!
 	
 	@IBOutlet weak var soundControl: UISlider!
 	
@@ -348,7 +348,7 @@ extension TrainViewController:
 	}
 	
 	func lights(ambient: TrainRational, _ asserted: Bool) {
-		self.lightingGauge?.setValue(CGFloat(ambient.num), animated: true, duration: 0.5)
+		self.lightingGauge?.setValue(CGFloat(ambient.num), animated: true, duration: 0.15)
 		if asserted {
 		}
 	}

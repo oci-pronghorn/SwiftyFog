@@ -6,7 +6,16 @@
 //  Copyright © 2018 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+public extension CALayer {
+    public class func performWithoutAnimation(_ actionsWithoutAnimation: () -> Void) {
+        CATransaction.begin()
+        CATransaction.setValue(true, forKey: kCATransactionDisableActions)
+        actionsWithoutAnimation()
+        CATransaction.commit()
+    }
+}
 
 public extension UIView {
 
