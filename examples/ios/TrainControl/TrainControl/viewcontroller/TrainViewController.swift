@@ -104,6 +104,14 @@ class TrainViewController: UIViewController {
 		assertConnectionState()
 		assertValues()
 	}
+/*
+	// Force iPads to respect landscape
+	override public var traitCollection: UITraitCollection {
+		if UIDevice.current.userInterfaceIdiom == .pad && UIDevice.current.orientation.isPortrait {
+			return UITraitCollection(traitsFrom:[UITraitCollection(horizontalSizeClass: .compact), UITraitCollection(verticalSizeClass: .regular)])
+		}
+		return super.traitCollection
+	}*/
 }
 
 // MARK: Connection State

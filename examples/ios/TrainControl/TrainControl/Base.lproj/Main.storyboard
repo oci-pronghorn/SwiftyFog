@@ -161,41 +161,74 @@
                                                     <userDefinedRuntimeAttribute type="image" keyPath="screwImage" value="Screwhead"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i1b-Ey-Udf" customClass="GaugeView" customModule="TrainControl" customModuleProvider="target">
+                                            <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ja0-Dh-5tu" userLabel="Gauge Screws View" customClass="ScrewsView" customModule="TrainControl" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="32.5" width="175.5" height="175.5"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <subviews>
+                                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i1b-Ey-Udf" customClass="GaugeView" customModule="TrainControl" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="175.5" height="175.5"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" secondItem="i1b-Ey-Udf" secondAttribute="height" multiplier="1:1" id="KWR-sZ-BOP"/>
+                                                        </constraints>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="value">
+                                                                <real key="value" value="0.0"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="minValue">
+                                                                <real key="value" value="-100"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="maxValue">
+                                                                <real key="value" value="100"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="scaleDivisions">
+                                                                <real key="value" value="10"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="scaleDivisionColor">
+                                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showRangeLabels" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="rangeLabelsFontColor">
+                                                                <color key="value" red="0.26663362979999999" green="0.26668566469999999" blue="0.26663035149999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="useScaleDivisionColor" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="image" keyPath="indicatorImage" value="Motion"/>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="label" value="Power"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <outletCollection property="ranges" destination="3dO-lV-mTx" collectionClass="NSMutableArray" id="bst-7w-Rgk"/>
+                                                            <outletCollection property="ranges" destination="w00-G6-iTt" collectionClass="NSMutableArray" id="EGb-fc-NaD"/>
+                                                            <outletCollection property="ranges" destination="OZf-OR-qOJ" collectionClass="NSMutableArray" id="u5w-lq-K8q"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <color key="backgroundColor" name="Gold"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" secondItem="i1b-Ey-Udf" secondAttribute="height" multiplier="1:1" id="KWR-sZ-BOP"/>
+                                                    <constraint firstItem="i1b-Ey-Udf" firstAttribute="centerY" secondItem="Ja0-Dh-5tu" secondAttribute="centerY" id="CYw-Dy-v6u"/>
+                                                    <constraint firstAttribute="height" secondItem="i1b-Ey-Udf" secondAttribute="height" id="Dwh-jO-NTQ"/>
+                                                    <constraint firstAttribute="width" secondItem="i1b-Ey-Udf" secondAttribute="width" id="Iym-4T-CTM"/>
+                                                    <constraint firstItem="i1b-Ey-Udf" firstAttribute="centerX" secondItem="Ja0-Dh-5tu" secondAttribute="centerX" id="NFc-Xp-VNF"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="value">
-                                                        <real key="value" value="0.0"/>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="screwImage" value="Screwhead"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="screwRadius">
+                                                        <real key="value" value="5"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="minValue">
-                                                        <real key="value" value="-100"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="inset">
+                                                        <real key="value" value="7.5"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="maxValue">
-                                                        <real key="value" value="100"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="scaleDivisions">
-                                                        <real key="value" value="10"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                        <real key="value" value="0.5"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="scaleDivisionColor">
-                                                        <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" name="Border"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showRangeLabels" value="YES"/>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="rangeLabelsFontColor">
-                                                        <color key="value" red="0.26663362979999999" green="0.26668566469999999" blue="0.26663035149999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="screwCount">
+                                                        <integer key="value" value="4"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="useScaleDivisionColor" value="YES"/>
-                                                    <userDefinedRuntimeAttribute type="image" keyPath="indicatorImage" value="Motion"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="label" value="Power"/>
                                                 </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <outletCollection property="ranges" destination="OZf-OR-qOJ" collectionClass="NSMutableArray" id="u5w-lq-K8q"/>
-                                                    <outletCollection property="ranges" destination="w00-G6-iTt" collectionClass="NSMutableArray" id="EGb-fc-NaD"/>
-                                                    <outletCollection property="ranges" destination="3dO-lV-mTx" collectionClass="NSMutableArray" id="bst-7w-Rgk"/>
-                                                </connections>
                                             </view>
                                             <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="9kY-FW-tWH" userLabel="Power Screws View" customClass="ScrewsView" customModule="TrainControl" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="220" width="175.5" height="20.5"/>
@@ -389,43 +422,76 @@
                                                     <userDefinedRuntimeAttribute type="image" keyPath="screwImage" value="Screwhead"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YEQ-Tl-lGJ" customClass="GaugeView" customModule="TrainControl" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wL6-Ru-uXe" userLabel="Gauge Screws View" customClass="ScrewsView" customModule="TrainControl" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="32.5" width="175.5" height="175.5"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <subviews>
+                                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YEQ-Tl-lGJ" customClass="GaugeView" customModule="TrainControl" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="175.5" height="175.5"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" secondItem="YEQ-Tl-lGJ" secondAttribute="height" multiplier="1:1" id="8aQ-ag-OQc"/>
+                                                        </constraints>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="value">
+                                                                <integer key="value" value="0"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="minValue">
+                                                                <integer key="value" value="0"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="maxValue">
+                                                                <integer key="value" value="256"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="scaleDivisions">
+                                                                <integer key="value" value="8"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="scaleDivisionColor">
+                                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showRangeLabels" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="rangeLabelsFontColor">
+                                                                <color key="value" red="0.26663362979999999" green="0.26668566469999999" blue="0.26663035149999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="useScaleDivisionColor" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="scaleSubdivisions">
+                                                                <integer key="value" value="4"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="image" keyPath="indicatorImage" value="Torch"/>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="label" value="Lighting"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <outletCollection property="ranges" destination="3zK-y4-4c8" collectionClass="NSMutableArray" id="twB-RA-HeP"/>
+                                                            <outletCollection property="ranges" destination="OWz-o0-5J4" collectionClass="NSMutableArray" id="WxI-iv-app"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <color key="backgroundColor" name="Gold"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" secondItem="YEQ-Tl-lGJ" secondAttribute="height" multiplier="1:1" id="8aQ-ag-OQc"/>
+                                                    <constraint firstItem="YEQ-Tl-lGJ" firstAttribute="centerX" secondItem="wL6-Ru-uXe" secondAttribute="centerX" id="Kj5-n2-0Zj"/>
+                                                    <constraint firstItem="YEQ-Tl-lGJ" firstAttribute="centerY" secondItem="wL6-Ru-uXe" secondAttribute="centerY" id="aEN-rb-0dW"/>
+                                                    <constraint firstAttribute="height" secondItem="YEQ-Tl-lGJ" secondAttribute="height" id="tHT-rR-BXf"/>
+                                                    <constraint firstAttribute="width" secondItem="YEQ-Tl-lGJ" secondAttribute="width" id="z0U-tg-OgE"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="value">
-                                                        <integer key="value" value="0"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="screwRadius">
+                                                        <real key="value" value="5"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="minValue">
-                                                        <integer key="value" value="0"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="inset">
+                                                        <real key="value" value="7.5"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="maxValue">
-                                                        <integer key="value" value="256"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="scaleDivisions">
-                                                        <integer key="value" value="8"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="scaleDivisionColor">
-                                                        <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showRangeLabels" value="YES"/>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="rangeLabelsFontColor">
-                                                        <color key="value" red="0.26663362979999999" green="0.26668566469999999" blue="0.26663035149999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="useScaleDivisionColor" value="YES"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="scaleSubdivisions">
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="screwCount">
                                                         <integer key="value" value="4"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="image" keyPath="indicatorImage" value="Torch"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="label" value="Lighting"/>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="screwImage" value="Screwhead"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="8"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" name="Border"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                        <real key="value" value="0.5"/>
+                                                    </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <outletCollection property="ranges" destination="3zK-y4-4c8" collectionClass="NSMutableArray" id="twB-RA-HeP"/>
-                                                    <outletCollection property="ranges" destination="OWz-o0-5J4" collectionClass="NSMutableArray" id="WxI-iv-app"/>
-                                                </connections>
                                             </view>
                                             <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="j5l-eA-gvh" userLabel="Override Screws View" customClass="ScrewsView" customModule="TrainControl" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="220" width="175.5" height="20.5"/>
@@ -549,7 +615,7 @@
                                     </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="YEQ-Tl-lGJ" firstAttribute="width" secondItem="i1b-Ey-Udf" secondAttribute="width" id="D6F-BK-HOs"/>
+                                    <constraint firstItem="jch-e0-4v6" firstAttribute="width" secondItem="fI1-eS-yQm" secondAttribute="width" id="4C2-2l-kk8"/>
                                 </constraints>
                                 <variation key="heightClass=regular-widthClass=regular" spacing="16"/>
                             </stackView>
