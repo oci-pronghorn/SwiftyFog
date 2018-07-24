@@ -84,9 +84,13 @@ public class TopicJunctionBox implements AutoCloseable {
 
     // Has the listener subscribe to the topic.
     public void subscribe(PubSubMethodListener listener, String topic, CallableMethod method) {
-        ListenerFilter filter = registeredListeners.computeIfAbsent(listener, (k) -> runtime.registerListener(listener.getClass().getSimpleName(), k));
+        ListenerFilter filter = registerBehavior(listener);
         registeredListeners.put(listener, filter.addSubscription(topic, method));
     }
+
+	public ListenerFilter registerBehavior(PubSubMethodListener listener) {
+		return registeredListeners.computeIfAbsent(listener, (k) -> runtime.registerListener(listener.getClass().getSimpleName(), k));
+	}
 
     // Call to finalize and closeup the Junction Box
     @Override
