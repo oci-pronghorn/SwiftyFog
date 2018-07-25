@@ -3,6 +3,7 @@ package com.ociweb.behaviors;
 import com.ociweb.gl.api.PubSubFixedTopicService;
 import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.gl.api.StartupListener;
+import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.PinService;
 import com.ociweb.iot.maker.Port;
@@ -10,6 +11,7 @@ import com.ociweb.model.MotionFaults;
 import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
+// TODO: use existing EngineBehavior with PWNActuatorDriverBehavior instead of this class
 public class EngineBehaviorPWM implements PubSubMethodListener, StartupListener {
 
     private final Port enginePowerPort; 
@@ -29,11 +31,12 @@ public class EngineBehaviorPWM implements PubSubMethodListener, StartupListener 
     public EngineBehaviorPWM(FogRuntime runtime, Port enginePowerPort, Port engineDirectionPort, 
     		                 String enginePoweredTopic, String engineCalibratedTopic, String engineStateTopic) {
 
-        this.engineStateService = runtime.newCommandChannel().newPubSubService(engineStateTopic);
-        this.powerService = runtime.newCommandChannel().newPubSubService(enginePoweredTopic);
-        this.calibrationService = runtime.newCommandChannel().newPubSubService(engineCalibratedTopic);
+        FogCommandChannel newCommandChannel = runtime.newCommandChannel();
+		this.engineStateService = newCommandChannel.newPubSubService(engineStateTopic);
+        this.powerService = newCommandChannel.newPubSubService(enginePoweredTopic);
+        this.calibrationService = newCommandChannel.newPubSubService(engineCalibratedTopic);
                 
-        this.pwmService = runtime.newCommandChannel().newPinService();
+        this.pwmService = newCommandChannel.newPinService();
         this.enginePowerPort = enginePowerPort;
         this.engineDirectionPort = engineDirectionPort; 
         
@@ -106,15 +109,13 @@ public class EngineBehaviorPWM implements PubSubMethodListener, StartupListener 
         double calibrationLimit = calibration.ratio();
         if (Math.abs(actualPower) < calibrationLimit) {
             actualPower = 0.0;
-        }
+        } 
         int state = Double.compare(actualPower, 0.0);
+        int p = (int)(powerMax* Math.abs(actualPower));
 
-       // System.out.println("engine:  "+(actualPower>=0)+"  "+(powerMax*Math.abs(actualPower)) );
+        pwmService.setValue(engineDirectionPort,actualPower<0?0:255);        
         
-        pwmService.setValue(engineDirectionPort, actualPower>=0);
-        
-        
-        if (pwmService.setValue(enginePowerPort, (int)(powerMax*Math.abs(actualPower)))) {
+        if (pwmService.setValue(enginePowerPort, p)) {
 
 	        if (state != engineState) {
 	            engineState = state;
@@ -125,8 +126,9 @@ public class EngineBehaviorPWM implements PubSubMethodListener, StartupListener 
 
 	@Override
 	public void startup() {
+		
 		//must be zero on startup or hardware will report an error, (double blink)
-		pwmService.setValue(engineDirectionPort, 0);
 		pwmService.setValue(enginePowerPort, 0);
+		pwmService.setValue(engineDirectionPort,0);
 	}
 }

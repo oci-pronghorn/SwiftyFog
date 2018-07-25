@@ -2,13 +2,20 @@ package com.ociweb.behaviors;
 
 import com.ociweb.gl.api.PubSubFixedTopicService;
 import com.ociweb.gl.api.PubSubMethodListener;
-import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.model.ActuatorDriverPayload;
 import com.ociweb.model.ActuatorDriverPort;
 import com.ociweb.model.MotionFaults;
 import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.ChannelReader;
+
+/*
+    EngineBehavior encapsulates all the business logic for managing the interaction
+    between the actuator, and external commands.
+    It broadcasts feedback whenever state changes.
+
+    The actuator behaviors perform the hardware tasks.
+ */
 
 public class EngineBehavior implements PubSubMethodListener {
     private final PubSubFixedTopicService actuatorService;
@@ -24,34 +31,30 @@ public class EngineBehavior implements PubSubMethodListener {
 
     public EngineBehavior(FogRuntime runtime, int calibration, String actuatorTopic, ActuatorDriverPort port, String enginePoweredTopic, String engineCalibratedTopic, String engineStateTopic) {
         this.calibration = new RationalPayload(calibration, 100);
-        this.actuatorService = runtime.newCommandChannel().newPubSubService(actuatorTopic);
-        this.engineStateService = runtime.newCommandChannel().newPubSubService(engineStateTopic);
-        this.powerService = runtime.newCommandChannel().newPubSubService(enginePoweredTopic);
-        this.calibrationService = runtime.newCommandChannel().newPubSubService(engineCalibratedTopic);
-                
+        FogCommandChannel newCommandChannel = runtime.newCommandChannel();
+		this.actuatorService = newCommandChannel.newPubSubService(actuatorTopic);
+        this.engineStateService = newCommandChannel.newPubSubService(engineStateTopic);
+        this.powerService = newCommandChannel.newPubSubService(enginePoweredTopic);
+        this.calibrationService = newCommandChannel.newPubSubService(engineCalibratedTopic);
         this.actuatorPayload.port = port;
-
     }
 
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
     	if (this.powerService.hasRoomFor(1)
     	   	 && this.calibrationService.hasRoomFor(1)
-    	   	 && this.engineStateService.hasRoomFor(1)
-    	    			) { 
+    	   	 && this.engineStateService.hasRoomFor(1) ) {
 	        this.powerService.publishTopic( writer -> writer.write(enginePower));
 	        this.calibrationService.publishTopic( writer -> writer.write(calibration));
 	        this.engineStateService.publishTopic( writer -> writer.writeInt(engineState));
 	        return true;
-    	} else {
-    		return false;
     	}
+    	return false;
     }
 
     public boolean onFault(CharSequence charSequence, ChannelReader messageReader) {
     	if (this.powerService.hasRoomFor(1)
     	    	 && this.actuatorService.hasRoomFor(1)
-    	    	 && this.engineStateService.hasRoomFor(1)
-    	    			) { 
+    	    	 && this.engineStateService.hasRoomFor(1) ) {
     		
 	        messageReader.readInto(motionFaults);
 	        if (motionFaults.hasFault()) {
@@ -74,9 +77,8 @@ public class EngineBehavior implements PubSubMethodListener {
 	        actuate();
 	        this.powerService.publishTopic( writer -> writer.write(enginePower));
 	        return true;
-    	} else {
-    		return false;
     	}
+    	return false;
     }
 
     public boolean onCalibration(CharSequence charSequence, ChannelReader messageReader) {
@@ -88,9 +90,8 @@ public class EngineBehavior implements PubSubMethodListener {
 	        actuate();	
 	        this.calibrationService.publishTopic( writer -> writer.write(calibration));
 	        return true;
-    	} else {
-    		return false;
     	}
+    	return false;
     }
 
     private void actuate() {
