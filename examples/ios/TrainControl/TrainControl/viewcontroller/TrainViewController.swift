@@ -41,6 +41,7 @@ class TrainViewController: UIViewController {
 	var mqttControl: MQTTControl!
 	
 	var trainName: String = ""
+	var alive = false
 	
 	func setTrain(named name: String, bridging: MQTTBridge, force: Bool) {
 		if trainName != name || force {
@@ -122,6 +123,7 @@ extension TrainViewController {
 		switch connected {
 			case .started:
 				self.stopStartButton.isSelected = mqttControl.started
+				billboardPresentConnectionStatus()
 				break
 			case .connected(_, _, _, let counter):
 				feedbackCut()
@@ -130,6 +132,7 @@ extension TrainViewController {
 				pulsator.start()
 				self.connectedImage?.isHighlighted = true
 				self.connectMetrics.text = "\(counter).-.-"
+				billboardPresentConnectionStatus()
 				break
 			case .pinged(let status):
 				switch status {
@@ -164,6 +167,7 @@ extension TrainViewController {
 				self.stopStartButton.isSelected = mqttControl.started
 				self.trainAlive.isHighlighted = false
 				feedbackCut()
+				billboardPresentConnectionStatus()
 				break
 		}
 	}
@@ -292,7 +296,9 @@ extension TrainViewController:
 		if alive == false {
 			feedbackCut()
 		}
+		self.alive = alive
 		trainAlive.isHighlighted = alive
+		self.billboardPresentConnectionStatus()
 	}
     
     func train(faults: MotionFaults, _ asserted: Bool) {
@@ -373,4 +379,28 @@ extension TrainViewController:
             billboardText.text = text
         }
     }
+	
+    func billboardPresentConnectionStatus() {
+		if mqttControl.started {
+			if mqttControl.connected {
+				if self.alive {
+					billboardText.isEnabled = true
+				}
+				else {
+					billboardText.text = "No Train"
+					billboardText.isEnabled = false
+				}
+			}
+			else {
+				self.alive = false
+				billboardText.text = "Connecting..."
+				billboardText.isEnabled = false
+			}
+		}
+		else {
+			self.alive = false
+			billboardText.text = "No Connection"
+			billboardText.isEnabled = false
+		}
+	}
 }
