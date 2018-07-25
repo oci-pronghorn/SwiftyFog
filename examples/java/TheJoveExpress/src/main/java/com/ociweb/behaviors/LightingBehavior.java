@@ -1,18 +1,19 @@
 package com.ociweb.behaviors;
 
+import static com.ociweb.behaviors.AmbientLightBehavior.maxSensorReading;
+import static com.ociweb.iot.maker.TriState.latent;
+
 import com.ociweb.gl.api.PubSubFixedTopicService;
 import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.gl.api.StartupListener;
 import com.ociweb.gl.api.TimeListener;
+import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.TriState;
 import com.ociweb.model.ActuatorDriverPayload;
 import com.ociweb.model.ActuatorDriverPort;
 import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.ChannelReader;
-
-import static com.ociweb.behaviors.AmbientLightBehavior.maxSensorReading;
-import static com.ociweb.iot.maker.TriState.latent;
 
 /*
     LightingBehavior encapsulates all the business logic for managing the interaction
