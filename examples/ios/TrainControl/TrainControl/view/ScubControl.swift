@@ -11,8 +11,10 @@ import UIKit
 
 @IBDesignable
 public  class ScrubControl : UIControl {
-	fileprivate var scrubTap: UITapGestureRecognizer!
-	fileprivate var scrubPan: UIPanGestureRecognizer!
+	private var feedbackGenerator : UISelectionFeedbackGenerator? = nil
+	private var hadImpacted: Bool = false
+	private var scrubTap: UITapGestureRecognizer!
+	private var scrubPan: UIPanGestureRecognizer!
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -184,13 +186,30 @@ extension ScrubControl: UIGestureRecognizerDelegate {
 	}
 	
 	@objc private func scrubPanned(_ gestureRecognizer: UIPanGestureRecognizer) {
-		let vp = gestureRecognizer.velocity(in: self)
-		let v = vp.x
-		let d = Float(v / (self.velocityAdjustWidthFactor * self.bounds.width))
-		let start = self.normValue
-		let m = start + d
-		self.normValue = min(max(m, 0.0), 1.0)
-		self.sendActions(for: UIControl.Event.valueChanged)
+		
+		switch(gestureRecognizer.state) {
+		case .began:
+			feedbackGenerator = UISelectionFeedbackGenerator()
+			feedbackGenerator?.prepare()
+		case .changed:
+			let vp = gestureRecognizer.velocity(in: self)
+			let v = vp.x
+			let d = Float(v / (self.velocityAdjustWidthFactor * self.bounds.width))
+			let start = self.normValue
+			let m = start + d
+			self.normValue = min(max(m, 0.0), 1.0)
+			let imapacted = self.normValue == 0 || self.normValue == 1.0
+			if imapacted && !hadImpacted {
+				feedbackGenerator?.selectionChanged()
+				feedbackGenerator?.prepare()
+			}
+			hadImpacted = imapacted
+			self.sendActions(for: UIControl.Event.valueChanged)
+		case .cancelled, .ended, .failed:
+			feedbackGenerator = nil
+		default:
+			break
+		}
 	}
 }
 

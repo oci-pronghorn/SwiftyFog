@@ -11,6 +11,7 @@ import AVFoundation
 import SwiftyFog_iOS
 
 class TrainViewController: UIViewController {
+	let impact = UIImpactFeedbackGenerator()
 	let train = Train()
 	let engine = Engine()
 	let lights = Lights()
@@ -307,6 +308,7 @@ extension TrainViewController:
         }
         else if (self.crack == nil) {
             self.player = AVAudioPlayer.playSound()
+            impact.impactOccurred()
             let crack = UIImageView(image: #imageLiteral(resourceName: "brokenglass"))
             crack.translatesAutoresizingMaskIntoConstraints = false
             crack.alpha = 0.25
