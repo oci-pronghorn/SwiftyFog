@@ -46,6 +46,15 @@ class ScrewsView: UIView {
 							x: s.width / 2.0 - screwRadius,
 							y: inset - screwRadius)
 					]
+				case -2:
+					points = [
+						CGPoint(
+							x: s.width / 2.0 - screwRadius,
+							y: s.height - (inset + screwRadius)),
+						CGPoint(
+							x: s.width / 2.0 - screwRadius,
+							y: (s.height / 2.0) - screwRadius),
+					]
 				case 2:
 					points = [
 						CGPoint(
