@@ -1,30 +1,22 @@
 package com.ociweb;
 
-import static com.ociweb.iot.grove.motor_driver.MotorDriverTwig.MotorDriver;
-import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
-
-import com.ociweb.behaviors.AmbientLightBehavior;
-import com.ociweb.behaviors.EngineBehavior;
-import com.ociweb.behaviors.EngineBehaviorPWM;
-import com.ociweb.behaviors.LifeCycleBehavior;
-import com.ociweb.behaviors.LightingBehavior;
-import com.ociweb.behaviors.LightingBehaviorPWM;
-import com.ociweb.behaviors.MotionFaultBehavior;
-import com.ociweb.behaviors.TextDisplay;
+import com.ociweb.behaviors.*;
 import com.ociweb.behaviors.internal.AccelerometerBehavior;
-import com.ociweb.behaviors.internal.ActuatorDriverBehavior;
+import com.ociweb.behaviors.internal.PWMActuatorDriverBehavior;
+import com.ociweb.behaviors.internal.SharedActuatorDriverBehavior;
 import com.ociweb.behaviors.location.LocationBehavior;
 import com.ociweb.behaviors.location.TrainingBehavior;
 import com.ociweb.gl.api.MQTTBridge;
 import com.ociweb.gl.api.MQTTQoS;
 import com.ociweb.iot.grove.simple_analog.SimpleAnalogTwig;
-import com.ociweb.iot.grove.simple_digital.SimpleDigitalTwig;
 import com.ociweb.iot.maker.Baud;
 import com.ociweb.iot.maker.FogApp;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.Hardware;
 import com.ociweb.pronghorn.iot.i2c.I2CJFFIStage;
 import com.ociweb.pronghorn.stage.scheduling.GraphManager;
+
+import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
 
 public class TheJoveExpress implements FogApp
 {
@@ -70,19 +62,14 @@ public class TheJoveExpress implements FogApp
         }
         
         if (config.sharedAcutatorEnabled) {
-        	if (config.engineEnabled || config.lightsEnabled) {
-        		hardware.connect(MotorDriver);
-        	}        	
+            SharedActuatorDriverBehavior.connectHardaware(hardware,config.lightsEnabled || config.engineEnabled)    ;
         } else {
-        	if (config.lightsEnabled) {
-                hardware.connect(SimpleDigitalTwig.LED, config.ledPort);
-        	}
-        	if (config.engineEnabled) {
-        		hardware.connect(SimpleDigitalTwig.MDDS30Power, config.enginePowerPort);
-        		hardware.connect(SimpleDigitalTwig.MDDS30Direction, config.engineDirectionPort);
-        	}
+            PWMActuatorDriverBehavior.connectHardware(hardware,
+                    config.engineEnabled ? config.enginePowerPort : null,
+                    config.engineEnabled ? config.engineDirectionPort : null,
+                    config.lightsEnabled ? config.ledPort : null);
+
         }
-        
     }
 
     public void declareBehavior(FogRuntime runtime) {
@@ -114,13 +101,15 @@ public class TheJoveExpress implements FogApp
             /////////
             
             if (config.sharedAcutatorEnabled) {
-            
-            	final ActuatorDriverBehavior actuator = new ActuatorDriverBehavior(runtime);
+            	final SharedActuatorDriverBehavior actuator = new SharedActuatorDriverBehavior(runtime);
             	topics.subscribe(actuator, actuatorPowerAInternal, actuator::setPower);
             	topics.subscribe(actuator, actuatorPowerBInternal, actuator::setPower);
-            
-            }           
-            
+            }
+        /*    else {
+                final PWMActuatorDriverBehavior actuator = new PWMActuatorDriverBehavior(runtime, config.engineActuatorPort);
+                topics.subscribe(actuator, actuatorPowerAInternal, actuator::setPower);
+                topics.subscribe(actuator, actuatorPowerBInternal, actuator::setPower);
+            }*/
 
             if (config.engineEnabled) {
                 

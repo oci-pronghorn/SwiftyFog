@@ -173,12 +173,8 @@ class GaugeView: UIView {
 // MARK: Layers
 	override public func layoutSublayers(of layer: CALayer) {
 		if layer === self.layer {
-			if let sublayers = layer.sublayers {
-				let b = layer.bounds
-				for subLayer in sublayers {
-					subLayer.frame = b
-				}
-			}
+			backgroundLayer.alignTo(boounds: layer.bounds)
+			valueChanged()
 		}
 	}
 	
@@ -191,6 +187,16 @@ class GaugeView: UIView {
 			let s = self.bounds.size
 			context.scaleBy(x: s.width, y: s.height)
         	draw(context)
+        }
+		
+        func alignTo(boounds: CGRect) {
+        	self.transform = CATransform3DIdentity
+			self.frame = boounds
+			self.sublayers?.forEach {
+				if let layer = $0 as? DrawingLayer {
+					layer.alignTo(boounds: self.bounds)
+				}
+			}
         }
 	}
 	
@@ -215,28 +221,28 @@ class GaugeView: UIView {
 		scaleLayer.draw = { [weak self] ctx in
 			self?.drawScale(in: ctx)
 		}
-		self.layer.addSublayer(scaleLayer)
+		self.backgroundLayer.addSublayer(scaleLayer)
 		
 		indicatorLayer.draw = { [weak self] ctx in
 			self?.drawIndicator(in: ctx)
 			self?.drawLabel(in: ctx)
 		}
-		self.layer.addSublayer(indicatorLayer)
+		self.backgroundLayer.addSublayer(indicatorLayer)
 		
 		rangeLayer.draw = { [weak self] ctx in
 			self?.drawRangeLabels(in: ctx)
 		}
-		self.layer.addSublayer(rangeLayer)
+		self.backgroundLayer.addSublayer(rangeLayer)
 		
 		needleLayer.draw = { [weak self] ctx in
 			self?.drawNeedle(in: ctx)
 		}
-		self.layer.addSublayer(needleLayer)
+		self.backgroundLayer.addSublayer(needleLayer)
 		
 		needleScrewLayer.draw = { [weak self] ctx in
 			self?.drawNeedleScrew(in: ctx)
 		}
-		self.layer.addSublayer(needleScrewLayer)
+		self.backgroundLayer.addSublayer(needleScrewLayer)
 		
 		recalcFaceRect()
 	}
@@ -586,17 +592,19 @@ class GaugeView: UIView {
 	private func ranged(value: CGFloat) -> CGFloat {
 		return value > maxValue ? maxValue : value < minValue ? minValue : value
 	}
-	// TODO: the CATransform3DMakeRotation is rvidually rotating more than just the Z axis
+
 	private func valueChanged() {
 		let radians = needleRadians(forValue: _value)
 		let finalTransform = CATransform3DMakeRotation(radians, 0.0, 0.0, 1.0)
-		//needleLayer.transform = finalTransform
+		CALayer.performWithoutAnimation {
+			needleLayer.transform = finalTransform
+		}
 	}
 	
 	public func setValue(_ newValue: CGFloat, animated: Bool, duration: TimeInterval = 0.8, completion: ((_ finished: Bool) -> Void)? = nil) {
 		let lastValue = _value
 		_value = newValue
-		if animated {
+		if false && animated {
 			// Needle animation to target value
 			let firstRadians = needleRadians(forValue: lastValue)
 			let lastRadians = needleRadians(forValue: _value)
@@ -607,18 +615,17 @@ class GaugeView: UIView {
 			}
 			else {
 				middleRadians = (firstRadians + lastRadians) / 2.0
-				print("\(firstRadians) -> \(middleRadians) -> \(lastRadians)")
 			}
-			//let firstTransform = CATransform3DMakeRotation(firstRadians, 0.0, 0.0, 1.0)
-			// An intermediate "middle" value is used to make sure the needle will follow the right rotation direction
+			let firstTransform = CATransform3DMakeRotation(firstRadians, 0.0, 0.0, 1.0)
 			let middleTransform = CATransform3DMakeRotation(middleRadians, 0.0, 0.0, 1.0)
 			let finalTransform = CATransform3DMakeRotation(lastRadians, 0.0, 0.0, 1.0)
 			let animation = CAKeyframeAnimation(keyPath: "transform")
-			animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn)
+			animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
 			animation.isRemovedOnCompletion = true
 			animation.duration = duration
-			animation.values = [/*NSValue(caTransform3D: firstTransform),*/ NSValue(caTransform3D: middleTransform), NSValue(caTransform3D: finalTransform)]
-			//needleLayer.add(animation, forKey: kCATransition)
+			animation.values = [NSValue(caTransform3D: firstTransform), NSValue(caTransform3D: middleTransform), NSValue(caTransform3D: finalTransform)]
+			needleLayer.add(animation, forKey: kCATransition)
+			needleLayer.transform = finalTransform
 		}
 		else {
 			valueChanged()

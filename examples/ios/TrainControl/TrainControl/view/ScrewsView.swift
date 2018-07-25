@@ -29,23 +29,74 @@ class ScrewsView: UIView {
 		}
 	}
 	
+	@IBInspectable public var screwCount: Int = 2 {
+		didSet {
+			self.setNeedsDisplay()
+		}
+	}
+	
 	override func draw(_ rect: CGRect) {
 		if let screwImage = screwImage {
 			let s = self.bounds.size
-			let r1 = CGRect(
-				x: inset - screwRadius,
-				y: (s.height / 2.0) - screwRadius,
-				width: screwRadius * 2.0,
-				height: screwRadius * 2.0)
-			
-			screwImage.draw(in: r1)
-			
-			let r2 = CGRect(
-				x: s.width - (inset + screwRadius),
-				y: (s.height / 2.0) - screwRadius,
-				width: screwRadius * 2.0,
-				height: screwRadius * 2.0)
-			screwImage.draw(in: r2)
+			var points: [CGPoint] = []
+			switch screwCount {
+				case 1:
+					points = [
+						CGPoint(
+							x: s.width / 2.0 - screwRadius,
+							y: inset - screwRadius)
+					]
+				case -2:
+					points = [
+						CGPoint(
+							x: s.width / 2.0 - screwRadius,
+							y: s.height - (inset + screwRadius)),
+						CGPoint(
+							x: s.width / 2.0 - screwRadius,
+							y: (s.height / 2.0) - screwRadius),
+					]
+				case 2:
+					points = [
+						CGPoint(
+							x: inset - screwRadius,
+							y: (s.height / 2.0) - screwRadius),
+						CGPoint(
+							x: s.width - (inset + screwRadius),
+							y: (s.height / 2.0) - screwRadius),
+					]
+				case 3:
+					points = [
+						CGPoint(
+							x: s.width / 2.0 - screwRadius,
+							y: inset - screwRadius),
+						CGPoint(
+							x: inset - screwRadius,
+							y: s.height - (inset + screwRadius)),
+						CGPoint(
+							x: s.width - (inset + screwRadius),
+							y: s.height - (inset + screwRadius)),
+					]
+				case 4:
+					points = [
+						CGPoint(
+							x: inset - screwRadius,
+							y: inset - screwRadius),
+						CGPoint(
+							x: s.width - (inset + screwRadius),
+							y: inset - screwRadius),
+						CGPoint(
+							x: s.width - (inset + screwRadius),
+							y: s.height - (inset + screwRadius)),
+						CGPoint(
+							x: inset - screwRadius,
+							y: s.height - (inset + screwRadius)),
+					]
+				default:
+					break
+			}
+			points.forEach {
+				screwImage.draw(in: CGRect(x: $0.x, y: $0.y, width: screwRadius * 2.0, height: screwRadius * 2.0))
+			}
 		}
 	}
 }

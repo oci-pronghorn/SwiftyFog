@@ -11,6 +11,7 @@ import AVFoundation
 import SwiftyFog_iOS
 
 class TrainViewController: UIViewController {
+	let impact = UIImpactFeedbackGenerator()
 	let train = Train()
 	let engine = Engine()
 	let lights = Lights()
@@ -24,15 +25,15 @@ class TrainViewController: UIViewController {
     @IBOutlet weak var billboardText: UITextField!
 	
 	@IBOutlet weak var billboardImage: UIImageView!
-	@IBOutlet weak var compass: WMGaugeView!
+	@IBOutlet weak var compass: GaugeView!
 	
 	@IBOutlet weak var lightOverride: UISegmentedControl!
 	@IBOutlet weak var lightCalibration: UISlider!
-	@IBOutlet weak var lightingGauge: WMGaugeView!
+	@IBOutlet weak var lightingGauge: GaugeView!
 	
 	@IBOutlet weak var enginePower: ScrubControl!
 	@IBOutlet weak var engineCalibration: UISlider!
-	@IBOutlet weak var engineGauge: WMGaugeView!
+	@IBOutlet weak var engineGauge: GaugeView!
 	
 	@IBOutlet weak var soundControl: UISlider!
 	
@@ -41,6 +42,7 @@ class TrainViewController: UIViewController {
 	var mqttControl: MQTTControl!
 	
 	var trainName: String = ""
+	var alive = false
 	
 	func setTrain(named name: String, bridging: MQTTBridge, force: Bool) {
 		if trainName != name || force {
@@ -104,6 +106,14 @@ class TrainViewController: UIViewController {
 		assertConnectionState()
 		assertValues()
 	}
+/*
+	// Force iPads to respect landscape
+	override public var traitCollection: UITraitCollection {
+		if UIDevice.current.userInterfaceIdiom == .pad && UIDevice.current.orientation.isPortrait {
+			return UITraitCollection(traitsFrom:[UITraitCollection(horizontalSizeClass: .compact), UITraitCollection(verticalSizeClass: .regular)])
+		}
+		return super.traitCollection
+	}*/
 }
 
 // MARK: Connection State
@@ -114,6 +124,7 @@ extension TrainViewController {
 		switch connected {
 			case .started:
 				self.stopStartButton.isSelected = mqttControl.started
+				billboardPresentConnectionStatus()
 				break
 			case .connected(_, _, _, let counter):
 				feedbackCut()
@@ -122,6 +133,7 @@ extension TrainViewController {
 				pulsator.start()
 				self.connectedImage?.isHighlighted = true
 				self.connectMetrics.text = "\(counter).-.-"
+				billboardPresentConnectionStatus()
 				break
 			case .pinged(let status):
 				switch status {
@@ -156,6 +168,7 @@ extension TrainViewController {
 				self.stopStartButton.isSelected = mqttControl.started
 				self.trainAlive.isHighlighted = false
 				feedbackCut()
+				billboardPresentConnectionStatus()
 				break
 		}
 	}
@@ -284,7 +297,9 @@ extension TrainViewController:
 		if alive == false {
 			feedbackCut()
 		}
+		self.alive = alive
 		trainAlive.isHighlighted = alive
+		self.billboardPresentConnectionStatus()
 	}
     
     func train(faults: MotionFaults, _ asserted: Bool) {
@@ -293,6 +308,7 @@ extension TrainViewController:
         }
         else if (self.crack == nil) {
             self.player = AVAudioPlayer.playSound()
+            impact.impactOccurred()
             let crack = UIImageView(image: #imageLiteral(resourceName: "brokenglass"))
             crack.translatesAutoresizingMaskIntoConstraints = false
             crack.alpha = 0.25
@@ -303,7 +319,7 @@ extension TrainViewController:
     }
 	
 	func engine(power: TrainRational, _ asserted: Bool) {
-		engineGauge?.setValue(Float(power.num), animated: true, duration: 0.5)
+		engineGauge?.setValue(CGFloat(power.num), animated: true, duration: 0.5)
 		if asserted {
 			self.enginePower.rational = power
 		}
@@ -348,7 +364,7 @@ extension TrainViewController:
 	}
 	
 	func lights(ambient: TrainRational, _ asserted: Bool) {
-		self.lightingGauge?.setValue(Float(ambient.num), animated: true, duration: 0.5)
+		self.lightingGauge?.setValue(CGFloat(ambient.num), animated: true, duration: 0.15)
 		if asserted {
 		}
 	}
@@ -365,4 +381,28 @@ extension TrainViewController:
             billboardText.text = text
         }
     }
+	
+    func billboardPresentConnectionStatus() {
+		if mqttControl.started {
+			if mqttControl.connected {
+				if self.alive {
+					billboardText.isEnabled = true
+				}
+				else {
+					billboardText.text = "No Train"
+					billboardText.isEnabled = false
+				}
+			}
+			else {
+				self.alive = false
+				billboardText.text = "Connecting..."
+				billboardText.isEnabled = false
+			}
+		}
+		else {
+			self.alive = false
+			billboardText.text = "No Connection"
+			billboardText.isEnabled = false
+		}
+	}
 }

@@ -42,7 +42,6 @@
 		554348881F82D46100C3C2CB /* ScubControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348771F82D46100C3C2CB /* ScubControl.swift */; };
 		5543488B1F82D48A00C3C2CB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5543488A1F82D48A00C3C2CB /* Images.xcassets */; };
 		554348971F82D5B100C3C2CB /* ExerciseMotor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348961F82D5B100C3C2CB /* ExerciseMotor.swift */; };
-		5543489D1F82D65B00C3C2CB /* WMGaugeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 554348991F82D65A00C3C2CB /* WMGaugeView.m */; };
 		554348A01F82D6FE00C3C2CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */; };
 		554E71482103751200AAE25E /* ScrewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554E71472103751200AAE25E /* ScrewsView.swift */; };
 		55524C7020F11FA8004EBD8B /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55524C6E20F11FA8004EBD8B /* Interface.storyboard */; };
@@ -162,6 +161,7 @@
 		5526A5862104EE2E005AF2C6 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		5526A5892104FAF0005AF2C6 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		5536E00120FA934D006B4AE8 /* Settings-Watch.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "Settings-Watch.bundle"; sourceTree = "<group>"; };
+		553AD4FB2108A0EC002B4F07 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		553CC65220F57A8E0046D4A5 /* GaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeView.swift; sourceTree = "<group>"; };
 		554348351F82D3AD00C3C2CB /* TrainControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrainControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		554348381F82D3AD00C3C2CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -189,9 +189,6 @@
 		5543488A1F82D48A00C3C2CB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		554348951F82D4D700C3C2CB /* SwiftyFog_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyFog_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		554348961F82D5B100C3C2CB /* ExerciseMotor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseMotor.swift; sourceTree = "<group>"; };
-		554348981F82D65900C3C2CB /* TrainControl-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TrainControl-Bridging-Header.h"; sourceTree = "<group>"; };
-		554348991F82D65A00C3C2CB /* WMGaugeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMGaugeView.m; sourceTree = "<group>"; };
-		5543489A1F82D65A00C3C2CB /* WMGaugeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMGaugeView.h; sourceTree = "<group>"; };
 		5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		554E71472103751200AAE25E /* ScrewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrewsView.swift; sourceTree = "<group>"; };
 		55524C6C20F11FA8004EBD8B /* TrainConductor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrainConductor.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -273,6 +270,7 @@
 			isa = PBXGroup;
 			children = (
 				5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */,
+				553AD4FB2108A0EC002B4F07 /* README.md */,
 				554348371F82D3AD00C3C2CB /* TrainControl */,
 				5543484C1F82D3AD00C3C2CB /* TrainControlTests */,
 				554348571F82D3AD00C3C2CB /* TrainControlUITests */,
@@ -368,9 +366,6 @@
 				554348771F82D46100C3C2CB /* ScubControl.swift */,
 				551AB9DE1F93B94A0080D37B /* FlipLabel.swift */,
 				553CC65220F57A8E0046D4A5 /* GaugeView.swift */,
-				5543489A1F82D65A00C3C2CB /* WMGaugeView.h */,
-				554348991F82D65A00C3C2CB /* WMGaugeView.m */,
-				554348981F82D65900C3C2CB /* TrainControl-Bridging-Header.h */,
 				554E71472103751200AAE25E /* ScrewsView.swift */,
 			);
 			path = view;
@@ -627,7 +622,6 @@
 				554348811F82D46100C3C2CB /* TestingViewController.swift in Sources */,
 				555C84B5210659A700326675 /* TrainSelection.swift in Sources */,
 				554348841F82D46100C3C2CB /* FogRationalUi.swift in Sources */,
-				5543489D1F82D65B00C3C2CB /* WMGaugeView.m in Sources */,
 				5578608E20F3DF9A00FC182D /* UIImagePickerController+.swift in Sources */,
 				5543487E1F82D46100C3C2CB /* Sound.swift in Sources */,
 				551AB9DF1F93B94A0080D37B /* FlipLabel.swift in Sources */,
@@ -857,7 +851,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "TrainControl/view/TrainControl-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -875,7 +868,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "TrainControl/view/TrainControl-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
