@@ -43,11 +43,8 @@ public class TrainConfiguration  {
 
     final boolean soundEnabled = false;
 
-<<<<<<< HEAD
-	final boolean sharedAcutatorEnabled = false;
-=======
-	final boolean sharedAcutatorEnabled;
->>>>>>> branch 'master' of https://github.com/oci-pronghorn/SwiftyFog.git
+	boolean sharedAcutatorEnabled = false;
+
 
 	final Port enginePowerPort     = Port.D5; 
 	final Port engineDirectionPort = Port.D6;
