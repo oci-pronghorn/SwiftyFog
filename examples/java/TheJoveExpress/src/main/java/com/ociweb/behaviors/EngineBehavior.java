@@ -2,6 +2,7 @@ package com.ociweb.behaviors;
 
 import com.ociweb.gl.api.PubSubFixedTopicService;
 import com.ociweb.gl.api.PubSubMethodListener;
+import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.model.ActuatorDriverPayload;
 import com.ociweb.model.ActuatorDriverPort;
@@ -31,18 +32,13 @@ public class EngineBehavior implements PubSubMethodListener {
 
     public EngineBehavior(FogRuntime runtime, int calibration, String actuatorTopic, ActuatorDriverPort port, String enginePoweredTopic, String engineCalibratedTopic, String engineStateTopic) {
         this.calibration = new RationalPayload(calibration, 100);
-<<<<<<< HEAD
+
         FogCommandChannel newCommandChannel = runtime.newCommandChannel();
 		this.actuatorService = newCommandChannel.newPubSubService(actuatorTopic);
         this.engineStateService = newCommandChannel.newPubSubService(engineStateTopic);
         this.powerService = newCommandChannel.newPubSubService(enginePoweredTopic);
         this.calibrationService = newCommandChannel.newPubSubService(engineCalibratedTopic);
-=======
-        this.actuatorService = runtime.newCommandChannel().newPubSubService(actuatorTopic);
-        this.engineStateService = runtime.newCommandChannel().newPubSubService(engineStateTopic);
-        this.powerService = runtime.newCommandChannel().newPubSubService(enginePoweredTopic);
-        this.calibrationService = runtime.newCommandChannel().newPubSubService(engineCalibratedTopic);
->>>>>>> branch 'master' of https://github.com/oci-pronghorn/SwiftyFog.git
+
         this.actuatorPayload.port = port;
     }
 
