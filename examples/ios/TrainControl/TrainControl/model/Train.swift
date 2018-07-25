@@ -57,7 +57,7 @@ public class Train: FogFeedbackModel {
         mqtt.publish(MQTTMessage(topic: "fault/control"))
     }
 	
-	private func askForFeedback() {
+	public func askForFeedback() {
 		mqtt.publish(MQTTMessage(topic: "feedback", qos: .atLeastOnce))
 	}
 	

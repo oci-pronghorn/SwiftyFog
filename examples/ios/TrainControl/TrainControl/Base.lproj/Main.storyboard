@@ -37,9 +37,10 @@
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outletCollection property="gestureRecognizers" destination="96s-Uf-foB" appends="YES" id="nTi-mL-SU7"/>
+                                            <outletCollection property="gestureRecognizers" destination="bSN-iu-BGb" appends="YES" id="RNC-iq-C1B"/>
                                         </connections>
                                     </imageView>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="n8M-qB-QXO">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="n8M-qB-QXO">
                                         <rect key="frame" x="36" y="1" width="111" height="30"/>
                                         <color key="backgroundColor" name="Background"/>
                                         <nil key="textColor"/>
@@ -149,10 +150,10 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="0P7-i3-PrJ" userLabel="Control Stack">
-                                <rect key="frame" x="8" y="70" width="359" height="360"/>
+                                <rect key="frame" x="8" y="70" width="359" height="364"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="jch-e0-4v6" userLabel="Engine Stack">
-                                        <rect key="frame" x="0.0" y="0.0" width="175.5" height="360"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="175.5" height="364"/>
                                         <subviews>
                                             <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="unr-Cy-oQt" userLabel="Engine Screws View" customClass="ScrewsView" customModule="TrainControl" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="175.5" height="20.5"/>
@@ -398,10 +399,10 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="30" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="5SJ-Xc-cNf" userLabel="Calibrate Power">
-                                                <rect key="frame" x="-2" y="329" width="179.5" height="32"/>
+                                                <rect key="frame" x="-2" y="329" width="179.5" height="36"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="engineCalibrationControl"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="31" id="SLG-Ty-MMt"/>
+                                                    <constraint firstAttribute="height" constant="35" id="SLG-Ty-MMt"/>
                                                 </constraints>
                                                 <color key="minimumTrackTintColor" name="Idle"/>
                                                 <color key="maximumTrackTintColor" name="Reverse"/>
@@ -413,7 +414,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="fI1-eS-yQm" userLabel="Lights Stack">
-                                        <rect key="frame" x="183.5" y="0.0" width="175.5" height="360"/>
+                                        <rect key="frame" x="183.5" y="0.0" width="175.5" height="364"/>
                                         <subviews>
                                             <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="WfJ-3O-gkV" userLabel="Lights Screws View" customClass="ScrewsView" customModule="TrainControl" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="175.5" height="20.5"/>
@@ -634,10 +635,10 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="128" minValue="0.0" maxValue="256" translatesAutoresizingMaskIntoConstraints="NO" id="Ulu-J2-pss" userLabel="Light Calibration">
-                                                <rect key="frame" x="-2" y="329" width="179.5" height="32"/>
+                                                <rect key="frame" x="-2" y="329" width="179.5" height="36"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="lightCalibrationControl"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="31" id="hzN-xz-WJS"/>
+                                                    <constraint firstAttribute="height" constant="35" id="hzN-xz-WJS"/>
                                                 </constraints>
                                                 <color key="minimumTrackTintColor" name="Nighttime"/>
                                                 <color key="maximumTrackTintColor" name="Daytime"/>
@@ -808,6 +809,11 @@
                         <action selector="shutdownTrainWithSender:" destination="BYZ-38-t0r" id="aPz-oI-Jag"/>
                     </connections>
                 </pongPressGestureRecognizer>
+                <tapGestureRecognizer numberOfTapsRequired="2" id="bSN-iu-BGb">
+                    <connections>
+                        <action selector="requestFeedbackWithSender:" destination="BYZ-38-t0r" id="ZQn-Ut-epr"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="646.37681159420299" y="-384.78260869565219"/>
         </scene>

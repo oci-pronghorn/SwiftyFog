@@ -106,6 +106,14 @@ class TrainViewController: UIViewController {
 		assertConnectionState()
 		assertValues()
 	}
+	
+	override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+		return UIInterfaceOrientationMask.portrait
+	}
+	
+	override var shouldAutorotate: Bool {
+		return false
+	}
 /*
 	// Force iPads to respect landscape
 	override public var traitCollection: UITraitCollection {
@@ -218,6 +226,11 @@ extension TrainViewController: UITextFieldDelegate {
 	@IBAction
 	func shutdownTrain(sender: UILongPressGestureRecognizer) {
 		train.controlShutdown()
+	}
+	
+	@IBAction
+	func requestFeedback(sender: UITapGestureRecognizer) {
+		train.askForFeedback()
 	}
     
     @IBAction
@@ -404,5 +417,6 @@ extension TrainViewController:
 			billboardText.text = "No Connection"
 			billboardText.isEnabled = false
 		}
+		billboardText.backgroundColor = UIColor(named: billboardText.isEnabled ? "Background" : "Gold")!
 	}
 }

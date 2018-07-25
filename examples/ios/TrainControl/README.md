@@ -3,6 +3,7 @@
 Is Alive Indicator:
 - Uses sticky published topic and last-will to signal train is connected to broker
 - Long press should send a shutdown command to the Train application and train's last-will invoked
+- Doubletap rerequests all feedback
 
 Billboard Text:
 - "No Connection" is connections are not being made
