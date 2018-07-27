@@ -29,6 +29,7 @@ class TrainInterfaceController: WKInterfaceController {
 	
 	static var mqtt: MQTTBridge!
 	static var trainName: String = ""
+	var alive = false
 	
 	static func setTrain(named name: String, bridging: MQTTBridge, force: Bool) {
 		if trainName != name || force {
@@ -93,6 +94,16 @@ extension TrainInterfaceController: WKCrownDelegate {
 	@IBAction func lights(sender: WKInterfaceButton?) {
 		lights.controlNextOverride()
 	}
+	
+	@IBAction
+	func shutdownTrain(sender: WKLongPressGestureRecognizer) {
+		train.controlShutdown()
+	}
+	
+	@IBAction
+	func requestFeedback(sender: WKTapGestureRecognizer) {
+		train.askForFeedback()
+	}
 }
 
 // MARK: Connection State
@@ -101,10 +112,12 @@ extension TrainInterfaceController {
 	func mqtt(connected: MQTTConnectedState) {
 		switch connected {
 			case .started:
+				billboardPresentConnectionStatus()
 				break
 			case .connected(_, _, _, _):
 				feedbackCut()
 				assertValues()
+				billboardPresentConnectionStatus()
 				break
 			case .pinged(let status):
 				switch status {
@@ -126,6 +139,7 @@ extension TrainInterfaceController {
 				break
 			case .disconnected(_, _, _):
 				feedbackCut()
+				billboardPresentConnectionStatus()
 				break
 		}
 	}
@@ -163,7 +177,9 @@ extension TrainInterfaceController:
 		if alive == false {
 			feedbackCut()
 		}
+		self.alive = alive
 		aliveIndicator.setImage(alive ? #imageLiteral(resourceName: "Alive") : #imageLiteral(resourceName: "Dead"))
+		self.billboardPresentConnectionStatus()
 	}
 			
     func train(faults: MotionFaults, _ asserted: Bool) {
@@ -227,4 +243,26 @@ extension TrainInterfaceController:
     func billboard(text: String, _ asserted: Bool) {
         self.setTitle(text)
     }
+	
+    func billboardPresentConnectionStatus() {
+    	if let mqttControl = mqttControl {
+			if mqttControl.started {
+				if mqttControl.connected {
+					if self.alive {
+					}
+					else {
+						self.setTitle("No Train")
+					}
+				}
+				else {
+					self.alive = false
+					self.setTitle("Connecting...")
+				}
+			}
+			else {
+				self.alive = false
+				self.setTitle("No Connection")
+			}
+			}
+	}
 }

@@ -1,50 +1,64 @@
-#  Verification
+#  Train Control UI Overview
 
-Is Alive Indicator:
-- Uses sticky published topic and last-will to signal train is connected to broker
-- Long press should send a shutdown command to the Train application and train's last-will invoked
-- Doubletap rerequests all feedback
+## Train Connection Indicator
+The circular icon presents a flat line if train is not connected to the broker or a heartbeat like line otherwise.
+A long-press on the indicator sends a shutdown request to the train application. The flat line should appear on train's last will.
+A double-tap will send a feedback request where the train will retransmit all states
+On transition from flatline to heartbeat the same feadback request is made and controls, not just indicators are updated.
+Apple watch has the indicator with gestures.
 
-Billboard Text:
-- "No Connection" is connections are not being made
-- "Connecting..." during connection process
-- "No Train" if connected to broker but no "Alive" topic received
-- Otherwise editable and changes display text on train
+## Billboard Text 
+The billboard text will be disabled and gold when train is flatlined. Current connection status is displayed in text
+* "No Connection" is connections are not being made
+* "Connecting..." during connection process
+* "No Train" if connected to broker but no "Alive" topic received
+If the train is connected the the billboard edit field controls the text on the Train's billboard display.
+Apple watch billboard text is alwars readonly.
 
-Connection Metrics:
-- Connections made : Grouped Attemptes : Current Group's Iteration
+## Connection Metrics
+This flip labels count down the number of connection attempts to the broker.
+| Connections made | Grouped Attempts | Current Group's Iteration |
+It is reset whenever connection attempts are manually restarted
+Not presented on watch.
 
-Connection Indicator:
-- Plugged in if connected to broker
-- Not plugged in if not connected to broker
+## Connection Indicator
+If the application has connected to the broker the icon shows a plug plugged-in, otherwise unplugged. It has a pulsating glow on pings.
+Presented on watch
 
-Connection Button:
-- Red - stop making connections
-- Green - make connections
+## Manual Connect Switch
+This toggle button toggles betwwen connection desired and make no connection. If no connection is desired, some of the controls will update indicators, bypassing the severed feedback loop. This is for testing. 
+Watch always assumes desired connection.
 
-Power Gauge:
-- If not making connections - reacts to Power Slider and Calibration Slider, otherwise feedbackloop
-- On "Train Alive" immediately sets power , calibration, and indicator to that of the train
+## Power Gauge
+The analog power gauge presents three peices of information.
+* Percent of max power given to the motor (-100 to 100)
+* The minimal power threshold where no actual power is sent to the motor
+* Backward, Idle, and Forward Indicator
+Watch presnts indicator and power as text
 
-Power Slider:
-- Sends power signal. Auto updates only on train alive signaled or view loaded.
+## Power Slider
+The scrub style slider allows the user to start the slide from any tap position and provides haptic feedback on boundary hit. When connections are desired this control does not adjust the guage.
+Watch uses the harware crown
 
-Amp Calibration Slider:
-- Sends amp calibration. Auto updates only on train alive signaled or view loaded.
+## Calibrate Amps Slider
+This standard slider adjusts the minimum amps for the motor.  When connections are desired this control does not adjust the guage.
+Not on watch
 
-* Train will power moter per power slider. If power is below calibrated engine will not turn on. Indicator shows engine state.
+## Light Gauge
+The analog power gauge presents three peices of information.
+* Current sensed ambient light (0 to 256)
+* The ambient light threshold to auto turn lights on or off
+* Lights on/off indicator
+Watch presents indicator
 
-Light Gauge:
-- If not making connections - reacts to Power Slider and Calibration Slider, otherwise feedbackloop
-- On "Train Alive" immediately sets ambient light, calibration, and indicator to that of the train
+## Light Override
+This standard segmented control selects between lights On, Off, or Auto.  When connections are desired this control does not adjust the guage.
+Implemented as a single button that sequences through options on the watch.
 
-Light Override:
-- Sends light override. Auto updates only on train alive signaled or view loaded.
+## Light Calibration:
+This standard slider adjusts the minimum ambient amps to turn lights on in auto mode. When connections are desired this control does not adjust the guage.
+Not on watch
 
-Light Calibration:
-- Sends light calibration. Auto updates only on train alive signaled or view loaded.
-
-* Train will keep lights off if override is off, keep lights on if override is on. If auto and ambient light is above calibration then lights are turned on, otherwise off. Indicator always shows if lights are on or off. On train startup lights flash a couple times.
-
-Error Button:
-- Sends a forced fault (toggles) to train. Engine turns off when true. iOS display appears to be cracked.
+## Error
+Sends a toggled forced faultto train. Motor turns off when true. iOS display appears to be cracked, plays a sound, and provides haptic feedback.
+None of this is implemented on watch yet.

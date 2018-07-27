@@ -19,7 +19,20 @@
                             <items>
                                 <group alignment="center" spacing="8" id="skG-zr-bUe" userLabel="Initicators">
                                     <items>
-                                        <imageView alignment="center" image="Dead" id="2DS-bY-FJB"/>
+                                        <imageView alignment="center" image="Dead" id="2DS-bY-FJB">
+                                            <gestureRecognizers>
+                                                <longPressGestureRecognizer id="sSk-6R-05t">
+                                                    <connections>
+                                                        <action selector="shutdownTrainWithSender:" destination="U0Q-nI-cAQ" id="i6n-Xp-Vbp"/>
+                                                    </connections>
+                                                </longPressGestureRecognizer>
+                                                <tapGestureRecognizer id="wEY-Gg-lOK">
+                                                    <connections>
+                                                        <action selector="requestFeedbackWithSender:" destination="U0Q-nI-cAQ" id="jf7-jy-pm1"/>
+                                                    </connections>
+                                                </tapGestureRecognizer>
+                                            </gestureRecognizers>
+                                        </imageView>
                                         <imageView alignment="center" image="Motion" id="Vqt-zA-Afu"/>
                                         <imageView alignment="center" image="Torch" id="XOu-iA-2iY"/>
                                     </items>
