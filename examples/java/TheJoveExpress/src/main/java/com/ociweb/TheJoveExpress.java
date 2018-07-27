@@ -1,6 +1,15 @@
 package com.ociweb;
 
-import com.ociweb.behaviors.*;
+import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
+
+import com.ociweb.behaviors.AmbientLightBehavior;
+import com.ociweb.behaviors.EngineBehavior;
+import com.ociweb.behaviors.EngineBehaviorPWM;
+import com.ociweb.behaviors.LifeCycleBehavior;
+import com.ociweb.behaviors.LightingBehavior;
+import com.ociweb.behaviors.LightingBehaviorPWM;
+import com.ociweb.behaviors.MotionFaultBehavior;
+import com.ociweb.behaviors.TextDisplay;
 import com.ociweb.behaviors.internal.AccelerometerBehavior;
 import com.ociweb.behaviors.internal.PWMActuatorDriverBehavior;
 import com.ociweb.behaviors.internal.SharedActuatorDriverBehavior;
@@ -16,8 +25,6 @@ import com.ociweb.iot.maker.Hardware;
 import com.ociweb.pronghorn.iot.i2c.I2CJFFIStage;
 import com.ociweb.pronghorn.stage.scheduling.GraphManager;
 
-import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
-
 public class TheJoveExpress implements FogApp
 {
     private TrainConfiguration config;
@@ -31,6 +38,7 @@ public class TheJoveExpress implements FogApp
         
         hardware.setDefaultRate(16_000_000);
 
+        
         //hardware.setTestImageSource(Paths.get("source_img"));
         //hardware.useI2C();
 
@@ -222,7 +230,8 @@ public class TheJoveExpress implements FogApp
         }
 
         if (config.appServerEnabled) {
-            runtime.addFileServer("").includeAllRoutes(); // TODO: use resource folder
+            runtime.addResourceServer(config.resourceRoot, config.resourceDefaultPath)
+            						.includeAllRoutes(); 
         }
 
         topics.close();

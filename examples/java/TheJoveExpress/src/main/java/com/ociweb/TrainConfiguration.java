@@ -38,7 +38,7 @@ public class TrainConfiguration  {
     final boolean faultDetectionEnabled = true; //NOTE: warning the accelerometer is never found to be publishing if this is on...
     final int accelerometerReadFreq = 250;
 
-    final boolean appServerEnabled = false;
+    final boolean appServerEnabled = true;
     final int appServerPort = 8089;
 
     final boolean soundEnabled = false;
@@ -50,6 +50,9 @@ public class TrainConfiguration  {
 	final Port engineDirectionPort = Port.D6;
 
 	final int engineCalibration;
+
+	public String resourceRoot = "joveSite";
+	public String resourceDefaultPath = "/index.html"; //used when caller does not provide path
 
     TrainConfiguration(ArgumentProvider args) {
         // TODO: we need to come up with a better way to customize per train
