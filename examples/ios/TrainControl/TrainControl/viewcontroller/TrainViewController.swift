@@ -107,10 +107,12 @@ class TrainViewController: UIViewController {
 		assertValues()
 	}
 
-	// Force iPads to respect landscape
+	// Force iPads to respect landscape (horizontalSizeClass compact)
 	override public var traitCollection: UITraitCollection {
 		if UIDevice.current.userInterfaceIdiom == .pad && UIDevice.current.orientation.isPortrait {
-			return UITraitCollection(traitsFrom:[UITraitCollection(horizontalSizeClass: .compact), UITraitCollection(verticalSizeClass: .regular)])
+			return UITraitCollection(traitsFrom:[
+				UITraitCollection(horizontalSizeClass: .compact),
+				UITraitCollection(verticalSizeClass: .regular)])
 		}
 		return super.traitCollection
 	}

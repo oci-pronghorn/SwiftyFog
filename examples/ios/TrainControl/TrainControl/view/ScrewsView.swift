@@ -35,6 +35,11 @@ class ScrewsView: UIView {
 		}
 	}
 	
+	override func layoutSubviews() {
+    	super.layoutSubviews()
+    	self.setNeedsDisplay()
+	}
+	
 	override func draw(_ rect: CGRect) {
 		if let screwImage = screwImage {
 			let s = self.bounds.size
