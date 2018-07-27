@@ -69,7 +69,7 @@ public  class ScrubControl : UIControl {
 	}
 
 	@IBInspectable
-	public var scrubHeight: CGFloat = 32 {
+	public var scrubHeight: CGFloat = -1 {
 		didSet {
 			self.setNeedsDisplay()
 		}
@@ -113,7 +113,7 @@ public  class ScrubControl : UIControl {
 			
 			let t: CGFloat = bounds.origin.y
 			let l: CGFloat = bounds.origin.x
-			let h: CGFloat = scrubHeight
+			let h: CGFloat = scrubHeight == -1.0 ? bounds.size.height : scrubHeight
 			let w: CGFloat = bounds.size.width
 			let b = t + h
 
