@@ -150,7 +150,7 @@ public class LightingBehaviorPWM implements PubSubMethodListener, TimeListener, 
             updatePower = overridePower != null ? overridePower : determinedPower;
         }
                 
-		if (!this.pwmService.setValue(port, (int)(twigRange*updatePower))) {;
+		if (!this.pwmService.setValue(port, (int)((twigRange-1)*updatePower))) {;
 		
 			if (isOn != (updatePower>0)) {
 				this.isOn = (updatePower>0);
