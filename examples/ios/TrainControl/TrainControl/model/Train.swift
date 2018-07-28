@@ -18,6 +18,7 @@ public typealias TrainRational = FogRational<Int32>
 public protocol TrainDelegate: class, SubscriptionLogging {
 	func train(alive: Bool)
     func train(faults: MotionFaults, _ asserted: Bool)
+    func train(webHost: String?)
 }
 
 public class Train: FogFeedbackModel {
@@ -30,7 +31,8 @@ public class Train: FogFeedbackModel {
 		didSet {
 			broadcaster.assign(mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("lifecycle/feedback", .atLeastOnce, Train.feedbackLifecycle),
-                ("fault/feedback", .atLeastOnce, Train.feedbackFault)
+                ("fault/feedback", .atLeastOnce, Train.feedbackFault),
+                ("web/feedback", .atLeastOnce, Train.feedbackWeb),
 			]) {[weak self] (_, status) in self?.delegate?.onSubscriptionAck(status: status)})
 		}
     }
@@ -67,6 +69,11 @@ public class Train: FogFeedbackModel {
 		if alive {
 			askForFeedback()
 		}
+	}
+	
+	private func feedbackWeb(msg: MQTTMessage) {
+		let host: String? = msg.payload.fogExtract()
+		delegate?.train(webHost: host)
 	}
     
     private func feedbackFault(msg: MQTTMessage) {

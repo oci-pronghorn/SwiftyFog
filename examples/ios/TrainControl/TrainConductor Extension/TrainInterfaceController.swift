@@ -193,6 +193,9 @@ extension TrainInterfaceController:
         }
     }
 	
+	func train(webHost: String?) {
+	}
+	
 	func engine(power: TrainRational, _ asserted: Bool) {
 		powerIndicator.setText(power.num.description)
 	}

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WebKit
 import AVFoundation
 import SwiftyFog_iOS
 
@@ -38,6 +39,8 @@ class TrainViewController: UIViewController {
 	@IBOutlet weak var soundControl: UISlider!
 	
 	@IBOutlet var pulsator: Pulsator!
+	
+	@IBOutlet var webView: WKWebView!
 	
 	var mqttControl: MQTTControl!
 	
@@ -325,6 +328,17 @@ extension TrainViewController:
         }
     }
 	
+	func train(webHost: String?) {
+		if let webHost = webHost, let url = URL(string: webHost), !webHost.isEmpty {
+			webView.isHidden = false
+			let request = URLRequest(url: url)
+			webView.load(request)
+		}
+		else {
+			webView.isHidden = true
+		}
+	}
+	
 	func engine(power: TrainRational, _ asserted: Bool) {
 		engineGauge?.setValue(CGFloat(power.num), animated: true, duration: 0.5)
 		if asserted {
@@ -394,6 +408,7 @@ extension TrainViewController:
 			if mqttControl.connected {
 				if self.alive {
 					billboardText.isEnabled = true
+					billboardText.text = ""
 				}
 				else {
 					billboardText.text = "No Train"
