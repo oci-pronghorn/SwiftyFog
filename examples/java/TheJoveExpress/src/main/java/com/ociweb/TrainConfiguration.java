@@ -1,6 +1,7 @@
 package com.ociweb;
 
 import com.ociweb.gl.api.ArgumentProvider;
+import com.ociweb.gl.api.TelemetryConfig;
 import com.ociweb.iot.maker.Port;
 import com.ociweb.model.ActuatorDriverPort;
 
@@ -13,7 +14,7 @@ public class TrainConfiguration  {
     final int mqttPort = 1883;
 
     final boolean telemetryEnabled = true;
-    final int telemetryPort = 8089;
+    final int telemetryPort = TelemetryConfig.defaultTelemetryPort;
     final String telemetryHost = null;
 
     final boolean lifecycleEnabled = true;

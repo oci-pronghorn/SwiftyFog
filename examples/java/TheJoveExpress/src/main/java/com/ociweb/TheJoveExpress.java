@@ -1,15 +1,6 @@
 package com.ociweb;
 
-import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
-
-import com.ociweb.behaviors.AmbientLightBehavior;
-import com.ociweb.behaviors.EngineBehavior;
-import com.ociweb.behaviors.EngineBehaviorPWM;
-import com.ociweb.behaviors.LifeCycleBehavior;
-import com.ociweb.behaviors.LightingBehavior;
-import com.ociweb.behaviors.LightingBehaviorPWM;
-import com.ociweb.behaviors.MotionFaultBehavior;
-import com.ociweb.behaviors.TextDisplay;
+import com.ociweb.behaviors.*;
 import com.ociweb.behaviors.internal.AccelerometerBehavior;
 import com.ociweb.behaviors.internal.PWMActuatorDriverBehavior;
 import com.ociweb.behaviors.internal.SharedActuatorDriverBehavior;
@@ -25,19 +16,18 @@ import com.ociweb.iot.maker.Hardware;
 import com.ociweb.pronghorn.iot.i2c.I2CJFFIStage;
 import com.ociweb.pronghorn.stage.scheduling.GraphManager;
 
+import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
+
 public class TheJoveExpress implements FogApp
 {
     private TrainConfiguration config;
     private MQTTBridge mqttBridge;
-
-
 
     @Override
     public void declareConnections(Hardware hardware) {
         config = new TrainConfiguration(hardware);
         
         hardware.setDefaultRate(16_000_000);
-
         
         //hardware.setTestImageSource(Paths.get("source_img"));
         //hardware.useI2C();
@@ -51,7 +41,8 @@ public class TheJoveExpress implements FogApp
                     .keepAliveSeconds(10);
             //hardware.definePrivateTopic("", "CameraBehavior", "");
         }
-        if (config.appServerEnabled) hardware.useHTTP1xServer(config.appServerPort); // TODO: heap problem on Pi0
+        WebHostBehavior.enable(hardware, config.appServerEnabled, config.appServerPort);
+
         if (config.lightsEnabled) {
             hardware.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);  
         }
@@ -62,7 +53,7 @@ public class TheJoveExpress implements FogApp
         if (config.soundEnabled) ; //c.connect(serial mp3 player);
 
         if (config.telemetryEnabled) {
-            hardware.enableTelemetry(config.telemetryHost);
+            hardware.enableTelemetry(config.telemetryHost, config.telemetryPort);
         }
 
         if (config.lightsEnabled) {
@@ -76,7 +67,6 @@ public class TheJoveExpress implements FogApp
                     config.engineEnabled ? config.enginePowerPort : null,
                     config.engineEnabled ? config.engineDirectionPort : null,
                     config.lightsEnabled ? config.ledPort : null);
-
         }
     }
 
@@ -230,8 +220,10 @@ public class TheJoveExpress implements FogApp
         }
 
         if (config.appServerEnabled) {
-            runtime.addResourceServer(config.resourceRoot, config.resourceDefaultPath)
-            						.includeAllRoutes(); 
+            final String webFeedback = "web/feedback";
+            final WebHostBehavior webHost = new WebHostBehavior(runtime, config.resourceRoot, config.resourceDefaultPath,
+                    topics.publish(webFeedback, false, MQTTQoS.atMostOnce));
+            topics.subscribe(webHost, allFeedback, MQTTQoS.atMostOnce, webHost::onAllFeedback);
         }
 
         topics.close();
