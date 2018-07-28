@@ -16,7 +16,6 @@ class TrainInterfaceController: WKInterfaceController {
 	let lights = Lights()
 	let billboard = Billboard()
 	
-	var mqttControl: MQTTControl!
 	
 	@IBOutlet weak var aliveIndicator: WKInterfaceImage!
 	@IBOutlet weak var engineIndicator: WKInterfaceImage!
@@ -28,10 +27,12 @@ class TrainInterfaceController: WKInterfaceController {
 	@IBOutlet weak var overrideAutoIndicator: WKInterfaceLabel!
 	
 	static var mqtt: MQTTBridge!
+	static var mqttControl: MQTTControl!
 	static var trainName: String = ""
 	var alive = false
 	
-	static func setTrain(named name: String, bridging: MQTTBridge, force: Bool) {
+	static func setTrain(named name: String, bridging: MQTTBridge, mqttControl: MQTTControl!, force: Bool) {
+		self.mqttControl = mqttControl
 		if trainName != name || force {
 			self.trainName = name
 			let scoped = bridging.createBridge(subPath: trainName)
@@ -82,7 +83,9 @@ class TrainInterfaceController: WKInterfaceController {
 
 extension TrainInterfaceController: WKCrownDelegate {
 	func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
-		engine.control(powerIncrement: rotationalDelta)
+		if (engine.control(powerIncrement: rotationalDelta)) {
+			WKInterfaceDevice.current().play(WKHapticType.click)
+		}
 	}
 	
 	@IBAction func stopMotor(sender: WKTapGestureRecognizer?) {
@@ -112,11 +115,13 @@ extension TrainInterfaceController {
 	func mqtt(connected: MQTTConnectedState) {
 		switch connected {
 			case .started:
+				aliveIndicator.setImage(#imageLiteral(resourceName: "Disconnected"))
 				billboardPresentConnectionStatus()
 				break
 			case .connected(_, _, _, _):
 				feedbackCut()
 				assertValues()
+				aliveIndicator.setImage(#imageLiteral(resourceName: "Dead"))
 				billboardPresentConnectionStatus()
 				break
 			case .pinged(let status):
@@ -139,6 +144,7 @@ extension TrainInterfaceController {
 				break
 			case .disconnected(_, _, _):
 				feedbackCut()
+				aliveIndicator.setImage(#imageLiteral(resourceName: "Disconnected"))
 				billboardPresentConnectionStatus()
 				break
 		}
@@ -196,12 +202,15 @@ extension TrainInterfaceController:
         switch state {
             case .idle:
             	colorName = "NoPower"
+				WKInterfaceDevice.current().play(WKHapticType.stop)
             case .forward:
             	colorName = "Forward"
+				WKInterfaceDevice.current().play(WKHapticType.directionUp)
             case .reverse:
             	colorName = "Reverse"
+				WKInterfaceDevice.current().play(WKHapticType.directionDown)
         }
-	engineIndicator.setImage(#imageLiteral(resourceName: "Motion").tinted(with: UIColor(named: colorName)!))
+		engineIndicator.setImage(#imageLiteral(resourceName: "Motion").tinted(with: UIColor(named: colorName)!))
     }
 	
 	func engine(calibration: TrainRational, _ asserted: Bool) {
@@ -245,24 +254,23 @@ extension TrainInterfaceController:
     }
 	
     func billboardPresentConnectionStatus() {
-    	if let mqttControl = mqttControl {
-			if mqttControl.started {
-				if mqttControl.connected {
-					if self.alive {
-					}
-					else {
-						self.setTitle("No Train")
-					}
+		let mqttControl = TrainInterfaceController.mqttControl!
+		if mqttControl.started {
+			if mqttControl.connected {
+				if self.alive {
 				}
 				else {
-					self.alive = false
-					self.setTitle("Connecting...")
+					self.setTitle("No Train")
 				}
 			}
 			else {
 				self.alive = false
-				self.setTitle("No Connection")
+				self.setTitle("Connecting...")
 			}
-			}
+		}
+		else {
+			self.alive = false
+			self.setTitle("No Connection")
+		}
 	}
 }

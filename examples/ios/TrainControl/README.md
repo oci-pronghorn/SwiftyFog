@@ -13,7 +13,7 @@ The billboard text will be disabled and gold when train is flatlined. Current co
 * "Connecting..." during connection process
 * "No Train" if connected to broker but no "Alive" topic received
 If the train is connected the the billboard edit field controls the text on the Train's billboard display.
-Apple watch billboard text is alwars readonly.
+Apple watch billboard text is always readonly.
 
 ## Connection Metrics
 This flip labels count down the number of connection attempts to the broker.
@@ -23,22 +23,22 @@ Not presented on watch.
 
 ## Connection Indicator
 If the application has connected to the broker the icon shows a plug plugged-in, otherwise unplugged. It has a pulsating glow on pings.
-Presented on watch
+On watch the Train Indicator shows the disconnected state if not connected to broker. No ping indication.
 
 ## Manual Connect Switch
 This toggle button toggles betwwen connection desired and make no connection. If no connection is desired, some of the controls will update indicators, bypassing the severed feedback loop. This is for testing. 
-Watch always assumes desired connection.
+Watch always assumes desired connection. Button not present.
 
 ## Power Gauge
 The analog power gauge presents three peices of information.
 * Percent of max power given to the motor (-100 to 100)
 * The minimal power threshold where no actual power is sent to the motor
 * Backward, Idle, and Forward Indicator
-Watch presnts indicator and power as text
+Watch presents power as text and indicator
 
 ## Power Slider
 The scrub style slider allows the user to start the slide from any tap position and provides haptic feedback on boundary hit. When connections are desired this control does not adjust the guage.
-Watch uses the harware crown
+Watch uses the hardware crown
 
 ## Calibrate Amps Slider
 This standard slider adjusts the minimum amps for the motor.  When connections are desired this control does not adjust the guage.

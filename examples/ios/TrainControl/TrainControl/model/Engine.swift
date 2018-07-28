@@ -69,10 +69,12 @@ public class Engine: FogFeedbackModel {
 		self.control(power: local)
 	}
 	
-	public func control(powerIncrement: Double) {
+	@discardableResult
+	public func control(powerIncrement: Double) -> Bool {
 		var local = power.value
 		local.num += TrainRational.ValueType(powerIncrement * Double(local.den * 2))
 		self.control(power: local)
+		return local.num <= -100 || local.num >= 100
 	}
 	
 	public func control(power: TrainRational) {

@@ -19,7 +19,7 @@
                             <items>
                                 <group alignment="center" spacing="8" id="skG-zr-bUe" userLabel="Initicators">
                                     <items>
-                                        <imageView alignment="center" image="Dead" id="2DS-bY-FJB">
+                                        <imageView alignment="center" image="Disconnected" id="2DS-bY-FJB">
                                             <gestureRecognizers>
                                                 <longPressGestureRecognizer id="sSk-6R-05t">
                                                     <connections>
