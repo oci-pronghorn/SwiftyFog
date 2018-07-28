@@ -55,9 +55,13 @@ Watch presents indicator
 This standard segmented control selects between lights On, Off, or Auto.  When connections are desired this control does not adjust the guage.
 Implemented as a single button that sequences through options on the watch.
 
-## Light Calibration:
+## Light Calibration
 This standard slider adjusts the minimum ambient amps to turn lights on in auto mode. When connections are desired this control does not adjust the guage.
 Not on watch
+
+## WebView
+If the train broadcasts that web page is hosted, the web view is made visible with the appropriate page loaded.
+The watch does not have this yet.
 
 ## Error
 Sends a toggled forced faultto train. Motor turns off when true. iOS display appears to be cracked, plays a sound, and provides haptic feedback.
