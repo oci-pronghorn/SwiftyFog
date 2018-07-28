@@ -75,6 +75,10 @@ public  class ScrubControl : UIControl {
 		}
 	}
 	
+	private var actualScrubHeight: CGFloat {
+		return scrubHeight != -1 ? scrubHeight : self.bounds.height
+	}
+	
 	@IBInspectable var cursorColor: UIColor = UIColor.blue {
 		didSet {
 			self.setNeedsDisplay()
@@ -108,12 +112,13 @@ public  class ScrubControl : UIControl {
 	override public func draw(_ rect: CGRect) {
 		let context = UIGraphicsGetCurrentContext()!
 		let value = CGFloat(self.normValue)
+		let actualScrubHeight = self.actualScrubHeight
 		
 		if density > 0 {
 			
 			let t: CGFloat = bounds.origin.y
 			let l: CGFloat = bounds.origin.x
-			let h: CGFloat = scrubHeight == -1.0 ? bounds.size.height : scrubHeight
+			let h: CGFloat = actualScrubHeight
 			let w: CGFloat = bounds.size.width
 			let b = t + h
 
@@ -154,10 +159,10 @@ public  class ScrubControl : UIControl {
 		context.setLineCap(CGLineCap.round)
 		
 		let scaleX = self.bounds.width
-		let scaleY = (self.bounds.height - scrubHeight)
+		let scaleY = (self.bounds.height - actualScrubHeight)
 		let v = value * scaleX
 		context.move(to: CGPoint(x: v, y: cursorThickness / 2.0))
-		context.addLine(to: CGPoint(x: v, y: scaleY + scrubHeight - cursorThickness / 2.0))
+		context.addLine(to: CGPoint(x: v, y: scaleY + actualScrubHeight - cursorThickness / 2.0))
 		context.strokePath()
 	}
 }
@@ -174,7 +179,7 @@ extension ScrubControl: UIGestureRecognizerDelegate {
 	
 	override public func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
 		let hit = super.hitTest(point, with: event);
-		return hit != nil && point.y <= scrubHeight ? hit : nil
+		return hit != nil && point.y <= self.actualScrubHeight ? hit : nil
 	}
 	
 	@objc private func scrubTapped(_ gestureRecognizer: UITapGestureRecognizer) {
