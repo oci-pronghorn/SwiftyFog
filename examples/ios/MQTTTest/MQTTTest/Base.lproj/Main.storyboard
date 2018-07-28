@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14306.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Q5b-V9-isC">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14278.2"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Testing View Controller-->
+        <scene sceneID="88R-ZA-aUn">
+            <objects>
+                <viewController id="Q5b-V9-isC" customClass="TestingViewController" customModule="TrainControl" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ay6-yl-8te">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="WkX-oY-Oma" userLabel="Test Stack">
+                                <rect key="frame" x="100.5" y="66" width="174" height="68"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ggs-Mo-oGx">
+                                        <rect key="frame" x="0.0" y="0.0" width="54" height="68"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9He-yq-w2a">
+                                                <rect key="frame" x="0.0" y="0.0" width="54" height="30"/>
+                                                <state key="normal" title="Sub # 0"/>
+                                                <connections>
+                                                    <action selector="subAll0" destination="Q5b-V9-isC" eventType="touchUpInside" id="pMJ-rC-21c"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lUx-ry-rZE">
+                                                <rect key="frame" x="0.0" y="38" width="54" height="30"/>
+                                                <state key="normal" title="QOS 0"/>
+                                                <connections>
+                                                    <action selector="publishQos0" destination="Q5b-V9-isC" eventType="touchUpInside" id="8kg-HI-fGO"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="7hk-4C-Qrl">
+                                        <rect key="frame" x="62" y="0.0" width="51" height="68"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gaU-Pb-Qoz">
+                                                <rect key="frame" x="0.0" y="0.0" width="51" height="30"/>
+                                                <state key="normal" title="Sub # 1"/>
+                                                <connections>
+                                                    <action selector="subAll1" destination="Q5b-V9-isC" eventType="touchUpInside" id="sKj-Ub-zpa"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fdk-rh-bbY">
+                                                <rect key="frame" x="0.0" y="38" width="51" height="30"/>
+                                                <state key="normal" title="QOS 1"/>
+                                                <connections>
+                                                    <action selector="publishQos1" destination="Q5b-V9-isC" eventType="touchUpInside" id="Xgr-sR-lKs"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="qY7-m5-XvH">
+                                        <rect key="frame" x="121" y="0.0" width="53" height="68"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ez8-lO-ct6">
+                                                <rect key="frame" x="0.0" y="0.0" width="53" height="30"/>
+                                                <state key="normal" title="Sub # 2"/>
+                                                <connections>
+                                                    <action selector="subAll2" destination="Q5b-V9-isC" eventType="touchUpInside" id="cMy-rF-E6l"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2kk-g1-Pfw">
+                                                <rect key="frame" x="0.0" y="38" width="53" height="30"/>
+                                                <state key="normal" title="QOS 2"/>
+                                                <connections>
+                                                    <action selector="publishQos2" destination="Q5b-V9-isC" eventType="touchUpInside" id="Eep-vy-tVm"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8QR-HY-7ZB">
+                                <rect key="frame" x="158.5" y="142" width="58" height="30"/>
+                                <state key="normal" title="Unsub #"/>
+                                <connections>
+                                    <action selector="unsubAll" destination="Q5b-V9-isC" eventType="touchUpInside" id="BGn-GL-rFw"/>
+                                    <action selector="unsubAll" destination="CiH-I1-phj" eventType="touchUpInside" id="YAf-qN-LZG"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ytf-k6-DgH" firstAttribute="top" secondItem="WkX-oY-Oma" secondAttribute="bottom" constant="-114" id="7OQ-Sg-hSd"/>
+                            <constraint firstItem="8QR-HY-7ZB" firstAttribute="top" secondItem="WkX-oY-Oma" secondAttribute="bottom" constant="8" id="IFu-PW-4Il"/>
+                            <constraint firstItem="8QR-HY-7ZB" firstAttribute="centerX" secondItem="ytf-k6-DgH" secondAttribute="centerX" id="WH8-X8-LrG"/>
+                            <constraint firstItem="WkX-oY-Oma" firstAttribute="centerX" secondItem="ytf-k6-DgH" secondAttribute="centerX" id="ml3-Jt-ALI"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ytf-k6-DgH"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="" image="Remote" id="mEV-kz-nGg"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CiH-I1-phj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="eOv-x8-nr5" userLabel="Idle" customClass="GaugeRange" customModule="TrainControl" customModuleProvider="target">
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="color">
+                            <color key="value" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="value">
+                            <real key="value" value="30"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="string" keyPath="label" value="Idle"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="order">
+                            <integer key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </customObject>
+                <customObject id="jVM-q9-BXc" userLabel="Forward" customClass="GaugeRange" customModule="TrainControl" customModuleProvider="target">
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="color">
+                            <color key="value" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="value">
+                            <real key="value" value="100"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="string" keyPath="label" value="Forward"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="order">
+                            <integer key="value" value="2"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </customObject>
+                <customObject id="pFn-6l-Nw0" userLabel="Reverse" customClass="GaugeRange" customModule="TrainControl" customModuleProvider="target">
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="color">
+                            <color key="value" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="value">
+                            <real key="value" value="-30"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="string" keyPath="label" value="Reverse"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="order">
+                            <integer key="value" value="0"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="1466" y="-47"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Remote" width="30" height="30"/>
+    </resources>
+</document>

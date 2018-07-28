@@ -15,6 +15,9 @@
          location = "container:"
          name = "iOS">
          <FileRef
+            location = "group:examples/ios/MQTTTest/MQTTTest.xcodeproj">
+         </FileRef>
+         <FileRef
             location = "group:examples/ios/FullScreenVideo/FullScreenVideo.xcodeproj">
          </FileRef>
          <FileRef

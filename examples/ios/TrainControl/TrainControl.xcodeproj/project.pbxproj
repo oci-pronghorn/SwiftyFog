@@ -34,7 +34,6 @@
 		5543487E1F82D46100C3C2CB /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486A1F82D46100C3C2CB /* Sound.swift */; };
 		5543487F1F82D46100C3C2CB /* Train.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486B1F82D46100C3C2CB /* Train.swift */; };
 		554348801F82D46100C3C2CB /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486D1F82D46100C3C2CB /* LogViewController.swift */; };
-		554348811F82D46100C3C2CB /* TestingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486E1F82D46100C3C2CB /* TestingViewController.swift */; };
 		554348821F82D46100C3C2CB /* TrainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486F1F82D46100C3C2CB /* TrainViewController.swift */; };
 		554348841F82D46100C3C2CB /* FogRationalUi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348721F82D46100C3C2CB /* FogRationalUi.swift */; };
 		554348861F82D46100C3C2CB /* MetalPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348751F82D46100C3C2CB /* MetalPanelView.swift */; };
@@ -180,7 +179,6 @@
 		5543486A1F82D46100C3C2CB /* Sound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sound.swift; sourceTree = "<group>"; };
 		5543486B1F82D46100C3C2CB /* Train.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Train.swift; sourceTree = "<group>"; };
 		5543486D1F82D46100C3C2CB /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
-		5543486E1F82D46100C3C2CB /* TestingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestingViewController.swift; sourceTree = "<group>"; };
 		5543486F1F82D46100C3C2CB /* TrainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainViewController.swift; sourceTree = "<group>"; };
 		554348721F82D46100C3C2CB /* FogRationalUi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogRationalUi.swift; sourceTree = "<group>"; };
 		554348751F82D46100C3C2CB /* MetalPanelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalPanelView.swift; sourceTree = "<group>"; };
@@ -352,7 +350,6 @@
 			isa = PBXGroup;
 			children = (
 				5543486D1F82D46100C3C2CB /* LogViewController.swift */,
-				5543486E1F82D46100C3C2CB /* TestingViewController.swift */,
 				5543486F1F82D46100C3C2CB /* TrainViewController.swift */,
 			);
 			path = viewcontroller;
@@ -619,7 +616,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				554348811F82D46100C3C2CB /* TestingViewController.swift in Sources */,
 				555C84B5210659A700326675 /* TrainSelection.swift in Sources */,
 				554348841F82D46100C3C2CB /* FogRationalUi.swift in Sources */,
 				5578608E20F3DF9A00FC182D /* UIImagePickerController+.swift in Sources */,

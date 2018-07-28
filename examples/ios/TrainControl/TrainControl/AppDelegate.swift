@@ -15,16 +15,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
 	var controller = MQTTClientAppController(metrics: MQTTMetrics.verbose())
 	
-	var testing: TestingViewController!
 	var trainControl: TrainViewController!
 	var logView: LogViewController!
 
 	internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 	
 		let tbc = self.window!.rootViewController as! UITabBarController
-		self.testing = (tbc.viewControllers![1] as! TestingViewController)
 		self.trainControl = (tbc.viewControllers![0] as! TrainViewController)
-		self.logView = (tbc.viewControllers![2] as! LogViewController)
+		self.logView = (tbc.viewControllers![1] as! LogViewController)
 		
 		self.controller.delegate = self
 		
@@ -44,7 +42,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let brokerChanged = self.controller.mqttHost != newBrokerHost
 		if brokerChanged {
 			self.controller.mqttHost = newBrokerHost
-			self.testing.mqtt = controller.client
 			self.trainControl.mqttControl = controller.client
 		}
 		

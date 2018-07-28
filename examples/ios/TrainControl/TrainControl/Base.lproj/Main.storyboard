@@ -11,22 +11,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="Puu-NP-UKi">
-            <objects>
-                <viewController id="aix-t2-mfQ" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="tmd-d6-Zuk">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="wcr-K6-AL7"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="f3d-Vv-QbA"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Vcs-4Y-dn9" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2359" y="-695"/>
-        </scene>
         <!--Train View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -866,142 +850,6 @@
             </objects>
             <point key="canvasLocation" x="700" y="-441"/>
         </scene>
-        <!--Testing View Controller-->
-        <scene sceneID="lOi-5S-Dex">
-            <objects>
-                <viewController id="fV6-iJ-f1p" customClass="TestingViewController" customModule="TrainControl" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="GSs-BE-N53">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Yb0-mG-QZ9" userLabel="Test Stack">
-                                <rect key="frame" x="120" y="66" width="174" height="68"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Nhj-yY-0hc">
-                                        <rect key="frame" x="0.0" y="0.0" width="54" height="68"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WBg-O2-9XO">
-                                                <rect key="frame" x="0.0" y="0.0" width="54" height="30"/>
-                                                <state key="normal" title="Sub # 0"/>
-                                                <connections>
-                                                    <action selector="subAll0" destination="fV6-iJ-f1p" eventType="touchUpInside" id="ehz-BS-HMs"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3aT-Vv-KcN">
-                                                <rect key="frame" x="0.0" y="38" width="54" height="30"/>
-                                                <state key="normal" title="QOS 0"/>
-                                                <connections>
-                                                    <action selector="publishQos0" destination="fV6-iJ-f1p" eventType="touchUpInside" id="6YI-02-bnX"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="UCD-Ts-lum">
-                                        <rect key="frame" x="62" y="0.0" width="51" height="68"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M0m-fy-oWI">
-                                                <rect key="frame" x="0.0" y="0.0" width="51" height="30"/>
-                                                <state key="normal" title="Sub # 1"/>
-                                                <connections>
-                                                    <action selector="subAll1" destination="fV6-iJ-f1p" eventType="touchUpInside" id="wot-6N-VX0"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wfn-HZ-ucg">
-                                                <rect key="frame" x="0.0" y="38" width="51" height="30"/>
-                                                <state key="normal" title="QOS 1"/>
-                                                <connections>
-                                                    <action selector="publishQos1" destination="fV6-iJ-f1p" eventType="touchUpInside" id="G7u-nX-cAl"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="idn-WM-6LB">
-                                        <rect key="frame" x="121" y="0.0" width="53" height="68"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YEb-bL-kZu">
-                                                <rect key="frame" x="0.0" y="0.0" width="53" height="30"/>
-                                                <state key="normal" title="Sub # 2"/>
-                                                <connections>
-                                                    <action selector="subAll2" destination="fV6-iJ-f1p" eventType="touchUpInside" id="Sqy-VY-a3g"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uNg-Qi-PcO">
-                                                <rect key="frame" x="0.0" y="38" width="53" height="30"/>
-                                                <state key="normal" title="QOS 2"/>
-                                                <connections>
-                                                    <action selector="publishQos2" destination="fV6-iJ-f1p" eventType="touchUpInside" id="0fm-hp-cS5"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
-                            </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="amV-JQ-ofh">
-                                <rect key="frame" x="178" y="142" width="58" height="30"/>
-                                <state key="normal" title="Unsub #"/>
-                                <connections>
-                                    <action selector="unsubAll" destination="VGR-hs-tvm" eventType="touchUpInside" id="9JQ-t9-MMe"/>
-                                    <action selector="unsubAll" destination="fV6-iJ-f1p" eventType="touchUpInside" id="sbc-Fs-FTn"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="Yb0-mG-QZ9" firstAttribute="centerX" secondItem="uST-wk-6Gm" secondAttribute="centerX" id="1Wh-OZ-rp3"/>
-                            <constraint firstItem="uST-wk-6Gm" firstAttribute="top" secondItem="Yb0-mG-QZ9" secondAttribute="bottom" constant="-114" id="FV6-vn-sDQ"/>
-                            <constraint firstItem="amV-JQ-ofh" firstAttribute="centerX" secondItem="uST-wk-6Gm" secondAttribute="centerX" id="Pc6-bb-VWD"/>
-                            <constraint firstItem="amV-JQ-ofh" firstAttribute="top" secondItem="Yb0-mG-QZ9" secondAttribute="bottom" constant="8" id="pin-Fv-IeM"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="uST-wk-6Gm"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="" image="Remote" id="pJ9-Ed-7ez"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VGR-hs-tvm" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="Cvt-w3-de9" userLabel="Idle" customClass="GaugeRange" customModule="TrainControl" customModuleProvider="target">
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="color" keyPath="color">
-                            <color key="value" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="value">
-                            <real key="value" value="30"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="string" keyPath="label" value="Idle"/>
-                        <userDefinedRuntimeAttribute type="number" keyPath="order">
-                            <integer key="value" value="1"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                </customObject>
-                <customObject id="EvY-su-5bX" userLabel="Forward" customClass="GaugeRange" customModule="TrainControl" customModuleProvider="target">
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="color" keyPath="color">
-                            <color key="value" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="value">
-                            <real key="value" value="100"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="string" keyPath="label" value="Forward"/>
-                        <userDefinedRuntimeAttribute type="number" keyPath="order">
-                            <integer key="value" value="2"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                </customObject>
-                <customObject id="ETI-FT-Ofc" userLabel="Reverse" customClass="GaugeRange" customModule="TrainControl" customModuleProvider="target">
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="color" keyPath="color">
-                            <color key="value" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="value">
-                            <real key="value" value="-30"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="string" keyPath="label" value="Reverse"/>
-                        <userDefinedRuntimeAttribute type="number" keyPath="order">
-                            <integer key="value" value="0"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                </customObject>
-            </objects>
-            <point key="canvasLocation" x="1466" y="-47"/>
-        </scene>
         <!--Log View Controller-->
         <scene sceneID="qDw-vI-B03">
             <objects>
@@ -1046,7 +894,6 @@
                     </tabBar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="yid-ho-gJa"/>
-                        <segue destination="fV6-iJ-f1p" kind="relationship" relationship="viewControllers" id="nPI-Bn-PRb"/>
                         <segue destination="p7y-jt-jyH" kind="relationship" relationship="viewControllers" id="B0q-0k-Fva"/>
                     </connections>
                 </tabBarController>
@@ -1057,15 +904,14 @@
     </scenes>
     <resources>
         <image name="Alive" width="32" height="32"/>
-        <image name="Connected" width="128" height="128"/>
+        <image name="Connected" width="32" height="32"/>
         <image name="Dead" width="32" height="32"/>
-        <image name="Disconnected" width="128" height="128"/>
+        <image name="Disconnected" width="32" height="32"/>
         <image name="Log" width="32" height="32"/>
         <image name="MakeFault" width="48" height="48"/>
         <image name="Motion" width="32" height="32"/>
         <image name="Off" width="32" height="32"/>
         <image name="On" width="32" height="32"/>
-        <image name="Remote" width="30" height="30"/>
         <image name="Screwhead" width="16" height="16"/>
         <image name="Torch" width="32" height="32"/>
         <image name="Train" width="30" height="30"/>
