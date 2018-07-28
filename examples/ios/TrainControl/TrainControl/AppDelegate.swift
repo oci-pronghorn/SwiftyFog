@@ -16,13 +16,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	var controller = MQTTClientAppController(metrics: MQTTMetrics.verbose())
 	
 	var trainControl: TrainViewController!
-	var logView: LogViewController!
+	//var logView: LogViewController!
 
 	internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 	
-		let tbc = self.window!.rootViewController as! UITabBarController
-		self.trainControl = (tbc.viewControllers![0] as! TrainViewController)
-		self.logView = (tbc.viewControllers![1] as! LogViewController)
+		self.trainControl = self.window!.rootViewController as? TrainViewController
+		//self.logView = (tbc.viewControllers![1] as! LogViewController)
 		
 		self.controller.delegate = self
 		
@@ -76,7 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: MQTTClientAppControllerDelegate {
 	func on(mqttClient: (MQTTBridge & MQTTControl), log: String) {
-		logView.onLog(log)
+		//logView.onLog(log)
 	}
 
 	func on(mqttClient: (MQTTBridge & MQTTControl), connected: MQTTConnectedState) {

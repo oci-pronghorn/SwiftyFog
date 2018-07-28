@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14306.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Xjm-3A-yj3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14306.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -655,31 +655,35 @@
                                 </constraints>
                                 <variation key="heightClass=regular-widthClass=regular" spacing="16"/>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hzf-KI-KyN" userLabel="Supplimental Stack">
-                                <rect key="frame" x="8" y="601" width="398" height="78"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="hzf-KI-KyN" userLabel="Supplimental Stack">
+                                <rect key="frame" x="8" y="680" width="398" height="48"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sxl-aJ-Zwu" userLabel="Fault">
-                                        <rect key="frame" x="0.0" y="0.0" width="398" height="48"/>
+                                        <rect key="frame" x="175" y="0.0" width="48" height="48"/>
                                         <state key="normal" image="MakeFault"/>
                                         <connections>
                                             <action selector="faultTrainWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gOp-A1-R98"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nhm-dL-E9Y">
-                                        <rect key="frame" x="0.0" y="48" width="398" height="30"/>
-                                        <color key="tintColor" name="Tint"/>
-                                        <state key="normal" title="Settings"/>
-                                        <connections>
-                                            <action selector="gotoSettingsWithSender:" destination="dkx-z0-nzr" eventType="touchUpInside" id="d6W-91-SnW"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="92g-UT-O7Q" userLabel="Navigate">
+                                <rect key="frame" x="364" y="686" width="42" height="42"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="42" id="1ya-uy-xD3"/>
+                                    <constraint firstAttribute="height" constant="42" id="b66-G0-J7W"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="Screwhead"/>
+                                <connections>
+                                    <action selector="gotoSettingsWithSender:" destination="dkx-z0-nzr" eventType="touchUpInside" id="76j-Ov-gR0"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="hzf-KI-KyN" firstAttribute="leading" secondItem="0P7-i3-PrJ" secondAttribute="trailing" constant="8" id="0H9-Lr-NV2"/>
                             <constraint firstItem="hzf-KI-KyN" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-8" id="2sv-Hj-Eku"/>
+                            <constraint firstItem="92g-UT-O7Q" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-8" id="Fir-k6-JCS"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="leading" secondItem="0P7-i3-PrJ" secondAttribute="trailing" constant="8" id="IKa-2a-N32"/>
                             <constraint firstItem="hzf-KI-KyN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="Kzk-7Y-Fkq"/>
                             <constraint firstItem="hzf-KI-KyN" firstAttribute="top" relation="greaterThanOrEqual" secondItem="0P7-i3-PrJ" secondAttribute="bottom" constant="8" id="M6Y-11-oIj"/>
@@ -693,15 +697,16 @@
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" constant="-16" id="hfn-cg-vmm">
                                 <variation key="heightClass=regular-widthClass=regular" constant="-32"/>
                             </constraint>
+                            <constraint firstItem="92g-UT-O7Q" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-8" id="uSw-2Z-MaP"/>
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="yT9-nP-19r"/>
                             <constraint firstItem="hzf-KI-KyN" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-8" id="zQC-v5-GnJ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="Sb4-3B-hJL"/>
                                 <exclude reference="IKa-2a-N32"/>
                                 <exclude reference="VLi-sv-xQU"/>
+                                <exclude reference="Sb4-3B-hJL"/>
                                 <exclude reference="cg4-7Q-NSq"/>
                                 <exclude reference="gdp-td-0mE"/>
                                 <exclude reference="hfn-cg-vmm"/>
@@ -713,8 +718,8 @@
                         </variation>
                         <variation key="heightClass=compact">
                             <mask key="constraints">
-                                <include reference="Sb4-3B-hJL"/>
                                 <include reference="IKa-2a-N32"/>
+                                <include reference="Sb4-3B-hJL"/>
                                 <include reference="cg4-7Q-NSq"/>
                                 <include reference="0H9-Lr-NV2"/>
                                 <include reference="XIb-Zk-ORV"/>
@@ -730,8 +735,6 @@
                             </mask>
                         </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="Train" id="iLc-kK-t0f"/>
-                    <navigationItem key="navigationItem" id="bFg-t9-Ixv"/>
                     <connections>
                         <outlet property="billboardText" destination="n8M-qB-QXO" id="fxm-Mo-35h"/>
                         <outlet property="connectMetrics" destination="4cK-ON-aes" id="Z3X-4F-k7t"/>
@@ -837,14 +840,19 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </customObject>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="96s-Uf-foB">
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="96s-Uf-foB" userLabel="Shutdown Train">
                     <connections>
                         <action selector="shutdownTrainWithSender:" destination="BYZ-38-t0r" id="aPz-oI-Jag"/>
                     </connections>
                 </pongPressGestureRecognizer>
-                <tapGestureRecognizer numberOfTapsRequired="2" id="bSN-iu-BGb">
+                <tapGestureRecognizer numberOfTapsRequired="2" id="bSN-iu-BGb" userLabel="Request Feedback">
                     <connections>
                         <action selector="requestFeedbackWithSender:" destination="BYZ-38-t0r" id="ZQn-Ut-epr"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="avT-yw-6zJ" userLabel="Settings">
+                    <connections>
+                        <action selector="gotoSettingsWithSender:" destination="dkx-z0-nzr" id="r7f-cD-Jmo"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -853,13 +861,13 @@
         <!--Log View Controller-->
         <scene sceneID="qDw-vI-B03">
             <objects>
-                <viewController id="p7y-jt-jyH" customClass="LogViewController" customModule="TrainControl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="LogViewController" storyboardIdentifier="LogViewController" id="p7y-jt-jyH" customClass="LogViewController" customModule="TrainControl" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5be-nD-Odl">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="0X2-YR-r96">
-                                <rect key="frame" x="0.0" y="20" width="414" height="667"/>
+                                <rect key="frame" x="0.0" y="20" width="414" height="716"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -881,25 +889,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ykS-WP-cUh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="733" y="439"/>
-        </scene>
-        <!--Tab Bar Controller-->
-        <scene sceneID="oJy-au-iyg">
-            <objects>
-                <tabBarController id="Xjm-3A-yj3" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="IIC-1F-FMz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="yid-ho-gJa"/>
-                        <segue destination="p7y-jt-jyH" kind="relationship" relationship="viewControllers" id="B0q-0k-Fva"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jqN-KY-I3X" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-100" y="60"/>
+            <point key="canvasLocation" x="699" y="229"/>
         </scene>
     </scenes>
     <resources>
@@ -914,7 +904,6 @@
         <image name="On" width="32" height="32"/>
         <image name="Screwhead" width="16" height="16"/>
         <image name="Torch" width="32" height="32"/>
-        <image name="Train" width="30" height="30"/>
         <namedColor name="Background">
             <color red="1" green="1" blue="1" alpha="0.25" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

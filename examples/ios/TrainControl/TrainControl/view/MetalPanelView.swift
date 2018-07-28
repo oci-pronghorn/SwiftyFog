@@ -24,4 +24,9 @@ class MetalPanelView: UIView {
 			self.backgroundColor = UIColor(patternImage: img)
 		}
 	}
+	
+	override func layoutSubviews() {
+    	super.layoutSubviews()
+    	self.setNeedsDisplay()
+	}
 }

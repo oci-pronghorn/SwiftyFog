@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		22ABCF472010D40500AEAC1D /* MotionFaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ABCF462010D40500AEAC1D /* MotionFaults.swift */; };
 		22E11E2E20152E600034F382 /* glass break.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 22E11E2D20152E600034F382 /* glass break.mp3 */; };
+		550AD8D0210CAEE100E19CA2 /* CornerSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550AD8CF210CAEE100E19CA2 /* CornerSegmentedControl.swift */; };
 		55130BBE210271E4001D2E3F /* SubscriptionLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BBD210271E4001D2E3F /* SubscriptionLogging.swift */; };
 		55130BBF21027234001D2E3F /* SubscriptionLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BBD210271E4001D2E3F /* SubscriptionLogging.swift */; };
 		55130BC62102C9CF001D2E3F /* Settings-Watch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5536E00120FA934D006B4AE8 /* Settings-Watch.bundle */; };
@@ -155,6 +156,7 @@
 /* Begin PBXFileReference section */
 		22ABCF462010D40500AEAC1D /* MotionFaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionFaults.swift; sourceTree = "<group>"; };
 		22E11E2D20152E600034F382 /* glass break.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "glass break.mp3"; sourceTree = "<group>"; };
+		550AD8CF210CAEE100E19CA2 /* CornerSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerSegmentedControl.swift; sourceTree = "<group>"; };
 		55130BBD210271E4001D2E3F /* SubscriptionLogging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionLogging.swift; sourceTree = "<group>"; };
 		551AB9DE1F93B94A0080D37B /* FlipLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipLabel.swift; sourceTree = "<group>"; };
 		5526A5862104EE2E005AF2C6 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 				551AB9DE1F93B94A0080D37B /* FlipLabel.swift */,
 				553CC65220F57A8E0046D4A5 /* GaugeView.swift */,
 				554E71472103751200AAE25E /* ScrewsView.swift */,
+				550AD8CF210CAEE100E19CA2 /* CornerSegmentedControl.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -631,6 +634,7 @@
 				554348801F82D46100C3C2CB /* LogViewController.swift in Sources */,
 				554348871F82D46100C3C2CB /* Pulsator.swift in Sources */,
 				55BD0DD420F15ABF001E31C3 /* AVAudioPlayer+.swift in Sources */,
+				550AD8D0210CAEE100E19CA2 /* CornerSegmentedControl.swift in Sources */,
 				5526A5872104EE2E005AF2C6 /* UIImage+.swift in Sources */,
 				554348881F82D46100C3C2CB /* ScubControl.swift in Sources */,
 				5543487C1F82D46100C3C2CB /* Engine.swift in Sources */,
