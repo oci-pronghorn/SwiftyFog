@@ -44,7 +44,10 @@ public class TheJoveExpress implements FogApp
         WebHostBehavior.enable(hardware, config.appServerEnabled, config.appServerPort);
 
         if (config.lightsEnabled) {
-            hardware.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);  
+            hardware.setTimerPulseRate(1000); // needed for startup flash
+            if (!hardware.isTestHardware() || config.simulateLightSensor) {
+                hardware.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);
+            }
         }
         if (config.soundEnabled) hardware.useSerial(Baud.B_____9600);
 
@@ -55,22 +58,21 @@ public class TheJoveExpress implements FogApp
         if (config.telemetryEnabled) {
             hardware.enableTelemetry(config.telemetryHost, config.telemetryPort);
         }
-
-        if (config.lightsEnabled) {
-            hardware.setTimerPulseRate(1000);
-        }
         
         if (config.sharedAcutatorEnabled) {
             SharedActuatorDriverBehavior.connectHardaware(hardware,config.lightsEnabled || config.engineEnabled)    ;
         } else {
             PWMActuatorDriverBehavior.connectHardware(hardware,
-                    config.engineEnabled ? config.enginePowerPort : null,
-                    config.engineEnabled ? config.engineDirectionPort : null,
+                    config.engineEnabled ? config.pwmEnginePowerPort : null,
+                    config.engineEnabled ? config.pwmEngineDirectionPort : null,
                     config.lightsEnabled ? config.ledPort : null);
         }
     }
 
     public void declareBehavior(FogRuntime runtime) {
+        // BUG: Only the last behavior that publishes "lifecycle/feedback" actually gets out to MQTT!
+        // BUG: LightingBehavior is not receiving "lights/ambient/feedback" (probably related)
+
         TopicJunctionBox topics = new TopicJunctionBox(config.trainName, runtime, config.mqttEnabled ? mqttBridge : null);
 
         if (config.lifecycleEnabled) {
@@ -112,7 +114,7 @@ public class TheJoveExpress implements FogApp
             if (config.engineEnabled) {
                 
             	if (config.sharedAcutatorEnabled) { 
-	            	final EngineBehavior engine = new EngineBehavior(runtime, config.engineCalibration, actuatorPowerAInternal, config.engineActuatorPort,
+	            	final EngineBehavior engine = new EngineBehavior(runtime, config.defaultEngineCalibration, actuatorPowerAInternal, config.engineActuatorPort,
 	                        topics.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
 	                        topics.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce),
 	                        topics.publish("engine/state/feedback", false, MQTTQoS.atMostOnce));
@@ -125,7 +127,7 @@ public class TheJoveExpress implements FogApp
 	                }
             	} else {
 					//simple PwM control          		
-	            	final EngineBehaviorPWM engine = new EngineBehaviorPWM(runtime, config.enginePowerPort, config.engineDirectionPort,
+	            	final EngineBehaviorPWM engine = new EngineBehaviorPWM(runtime, config.pwmEnginePowerPort, config.pwmEngineDirectionPort,
 	                        topics.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
 	                        topics.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce),
 	                        topics.publish("engine/state/feedback", false, MQTTQoS.atMostOnce));

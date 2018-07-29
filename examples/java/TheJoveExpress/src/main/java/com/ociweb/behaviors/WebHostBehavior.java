@@ -10,18 +10,18 @@ import com.ociweb.pronghorn.pipe.ChannelReader;
 public class WebHostBehavior implements PubSubMethodListener {
     private final PubSubFixedTopicService pubSubService;
     private static boolean enabled;
+    // TODO
     // A Train has many different names...
-    // - display name
-    // - DNS name
-    // - mqtt topic name
-    // The client uses mqtt topic name to control the train.
-    // The topic name is not the same as the DNS name.
-    // Debugging in localhost should be easy.
-    // -- we can enforce dns == mqtttopic.local
+    // - display name (default billboard display and broadcasted to client)
+    // - DNS name (The zeroconf name of the PI for telemetry and http server- MQTT Broker may be on different device)
+    // - IP address DNS name is routed to
+    // - mqtt topic name (The topic scope for this specific instance)
+    // The client application needs to have a variable for DNS name or IP address
+    // -- we can enforce DNS name == <mqtttopic>.local
     // -- we can broadcast the ip address on feedback
-    // -- we can add yet another variable to config for web DNS name
+    // -- we can add yet another variable to config for Web DNS name to broadcast on feedback
 
-    // Let us pick one.
+    // We need to pick a strategy. For now I am broadcasting this ip to the client.
     private static final String webHost = "https://10.0.1.60:8089";
 
     public static void enable(Hardware hardware, boolean enabled, int appServerPort) {
@@ -39,7 +39,9 @@ public class WebHostBehavior implements PubSubMethodListener {
     }
 
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
-        // Feedback needs at least "isEnabled"
+        // Feedback needs at least "isEnabled" encoded
+        // Could be port if enforcing DNS name == <mqtttopic>.local
+        // Could be URL output to the console for "Server is now ready on ..."
         return pubSubService.publishTopic(writer-> writer.writeUTF(enabled ? webHost : ""));
     }
 }

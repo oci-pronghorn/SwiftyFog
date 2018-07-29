@@ -108,6 +108,7 @@ class TrainViewController: UIViewController {
 		*/
 		assertConnectionState()
 		assertValues()
+		billboardPresentConnectionStatus()
 	}
 
 	// Force iPads to respect landscape (horizontalSizeClass compact)
