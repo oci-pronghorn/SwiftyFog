@@ -49,6 +49,7 @@ public class Train: FogFeedbackModel {
 	}
 	
 	public func assertValues() {
+		delegate?.train(webHost: nil)
 	}
 	
 	public func controlShutdown() {
