@@ -29,8 +29,11 @@ public class WebHostBehavior implements PubSubMethodListener {
         // TODO: test heap problem on Pi0
         WebHostBehavior.enabled = enabled;
         if (enabled) {
-            HTTPServerConfig config = hardware.useHTTP1xServer(appServerPort);
-            //config.useInsecureServer();
+            HTTPServerConfig config = 
+            		hardware.useHTTP1xServer(appServerPort)
+            		        .setMaxResponseSize(1<<19); //big enough to hold the largest resource in joveSite
+            
+            config.useInsecureServer();
             config.setConcurrentChannelsPerEncryptUnit(4);
             config.setConcurrentChannelsPerDecryptUnit(4);
         }
