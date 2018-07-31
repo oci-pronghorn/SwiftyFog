@@ -44,7 +44,7 @@ public class TrainConfiguration  {
 
     final boolean locationEnabled = false;
 
-    final boolean faultDetectionEnabled = true; //NOTE: warning the accelerometer is never found to be publishing if this is on...
+    final boolean faultDetectionEnabled = false; //NOTE: warning the accelerometer is never found to be publishing if this is on...
     //final int accelerometerReadFreq = 250;
 
     final boolean appServerEnabled = true;
