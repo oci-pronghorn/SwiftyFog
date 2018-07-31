@@ -5,6 +5,7 @@ import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.Hardware;
+import com.ociweb.pronghorn.network.HTTPServerConfig;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
 public class WebHostBehavior implements PubSubMethodListener {
@@ -28,7 +29,10 @@ public class WebHostBehavior implements PubSubMethodListener {
         // TODO: test heap problem on Pi0
         WebHostBehavior.enabled = enabled;
         if (enabled) {
-            hardware.useHTTP1xServer(appServerPort);
+            HTTPServerConfig config = hardware.useHTTP1xServer(appServerPort);
+            //config.useInsecureServer();
+            config.setConcurrentChannelsPerEncryptUnit(4);
+            config.setConcurrentChannelsPerDecryptUnit(4);
         }
     }
 
