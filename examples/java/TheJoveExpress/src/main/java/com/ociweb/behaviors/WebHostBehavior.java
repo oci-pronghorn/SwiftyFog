@@ -31,7 +31,7 @@ public class WebHostBehavior implements PubSubMethodListener {
         if (enabled) {
             HTTPServerConfig config = 
             		hardware.useHTTP1xServer(appServerPort)
-            		        .setMaxResponseSize(1<<19); //big enough to hold the largest resource in joveSite
+            		        .setMaxResponseSize(1<<20); //big enough to hold the largest resource in joveSite
             
             config.useInsecureServer();
             config.setConcurrentChannelsPerEncryptUnit(4);
