@@ -34,7 +34,7 @@ public class TrainConfiguration  {
     final ActuatorDriverPort lightActuatorPort = ActuatorDriverPort.B;
     final int lightDetectFreq = 250;
     final Port lightSensorPort = Port.A0;
-    final boolean simulateLightSensor = true;
+    final boolean simulateLightSensor = false;
 
     final boolean billboardEnabled = false;
     final String trainDisplayName;
@@ -49,7 +49,7 @@ public class TrainConfiguration  {
 
     final boolean appServerEnabled = true;
     final int appServerPort = 8089;
-    final String resourceRoot = "joveSite";
+    final String resourceRoot = "/joveSite";
     final String resourceDefaultPath = "/index.html"; //used when caller does not provide path
 
     final boolean soundEnabled = false;
