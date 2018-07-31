@@ -52,8 +52,6 @@ public class LightingBehaviorPWM implements PubSubMethodListener, TimeListener, 
         if (overrideService.hasRoomFor(1) && powerService.hasRoomFor(1) && calibrationService.hasRoomFor(1)) {        
 	        this.overrideService.publishTopic( writer -> writer.writeInt(lightsOn.ordinal()));
 
-	        System.out.println("Override feedback: " + lightsOn.ordinal());
-
 	        this.powerService.publishTopic( writer -> writer.writeBoolean(isOn));
 	        this.calibrationService.publishTopic( writer -> writer.write(calibration));
 	        return true;
