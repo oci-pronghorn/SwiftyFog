@@ -44,7 +44,7 @@ public class TrainConfiguration  {
 
     final boolean locationEnabled = false;
 
-    final boolean faultDetectionEnabled = false;
+    final boolean faultDetectionEnabled = false; //NOTE: warning the accelerometer is never found to be publishing if this is on...
     //final int accelerometerReadFreq = 250;
 
     final boolean appServerEnabled = true;
@@ -60,7 +60,7 @@ public class TrainConfiguration  {
         this.mqttBrokerHost = args.getArgumentValue("--broker", "-b", this.trainName + ".local");
         this.mqttClientName = trainName;
         this.trainDisplayName = args.getArgumentValue("--display", "-d", "The Jove Express");
-        this.defaultEngineCalibration = args.getArgumentValue("--calibration", "-c", 30);
+        this.defaultEngineCalibration = args.getArgumentValue("--calibrartion", "-c", 30);
         this.sharedAcutatorEnabled = args.getArgumentValue("--sharedact", "-sa", true);
     }
 }
