@@ -28,9 +28,6 @@ public class TheJoveExpress implements FogApp
         config = new TrainConfiguration(hardware);
         
         hardware.setDefaultRate(16_000_000);
-        
-        //hardware.setTestImageSource(Paths.get("source_img"));
-        //hardware.useI2C();
 
         GraphManager.showThreadIdOnTelemetry = true;
         I2CJFFIStage.debugCommands = false;
@@ -39,7 +36,6 @@ public class TheJoveExpress implements FogApp
             this.mqttBridge = hardware.useMQTT(config.mqttBrokerHost, config.mqttPort, config.mqttClientName, 40, 8000)
                     .cleanSession(true)
                     .keepAliveSeconds(10);
-            //hardware.definePrivateTopic("", "CameraBehavior", "");
         }
         WebHostBehavior.enable(hardware, config.appServerEnabled, config.appServerPort);
 
