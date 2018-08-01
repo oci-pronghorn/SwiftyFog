@@ -14,7 +14,7 @@
 			<key>Key</key>
 			<string>train_name_preference</string>
 			<key>DefaultValue</key>
-			<string>thejoveexpress</string>
+			<string>joveexpress2</string>
 			<key>IsSecure</key>
 			<false/>
 			<key>KeyboardType</key>
@@ -32,7 +32,7 @@
 			<key>Key</key>
 			<string>broker_host_preference</string>
 			<key>DefaultValue</key>
-			<string>thejoveexpress.local</string>
+			<string>joveexpress2.local</string>
 			<key>IsSecure</key>
 			<false/>
 			<key>KeyboardType</key>
