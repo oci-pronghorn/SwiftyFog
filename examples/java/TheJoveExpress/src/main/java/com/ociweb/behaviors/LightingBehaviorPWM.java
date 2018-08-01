@@ -34,16 +34,13 @@ public class LightingBehaviorPWM implements PubSubMethodListener, TimeListener, 
     
     private Port port;    
     private int twigRange = 1024;
-    
 
     public LightingBehaviorPWM(FogRuntime runtime, Port port, String overrideTopic, String powerTopic, String calibrationTopic) {
-
         this.overrideService = runtime.newCommandChannel().newPubSubService(overrideTopic);
         this.powerService = runtime.newCommandChannel().newPubSubService(powerTopic);
         this.calibrationService = runtime.newCommandChannel().newPubSubService(calibrationTopic);
         this.pwmService = runtime.newCommandChannel().newPinService();
         this.port = port;
-        
     }
 
     public boolean onAllFeedback(CharSequence charSequence, ChannelReader messageReader) {
@@ -51,7 +48,6 @@ public class LightingBehaviorPWM implements PubSubMethodListener, TimeListener, 
         TriState lightsOn = overridePower == null ? latent : overridePower == 1.0 ? TriState.on : TriState.off;
         if (overrideService.hasRoomFor(1) && powerService.hasRoomFor(1) && calibrationService.hasRoomFor(1)) {        
 	        this.overrideService.publishTopic( writer -> writer.writeInt(lightsOn.ordinal()));
-
 	        this.powerService.publishTopic( writer -> writer.writeBoolean(isOn));
 	        this.calibrationService.publishTopic( writer -> writer.write(calibration));
 	        return true;

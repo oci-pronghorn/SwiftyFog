@@ -11,18 +11,11 @@
 		22E11E2E20152E600034F382 /* glass break.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 22E11E2D20152E600034F382 /* glass break.mp3 */; };
 		550AD8D0210CAEE100E19CA2 /* CornerSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550AD8CF210CAEE100E19CA2 /* CornerSegmentedControl.swift */; };
 		55130BBE210271E4001D2E3F /* SubscriptionLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BBD210271E4001D2E3F /* SubscriptionLogging.swift */; };
-		55130BBF21027234001D2E3F /* SubscriptionLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BBD210271E4001D2E3F /* SubscriptionLogging.swift */; };
-		55130BC62102C9CF001D2E3F /* Settings-Watch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5536E00120FA934D006B4AE8 /* Settings-Watch.bundle */; };
-		55130BC72102C9D0001D2E3F /* Settings-Watch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5536E00120FA934D006B4AE8 /* Settings-Watch.bundle */; };
 		55130BC821034B4D001D2E3F /* Settings-Watch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5536E00120FA934D006B4AE8 /* Settings-Watch.bundle */; };
 		551AB9DF1F93B94A0080D37B /* FlipLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551AB9DE1F93B94A0080D37B /* FlipLabel.swift */; };
 		5522F85A210570AE0035A047 /* PhotosAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578608B20F3DF9900FC182D /* PhotosAccess.swift */; };
 		5526A5872104EE2E005AF2C6 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5526A5862104EE2E005AF2C6 /* UIImage+.swift */; };
-		5526A5882104EE3F005AF2C6 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5526A5862104EE2E005AF2C6 /* UIImage+.swift */; };
 		5526A58A2104FAF0005AF2C6 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5526A5892104FAF0005AF2C6 /* Color.xcassets */; };
-		5526A58B2104FB5E005AF2C6 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5526A5892104FAF0005AF2C6 /* Color.xcassets */; };
-		5526A58C2104FB5E005AF2C6 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5526A5892104FAF0005AF2C6 /* Color.xcassets */; };
-		5536DFFF20FA8CF3006B4AE8 /* glass break.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 22E11E2D20152E600034F382 /* glass break.mp3 */; };
 		553CC65320F57A8E0046D4A5 /* GaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CC65220F57A8E0046D4A5 /* GaugeView.swift */; };
 		554348391F82D3AD00C3C2CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348381F82D3AD00C3C2CB /* AppDelegate.swift */; };
 		5543483E1F82D3AD00C3C2CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5543483C1F82D3AD00C3C2CB /* Main.storyboard */; };
@@ -44,35 +37,14 @@
 		554348971F82D5B100C3C2CB /* ExerciseMotor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348961F82D5B100C3C2CB /* ExerciseMotor.swift */; };
 		554348A01F82D6FE00C3C2CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */; };
 		554E71482103751200AAE25E /* ScrewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554E71472103751200AAE25E /* ScrewsView.swift */; };
-		55524C7020F11FA8004EBD8B /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55524C6E20F11FA8004EBD8B /* Interface.storyboard */; };
-		55524C7220F11FAA004EBD8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55524C7120F11FAA004EBD8B /* Assets.xcassets */; };
-		55524C7920F11FAA004EBD8B /* TrainConductor Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 55524C7820F11FAA004EBD8B /* TrainConductor Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		55524C7E20F11FAA004EBD8B /* TrainInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55524C7D20F11FAA004EBD8B /* TrainInterfaceController.swift */; };
-		55524C8020F11FAA004EBD8B /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55524C7F20F11FAA004EBD8B /* ExtensionDelegate.swift */; };
-		55524C8220F11FAA004EBD8B /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55524C8120F11FAA004EBD8B /* NotificationController.swift */; };
-		55524C8420F11FAA004EBD8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55524C8320F11FAA004EBD8B /* Assets.xcassets */; };
-		55524C8920F11FAA004EBD8B /* TrainConductor.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 55524C6C20F11FA8004EBD8B /* TrainConductor.app */; };
 		555C84B5210659A700326675 /* TrainSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555C84B4210659A700326675 /* TrainSelection.swift */; };
-		555C84B6210659A700326675 /* TrainSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555C84B4210659A700326675 /* TrainSelection.swift */; };
-		55632BF920F4520D008BCB09 /* Billboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348671F82D46100C3C2CB /* Billboard.swift */; };
-		5578608620F3B5EA00FC182D /* SwiftFog_watch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */; };
-		5578608720F3B5EA00FC182D /* SwiftFog_watch.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5578608E20F3DF9A00FC182D /* UIImagePickerController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578608C20F3DF9A00FC182D /* UIImagePickerController+.swift */; };
-		5578608F20F4066D00FC182D /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348681F82D46100C3C2CB /* Engine.swift */; };
-		5578609220F406E700FC182D /* Train.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486B1F82D46100C3C2CB /* Train.swift */; };
-		5578609320F4070300FC182D /* MotionFaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ABCF462010D40500AEAC1D /* MotionFaults.swift */; };
-		5578609420F4070800FC182D /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486A1F82D46100C3C2CB /* Sound.swift */; };
-		5578609520F4070F00FC182D /* Lights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348691F82D46100C3C2CB /* Lights.swift */; };
-		5578609720F4078700FC182D /* glass break.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 22E11E2D20152E600034F382 /* glass break.mp3 */; };
-		557DD91520F4E4FA007F0AE9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5543488A1F82D48A00C3C2CB /* Images.xcassets */; };
 		55B912BC20FA71E800634B80 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 55B912BB20FA71E800634B80 /* Settings.bundle */; };
 		55B912C020FA77CE00634B80 /* UserDefaults+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B912BF20FA77CE00634B80 /* UserDefaults+.swift */; };
-		55B912C120FA794A00634B80 /* UserDefaults+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B912BF20FA77CE00634B80 /* UserDefaults+.swift */; };
 		55BD0DD220F15955001E31C3 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BD0DD120F15954001E31C3 /* UIView+.swift */; };
 		55BD0DD420F15ABF001E31C3 /* AVAudioPlayer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BD0DD320F15ABF001E31C3 /* AVAudioPlayer+.swift */; };
 		55DA62DA1F8C1F140068D592 /* SwiftyFog_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554348951F82D4D700C3C2CB /* SwiftyFog_iOS.framework */; };
 		55DA62DB1F8C1F140068D592 /* SwiftyFog_iOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 554348951F82D4D700C3C2CB /* SwiftyFog_iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		55DD5DC320F4FEA0001B93E0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5543488A1F82D48A00C3C2CB /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,54 +62,17 @@
 			remoteGlobalIDString = 554348341F82D3AD00C3C2CB;
 			remoteInfo = TrainControl;
 		};
-		55524C7A20F11FAA004EBD8B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5543482D1F82D3AD00C3C2CB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 55524C7720F11FAA004EBD8B;
-			remoteInfo = "TrainConductor Extension";
-		};
-		55524C8720F11FAA004EBD8B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5543482D1F82D3AD00C3C2CB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 55524C6B20F11FA8004EBD8B;
-			remoteInfo = TrainConductor;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		55524C8D20F11FAA004EBD8B /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				55524C7920F11FAA004EBD8B /* TrainConductor Extension.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		55524C9120F11FAA004EBD8B /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				55524C8920F11FAA004EBD8B /* TrainConductor.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5578608420F3B5C900FC182D /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				5578608720F3B5EA00FC182D /* SwiftFog_watch.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		55DA62DC1F8C1F140068D592 /* Embed Frameworks */ = {
@@ -191,11 +126,9 @@
 		554348961F82D5B100C3C2CB /* ExerciseMotor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseMotor.swift; sourceTree = "<group>"; };
 		5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		554E71472103751200AAE25E /* ScrewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrewsView.swift; sourceTree = "<group>"; };
-		55524C6C20F11FA8004EBD8B /* TrainConductor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrainConductor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55524C6F20F11FA8004EBD8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		55524C7120F11FAA004EBD8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55524C7320F11FAA004EBD8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		55524C7820F11FAA004EBD8B /* TrainConductor Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "TrainConductor Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		55524C7D20F11FAA004EBD8B /* TrainInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainInterfaceController.swift; sourceTree = "<group>"; };
 		55524C7F20F11FAA004EBD8B /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		55524C8120F11FAA004EBD8B /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
@@ -229,21 +162,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		554348511F82D3AD00C3C2CB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		55524C7520F11FAA004EBD8B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5578608620F3B5EA00FC182D /* SwiftFog_watch.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5578601C20F3A90700FC182D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -287,8 +205,6 @@
 				554348351F82D3AD00C3C2CB /* TrainControl.app */,
 				554348491F82D3AD00C3C2CB /* TrainControlTests.xctest */,
 				554348541F82D3AD00C3C2CB /* TrainControlUITests.xctest */,
-				55524C6C20F11FA8004EBD8B /* TrainConductor.app */,
-				55524C7820F11FAA004EBD8B /* TrainConductor Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -419,7 +335,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				55524C8820F11FAA004EBD8B /* PBXTargetDependency */,
 			);
 			name = TrainControl;
 			productName = TrainControl;
@@ -462,42 +377,6 @@
 			productReference = 554348541F82D3AD00C3C2CB /* TrainControlUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		55524C6B20F11FA8004EBD8B /* TrainConductor */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 55524C8E20F11FAA004EBD8B /* Build configuration list for PBXNativeTarget "TrainConductor" */;
-			buildPhases = (
-				55524C6A20F11FA8004EBD8B /* Resources */,
-				55524C8D20F11FAA004EBD8B /* Embed App Extensions */,
-				5578601C20F3A90700FC182D /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				55524C7B20F11FAA004EBD8B /* PBXTargetDependency */,
-			);
-			name = TrainConductor;
-			productName = TrainConductor;
-			productReference = 55524C6C20F11FA8004EBD8B /* TrainConductor.app */;
-			productType = "com.apple.product-type.application.watchapp2";
-		};
-		55524C7720F11FAA004EBD8B /* TrainConductor Extension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 55524C8A20F11FAA004EBD8B /* Build configuration list for PBXNativeTarget "TrainConductor Extension" */;
-			buildPhases = (
-				55524C7420F11FAA004EBD8B /* Sources */,
-				55524C7520F11FAA004EBD8B /* Frameworks */,
-				55524C7620F11FAA004EBD8B /* Resources */,
-				5578608420F3B5C900FC182D /* Embed Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "TrainConductor Extension";
-			productName = "TrainConductor Extension";
-			productReference = 55524C7820F11FAA004EBD8B /* TrainConductor Extension.appex */;
-			productType = "com.apple.product-type.watchkit2-extension";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -525,14 +404,6 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 554348341F82D3AD00C3C2CB;
 					};
-					55524C6B20F11FA8004EBD8B = {
-						CreatedOnToolsVersion = 10.0;
-						ProvisioningStyle = Automatic;
-					};
-					55524C7720F11FAA004EBD8B = {
-						CreatedOnToolsVersion = 10.0;
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
 			buildConfigurationList = 554348301F82D3AD00C3C2CB /* Build configuration list for PBXProject "TrainControl" */;
@@ -551,8 +422,6 @@
 				554348341F82D3AD00C3C2CB /* TrainControl */,
 				554348481F82D3AD00C3C2CB /* TrainControlTests */,
 				554348531F82D3AD00C3C2CB /* TrainControlUITests */,
-				55524C6B20F11FA8004EBD8B /* TrainConductor */,
-				55524C7720F11FAA004EBD8B /* TrainConductor Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -584,31 +453,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		55524C6A20F11FA8004EBD8B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5578609720F4078700FC182D /* glass break.mp3 in Resources */,
-				55130BC62102C9CF001D2E3F /* Settings-Watch.bundle in Resources */,
-				557DD91520F4E4FA007F0AE9 /* Images.xcassets in Resources */,
-				55524C7220F11FAA004EBD8B /* Assets.xcassets in Resources */,
-				55524C7020F11FA8004EBD8B /* Interface.storyboard in Resources */,
-				5526A58B2104FB5E005AF2C6 /* Color.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		55524C7620F11FAA004EBD8B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5536DFFF20FA8CF3006B4AE8 /* glass break.mp3 in Resources */,
-				55524C8420F11FAA004EBD8B /* Assets.xcassets in Resources */,
-				5526A58C2104FB5E005AF2C6 /* Color.xcassets in Resources */,
-				55130BC72102C9D0001D2E3F /* Settings-Watch.bundle in Resources */,
-				55DD5DC320F4FEA0001B93E0 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -664,26 +508,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		55524C7420F11FAA004EBD8B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				55524C8220F11FAA004EBD8B /* NotificationController.swift in Sources */,
-				555C84B6210659A700326675 /* TrainSelection.swift in Sources */,
-				55524C8020F11FAA004EBD8B /* ExtensionDelegate.swift in Sources */,
-				55524C7E20F11FAA004EBD8B /* TrainInterfaceController.swift in Sources */,
-				5578609220F406E700FC182D /* Train.swift in Sources */,
-				5578609320F4070300FC182D /* MotionFaults.swift in Sources */,
-				5578609520F4070F00FC182D /* Lights.swift in Sources */,
-				55B912C120FA794A00634B80 /* UserDefaults+.swift in Sources */,
-				55130BBF21027234001D2E3F /* SubscriptionLogging.swift in Sources */,
-				5578608F20F4066D00FC182D /* Engine.swift in Sources */,
-				5526A5882104EE3F005AF2C6 /* UIImage+.swift in Sources */,
-				5578609420F4070800FC182D /* Sound.swift in Sources */,
-				55632BF920F4520D008BCB09 /* Billboard.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -696,16 +520,6 @@
 			isa = PBXTargetDependency;
 			target = 554348341F82D3AD00C3C2CB /* TrainControl */;
 			targetProxy = 554348551F82D3AD00C3C2CB /* PBXContainerItemProxy */;
-		};
-		55524C7B20F11FAA004EBD8B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 55524C7720F11FAA004EBD8B /* TrainConductor Extension */;
-			targetProxy = 55524C7A20F11FAA004EBD8B /* PBXContainerItemProxy */;
-		};
-		55524C8820F11FAA004EBD8B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 55524C6B20F11FA8004EBD8B /* TrainConductor */;
-			targetProxy = 55524C8720F11FAA004EBD8B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -846,8 +660,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
+				DEVELOPMENT_TEAM = 8VPYJWT4Q6;
 				INFOPLIST_FILE = TrainControl/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -863,8 +678,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
+				DEVELOPMENT_TEAM = 8VPYJWT4Q6;
 				INFOPLIST_FILE = TrainControl/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -939,88 +755,6 @@
 			};
 			name = Release;
 		};
-		55524C8B20F11FAA004EBD8B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
-				INFOPLIST_FILE = "TrainConductor Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControl.watchkitapp.watchkitextension;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.3;
-			};
-			name = Debug;
-		};
-		55524C8C20F11FAA004EBD8B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
-				INFOPLIST_FILE = "TrainConductor Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControl.watchkitapp.watchkitextension;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.3;
-			};
-			name = Release;
-		};
-		55524C8F20F11FAA004EBD8B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
-				IBSC_MODULE = TrainConductor_Extension;
-				INFOPLIST_FILE = TrainConductor/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControl.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.3;
-			};
-			name = Debug;
-		};
-		55524C9020F11FAA004EBD8B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
-				IBSC_MODULE = TrainConductor_Extension;
-				INFOPLIST_FILE = TrainConductor/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.objectcomputing.TrainControl.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.3;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1056,24 +790,6 @@
 			buildConfigurations = (
 				554348641F82D3AD00C3C2CB /* Debug */,
 				554348651F82D3AD00C3C2CB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		55524C8A20F11FAA004EBD8B /* Build configuration list for PBXNativeTarget "TrainConductor Extension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				55524C8B20F11FAA004EBD8B /* Debug */,
-				55524C8C20F11FAA004EBD8B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		55524C8E20F11FAA004EBD8B /* Build configuration list for PBXNativeTarget "TrainConductor" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				55524C8F20F11FAA004EBD8B /* Debug */,
-				55524C9020F11FAA004EBD8B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
