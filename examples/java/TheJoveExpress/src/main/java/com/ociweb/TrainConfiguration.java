@@ -47,7 +47,7 @@ public class TrainConfiguration  {
     final boolean faultDetectionEnabled = false; //NOTE: warning the accelerometer is never found to be publishing if this is on...
     //final int accelerometerReadFreq = 250;
 
-    final boolean appServerEnabled = true;
+    boolean appServerEnabled = true;
     final int appServerPort = 8089;
     final String resourceRoot = "/joveSite";
     final String resourceDefaultPath = "/index.html"; //used when caller does not provide path
@@ -62,5 +62,6 @@ public class TrainConfiguration  {
         this.trainDisplayName = args.getArgumentValue("--display", "-d", "The Jove Express");
         this.defaultEngineCalibration = args.getArgumentValue("--calibrartion", "-c", 30);
         this.sharedAcutatorEnabled = args.getArgumentValue("--sharedact", "-sa", true);
+        this.appServerEnabled = args.getArgumentValue("--webserver", "-w", true);
     }
 }
