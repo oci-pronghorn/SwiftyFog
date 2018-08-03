@@ -16,8 +16,10 @@ public class LifeCycleBehavior implements PubSubMethodListener {
     private final PubSubFixedTopicService pubSubService;
 
     private final MQTTConnectionFeedback connected = new MQTTConnectionFeedback();
+    private final String displayName;
 
-    public LifeCycleBehavior(FogRuntime runtime, String trainAliveFeedback) {
+    public LifeCycleBehavior(FogRuntime runtime, String displayName, String trainAliveFeedback) {
+        this.displayName = displayName;
         FogCommandChannel channel = runtime.newCommandChannel();
         this.pubSubService = channel.newPubSubService(trainAliveFeedback);
     }
@@ -35,7 +37,10 @@ public class LifeCycleBehavior implements PubSubMethodListener {
     public boolean onMQTTConnect(CharSequence topic, ChannelReader payload) {
         payload.readInto(connected);
         if (connected.status == MQTTConnectionStatus.connected) {
-            return pubSubService.publishTopic( writer -> writer.writeBoolean(true));
+            return pubSubService.publishTopic( writer -> {
+                writer.writeBoolean(true);
+                writer.writeUTF(displayName);
+            });
         }
         return true;
     }

@@ -14,8 +14,6 @@ class TrainInterfaceController: WKInterfaceController {
 	let train = Train()
 	let engine = Engine()
 	let lights = Lights()
-	let billboard = Billboard()
-	
 	
 	@IBOutlet weak var aliveIndicator: WKInterfaceImage!
 	@IBOutlet weak var engineIndicator: WKInterfaceImage!
@@ -29,7 +27,6 @@ class TrainInterfaceController: WKInterfaceController {
 	static var mqtt: MQTTBridge!
 	static var mqttControl: MQTTControl!
 	static var trainName: String = ""
-	var alive = false
 	
 	static func setTrain(named name: String, bridging: MQTTBridge, mqttControl: MQTTControl!, force: Bool) {
 		self.mqttControl = mqttControl
@@ -45,7 +42,6 @@ class TrainInterfaceController: WKInterfaceController {
 			train.mqtt = mqtt
 			engine.mqtt = mqtt.createBridge(subPath: "engine")
 			lights.mqtt = mqtt.createBridge(subPath: "lights")
-			billboard.mqtt = mqtt.createBridge(subPath: "billboard")
 		}
 	}
 	
@@ -56,7 +52,6 @@ class TrainInterfaceController: WKInterfaceController {
 		train.delegate = self
 		engine.delegate = self
 		lights.delegate = self
-		billboard.delegate = self
 	}
 
     override func awake(withContext context: Any?) {
@@ -116,13 +111,11 @@ extension TrainInterfaceController {
 		switch connected {
 			case .started:
 				aliveIndicator.setImage(#imageLiteral(resourceName: "Disconnected"))
-				billboardPresentConnectionStatus()
 				break
 			case .connected(_, _, _, _):
 				feedbackCut()
 				assertValues()
 				aliveIndicator.setImage(#imageLiteral(resourceName: "Dead"))
-				billboardPresentConnectionStatus()
 				break
 			case .pinged(let status):
 				switch status {
@@ -145,7 +138,6 @@ extension TrainInterfaceController {
 			case .disconnected(_, _, _):
 				feedbackCut()
 				aliveIndicator.setImage(#imageLiteral(resourceName: "Disconnected"))
-				billboardPresentConnectionStatus()
 				break
 		}
 	}
@@ -157,14 +149,12 @@ extension TrainInterfaceController {
 		train.assertValues()
 		engine.assertValues()
 		lights.assertValues()
-		billboard.assertValues()
 	}
 	
 	func feedbackCut() {
 		train.reset()
 		engine.reset()
 		lights.reset()
-		billboard.reset()
 	}
 }
 
@@ -173,19 +163,19 @@ extension TrainInterfaceController {
 extension TrainInterfaceController:
 		TrainDelegate,
 		EngineDelegate,
-		LightsDelegate,
-		BillboardDelegate {
+		LightsDelegate {
 
 	func onSubscriptionAck(status: MQTTSubscriptionStatus) {
 	}
 	
-	func train(alive: Bool) {
+	func train(alive: Bool, named: String?) {
 		if alive == false {
 			feedbackCut()
 		}
-		self.alive = alive
+		if let name = named {
+        	self.setTitle(name)
+        }
 		aliveIndicator.setImage(alive ? #imageLiteral(resourceName: "Alive") : #imageLiteral(resourceName: "Dead"))
-		self.billboardPresentConnectionStatus()
 	}
 			
     func train(faults: MotionFaults, _ asserted: Bool) {
@@ -244,36 +234,5 @@ extension TrainInterfaceController:
 	}
 	
 	func lights(ambient: TrainRational, _ asserted: Bool) {
-	}
-
-	func billboard(layout: FogBitmapLayout) {
-	}
-	
-	func billboard(image: UIImage) {
-	}
-	
-    func billboard(text: String, _ asserted: Bool) {
-        self.setTitle(text)
-    }
-	
-    func billboardPresentConnectionStatus() {
-		let mqttControl = TrainInterfaceController.mqttControl!
-		if mqttControl.started {
-			if mqttControl.connected {
-				if self.alive {
-				}
-				else {
-					self.setTitle("No Train")
-				}
-			}
-			else {
-				self.alive = false
-				self.setTitle("Connecting...")
-			}
-		}
-		else {
-			self.alive = false
-			self.setTitle("No Connection")
-		}
 	}
 }

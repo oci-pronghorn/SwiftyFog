@@ -74,7 +74,7 @@ public class TheJoveExpress implements FogApp
             final String shutdownControl = "lifecycle/control/shutdown";
             topics.lastWill(lifeCycleFeedback, true, MQTTQoS.atLeastOnce, blobWriter -> blobWriter.writeBoolean(false)); // TODO remove immutable check
             topics.connectionFeedbackTopic(internalMqttConnect);
-            LifeCycleBehavior lifeCycle = new LifeCycleBehavior(runtime,
+            LifeCycleBehavior lifeCycle = new LifeCycleBehavior(runtime, config.trainDisplayName,
                     topics.publish(lifeCycleFeedback, true, MQTTQoS.atLeastOnce));
             topics.subscribe(lifeCycle, internalMqttConnect, MQTTQoS.atLeastOnce, lifeCycle::onMQTTConnect);
             topics.subscribe(lifeCycle, shutdownControl, MQTTQoS.atMostOnce, lifeCycle::onShutdown);

@@ -16,7 +16,7 @@ import SwiftFog_watch
 public typealias TrainRational = FogRational<Int32>
 
 public protocol TrainDelegate: class, SubscriptionLogging {
-	func train(alive: Bool)
+	func train(alive: Bool, named: String?)
     func train(faults: MotionFaults, _ asserted: Bool)
     func train(webHost: String?)
 }
@@ -65,8 +65,13 @@ public class Train: FogFeedbackModel {
 	}
 	
 	private func feedbackLifecycle(msg: MQTTMessage) {
-		let alive: Bool = msg.payload.fogExtract()
-		delegate?.train(alive: alive)
+		var cursor:Int = 0
+		let alive: Bool = msg.payload.fogExtract(&cursor)
+		var displayName: String? = nil
+		if alive {
+			displayName = msg.payload.fogExtract(&cursor)
+		}
+		delegate?.train(alive: alive, named: displayName)
 		if alive {
 			askForFeedback()
 		}

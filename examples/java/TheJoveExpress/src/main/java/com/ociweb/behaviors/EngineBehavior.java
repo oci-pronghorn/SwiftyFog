@@ -99,7 +99,7 @@ public class EngineBehavior implements PubSubMethodListener {
     private void actuate() {
         double actualPower = enginePower.ratio();
         double calibrationLimit = calibration.ratio();
-        if (Math.abs(actualPower) < calibrationLimit) {
+        if (Math.abs(actualPower) <= calibrationLimit) {
             actualPower = 0.0;
         }
         int state = Double.compare(actualPower, 0.0);

@@ -6,6 +6,7 @@ A long-press on the indicator sends a shutdown request to the train application.
 A double-tap will send a feedback request where the train will retransmit all states
 On transition from flatline to heartbeat the same feadback request is made and controls, not just indicators are updated.
 Apple watch has the indicator with gestures.
+Apple watch will display train name on initial feedback
 
 ## Billboard Text 
 The billboard text will be disabled and gold when train is flatlined. Current connection status is displayed in text
@@ -13,7 +14,7 @@ The billboard text will be disabled and gold when train is flatlined. Current co
 * "Connecting..." during connection process
 * "No Train" if connected to broker but no "Alive" topic received
 If the train is connected the the billboard edit field controls the text on the Train's billboard display.
-Apple watch billboard text is always readonly.
+No watch functionality
 
 ## Connection Metrics
 This flip labels count down the number of connection attempts to the broker.

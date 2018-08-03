@@ -304,7 +304,7 @@ extension TrainViewController:
 		//print("***Subscription Status: \(status)")
 	}
 	
-	func train(alive: Bool) {
+	func train(alive: Bool, named: String?) {
 		if alive == false {
 			feedbackCut()
 		}
