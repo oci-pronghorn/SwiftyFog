@@ -65,9 +65,6 @@ public class TheJoveExpress implements FogApp
     }
 
     public void declareBehavior(FogRuntime runtime) {
-        // BUG: Only the last behavior that publishes "lifecycle/feedback" actually gets out to MQTT!
-        // BUG: LightingBehavior is not receiving "lights/ambient/feedback" (probably related)
-
         TopicJunctionBox topics = new TopicJunctionBox(config.trainName, runtime, config.mqttEnabled ? mqttBridge : null);
 
         if (config.lifecycleEnabled) {
