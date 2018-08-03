@@ -24,7 +24,9 @@ class TrainDiscovery {
     public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster.assign(mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-				("#/lifecycle/feedback", .atLeastOnce, TrainDiscovery.feedbackLifecycle),
+			// This callback mechanism is only looking at exact string matches
+			// In order to support auto-discovery we need pattern matching!
+				("+/lifecycle/feedback", .atLeastOnce, TrainDiscovery.feedbackLifecycle),
 			]) {[weak self] (_, status) in self?.delegate?.onSubscriptionAck(status: status)})
 		}
     }

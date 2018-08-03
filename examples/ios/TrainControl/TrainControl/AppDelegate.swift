@@ -17,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	var trainControl: TrainViewController!
 	//var logView: LogViewController!
+	
+	var discovery = TrainDiscovery()
 
 	internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 	
@@ -42,6 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		if brokerChanged {
 			self.controller.mqttHost = newBrokerHost
 			self.trainControl.mqttControl = controller.client
+			self.discovery.mqtt = controller.client
 		}
 		
 		let newTrainName = UserDefaults.standard.string(forKey: "train_name_preference")!
