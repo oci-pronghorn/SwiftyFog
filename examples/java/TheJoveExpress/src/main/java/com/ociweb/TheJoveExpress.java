@@ -136,7 +136,7 @@ public class TheJoveExpress implements FogApp
                 topics.subscribe(lights, lightsAmbientFeedback, lights::onDetected);
             }
         }
-        if (config.faultTrackingEnabled != FeatureEnabled.nothing) {
+        if (config.faultTrackingEnabled == FeatureEnabled.full) {
             final AccelerometerBehavior accelerometerBehavior = new AccelerometerBehavior(runtime, accelerometerInternal);
             topics.registerBehavior(accelerometerBehavior);
         }

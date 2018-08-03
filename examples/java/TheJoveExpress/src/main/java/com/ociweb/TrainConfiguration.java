@@ -18,7 +18,7 @@ public class TrainConfiguration  {
     final boolean mqttEnabled = true;
     final String mqttBrokerHost;
     final String mqttClientName;
-    final int mqttPort = MQTTBridge.defaultPort;
+    final int mqttPort;
 
     // Telemetry
     final boolean telemetryEnabled = true;
@@ -83,5 +83,6 @@ public class TrainConfiguration  {
         this.defaultEngineCalibration = args.getArgumentValue("--calibrartion", "-c", 30);
         this.sharedAcutatorEnabled = args.getArgumentValue("--sharedact", "-sa", true);
         this.appServerEnabled = args.getArgumentValue("--webserver", "-w", true);
+        this.mqttPort = args.getArgumentValue("--brokerp", "-bp", MQTTBridge.defaultPort);
     }
 }
