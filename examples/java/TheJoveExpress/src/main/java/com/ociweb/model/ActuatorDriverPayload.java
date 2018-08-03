@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
+/**
+ * The payload sent to an actuator - has port and fractional payload
+ */
 public class ActuatorDriverPayload implements Externalizable {
     public ActuatorDriverPort port;
     public double power;

@@ -1,4 +1,4 @@
-package com.ociweb.behaviors.internal;
+package com.ociweb.behaviors;
 
 import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.gl.api.ShutdownListener;
@@ -12,7 +12,10 @@ import com.ociweb.model.ActuatorDriverPayload;
 import com.ociweb.model.ActuatorDriverPort;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
-// TODO: fully implement
+/**
+ * A behavior that operates both an LED and MDDS30 motor driver
+ * TODO: Determine if we want two behaviors instead of one
+ */
 public class PWMActuatorDriverBehavior implements PubSubMethodListener, ShutdownListener, StartupListener {
     private final PinService pwmService;
     private final ActuatorDriverPort engineActuatorPort;
@@ -20,8 +23,9 @@ public class PWMActuatorDriverBehavior implements PubSubMethodListener, Shutdown
     private static Port engineDirectionPort;
     private static Port ledPort;
     private final ActuatorDriverPayload payload = new ActuatorDriverPayload();
+    private final int powerMax;
 
-    public static void connectHardware(Hardware hardware, Port enginePowerPort, Port engineDirectionPort, Port ledPort) {
+    public static void configure(Hardware hardware, Port enginePowerPort, Port engineDirectionPort, Port ledPort) {
         PWMActuatorDriverBehavior.enginePowerPort = enginePowerPort;
         PWMActuatorDriverBehavior.engineDirectionPort = engineDirectionPort;
         PWMActuatorDriverBehavior.ledPort = ledPort;
@@ -38,6 +42,7 @@ public class PWMActuatorDriverBehavior implements PubSubMethodListener, Shutdown
     public PWMActuatorDriverBehavior(FogRuntime runtime, ActuatorDriverPort engineActuatorPort) {
         this.pwmService = runtime.newCommandChannel().newPinService();
         this.engineActuatorPort = engineActuatorPort;
+        this.powerMax = runtime.builder.getConnectedDevice(enginePowerPort).range()-1;
     }
 
     @Override
@@ -50,21 +55,26 @@ public class PWMActuatorDriverBehavior implements PubSubMethodListener, Shutdown
 
     @Override
     public boolean acceptShutdown() {
-        // Turn everything off
+        pwmService.setValue(engineDirectionPort, 0);
+        pwmService.setValue(enginePowerPort, 0);
+        pwmService.setValue(ledPort, 0);
         return true;
     }
 
     public boolean setPower(CharSequence charSequence, ChannelReader ChannelReader) {
         ChannelReader.readInto(payload);
         if (payload.port == engineActuatorPort) {
-            // TODO: actuate engine
-            double power = payload.power; // values inclusive -1.0 to 1.0
+            double actualPower = payload.power; // values inclusive -1.0 to 1.0
+            int p = (int)(powerMax* Math.abs(actualPower));
+            pwmService.setValue(engineDirectionPort,actualPower<0?0:255);
+            pwmService.setValue(enginePowerPort, p);
             return true;
         }
         else {
-            // TODO: actuate light
-            double power = payload.power; // values only 0.0 and 1.0
-            return true;
+            double updatePower = payload.power; // values only 0.0 and 1.0
+            final int twigRange = 1024;
+            System.out.println("light" + (int)((twigRange-1)*updatePower));
+            return this.pwmService.setValue(ledPort, (int)((twigRange-1)*updatePower));
         }
     }
 }

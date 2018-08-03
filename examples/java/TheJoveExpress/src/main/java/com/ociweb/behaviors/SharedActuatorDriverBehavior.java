@@ -1,5 +1,6 @@
-package com.ociweb.behaviors.internal;
+package com.ociweb.behaviors;
 
+import com.ociweb.FeatureEnabled;
 import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.gl.api.ShutdownListener;
 import com.ociweb.iot.grove.motor_driver.MotorDriver_Transducer;
@@ -11,13 +12,17 @@ import com.ociweb.pronghorn.pipe.ChannelReader;
 
 import static com.ociweb.iot.grove.motor_driver.MotorDriverTwig.MotorDriver;
 
+/**
+    A behavior to drive the MotorDriver_Transducer hardware
+ */
 public class SharedActuatorDriverBehavior implements PubSubMethodListener, ShutdownListener {
     private final MotorDriver_Transducer motorControl;
     private final ActuatorDriverPayload payload = new ActuatorDriverPayload();
     private int portAPower = 0;
     private int portBPower = 0;
 
-    public static void connectHardaware(Hardware hardware, boolean enabled) {
+    public static void configure(Hardware hardware, FeatureEnabled lightsEnabled, FeatureEnabled engineEnabled) {
+        boolean enabled = lightsEnabled == FeatureEnabled.full || engineEnabled == FeatureEnabled.full;
         if (enabled) {
             hardware.connect(MotorDriver);
         }

@@ -1,4 +1,4 @@
-package com.ociweb.behaviors;
+package com.ociweb.behaviors.inprogress;
 
 import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.gl.api.StartupListener;

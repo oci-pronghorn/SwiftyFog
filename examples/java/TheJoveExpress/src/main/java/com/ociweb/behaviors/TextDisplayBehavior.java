@@ -1,5 +1,6 @@
 package com.ociweb.behaviors;
 
+import com.ociweb.FeatureEnabled;
 import com.ociweb.gl.api.PubSubFixedTopicService;
 import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.gl.api.ShutdownListener;
@@ -7,22 +8,33 @@ import com.ociweb.gl.api.StartupListener;
 import com.ociweb.iot.grove.oled.OLED_128x64_Transducer;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
+import com.ociweb.iot.maker.Hardware;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
 import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
 import static com.ociweb.iot.maker.FogRuntime.I2C_WRITER;
 
-public class TextDisplay implements PubSubMethodListener, StartupListener, ShutdownListener {
+public class TextDisplayBehavior implements PubSubMethodListener, StartupListener, ShutdownListener {
     private final PubSubFixedTopicService pubSubService;
     private final OLED_128x64_Transducer display;
     private final String initialText;
     private String displayed;
+    private static boolean consoleOut = false;
 
     private final String blank = "                ";
     private String[] oldStrs = { "", "", "", "", "", "", "", ""};
     private String[] newStrs = { "", "", "", "", "", "", "", ""};
 
-    public TextDisplay(FogRuntime runtime, String initialText, String textFeedbackTopic) {
+    public static void configure(Hardware hardware, FeatureEnabled enabled) {
+        if (enabled == FeatureEnabled.full) {
+            hardware.connect(OLED_128x64);/*c.connect(OLED_96x96);*/
+        }
+        else if (enabled == FeatureEnabled.simuatedHardware) {
+            consoleOut = true;
+        }
+    }
+
+    public TextDisplayBehavior(FogRuntime runtime, String initialText, String textFeedbackTopic) {
         this.initialText = initialText;
         FogCommandChannel channel = runtime.newCommandChannel();
 
@@ -32,17 +44,6 @@ public class TextDisplay implements PubSubMethodListener, StartupListener, Shutd
 
     @Override
     public void startup() {
-       /* String s =
-                "0123456789ABCDEF" +
-                "0123456789ABCDEF" +
-                "0123456789ABCDEF" +
-                "0123456789ABCDEF" +
-                "0123456789ABCDEF" +
-                "0123456789ABCDEF" +
-                "0123456789ABCDEF" +
-                "0123456789ABCDEF" +
-                "garbage";
-        displayText(s);*/
         displayText(initialText);
     }
 
@@ -105,7 +106,7 @@ public class TextDisplay implements PubSubMethodListener, StartupListener, Shutd
             newStrs[i] = blank;
         }
 
-        //System.out.println("+----------------+");
+        if (consoleOut) System.out.println("+----------------+");
         for (int i = 0; i < newStrs.length; i++) {
             if (!oldStrs[i].equals(newStrs[i])) {
                 oldStrs[i] = newStrs[i];
@@ -115,13 +116,13 @@ public class TextDisplay implements PubSubMethodListener, StartupListener, Shutd
                 if (!display.printCharSequence(newStrs[i])) {
                 	return false;
                 };
-                //System.out.println("[" + newStrs[i] + "]");
+                if (consoleOut) System.out.println("[" + newStrs[i] + "]");
             }
-            /*else {
+            else if (consoleOut) {
                 System.out.println("|" + newStrs[i] + "|");
-            }*/
+            }
         }
-        //System.out.println("+----------------+");
+        if (consoleOut)System.out.println("+----------------+");
 
         displayed = s;
         return this.pubSubService.publishTopic( writer -> writer.writeUTF(displayed));

@@ -47,6 +47,7 @@ Pods/
 
 ####
 # IntelliJ
+*.iml
 target/
 /.settings
 /.classpath

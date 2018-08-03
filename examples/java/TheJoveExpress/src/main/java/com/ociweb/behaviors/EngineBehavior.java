@@ -10,14 +10,13 @@ import com.ociweb.model.MotionFaults;
 import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
-/*
+/**
     EngineBehavior encapsulates all the business logic for managing the interaction
     between the actuator, and external commands.
     It broadcasts feedback whenever state changes.
 
     The actuator behaviors perform the hardware tasks.
  */
-
 public class EngineBehavior implements PubSubMethodListener {
     private final PubSubFixedTopicService actuatorService;
     private final PubSubFixedTopicService engineStateService;

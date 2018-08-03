@@ -1,6 +1,4 @@
-package com.ociweb.behaviors;
-
-import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_96x96_2;
+package com.ociweb.behaviors.inprogress;
 
 import com.ociweb.gl.api.PubSubFixedTopicService;
 import com.ociweb.gl.api.PubSubMethodListener;
@@ -10,6 +8,8 @@ import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.image.FogBitmap;
 import com.ociweb.pronghorn.pipe.ChannelReader;
+
+import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_96x96_2;
 
 public class BillboardBehavior implements PubSubMethodListener, StartupListener {
 

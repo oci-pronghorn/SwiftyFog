@@ -1,17 +1,26 @@
-package com.ociweb.behaviors.internal;
+package com.ociweb.behaviors.inprogress;
 
+import com.ociweb.FeatureEnabled;
 import com.ociweb.gl.api.PubSubFixedTopicService;
 import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.iot.grove.six_axis_accelerometer.AccelerometerListener;
 import com.ociweb.iot.grove.six_axis_accelerometer.AccelerometerValues;
+import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometerTwig;
 import com.ociweb.iot.grove.six_axis_accelerometer.SixAxisAccelerometer_Transducer;
 import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
+import com.ociweb.iot.maker.Hardware;
 
 public class AccelerometerBehavior implements PubSubMethodListener {
     private final PubSubFixedTopicService stateTopicService;
 
     private final SixAxisAccelerometer_Transducer accSensor;
+
+    public static void configure(Hardware hardware, FeatureEnabled enabled, int accelerometerReadFreq) {
+        if (enabled == FeatureEnabled.full) {
+            hardware.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readAccel, accelerometerReadFreq);
+        }
+    }
 
     public AccelerometerBehavior(FogRuntime runtime, String stateTopic) {
         FogCommandChannel channel = runtime.newCommandChannel();

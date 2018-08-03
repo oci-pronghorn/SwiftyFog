@@ -8,13 +8,16 @@ import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.model.MotionFaults;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
-public class MotionFaultBehavior implements PubSubMethodListener {
+/**
+ * Tracks faults in the system from several sources
+ */
+public class FaultTrackingBehavior implements PubSubMethodListener {
     private final PubSubFixedTopicService pubSubService;
 
     private final MotionFaults motionFaults = new MotionFaults();
     private final AccelerometerValues accel = new AccelerometerValues();
 
-    public MotionFaultBehavior(FogRuntime runtime, String faultChangeTopic) {
+    public FaultTrackingBehavior(FogRuntime runtime, String faultChangeTopic) {
         FogCommandChannel channel = runtime.newCommandChannel();
         this.pubSubService = channel.newPubSubService(faultChangeTopic);
     }
@@ -24,12 +27,8 @@ public class MotionFaultBehavior implements PubSubMethodListener {
     }
 
     public boolean onForceFault(CharSequence charSequence, ChannelReader channelReader) {
-    	if (pubSubService.publishTopic( writer -> writer.write(motionFaults))) {    	
-	        motionFaults.derailed = !motionFaults.derailed;
-	        return true;
-    	} else {
-    		return false;
-    	}
+        motionFaults.derailed = !motionFaults.derailed;
+        return pubSubService.publishTopic( writer -> writer.write(motionFaults));
     }
 
     public boolean onEngineState(CharSequence charSequence, ChannelReader channelReader) {

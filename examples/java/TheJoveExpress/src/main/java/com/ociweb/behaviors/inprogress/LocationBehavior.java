@@ -1,4 +1,4 @@
-package com.ociweb.behaviors.location;
+package com.ociweb.behaviors.inprogress;
 
 import com.ociweb.gl.api.PubSubFixedTopicService;
 import com.ociweb.gl.api.StartupListener;

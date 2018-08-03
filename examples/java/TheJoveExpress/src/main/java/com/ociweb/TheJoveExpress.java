@@ -1,23 +1,20 @@
 package com.ociweb;
 
 import com.ociweb.behaviors.*;
-import com.ociweb.behaviors.internal.AccelerometerBehavior;
-import com.ociweb.behaviors.internal.PWMActuatorDriverBehavior;
-import com.ociweb.behaviors.internal.SharedActuatorDriverBehavior;
-import com.ociweb.behaviors.location.LocationBehavior;
-import com.ociweb.behaviors.location.TrainingBehavior;
+import com.ociweb.behaviors.inprogress.AccelerometerBehavior;
+import com.ociweb.behaviors.inprogress.LocationBehavior;
+import com.ociweb.behaviors.inprogress.TrainingBehavior;
 import com.ociweb.gl.api.MQTTBridge;
 import com.ociweb.gl.api.MQTTQoS;
-import com.ociweb.iot.grove.simple_analog.SimpleAnalogTwig;
-import com.ociweb.iot.maker.Baud;
 import com.ociweb.iot.maker.FogApp;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.Hardware;
 import com.ociweb.pronghorn.iot.i2c.I2CJFFIStage;
 import com.ociweb.pronghorn.stage.scheduling.GraphManager;
 
-import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_128x64;
-
+/**
+ * The main application registers all the hardware and business logic classes.
+ */
 public class TheJoveExpress implements FogApp
 {
     private TrainConfiguration config;
@@ -32,37 +29,39 @@ public class TheJoveExpress implements FogApp
         GraphManager.showThreadIdOnTelemetry = true;
         I2CJFFIStage.debugCommands = false;
 
+        if (config.telemetryEnabled) {
+            hardware.enableTelemetry(config.telemetryHost, config.telemetryPort);
+        }
+
         if (config.mqttEnabled) {
             this.mqttBridge = hardware.useMQTT(config.mqttBrokerHost, config.mqttPort, config.mqttClientName, 40, 8000)
                     .cleanSession(true)
                     .keepAliveSeconds(10);
         }
-        WebHostBehavior.enable(hardware, config.appServerEnabled, config.appServerPort);
 
-        if (config.lightsEnabled) {
-            hardware.setTimerPulseRate(1000); // needed for startup flash
-            if (!hardware.isTestHardware() || config.simulateLightSensor) {
-                hardware.connect(SimpleAnalogTwig.LightSensor, config.lightSensorPort, config.lightDetectFreq);
-            }
+        WebHostBehavior.configure(hardware, config.appServerEnabled, config.appServerPort);
+
+        AmbientLightBehavior.configure(hardware, config.lightsEnabled, config.lightSensorPort, config.lightDetectFreq);
+
+        if (config.lightsEnabled != FeatureEnabled.nothing) {
+            hardware.setTimerPulseRate(1000); // needed for startup flash - is there a better way?
         }
-        if (config.soundEnabled) hardware.useSerial(Baud.B_____9600);
 
-        if (config.billboardEnabled) hardware.connect(OLED_128x64);/*c.connect(OLED_96x96);*/
- //       if (config.faultDetectionEnabled) hardware.connect(SixAxisAccelerometerTwig.SixAxisAccelerometer.readAccel, config.accelerometerReadFreq);
-        if (config.soundEnabled) ; //c.connect(serial mp3 player);
+        TextDisplayBehavior.configure(hardware, config.billboardEnabled);
 
-        if (config.telemetryEnabled) {
-            hardware.enableTelemetry(config.telemetryHost, config.telemetryPort);
-        }
-        
+        AccelerometerBehavior.configure(hardware, config.faultTrackingEnabled, config.accelerometerReadFreq);
+
         if (config.sharedAcutatorEnabled) {
-            SharedActuatorDriverBehavior.connectHardaware(hardware,config.lightsEnabled || config.engineEnabled)    ;
+            SharedActuatorDriverBehavior.configure(hardware,config.lightsEnabled, config.engineEnabled)    ;
         } else {
-            PWMActuatorDriverBehavior.connectHardware(hardware,
-                    config.engineEnabled ? config.pwmEnginePowerPort : null,
-                    config.engineEnabled ? config.pwmEngineDirectionPort : null,
-                    config.lightsEnabled ? config.ledPort : null);
+            PWMActuatorDriverBehavior.configure(hardware,
+                    config.engineEnabled == FeatureEnabled.full ? config.pwmEnginePowerPort : null,
+                    config.engineEnabled == FeatureEnabled.full ? config.pwmEngineDirectionPort : null,
+                    config.lightsEnabled == FeatureEnabled.full ? config.ledPort : null);
         }
+
+        //if (config.soundEnabled) hardware.useSerial(Baud.B_____9600);
+        //if (config.soundEnabled) ; //c.connect(serial mp3 player);
     }
 
     public void declareBehavior(FogRuntime runtime) {
@@ -72,6 +71,7 @@ public class TheJoveExpress implements FogApp
         TopicJunctionBox topics = new TopicJunctionBox(config.trainName, runtime, config.mqttEnabled ? mqttBridge : null);
 
         if (config.lifecycleEnabled) {
+            // TODO: better encapsulate this logic
             final String lifeCycleFeedback = "lifecycle/feedback";
             final String internalMqttConnect = "MQTT/Connection";
             final String shutdownControl = "lifecycle/control/shutdown";
@@ -89,106 +89,60 @@ public class TheJoveExpress implements FogApp
         final String faultFeedback = "fault/feedback";
         final String lightsPowerFeedback = "lights/power/feedback";
 
-        if (config.engineEnabled || config.lightsEnabled) {
+        if (config.engineEnabled != FeatureEnabled.nothing || config.lightsEnabled != FeatureEnabled.nothing) {
             final String actuatorPowerAInternal = "actuator/power/a/internal";
             final String actuatorPowerBInternal = "actuator/power/b/internal";
-
-            /////////
-            /////////
             
             if (config.sharedAcutatorEnabled) {
             	final SharedActuatorDriverBehavior actuator = new SharedActuatorDriverBehavior(runtime);
             	topics.subscribe(actuator, actuatorPowerAInternal, actuator::setPower);
             	topics.subscribe(actuator, actuatorPowerBInternal, actuator::setPower);
             }
-        /*    else {
+            else {
                 final PWMActuatorDriverBehavior actuator = new PWMActuatorDriverBehavior(runtime, config.engineActuatorPort);
                 topics.subscribe(actuator, actuatorPowerAInternal, actuator::setPower);
                 topics.subscribe(actuator, actuatorPowerBInternal, actuator::setPower);
-            }*/
-
-            if (config.engineEnabled) {
-                
-            	if (config.sharedAcutatorEnabled) { 
-	            	final EngineBehavior engine = new EngineBehavior(runtime, config.defaultEngineCalibration, actuatorPowerAInternal, config.engineActuatorPort,
-	                        topics.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
-	                        topics.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce),
-	                        topics.publish("engine/state/feedback", false, MQTTQoS.atMostOnce));
-	                            	
-	            	topics.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
-	                topics.subscribe(engine, "engine/power/control", MQTTQoS.atMostOnce, engine::onPower);
-	                topics.subscribe(engine, "engine/calibration/control", MQTTQoS.atMostOnce, engine::onCalibration);
-	                if (config.faultDetectionEnabled) {
-	                	topics.subscribe(engine, faultFeedback, engine::onFault);
-	                }
-            	} else {
-					//simple PwM control          		
-	            	final EngineBehaviorPWM engine = new EngineBehaviorPWM(runtime, config.pwmEnginePowerPort, config.pwmEngineDirectionPort,
-	                        topics.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
-	                        topics.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce),
-	                        topics.publish("engine/state/feedback", false, MQTTQoS.atMostOnce));
-	                            	
-	            	topics.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
-	                topics.subscribe(engine, "engine/power/control", MQTTQoS.atMostOnce, engine::onPower);
-	                topics.subscribe(engine, "engine/calibration/control", MQTTQoS.atMostOnce, engine::onCalibration);
-	                if (config.faultDetectionEnabled) {
-	                	topics.subscribe(engine, faultFeedback, engine::onFault);
-	                }
-            		
-            	}
-                
             }
 
-            if (config.lightsEnabled) {
-                
-            	if (config.sharedAcutatorEnabled) { 
-	            	final String lightsAmbientFeedback = "lights/ambient/feedback";
-	                final AmbientLightBehavior ambientLight = new AmbientLightBehavior(runtime, config.lightSensorPort,
-	                        topics.publish(lightsAmbientFeedback, false, MQTTQoS.atMostOnce));
-	                topics.subscribe(ambientLight, allFeedback, MQTTQoS.atMostOnce, ambientLight::onAllFeedback);
-	
-	                final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerBInternal, config.lightActuatorPort, 
-	                		topics.publish("lights/override/feedback", false, MQTTQoS.atMostOnce),
-	                        topics.publish(lightsPowerFeedback, false, MQTTQoS.atMostOnce),
-	                        topics.publish("lights/calibration/feedback", false, MQTTQoS.atMostOnce));
-	                
-	                
-	                topics.subscribe(lights, allFeedback, MQTTQoS.atMostOnce, lights::onAllFeedback);
-	                topics.subscribe(lights, "lights/override/control", MQTTQoS.atMostOnce, lights::onOverride);
-	                topics.subscribe(lights, "lights/calibration/control", MQTTQoS.atMostOnce, lights::onCalibration);
-	                topics.subscribe(lights, lightsAmbientFeedback, lights::onDetected);
-            	} else {
+            if (config.engineEnabled != FeatureEnabled.nothing) {
+                final EngineBehavior engine = new EngineBehavior(runtime, config.defaultEngineCalibration, actuatorPowerAInternal, config.engineActuatorPort,
+                        topics.publish("engine/power/feedback", false, MQTTQoS.atMostOnce),
+                        topics.publish("engine/calibration/feedback", false, MQTTQoS.atMostOnce),
+                        topics.publish("engine/state/feedback", false, MQTTQoS.atMostOnce));
 
-            		
-	            	final String lightsAmbientFeedback = "lights/ambient/feedback";
-	                final AmbientLightBehavior ambientLight = new AmbientLightBehavior(runtime, config.lightSensorPort,
-	                        topics.publish(lightsAmbientFeedback, false, MQTTQoS.atMostOnce));
-	                topics.subscribe(ambientLight, allFeedback, MQTTQoS.atMostOnce, ambientLight::onAllFeedback);
-	
-					final LightingBehaviorPWM lights = new LightingBehaviorPWM(runtime, config.ledPort, 
-	                		topics.publish("lights/override/feedback", false, MQTTQoS.atMostOnce),
-	                        topics.publish(lightsPowerFeedback, false, MQTTQoS.atMostOnce),
-	                        topics.publish("lights/calibration/feedback", false, MQTTQoS.atMostOnce));
-	                
-	                
-	                topics.subscribe(lights, allFeedback, MQTTQoS.atMostOnce, lights::onAllFeedback);
-	                topics.subscribe(lights, "lights/override/control", MQTTQoS.atMostOnce, lights::onOverride);
-	                topics.subscribe(lights, "lights/calibration/control", MQTTQoS.atMostOnce, lights::onCalibration);
-	                topics.subscribe(lights, lightsAmbientFeedback, lights::onDetected);
-            		
-            		
-            	}
-                
-                
+                topics.subscribe(engine, allFeedback, MQTTQoS.atMostOnce, engine::onAllFeedback);
+                topics.subscribe(engine, "engine/power/control", MQTTQoS.atMostOnce, engine::onPower);
+                topics.subscribe(engine, "engine/calibration/control", MQTTQoS.atMostOnce, engine::onCalibration);
+                if (config.faultTrackingEnabled != FeatureEnabled.nothing) {
+                    topics.subscribe(engine, faultFeedback, engine::onFault);
+                }
+            }
+
+            if (config.lightsEnabled != FeatureEnabled.nothing) {
+                final String lightsAmbientFeedback = "lights/ambient/feedback";
+                final AmbientLightBehavior ambientLight = new AmbientLightBehavior(runtime,
+                        topics.publish(lightsAmbientFeedback, false, MQTTQoS.atMostOnce));
+                topics.subscribe(ambientLight, allFeedback, MQTTQoS.atMostOnce, ambientLight::onAllFeedback);
+
+                final LightingBehavior lights = new LightingBehavior(runtime, actuatorPowerBInternal, config.lightActuatorPort,
+                        topics.publish("lights/override/feedback", false, MQTTQoS.atMostOnce),
+                        topics.publish(lightsPowerFeedback, false, MQTTQoS.atMostOnce),
+                        topics.publish("lights/calibration/feedback", false, MQTTQoS.atMostOnce));
+
+
+                topics.subscribe(lights, allFeedback, MQTTQoS.atMostOnce, lights::onAllFeedback);
+                topics.subscribe(lights, "lights/override/control", MQTTQoS.atMostOnce, lights::onOverride);
+                topics.subscribe(lights, "lights/calibration/control", MQTTQoS.atMostOnce, lights::onCalibration);
+                topics.subscribe(lights, lightsAmbientFeedback, lights::onDetected);
             }
         }
-        if (config.faultDetectionEnabled) {
+        if (config.faultTrackingEnabled != FeatureEnabled.nothing) {
             final AccelerometerBehavior accelerometerBehavior = new AccelerometerBehavior(runtime, accelerometerInternal);
             topics.registerBehavior(accelerometerBehavior);
         }
 
-        if (config.faultDetectionEnabled) {
-            final MotionFaultBehavior motionFault = new MotionFaultBehavior(runtime,
+        if (config.faultTrackingEnabled != FeatureEnabled.nothing) {
+            final FaultTrackingBehavior motionFault = new FaultTrackingBehavior(runtime,
                     topics.publish(faultFeedback, false, MQTTQoS.atMostOnce));
             topics.subscribe(motionFault, allFeedback, MQTTQoS.atMostOnce, motionFault::onAllFeedback);
             topics.subscribe(motionFault, "fault/control", MQTTQoS.atMostOnce, motionFault::onForceFault);
@@ -196,8 +150,8 @@ public class TheJoveExpress implements FogApp
             topics.subscribe(motionFault, engineState, motionFault::onEngineState);
         }
 
-        if (config.billboardEnabled) {
-            final TextDisplay billboard = new TextDisplay(runtime, config.trainDisplayName,
+        if (config.billboardEnabled != FeatureEnabled.nothing) {
+            final TextDisplayBehavior billboard = new TextDisplayBehavior(runtime, config.trainDisplayName,
                     topics.publish("billboard/text/feedback", false, MQTTQoS.atMostOnce));
             topics.subscribe(billboard, allFeedback, MQTTQoS.atMostOnce, billboard::onAllFeedback);
             topics.subscribe(billboard, "billboard/text/control", MQTTQoS.atMostOnce, billboard::onText);

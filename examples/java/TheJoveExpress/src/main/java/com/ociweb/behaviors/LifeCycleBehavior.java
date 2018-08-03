@@ -8,6 +8,9 @@ import com.ociweb.iot.maker.FogCommandChannel;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
+/**
+ * Handles lifecycle feedback for the train.
+ */
 public class LifeCycleBehavior implements PubSubMethodListener {
 
     private final PubSubFixedTopicService pubSubService;
@@ -17,12 +20,10 @@ public class LifeCycleBehavior implements PubSubMethodListener {
     public LifeCycleBehavior(FogRuntime runtime, String trainAliveFeedback) {
         FogCommandChannel channel = runtime.newCommandChannel();
         this.pubSubService = channel.newPubSubService(trainAliveFeedback);
-      
     }
 
     public boolean onShutdown(CharSequence topic, ChannelReader payload) {
     	pubSubService.requestShutdown();
-       
         /*
         TODO:After all behaviors have had a chance to accept shutdown
         if not test hardware
