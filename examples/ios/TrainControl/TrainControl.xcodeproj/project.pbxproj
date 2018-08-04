@@ -44,6 +44,8 @@
 		554348A01F82D6FE00C3C2CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */; };
 		554E71482103751200AAE25E /* ScrewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554E71472103751200AAE25E /* ScrewsView.swift */; };
 		555087BF2116028800B5ADF9 /* TrainDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5575A1BF211411D300017FEB /* TrainDiscovery.swift */; };
+		555087C121160F7000B5ADF9 /* TrainSelectTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555087C021160F7000B5ADF9 /* TrainSelectTableViewController.swift */; };
+		555087C3211630A500B5ADF9 /* SimplePopoverbackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555087C2211630A500B5ADF9 /* SimplePopoverbackground.swift */; };
 		55524C7020F11FA8004EBD8B /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55524C6E20F11FA8004EBD8B /* Interface.storyboard */; };
 		55524C7220F11FAA004EBD8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55524C7120F11FAA004EBD8B /* Assets.xcassets */; };
 		55524C7920F11FAA004EBD8B /* TrainConductor Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 55524C7820F11FAA004EBD8B /* TrainConductor Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -188,6 +190,8 @@
 		554348961F82D5B100C3C2CB /* ExerciseMotor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseMotor.swift; sourceTree = "<group>"; };
 		5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		554E71472103751200AAE25E /* ScrewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrewsView.swift; sourceTree = "<group>"; };
+		555087C021160F7000B5ADF9 /* TrainSelectTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainSelectTableViewController.swift; sourceTree = "<group>"; };
+		555087C2211630A500B5ADF9 /* SimplePopoverbackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimplePopoverbackground.swift; sourceTree = "<group>"; };
 		55524C6C20F11FA8004EBD8B /* TrainConductor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrainConductor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55524C6F20F11FA8004EBD8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		55524C7120F11FAA004EBD8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -349,6 +353,7 @@
 			children = (
 				5543486D1F82D46100C3C2CB /* LogViewController.swift */,
 				5543486F1F82D46100C3C2CB /* TrainViewController.swift */,
+				555087C021160F7000B5ADF9 /* TrainSelectTableViewController.swift */,
 			);
 			path = viewcontroller;
 			sourceTree = "<group>";
@@ -356,6 +361,7 @@
 		554348711F82D46100C3C2CB /* view */ = {
 			isa = PBXGroup;
 			children = (
+				555087C2211630A500B5ADF9 /* SimplePopoverbackground.swift */,
 				554348751F82D46100C3C2CB /* MetalPanelView.swift */,
 				554348761F82D46100C3C2CB /* Pulsator.swift */,
 				554348771F82D46100C3C2CB /* ScubControl.swift */,
@@ -616,6 +622,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				554348841F82D46100C3C2CB /* FogRationalUi.swift in Sources */,
+				555087C121160F7000B5ADF9 /* TrainSelectTableViewController.swift in Sources */,
 				5578608E20F3DF9A00FC182D /* UIImagePickerController+.swift in Sources */,
 				551AB9DF1F93B94A0080D37B /* FlipLabel.swift in Sources */,
 				55130BBE210271E4001D2E3F /* SubscriptionLogging.swift in Sources */,
@@ -627,6 +634,7 @@
 				554348861F82D46100C3C2CB /* MetalPanelView.swift in Sources */,
 				55B912C020FA77CE00634B80 /* UserDefaults+.swift in Sources */,
 				554348801F82D46100C3C2CB /* LogViewController.swift in Sources */,
+				555087C3211630A500B5ADF9 /* SimplePopoverbackground.swift in Sources */,
 				554348871F82D46100C3C2CB /* Pulsator.swift in Sources */,
 				55BD0DD420F15ABF001E31C3 /* AVAudioPlayer+.swift in Sources */,
 				550AD8D0210CAEE100E19CA2 /* CornerSegmentedControl.swift in Sources */,

@@ -174,8 +174,8 @@ extension TrainInterfaceController {
 // MARK: Model Delegate
 
 extension TrainInterfaceController: TrainDiscoveryDelegate {
-	func train(_ train: DiscoveredTrain, discovered: Bool, transitionary: Bool) {
-		if self.discoveredTrain == nil && discovered {
+	func train(_ train: DiscoveredTrain, discovered: Bool) {
+		if discovered && self.discoveredTrain == nil {
 			self.discoveredTrain = train
 		}
 		if discovered == false {

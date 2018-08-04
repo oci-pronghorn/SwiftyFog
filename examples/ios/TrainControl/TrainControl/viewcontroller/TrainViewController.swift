@@ -12,21 +12,20 @@ import AVFoundation
 import SwiftyFog_iOS
 
 class TrainViewController: UIViewController {
-	let impact = UIImpactFeedbackGenerator()
-	let discovery = TrainDiscovery()
-	let train = Train()
-	let engine = Engine()
-	let lights = Lights()
-	let billboard = Billboard()
+	private let impact = UIImpactFeedbackGenerator()
+	private let discovery = TrainDiscovery()
+	private let train = Train()
+	private let engine = Engine()
+	private let lights = Lights()
+	private let billboard = Billboard()
+	private var trainName: String = ""
+	private var alive = false
 	
 	@IBOutlet weak var trainAlive: UIImageView!
 	@IBOutlet weak var connectMetrics: FlipLabel!
 	@IBOutlet weak var connectedImage: UIImageView!
 	@IBOutlet weak var stopStartButton: UIButton!
     @IBOutlet weak var billboardText: UITextField!
-	
-	@IBOutlet weak var billboardImage: UIImageView!
-	@IBOutlet weak var compass: GaugeView!
 	
 	@IBOutlet weak var lightOverride: UISegmentedControl!
 	@IBOutlet weak var lightCalibration: UISlider!
@@ -36,26 +35,12 @@ class TrainViewController: UIViewController {
 	@IBOutlet weak var engineCalibration: UISlider!
 	@IBOutlet weak var engineGauge: GaugeView!
 	
-	@IBOutlet weak var soundControl: UISlider!
-	
 	@IBOutlet var pulsator: Pulsator!
 	
 	@IBOutlet var webView: WKWebView!
 	
 	var mqttControl: MQTTControl!
-	
-	var trainName: String = ""
-	var alive = false
-	/*
-	func setBridge(bridging: MQTTBridge, force: Bool) {
-		if trainName != name || force {
-			self.trainName = name
-			let scoped = bridging.createBridge(subPath: trainName)
-			self.mqtt = scoped
-		}
-	}
-	*/
-	
+
 	var discoverBridge: MQTTBridge! {
 		didSet {
 			self.discoveredTrain = nil
@@ -70,14 +55,21 @@ class TrainViewController: UIViewController {
 			engine.mqtt = trainBridge?.createBridge(subPath: "engine")
 			lights.mqtt = trainBridge?.createBridge(subPath: "lights")
 			billboard.mqtt = trainBridge?.createBridge(subPath: "billboard")
+			if self.isViewLoaded {
+				feedbackCut()
+				assertValues()
+				train(alive: discoveredTrain != nil, named: discoveredTrain?.displayName)
+			}
 		}
 	}
 	
 	private var bypassFeed: Bool {
 		return !mqttControl.started // just so I can see stuff while debugging
 	}
+	
     private weak var crack: UIImageView?
     private var player: AVAudioPlayer?
+    private weak var selector: TrainSelectTableViewController?
 
 // MARK: Life Cycle
 	
@@ -101,34 +93,70 @@ class TrainViewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		/*
-		self.compass.scaleDescription = { (v, i) in
-			if v == 0 {
-				return "N".localized
-			}
-			else if v == 90 {
-				return "E".localized
-			}
-			else if v == 180 {
-				return "S".localized
-			}
-			return "W".localized
-		}
-		*/
 		assertConnectionState()
 		assertValues()
 		billboardPresentConnectionStatus()
 	}
+}
 
-	// Force iPads to respect landscape (horizontalSizeClass compact)
+extension TrainViewController: UIPopoverPresentationControllerDelegate {
+
 	override public var traitCollection: UITraitCollection {
-		if UIDevice.current.userInterfaceIdiom == .pad && UIDevice.current.orientation.isPortrait {
+		if UIDevice.current.userInterfaceIdiom == .pad {
+		// This is not working!
+			let size = UIApplication.shared.windows[0].bounds.size
+			let landscape = size.width / size.height > 1
 			return UITraitCollection(traitsFrom:[
-				UITraitCollection(horizontalSizeClass: .compact),
+				UITraitCollection(horizontalSizeClass: landscape ? .compact : .regular),
 				UITraitCollection(verticalSizeClass: .regular)])
 		}
 		return super.traitCollection
 	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? TrainSelectTableViewController {
+        	self.selector = destination
+			destination.modalPresentationStyle = UIModalPresentationStyle.popover
+            destination.popoverPresentationController!.delegate = self
+        	destination.delegate = self
+			destination.model = discovery.snapshop
+        }
+    }
+	
+	// The initial "none" means keep popover
+	func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+	
+	// If the app kit asks to adapt into a non-popover - say no
+	func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+	}
+	
+	// Configure the popover
+	public func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+		SimplePopoverbackground.assign(popover: popoverPresentationController)
+		popoverPresentationController.passthroughViews = [self.view]
+		self.alignPopoverPresentation(popoverPresentationController)
+	}
+	
+	// Pick our directions
+	func alignPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+		popoverPresentationController.permittedArrowDirections = [.down]
+	}
+	
+	// All the app kit to re-anchor the popover on rotation
+	public func popoverPresentationController(_ popoverPresentationController: UIPopoverPresentationController, willRepositionPopoverTo rect: UnsafeMutablePointer<CGRect>, in view: AutoreleasingUnsafeMutablePointer<UIView>) {
+		self.alignPopoverPresentation(popoverPresentationController)
+	}
+	
+	public func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
+		return true
+	}
+	
+	public func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+	}
+	
 }
 
 // MARK: Connection State
@@ -210,8 +238,14 @@ extension TrainViewController {
 
 // MARK: UI Reactions
 
-extension TrainViewController: UITextFieldDelegate {
-    
+extension TrainViewController: UITextFieldDelegate, TrainSelectTableViewControllerDelegate {
+
+	func selected(train: DiscoveredTrain?) {
+		if train?.trainName != discoveredTrain?.trainName {
+			self.discoveredTrain = train
+		}
+	}
+	
     @IBAction func stopStartConnecting(sender: UIButton?) {
         if mqttControl.started {
             mqttControl.stop()
@@ -299,14 +333,22 @@ extension TrainViewController: UITextFieldDelegate {
 // MARK: Model Delegate
 
 extension TrainViewController: TrainDiscoveryDelegate {
-	func train(_ train: DiscoveredTrain, discovered: Bool, transitionary: Bool) {
-		if self.discoveredTrain == nil && discovered {
+	func train(_ train: DiscoveredTrain, discovered: Bool) {
+		if discovered && self.discoveredTrain == nil {
 			self.discoveredTrain = train
 		}
 		if discovered == false {
 			if train.trainName == discoveredTrain?.trainName {
-				self.discoveredTrain = self.discovery.firstTrain
+				if discovery.trainCount <= 1 {
+					self.discoveredTrain = self.discovery.firstTrain
+				}
+				else {
+					self.performSegue(withIdentifier: "SelectTrain", sender: self)
+				}
 			}
+		}
+		if let selector = self.selector {
+			selector.model = discovery.snapshop
 		}
 	}
 }
@@ -412,7 +454,6 @@ extension TrainViewController:
 	}
 	
 	func billboard(image: UIImage) {
-		billboardImage?.image = image
 	}
     
     func billboard(text: String, _ asserted: Bool) {

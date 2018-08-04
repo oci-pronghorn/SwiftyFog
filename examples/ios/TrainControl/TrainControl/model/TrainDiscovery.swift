@@ -14,12 +14,16 @@ import SwiftFog_watch
 #endif
 
 public struct DiscoveredTrain {
-	var trainName: String
-	var displayName: String?
+	public var trainName: String
+	public var displayName: String?
+	
+	public var presentedName: String {
+		return displayName ?? trainName
+	}
 }
 
 public protocol TrainDiscoveryDelegate: class, SubscriptionLogging {
-	func train(_ train: DiscoveredTrain, discovered: Bool, transitionary: Bool)
+	func train(_ train: DiscoveredTrain, discovered: Bool)
 }
 
 public class TrainDiscovery {
@@ -43,8 +47,17 @@ public class TrainDiscovery {
 		return trains.first?.value
 	}
 	
+	public var trainCount: Int {
+		return trains.count
+	}
+	
+	public var snapshop: [DiscoveredTrain] {
+		return Array(self.trains.values).sorted {
+			return $0.presentedName < $1.presentedName
+		}
+	}
+	
 	private func feedbackLifecycle(msg: MQTTMessage) {
-		let existingCount = trains.count
 		let topic = String(msg.topic)
 		let trainName = String(topic.prefix(upTo: topic.firstIndex(of: "/")!))
 		var cursor = 0
@@ -54,19 +67,19 @@ public class TrainDiscovery {
 			if let existing = trains[trainName] {
 				if let displayName = displayName, displayName != existing.displayName {
 					trains[trainName]!.displayName = displayName
-					delegate?.train(existing, discovered: true, transitionary: false)
+					delegate?.train(existing, discovered: true)
 				}
 			}
 			else {
 				let new = DiscoveredTrain(trainName: trainName, displayName: displayName)
 				trains[trainName] = new
-				delegate?.train(new, discovered: true, transitionary: existingCount == 0)
+				delegate?.train(new, discovered: true)
 			}
 		}
 		else {
 			if let existing = trains[trainName] {
 				trains[trainName] = nil
-				delegate?.train(existing, discovered: false, transitionary: existingCount == 1)
+				delegate?.train(existing, discovered: false)
 			}
 		}
 	}
