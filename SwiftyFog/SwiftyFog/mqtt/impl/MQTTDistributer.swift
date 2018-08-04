@@ -31,11 +31,28 @@ final class MQTTDistributor {
 	private let issuer: MQTTPacketIssuer
 	private let qos2Mode: Qos2Mode
 	
+	private struct OrderedEntry {
+		let token: UInt64
+		private let path: MQTTTopicPattern
+		private let action: (MQTTMessage)->()
+		
+		init(_ path: String, _ token: UInt64, _ action: @escaping (MQTTMessage)->()) {
+			self.path = MQTTTopicPattern(path: path)
+			self.token = token
+			self.action = action
+		}
+		
+		func action(for topic: String) -> ((MQTTMessage)->())? {
+			return path.matches(full: topic) == .success ? action : nil
+		}
+	}
+	
 	weak var delegate: MQTTDistributorDelegate?
 	
 	private let mutex = ReadWriteMutex()
 	private var token: UInt64 = 0
-	private var registeredPaths = [String: [(UInt64,(MQTTMessage)->())]]()
+	private var registeredPaths = [OrderedEntry]()
+	
 	private var deferredPacket = [UInt16:MQTTPublishPacket]()
 	
 	init(issuer: MQTTPacketIssuer, qos2Mode: Qos2Mode) {
@@ -57,8 +74,8 @@ final class MQTTDistributor {
 	func registerTopic(path: String, action: @escaping (MQTTMessage)->()) -> MQTTRegistration {
 		return mutex.writing {
 			token += 1
-			let entity = (token, action)
-			registeredPaths.computeIfAbsent(path, {_ in [entity]}, { $1.append(entity) })
+			let entity = MQTTDistributor.OrderedEntry(path, token, action)
+			registeredPaths.append(entity)
 			let registration = MQTTRegistration(token: token, path: path)
 			registration.distributor = self
 			return registration
@@ -67,11 +84,10 @@ final class MQTTDistributor {
 	
 	fileprivate func unregisterTopic(token: UInt64, path: String) {
 		return mutex.writing {
-			if let tokens = registeredPaths[path] {
-				for i in 0..<tokens.count {
-					if tokens[i].0 == token {
-						registeredPaths[path]!.remove(at: i)
-					}
+			for i in (0..<registeredPaths.count).reversed() {
+				if registeredPaths[i].token == token {
+					registeredPaths.remove(at: i)
+					return
 				}
 			}
 		}
@@ -82,9 +98,9 @@ final class MQTTDistributor {
 		let msg = MQTTMessage(publishPacket: packet)
 		let topic = String(packet.message.topic)
 		mutex.reading {
-			if let distribute = registeredPaths[topic] {
-				for action in distribute {
-					actions.append(action.1)
+			registeredPaths.forEach {
+				if let action = $0.action(for: topic) {
+					actions.append(action)
 				}
 			}
 		}

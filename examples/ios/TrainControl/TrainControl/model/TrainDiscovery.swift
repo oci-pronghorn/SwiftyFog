@@ -24,8 +24,6 @@ class TrainDiscovery {
     public var mqtt: MQTTBridge! {
 		didSet {
 			broadcaster.assign(mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
-			// This callback mechanism is only looking at exact string matches
-			// In order to support auto-discovery we need pattern matching!
 				("+/lifecycle/feedback", .atLeastOnce, TrainDiscovery.feedbackLifecycle),
 			]) {[weak self] (_, status) in self?.delegate?.onSubscriptionAck(status: status)})
 		}
@@ -35,11 +33,15 @@ class TrainDiscovery {
 	}
 	
 	private func feedbackLifecycle(msg: MQTTMessage) {
-		let alive: Bool = msg.payload.fogExtract()
+		var cursor = 0
+		let alive: Bool = msg.payload.fogExtract(&cursor)
 		var displayName: String? = nil
 		if alive {
-			displayName = msg.payload.fogExtract()
-			print("Discovered '\(displayName ?? "")' on \(msg.topic)" )
+			displayName = msg.payload.fogExtract(&cursor)
+			print("**** Discovered '\(displayName ?? "")' on \(msg.topic)" )
+		}
+		else {
+			print("**** Lost on \(msg.topic)" )
 		}
 	}
 }

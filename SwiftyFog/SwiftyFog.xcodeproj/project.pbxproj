@@ -21,6 +21,11 @@
 		55130BD721035BCB001D2E3F /* MQTTMultiClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BCE21035AE4001D2E3F /* MQTTMultiClientAppController.swift */; };
 		55130BD821035E33001D2E3F /* MQTTClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BD221035AF4001D2E3F /* MQTTClientAppController.swift */; };
 		55130BD921035E36001D2E3F /* MQTTMultiClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55130BCE21035AE4001D2E3F /* MQTTMultiClientAppController.swift */; };
+		553146CF21147FBB00089385 /* MQTTTopicPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553146CE21147FBB00089385 /* MQTTTopicPattern.swift */; };
+		553146D02114885800089385 /* MQTTTopicPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553146CE21147FBB00089385 /* MQTTTopicPattern.swift */; };
+		553146D12114885800089385 /* MQTTTopicPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553146CE21147FBB00089385 /* MQTTTopicPattern.swift */; };
+		553146F921153C3900089385 /* MQTTTopicPatternTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553146F821153C3900089385 /* MQTTTopicPatternTests.swift */; };
+		553146FB21153C3900089385 /* SwiftyFog_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554347471F82D0F600C3C2CB /* SwiftyFog_iOS.framework */; };
 		5543474C1F82D0F600C3C2CB /* SwiftyFog.h in Headers */ = {isa = PBXBuildFile; fileRef = 5543474A1F82D0F600C3C2CB /* SwiftyFog.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		554347A11F82D13700C3C2CB /* FogBitMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347531F82D13700C3C2CB /* FogBitMap.swift */; };
 		554347A21F82D13700C3C2CB /* FogBitmapLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347541F82D13700C3C2CB /* FogBitmapLayout.swift */; };
@@ -218,12 +223,26 @@
 		55D7C5591F82E6F30045258D /* FogBitMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554347531F82D13700C3C2CB /* FogBitMap.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		553146FC21153C3900089385 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5543473E1F82D0F600C3C2CB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 554347461F82D0F600C3C2CB;
+			remoteInfo = SwiftyFog_iOS;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		5500657B1FC5F71F00EEC1CE /* MQTTRoutingParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTRoutingParams.swift; sourceTree = "<group>"; };
 		5501BBE71FC72BFE00E68C9D /* MQTTConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTConnectionManager.swift; sourceTree = "<group>"; };
 		55130BB7210224DB001D2E3F /* Optional+RAII.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+RAII.swift"; sourceTree = "<group>"; };
 		55130BCE21035AE4001D2E3F /* MQTTMultiClientAppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTMultiClientAppController.swift; sourceTree = "<group>"; };
 		55130BD221035AF4001D2E3F /* MQTTClientAppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTClientAppController.swift; sourceTree = "<group>"; };
+		553146CE21147FBB00089385 /* MQTTTopicPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTTopicPattern.swift; sourceTree = "<group>"; };
+		553146F621153C3900089385 /* SwiftyFog_iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftyFog_iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		553146F821153C3900089385 /* MQTTTopicPatternTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTTopicPatternTests.swift; sourceTree = "<group>"; };
+		553146FA21153C3900089385 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		554347471F82D0F600C3C2CB /* SwiftyFog_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyFog_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5543474A1F82D0F600C3C2CB /* SwiftyFog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftyFog.h; sourceTree = "<group>"; };
 		5543474B1F82D0F600C3C2CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -301,6 +320,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		553146F321153C3900089385 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				553146FB21153C3900089385 /* SwiftyFog_iOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		554347431F82D0F600C3C2CB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -334,12 +361,22 @@
 			path = controllers;
 			sourceTree = "<group>";
 		};
+		553146F721153C3900089385 /* SwiftyFog_iOS_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				553146F821153C3900089385 /* MQTTTopicPatternTests.swift */,
+				553146FA21153C3900089385 /* Info.plist */,
+			);
+			path = SwiftyFog_iOS_Tests;
+			sourceTree = "<group>";
+		};
 		5543473D1F82D0F600C3C2CB = {
 			isa = PBXGroup;
 			children = (
 				554347491F82D0F600C3C2CB /* SwiftyFog */,
 				554347E81F82D1B600C3C2CB /* SwiftyFog_mac */,
 				5578602820F3AA5E00FC182D /* SwiftFog_watch */,
+				553146F721153C3900089385 /* SwiftyFog_iOS_Tests */,
 				554347481F82D0F600C3C2CB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -350,6 +387,7 @@
 				554347471F82D0F600C3C2CB /* SwiftyFog_iOS.framework */,
 				554347E71F82D1B600C3C2CB /* SwiftyFog_mac.framework */,
 				5578602720F3AA5E00FC182D /* SwiftFog_watch.framework */,
+				553146F621153C3900089385 /* SwiftyFog_iOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -419,6 +457,7 @@
 				5543476A1F82D13700C3C2CB /* MQTTTopicScope.swift */,
 				558529871FC5EFE20045AE6E /* MQTTRouter.swift */,
 				5501BBE71FC72BFE00E68C9D /* MQTTConnectionManager.swift */,
+				553146CE21147FBB00089385 /* MQTTTopicPattern.swift */,
 			);
 			path = impl;
 			sourceTree = "<group>";
@@ -592,6 +631,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		553146F521153C3900089385 /* SwiftyFog_iOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 553146FE21153C3900089385 /* Build configuration list for PBXNativeTarget "SwiftyFog_iOSTests" */;
+			buildPhases = (
+				553146F221153C3900089385 /* Sources */,
+				553146F321153C3900089385 /* Frameworks */,
+				553146F421153C3900089385 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				553146FD21153C3900089385 /* PBXTargetDependency */,
+			);
+			name = SwiftyFog_iOSTests;
+			productName = SwiftyFog_iOS_Tests;
+			productReference = 553146F621153C3900089385 /* SwiftyFog_iOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		554347461F82D0F600C3C2CB /* SwiftyFog_iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5543474F1F82D0F600C3C2CB /* Build configuration list for PBXNativeTarget "SwiftyFog_iOS" */;
@@ -652,9 +709,14 @@
 		5543473E1F82D0F600C3C2CB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1000;
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Object Computing Inc";
 				TargetAttributes = {
+					553146F521153C3900089385 = {
+						CreatedOnToolsVersion = 10.0;
+						ProvisioningStyle = Automatic;
+					};
 					554347461F82D0F600C3C2CB = {
 						CreatedOnToolsVersion = 9.1;
 						LastSwiftMigration = 1000;
@@ -686,11 +748,19 @@
 				554347461F82D0F600C3C2CB /* SwiftyFog_iOS */,
 				554347E61F82D1B600C3C2CB /* SwiftyFog_mac */,
 				5578602620F3AA5E00FC182D /* SwiftFog_watch */,
+				553146F521153C3900089385 /* SwiftyFog_iOSTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		553146F421153C3900089385 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		554347451F82D0F600C3C2CB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -715,6 +785,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		553146F221153C3900089385 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				553146F921153C3900089385 /* MQTTTopicPatternTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		554347421F82D0F600C3C2CB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -731,6 +809,7 @@
 				554347D11F82D13700C3C2CB /* MQTTConnectionDisconnect.swift in Sources */,
 				554347AF1F82D13700C3C2CB /* MQTTMessageIdSource.swift in Sources */,
 				554347D51F82D13700C3C2CB /* FogSocketStream.swift in Sources */,
+				553146CF21147FBB00089385 /* MQTTTopicPattern.swift in Sources */,
 				554347B31F82D13700C3C2CB /* MQTTRetryConnection.swift in Sources */,
 				554347B11F82D13700C3C2CB /* MQTTPersistance.swift in Sources */,
 				554347DA1F82D13700C3C2CB /* FogRational.swift in Sources */,
@@ -815,6 +894,7 @@
 				5543481A1F82D1F700C3C2CB /* MQTTMessageIdSource.swift in Sources */,
 				558D656520F50E0E00CFD226 /* FogNetworkReachability.swift in Sources */,
 				554348061F82D1E500C3C2CB /* MQTTConnAckPacket.swift in Sources */,
+				553146D02114885800089385 /* MQTTTopicPattern.swift in Sources */,
 				554348101F82D1EC00C3C2CB /* MQTTPackedLength.swift in Sources */,
 				554348021F82D1E100C3C2CB /* MQTTPacketFixedHeader.swift in Sources */,
 				5543481C1F82D1F700C3C2CB /* MQTTPersistance.swift in Sources */,
@@ -882,6 +962,7 @@
 				5578606820F3AAC000FC182D /* MQTTRoutingParams.swift in Sources */,
 				5578605820F3AAB500FC182D /* MQTTPingAckPacket.swift in Sources */,
 				5578604120F3AA8F00FC182D /* MQTTPacket.swift in Sources */,
+				553146D12114885800089385 /* MQTTTopicPattern.swift in Sources */,
 				5578603620F3AA8100FC182D /* MQTTSubscriber.swift in Sources */,
 				5578604E20F3AAA100FC182D /* FogPixel.swift in Sources */,
 				5578609020F406AA00FC182D /* FogFeedbackValue.swift in Sources */,
@@ -944,7 +1025,50 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		553146FD21153C3900089385 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 554347461F82D0F600C3C2CB /* SwiftyFog_iOS */;
+			targetProxy = 553146FC21153C3900089385 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		553146FF21153C3900089385 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
+				INFOPLIST_FILE = SwiftyFog_iOS_Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.objectcomputing.SwiftyFog-iOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5531470021153C3900089385 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4JYR7R4Y2M;
+				INFOPLIST_FILE = SwiftyFog_iOS_Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.objectcomputing.SwiftyFog-iOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		5543474D1F82D0F600C3C2CB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1218,6 +1342,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		553146FE21153C3900089385 /* Build configuration list for PBXNativeTarget "SwiftyFog_iOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				553146FF21153C3900089385 /* Debug */,
+				5531470021153C3900089385 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		554347411F82D0F600C3C2CB /* Build configuration list for PBXProject "SwiftyFog" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
