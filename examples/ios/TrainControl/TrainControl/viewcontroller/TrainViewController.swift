@@ -59,6 +59,7 @@ class TrainViewController: UIViewController {
 				feedbackCut()
 				assertValues()
 				train(alive: discoveredTrain != nil, named: discoveredTrain?.displayName)
+				selector?.selectedTrain = discoveredTrain?.trainName ?? ""
 			}
 		}
 	}
@@ -119,6 +120,7 @@ extension TrainViewController: UIPopoverPresentationControllerDelegate {
 			destination.modalPresentationStyle = UIModalPresentationStyle.popover
             destination.popoverPresentationController!.delegate = self
         	destination.delegate = self
+			destination.selectedTrain = discoveredTrain?.trainName ?? ""
 			destination.model = discovery.snapshop
         }
     }
