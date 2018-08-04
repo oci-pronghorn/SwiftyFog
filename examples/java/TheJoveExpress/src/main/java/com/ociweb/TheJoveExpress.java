@@ -65,7 +65,12 @@ public class TheJoveExpress implements FogApp
     }
 
     public void declareBehavior(FogRuntime runtime) {
-        TopicJunctionBox topics = new TopicJunctionBox(config.trainName, runtime, config.mqttEnabled ? mqttBridge : null);
+        String topicPrefix = config.trainName;
+        if (config.topicPrefix != null) {
+            topicPrefix = config.topicPrefix + "/" + topicPrefix;
+        }
+
+        TopicJunctionBox topics = new TopicJunctionBox(topicPrefix, runtime, config.mqttEnabled ? mqttBridge : null);
 
         if (config.lifecycleEnabled) {
             // TODO: better encapsulate this logic

@@ -13,6 +13,7 @@ public class TrainConfiguration  {
     // Names
     final String trainDisplayName;
     final String trainName;
+    final String topicPrefix; // i.e. train
 
     // MQTT
     final boolean mqttEnabled = true;
@@ -84,5 +85,6 @@ public class TrainConfiguration  {
         this.sharedAcutatorEnabled = args.getArgumentValue("--sharedact", "-sa", true);
         this.appServerEnabled = args.getArgumentValue("--webserver", "-w", true);
         this.mqttPort = args.getArgumentValue("--brokerp", "-bp", MQTTBridge.defaultPort);
+        this.topicPrefix = args.getArgumentValue("--topicPrefix", "-tp", (String)null);
     }
 }
