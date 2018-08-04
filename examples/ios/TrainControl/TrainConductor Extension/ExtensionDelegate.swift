@@ -30,10 +30,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 		let brokerChanged = self.controller.mqttHost != newBrokerHost
 		if brokerChanged {
 			self.controller.mqttHost = newBrokerHost
+			TrainInterfaceController.set(discoverBridge: controller.client!, mqttControl: controller.client)
 		}
-		
-		let newTrainName = UserDefaults.standard.string(forKey: "train_name_preference")!
-		TrainInterfaceController.setTrain(named: newTrainName, bridging: controller.client!, mqttControl: controller.client, force: brokerChanged)
 	}
 
     func applicationDidBecomeActive() {

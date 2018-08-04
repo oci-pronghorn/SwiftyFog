@@ -32,7 +32,6 @@
 		5543487B1F82D46100C3C2CB /* Billboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348671F82D46100C3C2CB /* Billboard.swift */; };
 		5543487C1F82D46100C3C2CB /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348681F82D46100C3C2CB /* Engine.swift */; };
 		5543487D1F82D46100C3C2CB /* Lights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348691F82D46100C3C2CB /* Lights.swift */; };
-		5543487E1F82D46100C3C2CB /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486A1F82D46100C3C2CB /* Sound.swift */; };
 		5543487F1F82D46100C3C2CB /* Train.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486B1F82D46100C3C2CB /* Train.swift */; };
 		554348801F82D46100C3C2CB /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486D1F82D46100C3C2CB /* LogViewController.swift */; };
 		554348821F82D46100C3C2CB /* TrainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486F1F82D46100C3C2CB /* TrainViewController.swift */; };
@@ -44,6 +43,7 @@
 		554348971F82D5B100C3C2CB /* ExerciseMotor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348961F82D5B100C3C2CB /* ExerciseMotor.swift */; };
 		554348A01F82D6FE00C3C2CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5543489F1F82D6FE00C3C2CB /* LaunchScreen.storyboard */; };
 		554E71482103751200AAE25E /* ScrewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554E71472103751200AAE25E /* ScrewsView.swift */; };
+		555087BF2116028800B5ADF9 /* TrainDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5575A1BF211411D300017FEB /* TrainDiscovery.swift */; };
 		55524C7020F11FA8004EBD8B /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55524C6E20F11FA8004EBD8B /* Interface.storyboard */; };
 		55524C7220F11FAA004EBD8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55524C7120F11FAA004EBD8B /* Assets.xcassets */; };
 		55524C7920F11FAA004EBD8B /* TrainConductor Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 55524C7820F11FAA004EBD8B /* TrainConductor Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -60,7 +60,6 @@
 		5578608F20F4066D00FC182D /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348681F82D46100C3C2CB /* Engine.swift */; };
 		5578609220F406E700FC182D /* Train.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486B1F82D46100C3C2CB /* Train.swift */; };
 		5578609320F4070300FC182D /* MotionFaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ABCF462010D40500AEAC1D /* MotionFaults.swift */; };
-		5578609420F4070800FC182D /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543486A1F82D46100C3C2CB /* Sound.swift */; };
 		5578609520F4070F00FC182D /* Lights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554348691F82D46100C3C2CB /* Lights.swift */; };
 		5578609720F4078700FC182D /* glass break.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 22E11E2D20152E600034F382 /* glass break.mp3 */; };
 		557DD91520F4E4FA007F0AE9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5543488A1F82D48A00C3C2CB /* Images.xcassets */; };
@@ -177,7 +176,6 @@
 		554348671F82D46100C3C2CB /* Billboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Billboard.swift; sourceTree = "<group>"; };
 		554348681F82D46100C3C2CB /* Engine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
 		554348691F82D46100C3C2CB /* Lights.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lights.swift; sourceTree = "<group>"; };
-		5543486A1F82D46100C3C2CB /* Sound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sound.swift; sourceTree = "<group>"; };
 		5543486B1F82D46100C3C2CB /* Train.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Train.swift; sourceTree = "<group>"; };
 		5543486D1F82D46100C3C2CB /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		5543486F1F82D46100C3C2CB /* TrainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainViewController.swift; sourceTree = "<group>"; };
@@ -338,7 +336,6 @@
 				554348671F82D46100C3C2CB /* Billboard.swift */,
 				554348681F82D46100C3C2CB /* Engine.swift */,
 				554348691F82D46100C3C2CB /* Lights.swift */,
-				5543486A1F82D46100C3C2CB /* Sound.swift */,
 				5543486B1F82D46100C3C2CB /* Train.swift */,
 				22ABCF462010D40500AEAC1D /* MotionFaults.swift */,
 				55130BBD210271E4001D2E3F /* SubscriptionLogging.swift */,
@@ -620,7 +617,6 @@
 			files = (
 				554348841F82D46100C3C2CB /* FogRationalUi.swift in Sources */,
 				5578608E20F3DF9A00FC182D /* UIImagePickerController+.swift in Sources */,
-				5543487E1F82D46100C3C2CB /* Sound.swift in Sources */,
 				551AB9DF1F93B94A0080D37B /* FlipLabel.swift in Sources */,
 				55130BBE210271E4001D2E3F /* SubscriptionLogging.swift in Sources */,
 				554E71482103751200AAE25E /* ScrewsView.swift in Sources */,
@@ -674,10 +670,10 @@
 				5578609320F4070300FC182D /* MotionFaults.swift in Sources */,
 				5578609520F4070F00FC182D /* Lights.swift in Sources */,
 				55B912C120FA794A00634B80 /* UserDefaults+.swift in Sources */,
+				555087BF2116028800B5ADF9 /* TrainDiscovery.swift in Sources */,
 				55130BBF21027234001D2E3F /* SubscriptionLogging.swift in Sources */,
 				5578608F20F4066D00FC182D /* Engine.swift in Sources */,
 				5526A5882104EE3F005AF2C6 /* UIImage+.swift in Sources */,
-				5578609420F4070800FC182D /* Sound.swift in Sources */,
 				55632BF920F4520D008BCB09 /* Billboard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

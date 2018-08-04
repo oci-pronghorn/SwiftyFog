@@ -1,5 +1,8 @@
 #  Train Control UI Overview
 
+## Train Discovery
+Given a broker read from settings both the iOS app and the Watch will auto attach to the first living train if it does not have one.
+
 ## Train Connection Indicator
 The circular icon presents a flat line if train is not connected to the broker or a heartbeat like line otherwise.
 A long-press on the indicator sends a shutdown request to the train application. The flat line should appear on train's last will.

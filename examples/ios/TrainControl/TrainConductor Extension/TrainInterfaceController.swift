@@ -11,6 +11,7 @@ import Foundation
 import SwiftFog_watch
 
 class TrainInterfaceController: WKInterfaceController {
+	let discovery = TrainDiscovery()
 	let train = Train()
 	let engine = Engine()
 	let lights = Lights()
@@ -24,17 +25,12 @@ class TrainInterfaceController: WKInterfaceController {
 	@IBOutlet weak var overrideOffIndicator: WKInterfaceLabel!
 	@IBOutlet weak var overrideAutoIndicator: WKInterfaceLabel!
 	
-	static var mqtt: MQTTBridge!
+	static var discoverBridge: MQTTBridge!
 	static var mqttControl: MQTTControl!
-	static var trainName: String = ""
 	
-	static func setTrain(named name: String, bridging: MQTTBridge, mqttControl: MQTTControl!, force: Bool) {
+	static func set(discoverBridge: MQTTBridge, mqttControl: MQTTControl!) {
+		self.discoverBridge = discoverBridge
 		self.mqttControl = mqttControl
-		if trainName != name || force {
-			self.trainName = name
-			let scoped = bridging.createBridge(subPath: trainName)
-			TrainInterfaceController.mqtt = scoped
-		}
 	}
 
 	var mqtt: MQTTBridge! {
@@ -45,10 +41,27 @@ class TrainInterfaceController: WKInterfaceController {
 		}
 	}
 	
+	private var discoverBridge: MQTTBridge! {
+		didSet {
+			self.discoveredTrain = nil
+			discovery.mqtt = discoverBridge
+		}
+	}
+	
+	private var discoveredTrain: DiscoveredTrain? {
+		didSet {
+			let trainBridge = discoveredTrain != nil ? discoverBridge.createBridge(subPath: discoveredTrain!.trainName) : nil
+			train.mqtt = trainBridge
+			engine.mqtt = trainBridge?.createBridge(subPath: "engine")
+			lights.mqtt = trainBridge?.createBridge(subPath: "lights")
+		}
+	}
+	
 // MARK: Life Cycle
 	
 	override init() {
 		super.init()
+		discovery.delegate = self
 		train.delegate = self
 		engine.delegate = self
 		lights.delegate = self
@@ -57,7 +70,7 @@ class TrainInterfaceController: WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
 		self.crownSequencer.delegate = self
-    	self.mqtt = TrainInterfaceController.mqtt
+    	self.discoverBridge = TrainInterfaceController.discoverBridge
     }
     
     override func willActivate() {
@@ -159,6 +172,19 @@ extension TrainInterfaceController {
 }
 
 // MARK: Model Delegate
+
+extension TrainInterfaceController: TrainDiscoveryDelegate {
+	func train(_ train: DiscoveredTrain, discovered: Bool, transitionary: Bool) {
+		if self.discoveredTrain == nil && discovered {
+			self.discoveredTrain = train
+		}
+		if discovered == false {
+			if train.trainName == discoveredTrain?.trainName {
+				self.discoveredTrain = self.discovery.firstTrain
+			}
+		}
+	}
+}
 
 extension TrainInterfaceController:
 		TrainDelegate,

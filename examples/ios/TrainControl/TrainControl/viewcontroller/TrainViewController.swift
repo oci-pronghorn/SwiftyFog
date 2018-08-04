@@ -13,10 +13,10 @@ import SwiftyFog_iOS
 
 class TrainViewController: UIViewController {
 	let impact = UIImpactFeedbackGenerator()
+	let discovery = TrainDiscovery()
 	let train = Train()
 	let engine = Engine()
 	let lights = Lights()
-	let sound = Sound()
 	let billboard = Billboard()
 	
 	@IBOutlet weak var trainAlive: UIImageView!
@@ -46,22 +46,30 @@ class TrainViewController: UIViewController {
 	
 	var trainName: String = ""
 	var alive = false
-	
-	func setTrain(named name: String, bridging: MQTTBridge, force: Bool) {
+	/*
+	func setBridge(bridging: MQTTBridge, force: Bool) {
 		if trainName != name || force {
 			self.trainName = name
 			let scoped = bridging.createBridge(subPath: trainName)
 			self.mqtt = scoped
 		}
 	}
+	*/
 	
-	var mqtt: MQTTBridge! {
+	var discoverBridge: MQTTBridge! {
 		didSet {
-			train.mqtt = mqtt
-			engine.mqtt = mqtt.createBridge(subPath: "engine")
-			lights.mqtt = mqtt.createBridge(subPath: "lights")
-			billboard.mqtt = mqtt.createBridge(subPath: "billboard")
-			sound.mqtt = mqtt.createBridge(subPath: "sound")
+			self.discoveredTrain = nil
+			discovery.mqtt = discoverBridge
+		}
+	}
+	
+	private var discoveredTrain: DiscoveredTrain? {
+		didSet {
+			let trainBridge = discoveredTrain != nil ? discoverBridge.createBridge(subPath: discoveredTrain!.trainName) : nil
+			train.mqtt = trainBridge
+			engine.mqtt = trainBridge?.createBridge(subPath: "engine")
+			lights.mqtt = trainBridge?.createBridge(subPath: "lights")
+			billboard.mqtt = trainBridge?.createBridge(subPath: "billboard")
 		}
 	}
 	
@@ -84,6 +92,7 @@ class TrainViewController: UIViewController {
 	}
 	
 	private func commonInit() {
+		discovery.delegate = self
 		engine.delegate = self
 		lights.delegate = self
 		billboard.delegate = self
@@ -273,11 +282,6 @@ extension TrainViewController: UITextFieldDelegate {
 	}
 	
 	@IBAction
-	func doSoundPiezo(sender: UISlider?) {
-		sound.control(piezo: sender!.rational)
-	}
-	
-	@IBAction
 	func onPicture(sender: UIButton?) {
 		let photos = PhotosAccess(title: nil, root: self);
 		photos.selectImage(hasCamera: true, hasLibrary: false, hasClear: false) { (image, access) in
@@ -293,6 +297,19 @@ extension TrainViewController: UITextFieldDelegate {
 }
 
 // MARK: Model Delegate
+
+extension TrainViewController: TrainDiscoveryDelegate {
+	func train(_ train: DiscoveredTrain, discovered: Bool, transitionary: Bool) {
+		if self.discoveredTrain == nil && discovered {
+			self.discoveredTrain = train
+		}
+		if discovered == false {
+			if train.trainName == discoveredTrain?.trainName {
+				self.discoveredTrain = self.discovery.firstTrain
+			}
+		}
+	}
+}
 
 extension TrainViewController:
 		TrainDelegate,

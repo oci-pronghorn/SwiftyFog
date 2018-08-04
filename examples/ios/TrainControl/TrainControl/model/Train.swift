@@ -27,9 +27,9 @@ public class Train: FogFeedbackModel {
 	
 	public weak var delegate: TrainDelegate?
 	
-    public var mqtt: MQTTBridge! {
+    public var mqtt: MQTTBridge? {
 		didSet {
-			broadcaster.assign(mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
+			broadcaster.assign(mqtt?.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("lifecycle/feedback", .atLeastOnce, Train.feedbackLifecycle),
                 ("fault/feedback", .atLeastOnce, Train.feedbackFault),
                 ("web/feedback", .atLeastOnce, Train.feedbackWeb),
@@ -53,15 +53,15 @@ public class Train: FogFeedbackModel {
 	}
 	
 	public func controlShutdown() {
-		mqtt.publish(MQTTMessage(topic: "lifecycle/control/shutdown", qos: .atMostOnce))
+		mqtt?.publish(MQTTMessage(topic: "lifecycle/control/shutdown", qos: .atMostOnce))
 	}
     
     public func controlFault() {
-        mqtt.publish(MQTTMessage(topic: "fault/control"))
+        mqtt?.publish(MQTTMessage(topic: "fault/control"))
     }
 	
 	public func askForFeedback() {
-		mqtt.publish(MQTTMessage(topic: "feedback", qos: .atLeastOnce))
+		mqtt?.publish(MQTTMessage(topic: "feedback", qos: .atLeastOnce))
 	}
 	
 	private func feedbackLifecycle(msg: MQTTMessage) {

@@ -26,9 +26,9 @@ public class Billboard: FogFeedbackModel {
 	
 	public weak var delegate: BillboardDelegate?
 	
-    public var mqtt: MQTTBridge! {
+    public var mqtt: MQTTBridge? {
 		didSet {
-			broadcaster.assign(mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
+			broadcaster.assign(mqtt?.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("spec/feedback", .atMostOnce, Billboard.feedbackSpec),
                 ("text/feedback", .atMostOnce, Billboard.feedbackText)
 			]) {[weak self] (_, status) in self?.delegate?.onSubscriptionAck(status: status)})
@@ -59,7 +59,7 @@ public class Billboard: FogFeedbackModel {
     public func control(text: String) {
         var payload = Data();
         payload.fogAppend(text);
-        mqtt.publish(MQTTMessage(topic: "text/control", payload: payload))
+        mqtt?.publish(MQTTMessage(topic: "text/control", payload: payload))
     }
 	
 	public func control(image: UIImage) {
@@ -68,7 +68,7 @@ public class Billboard: FogFeedbackModel {
 			delegate?.billboard(image: resized!)
 			var data  = Data(capacity: bitmap.fogSize)
 			data.fogAppend(bitmap)
-			mqtt.publish(MQTTMessage(topic: "image/control", payload: data))
+			mqtt?.publish(MQTTMessage(topic: "image/control", payload: data))
 		}
 		else {
 			delegate?.billboard(image: image)
