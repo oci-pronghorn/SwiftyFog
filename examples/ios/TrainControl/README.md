@@ -2,7 +2,9 @@
 
 
 ## Broker Discovey
-In progress...
+Currently...
+Attempts to connect to "joveexpress2.local" on startup.
+Autoconnects to first discovered broker if not connected
 On mac to broadcast broker...
 hn=`hostname`;cn=$(echo "$hn" | cut -f 1 -d '.');dns-sd -R ${cn} _mqtt._tcp local 1883&
 	

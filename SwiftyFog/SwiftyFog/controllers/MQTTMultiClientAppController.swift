@@ -16,6 +16,7 @@ import Foundation
 public protocol MQTTMultiClientAppControllerDelegate: class {
 	func on(mqttClient: (MQTTBridge & MQTTControl), log: String)
 	func on(mqttClient: (MQTTBridge & MQTTControl), connected: MQTTConnectedState)
+	func discovered(mqttBrokers: [(String,Int)])
 }
 
 public class MQTTClientSubscription: MQTTBridge, MQTTControl {
@@ -171,8 +172,8 @@ extension MQTTMultiClientAppController: BonjourDiscoveryDelegate {
 	public func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didFailedAt: BonjourDiscoveryOperation, withErrorDict: [String : NSNumber]?) {
 	}
 	
-	public func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didFindService service: NetService, atHosts host: [String]) {
-		print("Discovered \(service.name) \(host)")
+	public func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didFindService service: NetService, atHosts host: [(String, Int)]) {
+		delegate?.discovered(mqttBrokers: [(service.hostName!, host[0].1)])
 	}
 	
 	public func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didRemovedService service: NetService) {

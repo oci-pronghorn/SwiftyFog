@@ -17,7 +17,7 @@ public enum BonjourDiscoveryOperation: String {
 
 public protocol BonjourDiscoveryDelegate: class {
     func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didFailedAt: BonjourDiscoveryOperation, withErrorDict: [String: NSNumber]?)
-	func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didFindService: NetService, atHosts host: [String])
+	func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didFindService: NetService, atHosts host: [(String, Int)])
 	func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didRemovedService: NetService)
 	
 	func browserDidStart(_ bonjourDiscovery: FogBonjourDiscovery)
@@ -55,6 +55,7 @@ public class FogBonjourDiscovery: NSObject {
 extension FogBonjourDiscovery: NetServiceBrowserDelegate {
 	public func netServiceBrowser(_ browser: NetServiceBrowser, didRemove service: NetService, moreComing: Bool) {
         self.services.remove(service)
+		self.delegate?.bonjourDiscovery(self, didRemovedService: service)
     }
 	
 	public func netServiceBrowserWillSearch(_ browser: NetServiceBrowser) {
@@ -85,14 +86,14 @@ extension FogBonjourDiscovery: NetServiceBrowserDelegate {
 
 extension FogBonjourDiscovery: NetServiceDelegate {
 	public func netServiceDidResolveAddress(_ sender: NetService) {
-        var ips = [String]()
+        var ips = [(String, Int)]()
         if let addresses = sender.addresses, addresses.count > 0 {
 			for address in addresses {
 				address.withUnsafeBytes { (ptr: UnsafePointer<sockaddr_in>) in
 					let inetAddress: sockaddr_in = ptr.pointee
 					if inetAddress.sin_family == __uint8_t(AF_INET) {
 						if let ip = String(cString: inet_ntoa(inetAddress.sin_addr), encoding: .ascii) {
-							ips.append(ip)
+							ips.append((ip, Int(inetAddress.sin_port.bigEndian)))
 						}
 					}
 					else if inetAddress.sin_family == __uint8_t(AF_INET6) {
@@ -103,7 +104,7 @@ extension FogBonjourDiscovery: NetServiceDelegate {
 							ipStringBuffer.withUnsafeMutableBytes { (ipStringBuffer: UnsafeMutablePointer<Int8>) in
 								if let ipString = inet_ntop(Int32(inetAddress6.sin6_family), &addr, ipStringBuffer, __uint32_t(INET6_ADDRSTRLEN)) {
 									if let ip = String(cString: ipString, encoding: .ascii) {
-										ips.append(ip)
+										ips.append((ip, Int(inetAddress6.sin6_port.bigEndian)))
 									}
 								}
 							}
@@ -122,5 +123,22 @@ extension FogBonjourDiscovery: NetServiceDelegate {
 	public func netService(_ sender: NetService, didUpdateTXTRecord data: Data) {
 		delegate?.bonjourDiscovery(self, serviceDidUpdateTXT: sender, TXT: data)
     }
+	
+    public func netServiceWillPublish(_ sender: NetService) {
+    }
+	
+    public func netServiceDidPublish(_ sender: NetService) {
+    }
+	
+    public func netService(_ sender: NetService, didNotPublish errorDict: [String : NSNumber]) {
+    }
+	
+    public func netServiceWillResolve(_ sender: NetService) {
+    }
+	
+    public func netServiceDidStop(_ sender: NetService) {
+    }
+	
+    public func netService(_ sender: NetService, didAcceptConnectionWith inputStream: InputStream, outputStream: OutputStream) {
+    }
 }
-

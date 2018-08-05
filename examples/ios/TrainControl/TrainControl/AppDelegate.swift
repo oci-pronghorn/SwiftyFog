@@ -28,23 +28,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		UserDefaults.standard.loadDefaults()
 		NotificationCenter.default.addObserver(self, selector: #selector(settingChanged(notification:)), name: UserDefaults.didChangeNotification, object: nil)
 		
-		assignBroker()
+		// TODO: have train broadcast broker and remove the following line
+		assignBroker("joveexpress2.local")
 		controller.goForeground()
 		return true
 	}
 	
 	@objc func settingChanged(notification: NSNotification) {
-		assignBroker()
 	}
 	
-	func assignBroker() {
-		let newBrokerHost = UserDefaults.standard.string(forKey: "broker_host_preference")!
+	func assignBroker(_ newBrokerHost: String) {
 		let brokerChanged = self.trainControl.mqttControl?.hostName != newBrokerHost
 		if brokerChanged {
 			let client = self.controller.requestClient(hostedOn: newBrokerHost)
 			client.start()
 			self.trainControl.mqttControl = client
-			self.trainControl.discoverBridge = client
+			// TODO: have train broadcast with that prefix topic
+			self.trainControl.discoverBridge = client //.createBridge(subPath: "train")
 		}
 	}
 	
@@ -73,6 +73,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate: MQTTMultiClientAppControllerDelegate {
+	func discovered(mqttBrokers: [(String, Int)]) {
+		if !self.trainControl.mqttControl.connected {
+			assignBroker(mqttBrokers[0].0)
+		}
+	}
+	
 	func on(mqttClient: (MQTTBridge & MQTTControl), log: String) {
 		//logView.onLog(log)
 	}
