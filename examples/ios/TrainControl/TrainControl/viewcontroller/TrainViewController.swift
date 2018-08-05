@@ -59,7 +59,7 @@ class TrainViewController: UIViewController {
 				feedbackCut()
 				assertValues()
 				train(alive: discoveredTrain != nil, named: discoveredTrain?.displayName)
-				selector?.selectedTrain = discoveredTrain?.trainName ?? ""
+				trainSelectorVC?.selectedTrain = discoveredTrain?.trainName ?? ""
 			}
 		}
 	}
@@ -70,7 +70,7 @@ class TrainViewController: UIViewController {
 	
     private weak var crack: UIImageView?
     private var player: AVAudioPlayer?
-    private weak var selector: TrainSelectTableViewController?
+    private weak var trainSelectorVC: TrainSelectTableViewController?
 
 // MARK: Life Cycle
 	
@@ -116,7 +116,7 @@ extension TrainViewController: UIPopoverPresentationControllerDelegate {
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? TrainSelectTableViewController {
-        	self.selector = destination
+        	self.trainSelectorVC = destination
 			destination.modalPresentationStyle = UIModalPresentationStyle.popover
             destination.popoverPresentationController!.delegate = self
         	destination.delegate = self
@@ -349,8 +349,8 @@ extension TrainViewController: TrainDiscoveryDelegate {
 				}
 			}
 		}
-		if let selector = self.selector {
-			selector.model = discovery.snapshop
+		if let trainSelectorVC = self.trainSelectorVC {
+			trainSelectorVC.model = discovery.snapshop
 		}
 	}
 }

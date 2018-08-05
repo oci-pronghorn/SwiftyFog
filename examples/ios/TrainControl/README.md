@@ -1,8 +1,8 @@
 #  Train Control UI Overview
 
 ## Train Discovery
-Given a broker read from settings both the iOS app and the Watch will auto attach to the first living train if it does not have one.
-The iOS app has a train selector popover.
+Given a broker, read from settings, both the iOS app and the Watch will auto attach to the first living train if it does not have one.
+The iOS app has a button to present the discovered trains in a popover. The watch's secondary page presents the discovered trains.
 
 ## Train Connection Indicator
 The circular icon presents a flat line if train is not connected to the broker or a heartbeat like line otherwise.

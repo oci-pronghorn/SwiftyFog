@@ -11,8 +11,7 @@ import Foundation
 import SwiftFog_watch
 
 class TrainInterfaceController: WKInterfaceController {
-	public static var selectedTrainName: String = ""
-	public static let discovery = TrainDiscovery()
+	internal let discovery = TrainDiscovery()
 	private let train = Train()
 	private let engine = Engine()
 	private let lights = Lights()
@@ -29,45 +28,38 @@ class TrainInterfaceController: WKInterfaceController {
 	private static var discoverBridge: MQTTBridge!
 	private static var mqttControl: MQTTControl!
 	
+	internal static weak var shared: TrainInterfaceController!
 	
-	static func set(discoverBridge: MQTTBridge, mqttControl: MQTTControl!) {
-		self.discoverBridge = discoverBridge
-		self.mqttControl = mqttControl
-	}
-
-	var mqtt: MQTTBridge! {
+	internal var discoveredTrain: DiscoveredTrain? {
 		didSet {
-			train.mqtt = mqtt
-			engine.mqtt = mqtt.createBridge(subPath: "engine")
-			lights.mqtt = mqtt.createBridge(subPath: "lights")
+			let trainBridge = discoveredTrain != nil ? discoverBridge.createBridge(subPath: discoveredTrain!.trainName) : nil
+			train.mqtt = trainBridge
+			engine.mqtt = trainBridge?.createBridge(subPath: "engine")
+			lights.mqtt = trainBridge?.createBridge(subPath: "lights")
 		}
 	}
 	
 	private var discoverBridge: MQTTBridge! {
 		didSet {
 			self.discoveredTrain = nil
-			TrainInterfaceController.discovery.mqtt = discoverBridge
-		}
-	}
-	
-	private var discoveredTrain: DiscoveredTrain? {
-		didSet {
-			let trainBridge = discoveredTrain != nil ? discoverBridge.createBridge(subPath: discoveredTrain!.trainName) : nil
-			train.mqtt = trainBridge
-			engine.mqtt = trainBridge?.createBridge(subPath: "engine")
-			lights.mqtt = trainBridge?.createBridge(subPath: "lights")
-			TrainInterfaceController.selectedTrainName = discoveredTrain?.trainName ?? ""
+			self.discovery.mqtt = discoverBridge
 		}
 	}
 	
 // MARK: Life Cycle
 	
+	internal static func set(discoverBridge: MQTTBridge, mqttControl: MQTTControl!) {
+		self.discoverBridge = discoverBridge
+		self.mqttControl = mqttControl
+	}
+	
 	override init() {
 		super.init()
-		TrainInterfaceController.discovery.delegate = self
-		train.delegate = self
-		engine.delegate = self
-		lights.delegate = self
+		self.discovery.delegate = self
+		self.train.delegate = self
+		self.engine.delegate = self
+		self.lights.delegate = self
+		TrainInterfaceController.shared = self
 	}
 
     override func awake(withContext context: Any?) {
@@ -83,16 +75,17 @@ class TrainInterfaceController: WKInterfaceController {
         self.assertValues()
 		self.crownSequencer.focus()
     }
-    
-    override func didDeactivate() {
-        // This method is called when watch view controller is no longer visible
-        super.didDeactivate()
-    }
 }
 
 // MARK: UI Reactions
 
 extension TrainInterfaceController: WKCrownDelegate {
+	internal func selected(train: DiscoveredTrain?) {
+		if train?.trainName != discoveredTrain?.trainName {
+			self.discoveredTrain = train
+		}
+	}
+	
 	func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
 		if (engine.control(powerIncrement: rotationalDelta)) {
 			WKInterfaceDevice.current().play(WKHapticType.click)
@@ -183,9 +176,10 @@ extension TrainInterfaceController: TrainDiscoveryDelegate {
 		}
 		if discovered == false {
 			if train.trainName == discoveredTrain?.trainName {
-				self.discoveredTrain = TrainInterfaceController.discovery.firstTrain
+				self.discoveredTrain = self.discovery.firstTrain
 			}
 		}
+		TrainSelectorInterfaceController.shared.reloadData()
 	}
 }
 
