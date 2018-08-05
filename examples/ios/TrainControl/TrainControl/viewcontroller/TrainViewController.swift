@@ -479,7 +479,7 @@ extension TrainViewController:
 			if mqttControl.connected {
 				if self.alive {
 					billboardText.isEnabled = true
-					billboardText.text = ""
+					billboardText.text = self.discoveredTrain?.presentedName
 				}
 				else {
 					billboardText.text = "No Train"

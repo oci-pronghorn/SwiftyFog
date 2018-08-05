@@ -69,8 +69,7 @@ public class MQTTClientSubscription: MQTTBridge, MQTTControl {
 }
 
 public class MQTTMultiClientAppController {
-	// hn=`hostname`;cn=$(echo "$hn" | cut -f 1 -d '.');dns-sd -R ${cn} _mqtt._tcp local 1883&
-	let bonjour = BonjourDiscovery(type: "mqtt", proto: "tcp")
+	let bonjour = FogBonjourDiscovery(type: "mqtt", proto: "tcp")
 	private var clients: [String : ((MQTTBridge & MQTTControl), Int, Bool)] = [:]
 	private let network: FogNetworkReachability
 	private let metrics: ()->MQTTMetrics?
@@ -169,23 +168,23 @@ extension MQTTMultiClientAppController: MQTTClientDelegate {
 }
 
 extension MQTTMultiClientAppController: BonjourDiscoveryDelegate {
-	public func bonjourDiscovery(_ bonjourDiscovery: BonjourDiscovery, didFailedAt: BonjourDiscoveryOperation, withErrorDict: [String : NSNumber]?) {
+	public func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didFailedAt: BonjourDiscoveryOperation, withErrorDict: [String : NSNumber]?) {
 	}
 	
-	public func bonjourDiscovery(_ bonjourDiscovery: BonjourDiscovery, didFindService service: NetService, atHosts host: [String]) {
+	public func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didFindService service: NetService, atHosts host: [String]) {
 		print("Discovered \(service.name) \(host)")
 	}
 	
-	public func bonjourDiscovery(_ bonjourDiscovery: BonjourDiscovery, didRemovedService service: NetService) {
+	public func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didRemovedService service: NetService) {
 		print("Undiscovered \(service.name)")
 	}
 	
-	public func browserDidStart(_ bonjourDiscovery: BonjourDiscovery) {
+	public func browserDidStart(_ bonjourDiscovery: FogBonjourDiscovery) {
 	}
 	
-	public func browserDidStop(_ bonjourDiscovery: BonjourDiscovery) {
+	public func browserDidStop(_ bonjourDiscovery: FogBonjourDiscovery) {
 	}
 	
-	public func bonjourDiscovery(_ bonjourDiscovery: BonjourDiscovery, serviceDidUpdateTXT: NetService, TXT: Data) {
+	public func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, serviceDidUpdateTXT: NetService, TXT: Data) {
 	}
 }

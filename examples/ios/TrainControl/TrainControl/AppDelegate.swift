@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		NotificationCenter.default.addObserver(self, selector: #selector(settingChanged(notification:)), name: UserDefaults.didChangeNotification, object: nil)
 		
 		assignBroker()
-		
+		controller.goForeground()
 		return true
 	}
 	

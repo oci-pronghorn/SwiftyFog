@@ -1,5 +1,11 @@
 #  Train Control UI Overview
 
+
+## Broker Discovey
+In progress...
+On mac to broadcast broker...
+hn=`hostname`;cn=$(echo "$hn" | cut -f 1 -d '.');dns-sd -R ${cn} _mqtt._tcp local 1883&
+	
 ## Train Discovery
 Given a broker, read from settings, both the iOS app and the Watch will auto attach to the first living train if it does not have one.
 The iOS app has a button to present the discovered trains in a popover. The watch's secondary page presents the discovered trains.
