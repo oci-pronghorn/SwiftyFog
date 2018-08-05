@@ -17,9 +17,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	var trainControl: TrainViewController!
 	//var logView: LogViewController!
+	
+	let b = BonjourDiscovery(type: "http", proto: "tcp")
 
 	internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 	
+		b.delegate = self
+		
 		self.trainControl = self.window!.rootViewController as? TrainViewController
 		//self.logView = (tbc.viewControllers![1] as! LogViewController)
 		
@@ -29,6 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		NotificationCenter.default.addObserver(self, selector: #selector(settingChanged(notification:)), name: UserDefaults.didChangeNotification, object: nil)
 		
 		assignBroker()
+		b.start()
+		
 		return true
 	}
 	
@@ -56,10 +62,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func applicationDidEnterBackground(_ application: UIApplication) {
 		controller.goBackground()
+		b.stop()
 	}
 
 	func applicationWillEnterForeground(_ application: UIApplication) {
 		controller.goForeground()
+		b.start()
 	}
 
 	func applicationDidBecomeActive(_ application: UIApplication) {
@@ -67,6 +75,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func applicationWillTerminate(_ application: UIApplication) {
 		NotificationCenter.default.removeObserver(self, name: UserDefaults.didChangeNotification, object: nil)
+	}
+}
+
+extension AppDelegate: BonjourDiscoveryDelegate {
+	func bonjourDiscovery(_ bonjourDiscovery: BonjourDiscovery, didFailedAt: BonjourDiscoveryOperation, withErrorDict: [String : NSNumber]?) {
+	}
+	
+	func bonjourDiscovery(_ bonjourDiscovery: BonjourDiscovery, didFindService service: NetService, atHosts host: [String]) {
+		print("Discovered \(service.name) \(host)")
+	}
+	
+	func bonjourDiscovery(_ bonjourDiscovery: BonjourDiscovery, didRemovedService service: NetService) {
+		print("Undiscovered \(service.name)")
+	}
+	
+	func browserDidStart(_ bonjourDiscovery: BonjourDiscovery) {
+	}
+	
+	func browserDidStop(_ bonjourDiscovery: BonjourDiscovery) {
+	}
+	
+	func bonjourDiscovery(_ bonjourDiscovery: BonjourDiscovery, serviceDidUpdateTXT: NetService, TXT: Data) {
 	}
 }
 
