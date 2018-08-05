@@ -28,6 +28,7 @@ protocol MQTTDistributorDelegate: class {
 }
 
 final class MQTTDistributor {
+	private let host: String
 	private let issuer: MQTTPacketIssuer
 	private let qos2Mode: Qos2Mode
 	
@@ -55,7 +56,8 @@ final class MQTTDistributor {
 	
 	private var deferredPacket = [UInt16:MQTTPublishPacket]()
 	
-	init(issuer: MQTTPacketIssuer, qos2Mode: Qos2Mode) {
+	init(host: String, issuer: MQTTPacketIssuer, qos2Mode: Qos2Mode) {
+		self.host = host
 		self.issuer = issuer
 		self.qos2Mode = qos2Mode
 	}
@@ -95,7 +97,7 @@ final class MQTTDistributor {
 	
 	private func issue(packet: MQTTPublishPacket) {
 		var actions = [(MQTTMessage)->()]()
-		let msg = MQTTMessage(publishPacket: packet)
+		let msg = MQTTMessage(host: self.host, publishPacket: packet)
 		let topic = String(packet.message.topic)
 		mutex.reading {
 			registeredPaths.forEach {

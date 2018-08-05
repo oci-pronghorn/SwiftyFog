@@ -113,6 +113,13 @@ extension TrainViewController: UIPopoverPresentationControllerDelegate {
 		}
 		return super.traitCollection
 	}
+
+    override func shouldPerformSegue(withIdentifier identifier: String?, sender: Any?) -> Bool {
+		 if identifier == "SelectTrain" {
+		 	return self.trainSelectorVC == nil
+		 }
+		return true
+	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? TrainSelectTableViewController {

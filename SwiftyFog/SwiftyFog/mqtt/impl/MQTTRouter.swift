@@ -24,6 +24,7 @@ public final class MQTTRouter {
     public weak var delegate: MQTTRouterDelegate?
 	
 	public init(
+		host: String,
 		metrics: MQTTMetrics? = nil,
 		routing: MQTTRoutingParams = MQTTRoutingParams()) {
 		self.metrics = metrics
@@ -32,7 +33,7 @@ public final class MQTTRouter {
 		let packetIssuer: MQTTPacketIssuer = self.durability
 		self.publisher = MQTTPublisher(issuer: packetIssuer, queuePubOnDisconnect: routing.queuePubOnDisconnect, qos2Mode: routing.qos2Mode)
 		self.subscriber = MQTTSubscriber(issuer: packetIssuer)
-		self.distributer = MQTTDistributor(issuer: packetIssuer, qos2Mode: routing.qos2Mode)
+		self.distributer = MQTTDistributor(host: host, issuer: packetIssuer, qos2Mode: routing.qos2Mode)
 		
 		self.durability.delegate = self
 		self.distributer.delegate = self

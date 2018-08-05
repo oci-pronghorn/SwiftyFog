@@ -40,6 +40,7 @@ public final class MQTTClient {
 			socketQoS: socketQoS,
 			metrics: metrics);
 		self.router = MQTTRouter(
+			host: host.host,
 			metrics: metrics,
 			routing: routing)
 		
