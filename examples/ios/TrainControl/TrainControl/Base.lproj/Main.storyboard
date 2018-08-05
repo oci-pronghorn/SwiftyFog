@@ -687,7 +687,7 @@
                                     <constraint firstAttribute="width" constant="42" id="1ya-uy-xD3"/>
                                     <constraint firstAttribute="height" constant="42" id="b66-G0-J7W"/>
                                 </constraints>
-                                <state key="normal" backgroundImage="Screwhead"/>
+                                <state key="normal" image="Gear"/>
                                 <connections>
                                     <action selector="gotoSettingsWithSender:" destination="dkx-z0-nzr" eventType="touchUpInside" id="76j-Ov-gR0"/>
                                 </connections>
@@ -1004,6 +1004,7 @@
         <image name="Connected" width="32" height="32"/>
         <image name="Dead" width="32" height="32"/>
         <image name="Disconnected" width="32" height="32"/>
+        <image name="Gear" width="48" height="48"/>
         <image name="Log" width="32" height="32"/>
         <image name="MakeFault" width="48" height="48"/>
         <image name="Motion" width="32" height="32"/>

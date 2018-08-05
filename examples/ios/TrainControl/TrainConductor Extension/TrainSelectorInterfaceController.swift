@@ -30,34 +30,31 @@ class TrainSelectorInterfaceController: WKInterfaceController {
 
 	@IBOutlet weak var tableView: WKInterfaceTable!
 	
-	var selectedTrain: String = ""
-	
 	var model: [DiscoveredTrain] = [] {
 		didSet {
+			model.insert(DiscoveredTrain(trainName: "", displayName: nil), at: 0)
 			self.tableView.setNumberOfRows(model.count, withRowType: "DiscoveredTrain")
 			let rowCount = self.tableView.numberOfRows
 			
 			for i in 0..<rowCount {
 				let cell = self.tableView.rowController(at: i) as! DiscoveredTrainCell
 				let train = model[i]
-				cell.update(train: train, selected: selectedTrain == train.trainName)
+				let selectedTrainName = TrainInterfaceController.selectedTrainName
+				cell.update(train: train, selected: selectedTrainName == train.trainName)
 			}
 		}
 	}
 
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
-        
-        // Configure interface objects here.
     }
 
     override func willActivate() {
-        // This method is called when watch view controller is about to be visible to user
         super.willActivate()
+        self.model = TrainInterfaceController.discovery.snapshop
     }
 
     override func didDeactivate() {
-        // This method is called when watch view controller is no longer visible
         super.didDeactivate()
     }
 

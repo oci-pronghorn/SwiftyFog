@@ -125,7 +125,7 @@ enum MQTTTopicPattern {
 			return .invalid
 		case .fixed(let path):
 			return parseFixed(topic, path)
-		case .trailing( _, let simple):
+		case .trailing(_, let simple):
 			return parseWildTrailing(topic, simple)
 		case .topicLevel(let path, let indices):
 			return parseWildLevels(topic, path, indices)
@@ -143,8 +143,8 @@ enum MQTTTopicPattern {
 			return .success
 		}
 		if topic.hasPrefix(path) {
-			let prefexEnd = path.endIndex
-			if prefexEnd == topic.endIndex || topic[prefexEnd] == "/" {
+			let prefixEnd = path.endIndex
+			if prefixEnd == topic.endIndex || topic[prefixEnd] == "/" {
 				return .success
 			}
 		}

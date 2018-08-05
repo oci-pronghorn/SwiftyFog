@@ -11,10 +11,11 @@ import Foundation
 import SwiftFog_watch
 
 class TrainInterfaceController: WKInterfaceController {
-	let discovery = TrainDiscovery()
-	let train = Train()
-	let engine = Engine()
-	let lights = Lights()
+	public static var selectedTrainName: String = ""
+	public static let discovery = TrainDiscovery()
+	private let train = Train()
+	private let engine = Engine()
+	private let lights = Lights()
 	
 	@IBOutlet weak var aliveIndicator: WKInterfaceImage!
 	@IBOutlet weak var engineIndicator: WKInterfaceImage!
@@ -25,8 +26,9 @@ class TrainInterfaceController: WKInterfaceController {
 	@IBOutlet weak var overrideOffIndicator: WKInterfaceLabel!
 	@IBOutlet weak var overrideAutoIndicator: WKInterfaceLabel!
 	
-	static var discoverBridge: MQTTBridge!
-	static var mqttControl: MQTTControl!
+	private static var discoverBridge: MQTTBridge!
+	private static var mqttControl: MQTTControl!
+	
 	
 	static func set(discoverBridge: MQTTBridge, mqttControl: MQTTControl!) {
 		self.discoverBridge = discoverBridge
@@ -44,7 +46,7 @@ class TrainInterfaceController: WKInterfaceController {
 	private var discoverBridge: MQTTBridge! {
 		didSet {
 			self.discoveredTrain = nil
-			discovery.mqtt = discoverBridge
+			TrainInterfaceController.discovery.mqtt = discoverBridge
 		}
 	}
 	
@@ -54,6 +56,7 @@ class TrainInterfaceController: WKInterfaceController {
 			train.mqtt = trainBridge
 			engine.mqtt = trainBridge?.createBridge(subPath: "engine")
 			lights.mqtt = trainBridge?.createBridge(subPath: "lights")
+			TrainInterfaceController.selectedTrainName = discoveredTrain?.trainName ?? ""
 		}
 	}
 	
@@ -61,7 +64,7 @@ class TrainInterfaceController: WKInterfaceController {
 	
 	override init() {
 		super.init()
-		discovery.delegate = self
+		TrainInterfaceController.discovery.delegate = self
 		train.delegate = self
 		engine.delegate = self
 		lights.delegate = self
@@ -180,7 +183,7 @@ extension TrainInterfaceController: TrainDiscoveryDelegate {
 		}
 		if discovered == false {
 			if train.trainName == discoveredTrain?.trainName {
-				self.discoveredTrain = self.discovery.firstTrain
+				self.discoveredTrain = TrainInterfaceController.discovery.firstTrain
 			}
 		}
 	}
