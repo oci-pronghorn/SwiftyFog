@@ -13,16 +13,12 @@ import SwiftyFog_iOS
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
-	var controller = MQTTClientAppController(metrics: MQTTMetrics.verbose())
+	var controller = MQTTMultiClientAppController(metrics: MQTTMetrics.verbose())
 	
 	var trainControl: TrainViewController!
 	//var logView: LogViewController!
-	
-	let b = BonjourDiscovery(type: "http", proto: "tcp")
 
 	internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-	
-		b.delegate = self
 		
 		self.trainControl = self.window!.rootViewController as? TrainViewController
 		//self.logView = (tbc.viewControllers![1] as! LogViewController)
@@ -33,7 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		NotificationCenter.default.addObserver(self, selector: #selector(settingChanged(notification:)), name: UserDefaults.didChangeNotification, object: nil)
 		
 		assignBroker()
-		b.start()
 		
 		return true
 	}
@@ -44,11 +39,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	func assignBroker() {
 		let newBrokerHost = UserDefaults.standard.string(forKey: "broker_host_preference")!
-		let brokerChanged = self.controller.mqttHost != newBrokerHost
+		let brokerChanged = self.trainControl.mqttControl?.hostName != newBrokerHost
 		if brokerChanged {
-			self.controller.mqttHost = newBrokerHost
-			self.trainControl.mqttControl = controller.client
-			self.trainControl.discoverBridge = controller.client
+			let client = self.controller.requestClient(hostedOn: newBrokerHost)
+			client.start()
+			self.trainControl.mqttControl = client
+			self.trainControl.discoverBridge = client
 		}
 	}
 	
@@ -62,12 +58,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func applicationDidEnterBackground(_ application: UIApplication) {
 		controller.goBackground()
-		b.stop()
 	}
 
 	func applicationWillEnterForeground(_ application: UIApplication) {
 		controller.goForeground()
-		b.start()
 	}
 
 	func applicationDidBecomeActive(_ application: UIApplication) {
@@ -78,29 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 }
 
-extension AppDelegate: BonjourDiscoveryDelegate {
-	func bonjourDiscovery(_ bonjourDiscovery: BonjourDiscovery, didFailedAt: BonjourDiscoveryOperation, withErrorDict: [String : NSNumber]?) {
-	}
-	
-	func bonjourDiscovery(_ bonjourDiscovery: BonjourDiscovery, didFindService service: NetService, atHosts host: [String]) {
-		print("Discovered \(service.name) \(host)")
-	}
-	
-	func bonjourDiscovery(_ bonjourDiscovery: BonjourDiscovery, didRemovedService service: NetService) {
-		print("Undiscovered \(service.name)")
-	}
-	
-	func browserDidStart(_ bonjourDiscovery: BonjourDiscovery) {
-	}
-	
-	func browserDidStop(_ bonjourDiscovery: BonjourDiscovery) {
-	}
-	
-	func bonjourDiscovery(_ bonjourDiscovery: BonjourDiscovery, serviceDidUpdateTXT: NetService, TXT: Data) {
-	}
-}
-
-extension AppDelegate: MQTTClientAppControllerDelegate {
+extension AppDelegate: MQTTMultiClientAppControllerDelegate {
 	func on(mqttClient: (MQTTBridge & MQTTControl), log: String) {
 		//logView.onLog(log)
 	}

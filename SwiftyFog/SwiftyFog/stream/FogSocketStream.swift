@@ -156,7 +156,7 @@ public final class FogSocketStream: NSObject, StreamDelegate {
 				}
 				break
 			case Stream.Event.errorOccurred:
-				delegate?.fog(stream: self, errored: aStream.streamError)
+				//delegate?.fog(stream: self, errored: aStream.streamError)
 				break
 			case Stream.Event.endEncountered:
 				endStream(aStream)

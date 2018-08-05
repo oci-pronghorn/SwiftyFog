@@ -43,8 +43,8 @@ class TrainViewController: UIViewController {
 
 	var discoverBridge: MQTTBridge! {
 		didSet {
-			self.discoveredTrain = nil
 			discovery.mqtt = discoverBridge
+			self.discoveredTrain = nil
 		}
 	}
 	
@@ -59,7 +59,10 @@ class TrainViewController: UIViewController {
 				feedbackCut()
 				assertValues()
 				train(alive: discoveredTrain != nil, named: discoveredTrain?.displayName)
-				trainSelectorVC?.selectedTrain = discoveredTrain?.trainName ?? ""
+				if let trainSelectorVC = self.trainSelectorVC {
+					trainSelectorVC.selectedTrain = discoveredTrain?.trainName ?? ""
+					trainSelectorVC.model = discovery.snapshop
+				}
 			}
 		}
 	}

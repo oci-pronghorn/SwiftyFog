@@ -34,6 +34,7 @@ public class TrainDiscovery {
 	
     public var mqtt: MQTTBridge! {
 		didSet {
+			trains.removeAll()
 			broadcaster.assign(mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("+/lifecycle/feedback", .atLeastOnce, TrainDiscovery.feedbackLifecycle),
 			]) {[weak self] (_, status) in self?.delegate?.onSubscriptionAck(status: status)})

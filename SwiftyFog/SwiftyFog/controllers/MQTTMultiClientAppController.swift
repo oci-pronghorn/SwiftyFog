@@ -69,6 +69,8 @@ public class MQTTClientSubscription: MQTTBridge, MQTTControl {
 }
 
 public class MQTTMultiClientAppController {
+	// hn=`hostname`;cn=$(echo "$hn" | cut -f 1 -d '.');dns-sd -R ${cn} _mqtt._tcp local 1883&
+	let bonjour = BonjourDiscovery(type: "mqtt", proto: "tcp")
 	private var clients: [String : ((MQTTBridge & MQTTControl), Int, Bool)] = [:]
 	private let network: FogNetworkReachability
 	private let metrics: ()->MQTTMetrics?
@@ -78,6 +80,8 @@ public class MQTTMultiClientAppController {
 	public init(metrics: @escaping @autoclosure ()->MQTTMetrics?) {
 		self.network = FogNetworkReachability()
 		self.metrics = metrics
+	
+		bonjour.delegate = self
 	}
 	
 	public func requestClient(hostedOn: String) -> (MQTTBridge & MQTTControl) {
@@ -114,6 +118,7 @@ public class MQTTMultiClientAppController {
 		// Network reachability can detect a disconnected state before the client
 		network.start { [weak self] status in
 			if status != .none {
+				self?.bonjour.start()
 				for client in (self?.clients)! {
 					if client.value.2 {
 						client.value.0.start()
@@ -121,6 +126,7 @@ public class MQTTMultiClientAppController {
 				}
 			}
 			else {
+				self?.bonjour.stop()
 				for client in (self?.clients)! {
 					if client.value.2 {
 						client.value.0.stop()
@@ -132,6 +138,7 @@ public class MQTTMultiClientAppController {
 	
 	public func goBackground() {
 		// Be a good iOS citizen and shutdown the connection and timers
+		self.bonjour.stop()
 		for host in clients.keys {
 			let client = clients[host]!.0
 			clients[host]!.2 = client.started
@@ -158,5 +165,27 @@ extension MQTTMultiClientAppController: MQTTClientDelegate {
 	public func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription]) {
 		DispatchQueue.main.async {
 		}
+	}
+}
+
+extension MQTTMultiClientAppController: BonjourDiscoveryDelegate {
+	public func bonjourDiscovery(_ bonjourDiscovery: BonjourDiscovery, didFailedAt: BonjourDiscoveryOperation, withErrorDict: [String : NSNumber]?) {
+	}
+	
+	public func bonjourDiscovery(_ bonjourDiscovery: BonjourDiscovery, didFindService service: NetService, atHosts host: [String]) {
+		print("Discovered \(service.name) \(host)")
+	}
+	
+	public func bonjourDiscovery(_ bonjourDiscovery: BonjourDiscovery, didRemovedService service: NetService) {
+		print("Undiscovered \(service.name)")
+	}
+	
+	public func browserDidStart(_ bonjourDiscovery: BonjourDiscovery) {
+	}
+	
+	public func browserDidStop(_ bonjourDiscovery: BonjourDiscovery) {
+	}
+	
+	public func bonjourDiscovery(_ bonjourDiscovery: BonjourDiscovery, serviceDidUpdateTXT: NetService, TXT: Data) {
 	}
 }
