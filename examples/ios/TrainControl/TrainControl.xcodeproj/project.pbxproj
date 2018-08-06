@@ -211,6 +211,7 @@
 		55B912BF20FA77CE00634B80 /* UserDefaults+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+.swift"; sourceTree = "<group>"; };
 		55BD0DD120F15954001E31C3 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		55BD0DD320F15ABF001E31C3 /* AVAudioPlayer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVAudioPlayer+.swift"; sourceTree = "<group>"; };
+		55FCAA962117C88E00DD8987 /* subscription.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = subscription.py; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -272,6 +273,7 @@
 			children = (
 				5578608520F3B5EA00FC182D /* SwiftFog_watch.framework */,
 				553AD4FB2108A0EC002B4F07 /* README.md */,
+				55FCAA962117C88E00DD8987 /* subscription.py */,
 				554348371F82D3AD00C3C2CB /* TrainControl */,
 				5543484C1F82D3AD00C3C2CB /* TrainControlTests */,
 				554348571F82D3AD00C3C2CB /* TrainControlUITests */,
