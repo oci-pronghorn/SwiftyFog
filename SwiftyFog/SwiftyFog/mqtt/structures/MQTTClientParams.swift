@@ -27,19 +27,26 @@ public struct MQTTClientParams {
 	
     public init(keepAlive: UInt16) {
 		self.clientID = ""
-		self.cleanSession = true
+		self.cleanSession = true // must be true for empty clientID
 		self.keepAlive = keepAlive
 		self.detectServerDeath = keepAlive + (keepAlive / 2)
     }
 	
     public init(clientID: String, cleanSession: Bool = true, keepAlive: UInt16 = 15) {
 		self.clientID = clientID
-		self.cleanSession = cleanSession
+		self.cleanSession = cleanSession || !clientID.isEmpty // must be true for empty clientID
 		self.keepAlive = keepAlive
 		self.detectServerDeath = keepAlive + (keepAlive / 2)
     }
 	
 	public init(cleanSession: Bool = true, keepAlive: UInt16 = 15) {
+		self.clientID = MQTTClientParams.hardwareClientId()
+		self.cleanSession = cleanSession
+		self.keepAlive = keepAlive
+		self.detectServerDeath = keepAlive + (keepAlive / 2)
+	}
+	
+	public static func hardwareClientId() -> String {
       // 1 and 23 UTF-8 encoded bytes
       // Only "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     #if os(iOS)
@@ -57,10 +64,7 @@ public struct MQTTClientParams {
 		let hash = Int64(fullId.hash)
 		let uhash = UInt64(bitPattern: hash)
 		let asciied = String(format: "%@%20lu", platform, uhash)
-		self.clientID = asciied
-		self.cleanSession = cleanSession
-		self.keepAlive = keepAlive
-		self.detectServerDeath = keepAlive + (keepAlive / 2)
+		return asciied
 	}
 }
 

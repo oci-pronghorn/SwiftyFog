@@ -70,6 +70,7 @@ public class MQTTClientSubscription: MQTTBridge, MQTTControl {
 }
 
 public class MQTTMultiClientAppController {
+	private let clientParams: MQTTClientParams
 	let bonjour = FogBonjourDiscovery(type: "mqtt", proto: "tcp")
 	private var clients: [String : ((MQTTBridge & MQTTControl), Int, Bool)] = [:]
 	private let network: FogNetworkReachability
@@ -77,7 +78,8 @@ public class MQTTMultiClientAppController {
 	
 	public weak var delegate: MQTTMultiClientAppControllerDelegate?
 	
-	public init(metrics: @escaping @autoclosure ()->MQTTMetrics?) {
+	public init(client: MQTTClientParams = MQTTClientParams(), metrics: @escaping @autoclosure ()->MQTTMetrics?) {
+		self.clientParams = client
 		self.network = FogNetworkReachability()
 		self.metrics = metrics
 	
@@ -102,10 +104,8 @@ public class MQTTMultiClientAppController {
 	}
 	
 	private func createClient(mqttHost: String) -> MQTTClient {
-		var client = MQTTClientParams()
-		client.detectServerDeath = 2
 		let newClient = MQTTClient(
-			client: client,
+			client: clientParams,
 			host: MQTTHostParams(host: mqttHost, port: .standard),
 			reconnect: MQTTReconnectParams(),
 			metrics: metrics())

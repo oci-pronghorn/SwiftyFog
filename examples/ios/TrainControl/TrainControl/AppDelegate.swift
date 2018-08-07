@@ -13,20 +13,24 @@ import SwiftyFog_iOS
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
-	var controller = MQTTMultiClientAppController(metrics: MQTTMetrics.verbose())
+	var controller: MQTTMultiClientAppController!
 	
 	var trainControl: TrainViewController!
 	//var logView: LogViewController!
 
 	internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+	
+		UserDefaults.standard.loadDefaults()
+		NotificationCenter.default.addObserver(self, selector: #selector(settingChanged(notification:)), name: UserDefaults.didChangeNotification, object: nil)
 		
+		let clientID = UserDefaults.standard.string(forKey: "clientid_preference")!
+		var client = MQTTClientParams(clientID: clientID)
+		client.detectServerDeath = 2
+		self.controller = MQTTMultiClientAppController(client: client, metrics: MQTTMetrics.verbose())
 		self.trainControl = self.window!.rootViewController as? TrainViewController
 		//self.logView = (tbc.viewControllers![1] as! LogViewController)
 		
 		self.controller.delegate = self
-		
-		UserDefaults.standard.loadDefaults()
-		NotificationCenter.default.addObserver(self, selector: #selector(settingChanged(notification:)), name: UserDefaults.didChangeNotification, object: nil)
 		
 		// TODO: have train broadcast broker and remove the following line
 		assignBroker("joveexpress2.local")
