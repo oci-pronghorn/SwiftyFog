@@ -19,16 +19,42 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="C7y-xd-CAj" userLabel="Connect Status Stack">
-                                <rect key="frame" x="8" y="28" width="398" height="32"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="C7y-xd-CAj" userLabel="Train Status Stack">
+                                <rect key="frame" x="8" y="28" width="398" height="42"/>
                                 <subviews>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aNZ-Ls-fpz" userLabel="Trains">
+                                        <rect key="frame" x="0.0" y="0.0" width="42" height="42"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="42" id="hIx-nd-o1F"/>
+                                            <constraint firstAttribute="height" constant="42" id="z59-Ww-F5D"/>
+                                        </constraints>
+                                        <state key="normal" image="Train"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="16"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" name="Border"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                <real key="value" value="1.5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <segue destination="lSW-Pd-pGB" kind="popoverPresentation" identifier="SelectTrain" popoverAnchorView="aNZ-Ls-fpz" id="Lo8-YJ-gYa">
+                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                            </segue>
+                                        </connections>
+                                    </button>
                                     <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="Dead" highlightedImage="Alive" translatesAutoresizingMaskIntoConstraints="NO" id="28I-X8-rcw">
-                                        <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                        <rect key="frame" x="46" y="0.0" width="42" height="42"/>
                                         <color key="backgroundColor" name="Gold"/>
                                         <gestureRecognizers/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="32" id="Btc-Yt-R6H"/>
-                                            <constraint firstAttribute="height" constant="32" id="Jv5-2V-ve8"/>
+                                            <constraint firstAttribute="width" constant="42" id="Btc-Yt-R6H"/>
+                                            <constraint firstAttribute="height" constant="42" id="Jv5-2V-ve8"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="42" id="Mid-xc-n45"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="42" id="qEe-47-0iI"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -41,7 +67,7 @@
                                         </connections>
                                     </imageView>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="n8M-qB-QXO">
-                                        <rect key="frame" x="36" y="1" width="133" height="30"/>
+                                        <rect key="frame" x="92" y="6" width="260" height="30"/>
                                         <color key="backgroundColor" name="Background"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -62,96 +88,21 @@
                                             <outlet property="delegate" destination="BYZ-38-t0r" id="c5J-k0-pT7"/>
                                         </connections>
                                     </textField>
-                                    <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jhT-kk-0r3" userLabel="Connect Screws View" customClass="ScrewsView" customModule="TrainControl" customModuleProvider="target">
-                                        <rect key="frame" x="173" y="0.0" width="153" height="32"/>
-                                        <subviews>
-                                            <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="24" translatesAutoresizingMaskIntoConstraints="NO" id="4cK-ON-aes" customClass="FlipLabel" customModule="TrainControl" customModuleProvider="target">
-                                                <rect key="frame" x="2" y="4" width="149" height="24"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="text" value="0.0.0"/>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="flipBackGroundColor">
-                                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                        <real key="value" value="0.5"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                        <real key="value" value="3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                        <color key="value" name="Border"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                            </view>
-                                        </subviews>
-                                        <color key="backgroundColor" name="Gold"/>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sxl-aJ-Zwu" userLabel="Fault">
+                                        <rect key="frame" x="356" y="0.0" width="42" height="42"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="4cK-ON-aes" secondAttribute="width" constant="4" id="Anc-SM-24a"/>
-                                            <constraint firstItem="4cK-ON-aes" firstAttribute="centerX" secondItem="jhT-kk-0r3" secondAttribute="centerX" id="mYC-gW-TeO"/>
-                                            <constraint firstItem="4cK-ON-aes" firstAttribute="centerY" secondItem="jhT-kk-0r3" secondAttribute="centerY" id="noB-vB-L5O"/>
+                                            <constraint firstAttribute="height" constant="42" id="gxC-rW-z9l"/>
+                                            <constraint firstAttribute="width" constant="42" id="wFh-UA-9Pd"/>
                                         </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="image" keyPath="screwImage" value="Screwhead"/>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="screwRadius">
-                                                <real key="value" value="3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="inset">
-                                                <real key="value" value="4.5"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="screwCount">
-                                                <integer key="value" value="0"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                <real key="value" value="3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                <color key="value" name="Border"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                <real key="value" value="0.5"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </view>
-                                    <imageView opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Disconnected" highlightedImage="Connected" translatesAutoresizingMaskIntoConstraints="NO" id="4zZ-K8-b71">
-                                        <rect key="frame" x="330" y="0.0" width="32" height="32"/>
-                                        <color key="backgroundColor" name="Gold"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="32" id="3VN-HX-69l"/>
-                                            <constraint firstAttribute="width" constant="32" id="yP0-Kq-eiq"/>
-                                        </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                <real key="value" value="0.5"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                <color key="value" name="Border"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                <real key="value" value="16"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wpe-Ny-YbN">
-                                        <rect key="frame" x="366" y="0.0" width="32" height="32"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="32" id="H5f-f4-yYD"/>
-                                            <constraint firstAttribute="width" constant="32" id="tN9-NR-RBW"/>
-                                        </constraints>
-                                        <state key="normal" image="Off"/>
-                                        <state key="selected" image="On"/>
+                                        <state key="normal" image="MakeFault"/>
                                         <connections>
-                                            <action selector="stopStartConnectingWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TSa-sQ-3hQ"/>
+                                            <action selector="faultTrainWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gOp-A1-R98"/>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="height" secondItem="28I-X8-rcw" secondAttribute="height" id="7oF-i8-H1z"/>
-                                    <constraint firstItem="jhT-kk-0r3" firstAttribute="height" secondItem="28I-X8-rcw" secondAttribute="height" id="aNu-4G-uxS"/>
-                                </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="0P7-i3-PrJ" userLabel="Control Stack">
-                                <rect key="frame" x="8" y="68" width="398" height="386"/>
+                                <rect key="frame" x="8" y="78" width="398" height="386"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="jch-e0-4v6" userLabel="Engine Stack">
                                         <rect key="frame" x="0.0" y="0.0" width="195" height="386"/>
@@ -655,11 +606,11 @@
                                 </constraints>
                                 <variation key="heightClass=regular-widthClass=regular" spacing="16"/>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="hzf-KI-KyN" userLabel="Supplimental Stack">
-                                <rect key="frame" x="8" y="462" width="398" height="266"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="250" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="hzf-KI-KyN" userLabel="Supplimental Stack">
+                                <rect key="frame" x="8" y="472" width="398" height="206"/>
                                 <subviews>
                                     <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GB0-QS-n3R">
-                                        <rect key="frame" x="90" y="0.0" width="218" height="218"/>
+                                        <rect key="frame" x="96" y="0.0" width="206" height="206"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="GB0-QS-n3R" secondAttribute="height" multiplier="1:1" id="sGp-NF-d3D"/>
                                         </constraints>
@@ -668,77 +619,140 @@
                                             <wkPreferences key="preferences"/>
                                         </wkWebViewConfiguration>
                                     </wkWebView>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sxl-aJ-Zwu" userLabel="Fault">
-                                        <rect key="frame" x="175" y="218" width="48" height="48"/>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="z54-8G-txZ" userLabel="Connect Stack">
+                                <rect key="frame" x="8" y="686" width="398" height="42"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wpe-Ny-YbN">
+                                        <rect key="frame" x="0.0" y="0.0" width="42" height="42"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="48" id="BrN-yy-XBO"/>
-                                            <constraint firstAttribute="height" constant="48" id="cTk-Te-nFi"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="42" id="6v7-zm-6Nu"/>
+                                            <constraint firstAttribute="height" constant="42" id="H5f-f4-yYD"/>
+                                            <constraint firstAttribute="width" constant="42" id="tN9-NR-RBW"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="42" id="x1V-Z1-fWn"/>
                                         </constraints>
-                                        <state key="normal" image="MakeFault"/>
+                                        <state key="normal" image="Off"/>
+                                        <state key="selected" image="On"/>
                                         <connections>
-                                            <action selector="faultTrainWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gOp-A1-R98"/>
+                                            <action selector="stopStartConnectingWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TSa-sQ-3hQ"/>
+                                        </connections>
+                                    </button>
+                                    <imageView opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Disconnected" highlightedImage="Connected" translatesAutoresizingMaskIntoConstraints="NO" id="4zZ-K8-b71">
+                                        <rect key="frame" x="50" y="0.0" width="42" height="42"/>
+                                        <color key="backgroundColor" name="Gold"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="42" id="3VN-HX-69l"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="42" id="ELJ-5H-owU"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="42" id="W6p-rw-lGm"/>
+                                            <constraint firstAttribute="width" constant="42" id="yP0-Kq-eiq"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                <real key="value" value="0.5"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" name="Border"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="16"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </imageView>
+                                    <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jhT-kk-0r3" userLabel="Connect Screws View" customClass="ScrewsView" customModule="TrainControl" customModuleProvider="target">
+                                        <rect key="frame" x="100" y="0.0" width="248" height="42"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="VVi-DK-UUb">
+                                                <rect key="frame" x="99" y="-1" width="50" height="44.333333333333336"/>
+                                                <subviews>
+                                                    <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="24" translatesAutoresizingMaskIntoConstraints="NO" id="4cK-ON-aes" customClass="FlipLabel" customModule="TrainControl" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="24"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="text" value="0.0.0"/>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="flipBackGroundColor">
+                                                                <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                                <real key="value" value="0.5"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="3"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                                <color key="value" name="Border"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </view>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ACi-RL-32Y">
+                                                        <rect key="frame" x="4.3333333333333428" y="24" width="41.666666666666664" height="20.333333333333329"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <color key="backgroundColor" name="Gold"/>
+                                        <constraints>
+                                            <constraint firstItem="VVi-DK-UUb" firstAttribute="centerX" secondItem="jhT-kk-0r3" secondAttribute="centerX" id="JiT-rj-aFJ"/>
+                                            <constraint firstItem="VVi-DK-UUb" firstAttribute="centerY" secondItem="jhT-kk-0r3" secondAttribute="centerY" id="LjB-6H-hOv"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="image" keyPath="screwImage" value="Screwhead"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="screwRadius">
+                                                <real key="value" value="3"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="inset">
+                                                <real key="value" value="4.5"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="screwCount">
+                                                <integer key="value" value="2"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="3"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" name="Border"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                <real key="value" value="0.5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="92g-UT-O7Q" userLabel="Settings">
+                                        <rect key="frame" x="356" y="0.0" width="42" height="42"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="42" id="HSY-r6-gco"/>
+                                            <constraint firstAttribute="width" constant="42" id="csD-R4-Yas"/>
+                                        </constraints>
+                                        <state key="normal" image="Gear"/>
+                                        <connections>
+                                            <action selector="gotoSettingsWithSender:" destination="dkx-z0-nzr" eventType="touchUpInside" id="76j-Ov-gR0"/>
                                         </connections>
                                     </button>
                                 </subviews>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="92g-UT-O7Q" userLabel="Navigate">
-                                <rect key="frame" x="364" y="686" width="42" height="42"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="42" id="1ya-uy-xD3"/>
-                                    <constraint firstAttribute="height" constant="42" id="b66-G0-J7W"/>
-                                </constraints>
-                                <state key="normal" image="Gear"/>
-                                <connections>
-                                    <action selector="gotoSettingsWithSender:" destination="dkx-z0-nzr" eventType="touchUpInside" id="76j-Ov-gR0"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aNZ-Ls-fpz" userLabel="Trains">
-                                <rect key="frame" x="8" y="686" width="42" height="42"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="42" id="dBk-ev-haf"/>
-                                    <constraint firstAttribute="height" constant="42" id="rFP-o5-CbP"/>
-                                </constraints>
-                                <state key="normal" image="Train"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="16"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                        <color key="value" name="Border"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                        <real key="value" value="1.5"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <segue destination="lSW-Pd-pGB" kind="popoverPresentation" identifier="SelectTrain" popoverAnchorView="aNZ-Ls-fpz" id="Lo8-YJ-gYa">
-                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                    </segue>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="hzf-KI-KyN" firstAttribute="leading" secondItem="0P7-i3-PrJ" secondAttribute="trailing" constant="8" id="0H9-Lr-NV2"/>
-                            <constraint firstItem="hzf-KI-KyN" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-8" id="2sv-Hj-Eku"/>
-                            <constraint firstItem="GB0-QS-n3R" firstAttribute="top" secondItem="0P7-i3-PrJ" secondAttribute="bottom" constant="8" id="BGr-zc-COC"/>
-                            <constraint firstItem="92g-UT-O7Q" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-8" id="Fir-k6-JCS"/>
+                            <constraint firstItem="z54-8G-txZ" firstAttribute="leading" secondItem="0P7-i3-PrJ" secondAttribute="trailing" constant="8" id="71r-53-24E"/>
+                            <constraint firstItem="z54-8G-txZ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="BMC-zX-wkN"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="leading" secondItem="0P7-i3-PrJ" secondAttribute="trailing" constant="8" id="IKa-2a-N32"/>
+                            <constraint firstItem="hzf-KI-KyN" firstAttribute="top" relation="greaterThanOrEqual" secondItem="C7y-xd-CAj" secondAttribute="bottom" id="IQE-xW-7rB"/>
                             <constraint firstItem="hzf-KI-KyN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="Kzk-7Y-Fkq"/>
+                            <constraint firstItem="z54-8G-txZ" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-8" id="MwB-tk-V0d"/>
+                            <constraint firstItem="hzf-KI-KyN" firstAttribute="bottom" secondItem="z54-8G-txZ" secondAttribute="top" constant="-8" id="Qjm-XO-4JL"/>
+                            <constraint firstItem="z54-8G-txZ" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-8" id="R6w-k9-QUr"/>
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-8" id="Sb4-3B-hJL"/>
-                            <constraint firstItem="aNZ-Ls-fpz" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="Tzn-RB-KVh"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="UKn-8g-Hvr"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="VLi-sv-xQU"/>
                             <constraint firstItem="C7y-xd-CAj" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-8" id="ZJ7-VL-xfB"/>
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="cg4-7Q-NSq"/>
-                            <constraint firstItem="aNZ-Ls-fpz" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-8" id="fO7-Wg-3Uv"/>
-                            <constraint firstItem="aNZ-Ls-fpz" firstAttribute="leading" secondItem="0P7-i3-PrJ" secondAttribute="trailing" constant="8" id="fjF-19-WQP"/>
+                            <constraint firstItem="hzf-KI-KyN" firstAttribute="top" secondItem="0P7-i3-PrJ" secondAttribute="bottom" constant="8" id="elP-Lq-xLa"/>
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="top" secondItem="C7y-xd-CAj" secondAttribute="bottom" constant="8" id="gdp-td-0mE"/>
-                            <constraint firstItem="GB0-QS-n3R" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="100" id="gu9-jf-gUc"/>
-                            <constraint firstItem="0P7-i3-PrJ" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" constant="-16" id="hfn-cg-vmm">
-                                <variation key="heightClass=regular-widthClass=regular" constant="-32"/>
-                            </constraint>
-                            <constraint firstItem="92g-UT-O7Q" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-8" id="uSw-2Z-MaP"/>
+                            <constraint firstItem="0P7-i3-PrJ" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-8" id="leM-qM-42A"/>
                             <constraint firstItem="0P7-i3-PrJ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="yT9-nP-19r"/>
                             <constraint firstItem="hzf-KI-KyN" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-8" id="zQC-v5-GnJ"/>
                         </constraints>
@@ -748,44 +762,39 @@
                                 <exclude reference="Sb4-3B-hJL"/>
                                 <exclude reference="cg4-7Q-NSq"/>
                                 <exclude reference="gdp-td-0mE"/>
-                                <exclude reference="hfn-cg-vmm"/>
-                                <exclude reference="Tzn-RB-KVh"/>
-                                <exclude reference="fjF-19-WQP"/>
+                                <exclude reference="leM-qM-42A"/>
                                 <exclude reference="IKa-2a-N32"/>
                                 <exclude reference="VLi-sv-xQU"/>
                                 <exclude reference="0H9-Lr-NV2"/>
                                 <exclude reference="Kzk-7Y-Fkq"/>
-                                <exclude reference="BGr-zc-COC"/>
-                                <exclude reference="gu9-jf-gUc"/>
+                                <exclude reference="elP-Lq-xLa"/>
+                                <exclude reference="71r-53-24E"/>
+                                <exclude reference="BMC-zX-wkN"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact">
                             <mask key="constraints">
                                 <include reference="Sb4-3B-hJL"/>
                                 <include reference="cg4-7Q-NSq"/>
-                                <include reference="fjF-19-WQP"/>
                                 <include reference="IKa-2a-N32"/>
                                 <include reference="0H9-Lr-NV2"/>
-                                <include reference="gu9-jf-gUc"/>
+                                <include reference="71r-53-24E"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular">
                             <mask key="constraints">
                                 <include reference="gdp-td-0mE"/>
-                                <include reference="hfn-cg-vmm"/>
+                                <include reference="leM-qM-42A"/>
                                 <include reference="VLi-sv-xQU"/>
                                 <include reference="Kzk-7Y-Fkq"/>
-                                <include reference="BGr-zc-COC"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=compact">
-                            <mask key="constraints">
-                                <include reference="Tzn-RB-KVh"/>
+                                <include reference="elP-Lq-xLa"/>
+                                <include reference="BMC-zX-wkN"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
                         <outlet property="billboardText" destination="n8M-qB-QXO" id="fxm-Mo-35h"/>
+                        <outlet property="broker" destination="ACi-RL-32Y" id="Deb-Yz-tey"/>
                         <outlet property="connectMetrics" destination="4cK-ON-aes" id="Z3X-4F-k7t"/>
                         <outlet property="connectedImage" destination="4zZ-K8-b71" id="nCN-Sr-VCd"/>
                         <outlet property="engineCalibration" destination="5SJ-Xc-cNf" id="Aei-r8-lVK"/>

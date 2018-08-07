@@ -6,7 +6,7 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
+import Foundation  // DispatchQoS
 
 public protocol MQTTConnectionManagerDelegate: class {
 	func mqtt(connected: MQTTConnectedState)

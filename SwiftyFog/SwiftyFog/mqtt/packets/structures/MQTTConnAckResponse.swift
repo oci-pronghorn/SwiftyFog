@@ -6,8 +6,6 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
-
 public enum MQTTConnAckResponse: UInt8, Error {
     case connectionAccepted     = 0x00
     case badProtocol            = 0x01

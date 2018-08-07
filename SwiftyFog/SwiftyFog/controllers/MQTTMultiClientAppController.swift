@@ -6,7 +6,7 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
+import Foundation // NetService Dispatch Queue, Data
 
 /*
 	The MQTTMultiClientAppController manages the high level business logic of the

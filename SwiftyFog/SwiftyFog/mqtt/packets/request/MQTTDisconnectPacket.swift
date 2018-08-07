@@ -6,8 +6,6 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
-
 final class MQTTDisconnectPacket: MQTTPacket {
     init() {
         super.init(header: MQTTPacketFixedHeader(packetType: .disconnect, flags: 0))

@@ -6,8 +6,6 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
-
 public struct MQTTAuthentication {
     public var username: String?
     public var password: String?

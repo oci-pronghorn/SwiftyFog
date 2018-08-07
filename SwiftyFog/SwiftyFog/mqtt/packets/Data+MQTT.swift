@@ -6,7 +6,7 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
+import Foundation // Data
 
 extension Data {
 	mutating func mqttAppend <T: FixedWidthInteger> (_ rhs: T) {

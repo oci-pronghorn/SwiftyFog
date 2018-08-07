@@ -6,7 +6,6 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
 #if os(iOS)
 import UIKit
 #endif

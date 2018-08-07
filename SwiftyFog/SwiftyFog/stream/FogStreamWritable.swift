@@ -6,7 +6,7 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
+import Foundation // Data
 
 public typealias StreamWriter = (_ buffer: UnsafePointer<UInt8>, _ len: Int) -> Int
 

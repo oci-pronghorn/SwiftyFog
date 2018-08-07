@@ -6,8 +6,6 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
-
 public protocol MQTTControl {
 	var hostName: String { get }
 	

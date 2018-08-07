@@ -6,8 +6,6 @@
 //  Copyright © 2018 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
-
 enum MQTTTopicPattern {
 	case invalid(String)
 	case fixed(String)

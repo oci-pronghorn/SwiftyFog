@@ -6,8 +6,6 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
-
 public protocol FogFeedbackModel {
 	var hasFeedback: Bool { get }
 	func reset()

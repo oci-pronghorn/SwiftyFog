@@ -6,7 +6,7 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
+import Foundation // Data
 
 final class MQTTSubAckPacket: MQTTPacket, MQTTIdentifiedPacket {
     let messageID: UInt16

@@ -5,7 +5,7 @@
 //  Created by David Giovannini on 8/15/17.
 //
 
-import Foundation
+import Foundation  // DispatchQueue
 
 class MQTTRetryConnection {
 	private let spec: MQTTReconnectParams

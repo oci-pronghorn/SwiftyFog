@@ -5,8 +5,6 @@
 //  Created by David Giovannini on 8/19/17.
 //
 
-import Foundation
-
 // TODO
 // persist stuff when clean == false
 // restore state when clean == false

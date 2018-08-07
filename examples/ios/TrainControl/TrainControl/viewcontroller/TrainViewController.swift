@@ -11,6 +11,15 @@ import WebKit
 import AVFoundation
 import SwiftyFog_iOS
 
+extension String {
+	func firstPart() -> String {
+		if let idx = self.firstIndex(of: ".") {
+			return String(self.prefix(upTo: idx))
+		}
+		return self
+	}
+}
+
 class TrainViewController: UIViewController {
 	private let impact = UIImpactFeedbackGenerator()
 	private let discovery = TrainDiscovery()
@@ -21,6 +30,7 @@ class TrainViewController: UIViewController {
 	private var trainName: String = ""
 	private var alive = false
 	
+	@IBOutlet weak var broker: UILabel!
 	@IBOutlet weak var trainAlive: UIImageView!
 	@IBOutlet weak var connectMetrics: FlipLabel!
 	@IBOutlet weak var connectedImage: UIImageView!
@@ -39,7 +49,13 @@ class TrainViewController: UIViewController {
 	
 	@IBOutlet var webView: WKWebView!
 	
-	var mqttControl: MQTTControl!
+	var mqttControl: MQTTControl! {
+		didSet {
+			if self.isViewLoaded {
+				self.broker.text = mqttControl?.hostName.firstPart() ?? "No Broker"
+			}
+		}
+	}
 
 	var discoverBridge: MQTTBridge! {
 		didSet {
@@ -97,6 +113,7 @@ class TrainViewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		self.broker.text = mqttControl?.hostName.firstPart() ?? "No Broker"
 		assertConnectionState()
 		assertValues()
 		billboardPresentConnectionStatus()
@@ -154,7 +171,7 @@ extension TrainViewController: UIPopoverPresentationControllerDelegate {
 	
 	// Pick our directions
 	func alignPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
-		popoverPresentationController.permittedArrowDirections = [.down]
+		popoverPresentationController.permittedArrowDirections = [.down, .up]
 	}
 	
 	// All the app kit to re-anchor the popover on rotation
@@ -326,20 +343,6 @@ extension TrainViewController: UITextFieldDelegate, TrainSelectTableViewControll
 			self.lights(calibration: sender!.rational, false)
 		}
 	}
-	
-	@IBAction
-	func onPicture(sender: UIButton?) {
-		let photos = PhotosAccess(title: nil, root: self);
-		photos.selectImage(hasCamera: true, hasLibrary: false, hasClear: false) { (image, access) in
-			if access {
-				if let image = image {
-					DispatchQueue.main.async {
-						self.billboard.control(image: image)
-					}
-				}
-			}
-		}
-	}
 }
 
 // MARK: Model Delegate
@@ -460,12 +463,6 @@ extension TrainViewController:
 		self.lightingGauge?.setValue(CGFloat(ambient.num), animated: true, duration: 0.15)
 		if asserted {
 		}
-	}
-
-	func billboard(layout: FogBitmapLayout) {
-	}
-	
-	func billboard(image: UIImage) {
 	}
     
     func billboard(text: String, _ asserted: Bool) {

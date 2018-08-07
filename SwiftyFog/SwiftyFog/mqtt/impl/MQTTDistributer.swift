@@ -6,8 +6,6 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
-
 public final class MQTTRegistration {
 	fileprivate weak var distributor: MQTTDistributor? = nil
 	fileprivate let token: UInt64

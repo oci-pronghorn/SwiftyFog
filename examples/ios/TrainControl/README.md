@@ -82,3 +82,9 @@ The watch does not have this yet.
 ## Error
 Sends a toggled forced faultto train. Motor turns off when true. iOS display appears to be cracked, plays a sound, and provides haptic feedback.
 None of this is implemented on watch yet.
+
+## Train Configuration
+
+/home/pi/FogLight/openjdk8u144-b01-aarch32-compact1/bin/java -ea -Xmx400m -jar /home/pi/FogLight/TheJoveExpress.jar -w false &> /home/pi/FogLight/log.txt
+
+Telemetry on port 8098
