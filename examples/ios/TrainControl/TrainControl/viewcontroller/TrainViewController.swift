@@ -165,7 +165,6 @@ extension TrainViewController: UIPopoverPresentationControllerDelegate {
 	// Configure the popover
 	public func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
 		SimplePopoverbackground.assign(popover: popoverPresentationController)
-		popoverPresentationController.passthroughViews = [self.view]
 		self.alignPopoverPresentation(popoverPresentationController)
 	}
 	

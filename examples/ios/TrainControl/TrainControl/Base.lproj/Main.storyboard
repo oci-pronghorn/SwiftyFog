@@ -663,10 +663,10 @@
                                         <rect key="frame" x="100" y="0.0" width="248" height="42"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="VVi-DK-UUb">
-                                                <rect key="frame" x="99" y="-1" width="50" height="44.333333333333336"/>
+                                                <rect key="frame" x="0.0" y="-1" width="248" height="44.333333333333336"/>
                                                 <subviews>
                                                     <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="24" translatesAutoresizingMaskIntoConstraints="NO" id="4cK-ON-aes" customClass="FlipLabel" customModule="TrainControl" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="24"/>
+                                                        <rect key="frame" x="99" y="0.0" width="50" height="24"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="text" value="0.0.0"/>
@@ -684,19 +684,23 @@
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ACi-RL-32Y">
-                                                        <rect key="frame" x="4.3333333333333428" y="24" width="41.666666666666664" height="20.333333333333329"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ACi-RL-32Y">
+                                                        <rect key="frame" x="0.0" y="24" width="248" height="20.333333333333329"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="ACi-RL-32Y" firstAttribute="width" secondItem="VVi-DK-UUb" secondAttribute="width" id="1nr-4X-a11"/>
+                                                </constraints>
                                             </stackView>
                                         </subviews>
                                         <color key="backgroundColor" name="Gold"/>
                                         <constraints>
                                             <constraint firstItem="VVi-DK-UUb" firstAttribute="centerX" secondItem="jhT-kk-0r3" secondAttribute="centerX" id="JiT-rj-aFJ"/>
                                             <constraint firstItem="VVi-DK-UUb" firstAttribute="centerY" secondItem="jhT-kk-0r3" secondAttribute="centerY" id="LjB-6H-hOv"/>
+                                            <constraint firstItem="VVi-DK-UUb" firstAttribute="width" secondItem="jhT-kk-0r3" secondAttribute="width" id="fLe-m7-bpH"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="image" keyPath="screwImage" value="Screwhead"/>
@@ -759,12 +763,12 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="IKa-2a-N32"/>
+                                <exclude reference="VLi-sv-xQU"/>
                                 <exclude reference="Sb4-3B-hJL"/>
                                 <exclude reference="cg4-7Q-NSq"/>
                                 <exclude reference="gdp-td-0mE"/>
                                 <exclude reference="leM-qM-42A"/>
-                                <exclude reference="IKa-2a-N32"/>
-                                <exclude reference="VLi-sv-xQU"/>
                                 <exclude reference="0H9-Lr-NV2"/>
                                 <exclude reference="Kzk-7Y-Fkq"/>
                                 <exclude reference="elP-Lq-xLa"/>
@@ -774,18 +778,18 @@
                         </variation>
                         <variation key="heightClass=compact">
                             <mask key="constraints">
+                                <include reference="IKa-2a-N32"/>
                                 <include reference="Sb4-3B-hJL"/>
                                 <include reference="cg4-7Q-NSq"/>
-                                <include reference="IKa-2a-N32"/>
                                 <include reference="0H9-Lr-NV2"/>
                                 <include reference="71r-53-24E"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular">
                             <mask key="constraints">
+                                <include reference="VLi-sv-xQU"/>
                                 <include reference="gdp-td-0mE"/>
                                 <include reference="leM-qM-42A"/>
-                                <include reference="VLi-sv-xQU"/>
                                 <include reference="Kzk-7Y-Fkq"/>
                                 <include reference="elP-Lq-xLa"/>
                                 <include reference="BMC-zX-wkN"/>
@@ -921,7 +925,7 @@
         <scene sceneID="tht-SV-Tvh">
             <objects>
                 <tableViewController id="lSW-Pd-pGB" customClass="TrainSelectTableViewController" customModule="TrainControl" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="kac-PD-W3H">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="kac-PD-W3H">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" name="Background"/>
