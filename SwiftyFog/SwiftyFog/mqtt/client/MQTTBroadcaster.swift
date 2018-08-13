@@ -6,7 +6,7 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
+import Foundation // DispatchQueue
 
 public final class MQTTBroadcaster {
 	private let registration: [MQTTRegistration]

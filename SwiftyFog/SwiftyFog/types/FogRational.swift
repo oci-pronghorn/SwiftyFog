@@ -6,61 +6,8 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
-/*
-public extension BinaryInteger {
-	public init?(fogPackedData data: Data) {
-		var cursor = 0
-		self.init(fogPackedData: data, &cursor)
-	}
-	
-	public init?(fogPackedData data: Data, _ cursor: inout Int) {
-		let maxBits = MemoryLayout<Self>.size * 8
-		var temp: Self = 0
-		let success: Bool = data.withUnsafeBytes { (u8Ptr: UnsafePointer<UInt8>) in
-			var i = 0
-			repeat {
-				let byte = u8Ptr[cursor + i]
-				temp |= Self(byte & 0x7F)
-				i += 1
-				if (byte & 0x80) != 0 {
-					cursor += i
-					return true
-				}
-				temp <<= 7
-			} while (i * 7) <= maxBits
-			return false
-		}
-		if success == false {
-			return nil
-		}
-		self = temp
-	}
-	
-	public func writeUnsigned(fogPackedData data: inout Data) {
-	}
-	
-	public func writeSigned(fogPackedData: inout Data) {
-	}
-}
+import Foundation // Data
 
-public extension BinaryInteger where Self: UnsignedInteger {
-	public func write(fogPackedData data: inout Data) {
-		self.writeUnsigned(fogPackedData: &data)
-	}
-}
-
-public extension BinaryInteger where Self: SignedInteger {
-	public func write(fogPackedData data: inout Data) {
-		if self < 0 {
-			self.writeSigned(fogPackedData: &data)
-		}
-		else {
-			self.writeUnsigned(fogPackedData: &data)
-		}
-	}
-}
-*/
 public struct FogRational<T: FixedWidthInteger> : Equatable, FogExternalizable, CustomStringConvertible {
     public typealias ValueType = T
 	public var num: T = 0

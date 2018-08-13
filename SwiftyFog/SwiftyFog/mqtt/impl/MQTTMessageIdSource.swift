@@ -6,8 +6,6 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
-
 final class MQTTMessageIdSource {
 	private let mutex = ReadWriteMutex()
 	private let metrics: MQTTIdMetrics?

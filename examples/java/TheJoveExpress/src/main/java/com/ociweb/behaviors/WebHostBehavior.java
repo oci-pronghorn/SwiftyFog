@@ -8,6 +8,9 @@ import com.ociweb.iot.maker.Hardware;
 import com.ociweb.pronghorn.network.HTTPServerConfig;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
+/**
+ * This behavior turns on the web pages and broadcasts web page information
+ */
 public class WebHostBehavior implements PubSubMethodListener {
     private final PubSubFixedTopicService pubSubService;
     private static boolean enabled;
@@ -25,7 +28,11 @@ public class WebHostBehavior implements PubSubMethodListener {
     // We need to pick a strategy. For now I am broadcasting this ip to the client.
     private static final String webHost = "https://10.0.1.60:8089";
 
-    public static void enable(Hardware hardware, boolean enabled, int appServerPort) {
+    // TODO There will be two sites hosted. We need to determine Behavior design for two sites.
+    // - One for the train control
+    // - The other for status, camera images, and other fun stuff
+
+    public static void configure(Hardware hardware, boolean enabled, int appServerPort) {
         // TODO: test heap problem on Pi0
         WebHostBehavior.enabled = enabled;
         if (enabled) {

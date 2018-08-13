@@ -6,8 +6,6 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
-
 public enum MQTTPacketType: UInt8 {
     case connect        = 0x01
     case connAck        = 0x02

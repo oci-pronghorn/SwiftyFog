@@ -6,8 +6,6 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
-
 // MQTTSubscription and MQTTRegistration are RAII owners of the subscribe and
 // register requests. When all references goes to nil, the unsubscribe/unregister
 // happens.

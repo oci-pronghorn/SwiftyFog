@@ -10,29 +10,11 @@
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 			<key>Title</key>
-			<string>Train Name</string>
+			<string>Client ID</string>
 			<key>Key</key>
-			<string>train_name_preference</string>
+			<string>clientid_preference</string>
 			<key>DefaultValue</key>
-			<string>joveexpress2</string>
-			<key>IsSecure</key>
-			<false/>
-			<key>KeyboardType</key>
-			<string>Alphabet</string>
-			<key>AutocapitalizationType</key>
-			<string>None</string>
-			<key>AutocorrectionType</key>
-			<string>No</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
-			<key>Title</key>
-			<string>Broker Host</string>
-			<key>Key</key>
-			<string>broker_host_preference</string>
-			<key>DefaultValue</key>
-			<string>joveexpress2.local</string>
+			<string></string>
 			<key>IsSecure</key>
 			<false/>
 			<key>KeyboardType</key>

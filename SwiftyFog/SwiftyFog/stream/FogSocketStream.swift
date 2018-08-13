@@ -5,7 +5,7 @@
 //  Created by David Giovannini on 8/24/17.
 //
 
-import Foundation
+import Foundation // Streams
 
 public protocol FogSocketStreamDelegate: class {
     func fog(streamReady: FogSocketStream)
@@ -156,7 +156,7 @@ public final class FogSocketStream: NSObject, StreamDelegate {
 				}
 				break
 			case Stream.Event.errorOccurred:
-				delegate?.fog(stream: self, errored: aStream.streamError)
+				//delegate?.fog(stream: self, errored: aStream.streamError)
 				break
 			case Stream.Event.endEncountered:
 				endStream(aStream)

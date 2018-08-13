@@ -6,7 +6,7 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
+import Foundation // DispatchQueue
 
 public protocol MQTTClientDelegate: class {
 	func mqtt(client: MQTTClient, connected: MQTTConnectedState)
@@ -40,6 +40,7 @@ public final class MQTTClient {
 			socketQoS: socketQoS,
 			metrics: metrics);
 		self.router = MQTTRouter(
+			host: host.host,
 			metrics: metrics,
 			routing: routing)
 		

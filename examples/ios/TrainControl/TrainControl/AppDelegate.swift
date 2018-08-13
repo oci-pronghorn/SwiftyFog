@@ -13,40 +13,43 @@ import SwiftyFog_iOS
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
-	var controller = MQTTClientAppController(metrics: MQTTMetrics.verbose())
+	var controller: MQTTMultiClientAppController!
 	
 	var trainControl: TrainViewController!
 	//var logView: LogViewController!
 
 	internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 	
+		UserDefaults.standard.loadDefaults()
+		NotificationCenter.default.addObserver(self, selector: #selector(settingChanged(notification:)), name: UserDefaults.didChangeNotification, object: nil)
+		
+		let clientID = UserDefaults.standard.string(forKey: "clientid_preference")!
+		var client = MQTTClientParams(clientID: clientID)
+		client.detectServerDeath = 2
+		self.controller = MQTTMultiClientAppController(client: client, metrics: MQTTMetrics.verbose())
 		self.trainControl = self.window!.rootViewController as? TrainViewController
 		//self.logView = (tbc.viewControllers![1] as! LogViewController)
 		
 		self.controller.delegate = self
 		
-		UserDefaults.standard.loadDefaults()
-		NotificationCenter.default.addObserver(self, selector: #selector(settingChanged(notification:)), name: UserDefaults.didChangeNotification, object: nil)
-		
-		assignBroker()
+		// TODO: have train broadcast broker and remove the following line
+		assignBroker("joveexpress2.local")
+		controller.goForeground()
 		return true
 	}
 	
 	@objc func settingChanged(notification: NSNotification) {
-		assignBroker()
 	}
 	
-	func assignBroker() {
-		let newBrokerHost = UserDefaults.standard.string(forKey: "broker_host_preference")!
-		let brokerChanged = self.controller.mqttHost != newBrokerHost
+	func assignBroker(_ newBrokerHost: String) {
+		let brokerChanged = self.trainControl.mqttControl?.hostName != newBrokerHost
 		if brokerChanged {
-			self.controller.mqttHost = newBrokerHost
-			self.trainControl.mqttControl = controller.client
+			let client = self.controller.requestClient(hostedOn: newBrokerHost)
+			client.start()
+			self.trainControl.mqttControl = client
+			// TODO: have train broadcast with that prefix topic
+			self.trainControl.discoverBridge = client //.createBridge(subPath: "train")
 		}
-		
-		let newTrainName = UserDefaults.standard.string(forKey: "train_name_preference")!
-		
-		self.trainControl.setTrain(named: newTrainName, bridging: controller.client!, force: brokerChanged)
 	}
 	
 	@IBAction func gotoSettings(sender: Any?) {
@@ -73,7 +76,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 }
 
-extension AppDelegate: MQTTClientAppControllerDelegate {
+extension AppDelegate: MQTTMultiClientAppControllerDelegate {
+	func discovered(mqttBrokers: [(String, Int)]) {
+		if !self.trainControl.mqttControl.connected {
+			assignBroker(mqttBrokers[0].0)
+		}
+	}
+	
 	func on(mqttClient: (MQTTBridge & MQTTControl), log: String) {
 		//logView.onLog(log)
 	}

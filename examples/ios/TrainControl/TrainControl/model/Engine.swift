@@ -39,9 +39,9 @@ public class Engine: FogFeedbackModel {
         self.state = FogFeedbackValue(.idle)
 	}
 	
-    public var mqtt: MQTTBridge! {
+    public var mqtt: MQTTBridge? {
 		didSet {
-			broadcaster.assign(mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
+			broadcaster.assign(mqtt?.broadcast(to: self, queue: DispatchQueue.main, topics: [
                 ("power/feedback", .atMostOnce, Engine.feedbackPower),
                 ("calibration/feedback", .atMostOnce, Engine.feedbackCalibration),
                 ("state/feedback", .atMostOnce, Engine.feedbackState)
@@ -81,7 +81,7 @@ public class Engine: FogFeedbackModel {
 		self.power.control(power) { value in
 			var data  = Data(capacity: value.fogSize)
 			data.fogAppend(value)
-			mqtt.publish(MQTTMessage(topic: "power/control", payload: data))
+			mqtt?.publish(MQTTMessage(topic: "power/control", payload: data))
 		}
 	}
 	
@@ -89,7 +89,7 @@ public class Engine: FogFeedbackModel {
 		self.calibration.control(calibration) { value in
 			var data  = Data(capacity: calibration.fogSize)
 			data.fogAppend(calibration)
-			mqtt.publish(MQTTMessage(topic: "calibration/control", payload: data))
+			mqtt?.publish(MQTTMessage(topic: "calibration/control", payload: data))
 		}
 	}
 	

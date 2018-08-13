@@ -6,7 +6,7 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
+import Foundation // Data
 
 // Publish release (QoS 2 publish received, part 2)
 final class MQTTPublishRelPacket: MQTTPacket, MQTTIdentifiedPacket {

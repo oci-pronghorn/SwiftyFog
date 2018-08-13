@@ -8,12 +8,14 @@ import com.ociweb.iot.maker.ListenerFilterIoT;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
 // Accumulates MQTT pubs and subs so maker does not have to reason duplicates across behaviors
 // Attempts DRY principle with topic names
 // Combines data routed MQTT pub/sub and FogLight pub/sub into one declaration
 // Allows a behavior to be registered more than once if that makes maker's code easier to read
 // Encapsulates internal/external mapping for mqtt
 // MQTT can be disabled (optional null)
+*/
 
 public class TopicJunctionBox implements AutoCloseable {
     private final CharSequence externalScope;
@@ -31,21 +33,21 @@ public class TopicJunctionBox implements AutoCloseable {
 
     // To disable MQTT, pass in null for mqttBridge
     // externalScope can be null as well
-    public TopicJunctionBox(String externalScope, MsgRuntime<HardwareImpl, ListenerFilterIoT> runtime, MQTTBridge mqttBridge) {
+    TopicJunctionBox(String externalScope, MsgRuntime<HardwareImpl, ListenerFilterIoT> runtime, MQTTBridge mqttBridge) {
         this.externalScope = externalScope != null && !externalScope.isEmpty() ? externalScope + "/" : "";
         this.mqttBridge = mqttBridge;
         this.runtime = runtime;
     }
 
     // Setup MQTT last will
-    public void lastWill(String topic, boolean retain, MQTTQoS qos, Writable payload) {
+    void lastWill(String topic, boolean retain, MQTTQoS qos, Writable payload) {
         if (mqttBridge != null) {
             mqttBridge.lastWill(externalScope + topic, retain, qos, payload);
         }
     }
 
     // Get notified of connection state of MQTT connections
-    public void connectionFeedbackTopic(String connectFeedbackTopic) {
+    void connectionFeedbackTopic(String connectFeedbackTopic) {
         if (mqttBridge != null) {
             mqttBridge.connectionFeedbackTopic(connectFeedbackTopic);
         }
@@ -53,7 +55,7 @@ public class TopicJunctionBox implements AutoCloseable {
 
     // Declare that a topic goes out to MQTT (if bridge and QOS are not null).
     // Returns the supplied topic for convenience.
-    public String publish(String topic, boolean retain, MQTTQoS qos) {
+    String publish(String topic, boolean retain, MQTTQoS qos) {
         if (mqttBridge != null && qos != null) {
             accumeMQTTTransmissions.compute(topic, (key, oldValue) -> {
                 if (oldValue == null || qos.getSpecification() > oldValue.qos.getSpecification() || !oldValue.retain) {
@@ -68,9 +70,11 @@ public class TopicJunctionBox implements AutoCloseable {
         return topic;
     }
 
+    // TODO: create a logical way to produce PubSubFixedTopicServices grouped by channel as a replacment for the publish method.
+
     // Has the listener subscribe to the topic.
     // If qos is not null, bind to the MQTT topic as well
-    public void subscribe(PubSubMethodListener listener, String topic, MQTTQoS qos, CallableMethod method) {
+    void subscribe(PubSubMethodListener listener, String topic, MQTTQoS qos, CallableMethod method) {
         this.subscribe(listener, topic, method);
         if (qos != null) {
             accumeMQTTSubscriptions.compute(topic, (key, oldValue) -> {
@@ -83,12 +87,12 @@ public class TopicJunctionBox implements AutoCloseable {
     }
 
     // Has the listener subscribe to the topic.
-    public void subscribe(PubSubMethodListener listener, String topic, CallableMethod method) {
+    void subscribe(PubSubMethodListener listener, String topic, CallableMethod method) {
         ListenerFilter filter = registerBehavior(listener);
         registeredListeners.put(listener, filter.addSubscription(topic, method));
     }
 
-	public ListenerFilter registerBehavior(PubSubMethodListener listener) {
+	ListenerFilter registerBehavior(PubSubMethodListener listener) {
 		return registeredListeners.computeIfAbsent(listener, (k) -> runtime.registerListener(listener.getClass().getSimpleName(), k));
 	}
 

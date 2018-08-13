@@ -6,7 +6,7 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
+import Foundation // DispatchQueue
 
 /*
 	The MQTTClientAppController manages the high level business logic of the
@@ -19,14 +19,16 @@ public protocol MQTTClientAppControllerDelegate: class {
 }
 
 public class MQTTClientAppController {
-	public private(set) var client: (MQTTBridge & MQTTControl)?
+	private let clientParams: MQTTClientParams
 	private let network: FogNetworkReachability
 	private let metrics: MQTTMetrics?
 	private var wasStarted: Bool = true
+	public private(set) var client: (MQTTBridge & MQTTControl)?
 	
 	public weak var delegate: MQTTClientAppControllerDelegate?
 	
-	public init(metrics: MQTTMetrics? = nil) {
+	public init(client: MQTTClientParams = MQTTClientParams(), metrics: MQTTMetrics? = nil) {
+		self.clientParams = client
 		self.network = FogNetworkReachability()
 		self.metrics = metrics
 	}
@@ -34,10 +36,8 @@ public class MQTTClientAppController {
 	public var mqttHost: String = "" {
 		didSet {
 			if mqttHost != oldValue {
-				var client = MQTTClientParams()
-				client.detectServerDeath = 2
 				let newClient = MQTTClient(
-					client: client,
+					client: clientParams,
 					host: MQTTHostParams(host: mqttHost, port: .standard),
 					reconnect: MQTTReconnectParams(),
 					metrics: metrics)

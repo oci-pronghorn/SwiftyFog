@@ -26,9 +26,29 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      codeCoverageEnabled = "YES"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "553146F521153C3900089385"
+               BuildableName = "SwiftyFog_iOSTests.xctest"
+               BlueprintName = "SwiftyFog_iOSTests"
+               ReferencedContainer = "container:SwiftyFog.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "554347461F82D0F600C3C2CB"
+            BuildableName = "SwiftyFog_iOS.framework"
+            BlueprintName = "SwiftyFog_iOS"
+            ReferencedContainer = "container:SwiftyFog.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>

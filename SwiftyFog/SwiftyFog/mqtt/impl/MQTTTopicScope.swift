@@ -5,8 +5,6 @@
 //  Created by David Giovannini on 8/19/17.
 //
 
-import Foundation
-
 final class MQTTTopicScope: MQTTBridge {
 	private var base: MQTTBridge
 	private let fullPath: String

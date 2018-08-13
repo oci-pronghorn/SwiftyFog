@@ -42,9 +42,9 @@ public class Lights: FogFeedbackModel {
 	
 	public weak var delegate: LightsDelegate?
 	
-    public var mqtt: MQTTBridge! {
+    public var mqtt: MQTTBridge? {
 		didSet {
-			broadcaster.assign(mqtt.broadcast(to: self, queue: DispatchQueue.main, topics: [
+			broadcaster.assign(mqtt?.broadcast(to: self, queue: DispatchQueue.main, topics: [
 				("override/feedback", .atMostOnce, Lights.feedbackOverride),
 				("power/feedback", .atMostOnce, Lights.feedbackPower),
 				("calibration/feedback", .atMostOnce, Lights.feedbackCalibration),
@@ -85,14 +85,14 @@ public class Lights: FogFeedbackModel {
 	public func control(override: LightCommand) {
 		var data  = Data(capacity: override.fogSize)
 		data.fogAppend(override)
-		mqtt.publish(MQTTMessage(topic: "override/control", payload: data))
+		mqtt?.publish(MQTTMessage(topic: "override/control", payload: data))
 	}
 	
 	public func control(calibration: TrainRational) {
 		self.calibration.control(calibration) { value in
 			var data  = Data(capacity: value.fogSize)
 			data.fogAppend(value)
-			mqtt.publish(MQTTMessage(topic: "calibration/control", payload: data))
+			mqtt?.publish(MQTTMessage(topic: "calibration/control", payload: data))
 		}
 	}
 	

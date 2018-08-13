@@ -6,7 +6,7 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
+import Foundation // NetService Dispatch Queue, Data
 
 /*
 	The MQTTMultiClientAppController manages the high level business logic of the
@@ -16,6 +16,7 @@ import Foundation
 public protocol MQTTMultiClientAppControllerDelegate: class {
 	func on(mqttClient: (MQTTBridge & MQTTControl), log: String)
 	func on(mqttClient: (MQTTBridge & MQTTControl), connected: MQTTConnectedState)
+	func discovered(mqttBrokers: [(String,Int)])
 }
 
 public class MQTTClientSubscription: MQTTBridge, MQTTControl {
@@ -69,15 +70,20 @@ public class MQTTClientSubscription: MQTTBridge, MQTTControl {
 }
 
 public class MQTTMultiClientAppController {
+	private let clientParams: MQTTClientParams
+	let bonjour = FogBonjourDiscovery(type: "mqtt", proto: "tcp")
 	private var clients: [String : ((MQTTBridge & MQTTControl), Int, Bool)] = [:]
 	private let network: FogNetworkReachability
 	private let metrics: ()->MQTTMetrics?
 	
 	public weak var delegate: MQTTMultiClientAppControllerDelegate?
 	
-	public init(metrics: @escaping @autoclosure ()->MQTTMetrics?) {
+	public init(client: MQTTClientParams = MQTTClientParams(), metrics: @escaping @autoclosure ()->MQTTMetrics?) {
+		self.clientParams = client
 		self.network = FogNetworkReachability()
 		self.metrics = metrics
+	
+		bonjour.delegate = self
 	}
 	
 	public func requestClient(hostedOn: String) -> (MQTTBridge & MQTTControl) {
@@ -98,10 +104,8 @@ public class MQTTMultiClientAppController {
 	}
 	
 	private func createClient(mqttHost: String) -> MQTTClient {
-		var client = MQTTClientParams()
-		client.detectServerDeath = 2
 		let newClient = MQTTClient(
-			client: client,
+			client: clientParams,
 			host: MQTTHostParams(host: mqttHost, port: .standard),
 			reconnect: MQTTReconnectParams(),
 			metrics: metrics())
@@ -114,6 +118,7 @@ public class MQTTMultiClientAppController {
 		// Network reachability can detect a disconnected state before the client
 		network.start { [weak self] status in
 			if status != .none {
+				self?.bonjour.start()
 				for client in (self?.clients)! {
 					if client.value.2 {
 						client.value.0.start()
@@ -121,6 +126,7 @@ public class MQTTMultiClientAppController {
 				}
 			}
 			else {
+				self?.bonjour.stop()
 				for client in (self?.clients)! {
 					if client.value.2 {
 						client.value.0.stop()
@@ -132,6 +138,7 @@ public class MQTTMultiClientAppController {
 	
 	public func goBackground() {
 		// Be a good iOS citizen and shutdown the connection and timers
+		self.bonjour.stop()
 		for host in clients.keys {
 			let client = clients[host]!.0
 			clients[host]!.2 = client.started
@@ -158,5 +165,27 @@ extension MQTTMultiClientAppController: MQTTClientDelegate {
 	public func mqtt(client: MQTTClient, recreatedSubscriptions: [MQTTSubscription]) {
 		DispatchQueue.main.async {
 		}
+	}
+}
+
+extension MQTTMultiClientAppController: BonjourDiscoveryDelegate {
+	public func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didFailedAt: BonjourDiscoveryOperation, withErrorDict: [String : NSNumber]?) {
+	}
+	
+	public func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didFindService service: NetService, atHosts host: [(String, Int)]) {
+		delegate?.discovered(mqttBrokers: [(service.hostName!, host[0].1)])
+	}
+	
+	public func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didRemovedService service: NetService) {
+		print("Undiscovered \(service.name)")
+	}
+	
+	public func browserDidStart(_ bonjourDiscovery: FogBonjourDiscovery) {
+	}
+	
+	public func browserDidStop(_ bonjourDiscovery: FogBonjourDiscovery) {
+	}
+	
+	public func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, serviceDidUpdateTXT: NetService, TXT: Data) {
 	}
 }

@@ -6,8 +6,6 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
-
 // The following are reasons for disconnection from broker
 public enum MQTTConnectionDisconnect {
 	case stopped // by client

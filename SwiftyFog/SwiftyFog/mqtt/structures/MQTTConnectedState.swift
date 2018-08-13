@@ -6,8 +6,6 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
-
 public enum MQTTConnectedState: CustomStringConvertible {
 	case started
 	case connected(cleanSession: Bool, connectedAsPresent: Bool, isInitial: Bool, connectionCounter: Int)

@@ -11,11 +11,10 @@ import Foundation
 import SwiftFog_watch
 
 class TrainInterfaceController: WKInterfaceController {
-	let train = Train()
-	let engine = Engine()
-	let lights = Lights()
-	let billboard = Billboard()
-	
+	internal let discovery = TrainDiscovery()
+	private let train = Train()
+	private let engine = Engine()
+	private let lights = Lights()
 	
 	@IBOutlet weak var aliveIndicator: WKInterfaceImage!
 	@IBOutlet weak var engineIndicator: WKInterfaceImage!
@@ -26,43 +25,47 @@ class TrainInterfaceController: WKInterfaceController {
 	@IBOutlet weak var overrideOffIndicator: WKInterfaceLabel!
 	@IBOutlet weak var overrideAutoIndicator: WKInterfaceLabel!
 	
-	static var mqtt: MQTTBridge!
-	static var mqttControl: MQTTControl!
-	static var trainName: String = ""
-	var alive = false
+	private static var discoverBridge: MQTTBridge!
+	private static var mqttControl: MQTTControl!
 	
-	static func setTrain(named name: String, bridging: MQTTBridge, mqttControl: MQTTControl!, force: Bool) {
-		self.mqttControl = mqttControl
-		if trainName != name || force {
-			self.trainName = name
-			let scoped = bridging.createBridge(subPath: trainName)
-			TrainInterfaceController.mqtt = scoped
+	internal static weak var shared: TrainInterfaceController!
+	
+	internal var discoveredTrain: DiscoveredTrain? {
+		didSet {
+			let trainBridge = discoveredTrain != nil ? discoverBridge.createBridge(subPath: discoveredTrain!.trainName) : nil
+			train.mqtt = trainBridge
+			engine.mqtt = trainBridge?.createBridge(subPath: "engine")
+			lights.mqtt = trainBridge?.createBridge(subPath: "lights")
 		}
 	}
-
-	var mqtt: MQTTBridge! {
+	
+	private var discoverBridge: MQTTBridge! {
 		didSet {
-			train.mqtt = mqtt
-			engine.mqtt = mqtt.createBridge(subPath: "engine")
-			lights.mqtt = mqtt.createBridge(subPath: "lights")
-			billboard.mqtt = mqtt.createBridge(subPath: "billboard")
+			self.discoveredTrain = nil
+			self.discovery.mqtt = discoverBridge
 		}
 	}
 	
 // MARK: Life Cycle
 	
+	internal static func set(discoverBridge: MQTTBridge, mqttControl: MQTTControl!) {
+		self.discoverBridge = discoverBridge
+		self.mqttControl = mqttControl
+	}
+	
 	override init() {
 		super.init()
-		train.delegate = self
-		engine.delegate = self
-		lights.delegate = self
-		billboard.delegate = self
+		self.discovery.delegate = self
+		self.train.delegate = self
+		self.engine.delegate = self
+		self.lights.delegate = self
+		TrainInterfaceController.shared = self
 	}
 
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
 		self.crownSequencer.delegate = self
-    	self.mqtt = TrainInterfaceController.mqtt
+    	self.discoverBridge = TrainInterfaceController.discoverBridge
     }
     
     override func willActivate() {
@@ -72,16 +75,17 @@ class TrainInterfaceController: WKInterfaceController {
         self.assertValues()
 		self.crownSequencer.focus()
     }
-    
-    override func didDeactivate() {
-        // This method is called when watch view controller is no longer visible
-        super.didDeactivate()
-    }
 }
 
 // MARK: UI Reactions
 
 extension TrainInterfaceController: WKCrownDelegate {
+	internal func selected(train: DiscoveredTrain?) {
+		if train?.trainName != discoveredTrain?.trainName {
+			self.discoveredTrain = train
+		}
+	}
+	
 	func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
 		if (engine.control(powerIncrement: rotationalDelta)) {
 			WKInterfaceDevice.current().play(WKHapticType.click)
@@ -116,13 +120,11 @@ extension TrainInterfaceController {
 		switch connected {
 			case .started:
 				aliveIndicator.setImage(#imageLiteral(resourceName: "Disconnected"))
-				billboardPresentConnectionStatus()
 				break
 			case .connected(_, _, _, _):
 				feedbackCut()
 				assertValues()
 				aliveIndicator.setImage(#imageLiteral(resourceName: "Dead"))
-				billboardPresentConnectionStatus()
 				break
 			case .pinged(let status):
 				switch status {
@@ -145,7 +147,6 @@ extension TrainInterfaceController {
 			case .disconnected(_, _, _):
 				feedbackCut()
 				aliveIndicator.setImage(#imageLiteral(resourceName: "Disconnected"))
-				billboardPresentConnectionStatus()
 				break
 		}
 	}
@@ -157,35 +158,47 @@ extension TrainInterfaceController {
 		train.assertValues()
 		engine.assertValues()
 		lights.assertValues()
-		billboard.assertValues()
 	}
 	
 	func feedbackCut() {
 		train.reset()
 		engine.reset()
 		lights.reset()
-		billboard.reset()
 	}
 }
 
 // MARK: Model Delegate
 
+extension TrainInterfaceController: TrainDiscoveryDelegate {
+	func train(_ train: DiscoveredTrain, discovered: Bool) {
+		if discovered && self.discoveredTrain == nil {
+			self.discoveredTrain = train
+		}
+		if discovered == false {
+			if train.trainName == discoveredTrain?.trainName {
+				self.discoveredTrain = self.discovery.firstTrain
+			}
+		}
+		TrainSelectorInterfaceController.shared.reloadData()
+	}
+}
+
 extension TrainInterfaceController:
 		TrainDelegate,
 		EngineDelegate,
-		LightsDelegate,
-		BillboardDelegate {
+		LightsDelegate {
 
 	func onSubscriptionAck(status: MQTTSubscriptionStatus) {
 	}
 	
-	func train(alive: Bool) {
+	func train(alive: Bool, named: String?) {
 		if alive == false {
 			feedbackCut()
 		}
-		self.alive = alive
+		if let name = named {
+        	self.setTitle(name)
+        }
 		aliveIndicator.setImage(alive ? #imageLiteral(resourceName: "Alive") : #imageLiteral(resourceName: "Dead"))
-		self.billboardPresentConnectionStatus()
 	}
 			
     func train(faults: MotionFaults, _ asserted: Bool) {
@@ -244,36 +257,5 @@ extension TrainInterfaceController:
 	}
 	
 	func lights(ambient: TrainRational, _ asserted: Bool) {
-	}
-
-	func billboard(layout: FogBitmapLayout) {
-	}
-	
-	func billboard(image: UIImage) {
-	}
-	
-    func billboard(text: String, _ asserted: Bool) {
-        self.setTitle(text)
-    }
-	
-    func billboardPresentConnectionStatus() {
-		let mqttControl = TrainInterfaceController.mqttControl!
-		if mqttControl.started {
-			if mqttControl.connected {
-				if self.alive {
-				}
-				else {
-					self.setTitle("No Train")
-				}
-			}
-			else {
-				self.alive = false
-				self.setTitle("Connecting...")
-			}
-		}
-		else {
-			self.alive = false
-			self.setTitle("No Connection")
-		}
 	}
 }

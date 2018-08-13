@@ -6,8 +6,6 @@
 //  Copyright © 2018 Object Computing Inc. All rights reserved.
 //
 
-import Foundation
-
 public extension Optional {
 	public mutating func assign(_ factory: @autoclosure ()->(Wrapped?)) {
 		self = nil // Execute deinit of old wrapped before factory (init of new wrapped)

@@ -1,8 +1,5 @@
 package com.ociweb.behaviors;
 
-import static com.ociweb.behaviors.AmbientLightBehavior.maxSensorReading;
-import static com.ociweb.iot.maker.TriState.latent;
-
 import com.ociweb.gl.api.PubSubFixedTopicService;
 import com.ociweb.gl.api.PubSubMethodListener;
 import com.ociweb.gl.api.StartupListener;
@@ -15,14 +12,15 @@ import com.ociweb.model.ActuatorDriverPort;
 import com.ociweb.model.RationalPayload;
 import com.ociweb.pronghorn.pipe.ChannelReader;
 
-/*
+import static com.ociweb.behaviors.AmbientLightBehavior.maxSensorReading;
+
+/**
     LightingBehavior encapsulates all the business logic for managing the interaction
     between the light sensor, the light, actuator, and external commands.
     It broadcasts feedback whenever state changes.
 
     The actuator behaviors perform the hardware tasks.
  */
-
 public class LightingBehavior implements PubSubMethodListener, TimeListener, StartupListener {
 	private final PubSubFixedTopicService actuatorService;
     private final PubSubFixedTopicService overrideService;
@@ -58,7 +56,7 @@ public class LightingBehavior implements PubSubMethodListener, TimeListener, Sta
     	   && this.calibrationService.hasRoomFor(1)) {
     	
 	        boolean isOn = this.actuatorPayload.power > 0.0;
-	        TriState lightsOn = overridePower == null ? latent : overridePower == 0.0 ? TriState.on : TriState.off;
+	        TriState lightsOn = overridePower == null ? TriState.latent : overridePower == 1.0 ? TriState.on : TriState.off;
 	        this.overrideService.publishTopic( writer -> writer.writeInt(lightsOn.ordinal()));
 	        this.powerService.publishTopic( writer -> writer.writeBoolean(isOn));
 	        this.calibrationService.publishTopic( writer -> writer.write(calibration));
