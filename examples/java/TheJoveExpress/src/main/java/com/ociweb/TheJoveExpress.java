@@ -60,6 +60,8 @@ public class TheJoveExpress implements FogApp
                     config.lightsEnabled == FeatureEnabled.full ? config.ledPort : null);
         }
 
+        //hardware.defineRoute().path("${path}").routeId();
+        
         //if (config.soundEnabled) hardware.useSerial(Baud.B_____9600);
         //if (config.soundEnabled) ; //c.connect(serial mp3 player);
     }
