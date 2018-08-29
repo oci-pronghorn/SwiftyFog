@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SwiftyFog_iOS
+@testable import SwiftyFog_iOS
 
 class TestingViewController: UIViewController {
 	var mqtt: MQTTBridge!

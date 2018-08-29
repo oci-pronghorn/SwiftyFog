@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import SwiftyFog
+@testable import SwiftyFog_iOS
 
 struct BigDataBucket : FogExternalizable, Equatable {
 	let uInt8: UInt8
@@ -88,22 +88,4 @@ class SwiftyFogExternalizableTests: XCTestCase {
 		XCTAssertTrue(written == read)
 		XCTAssertTrue(src == dest)
     }
-    
-    func testFogBitmapLayout() {
-		var src = FogBitmapLayout(colorSpace: .rgba)
-		src.width = 23
-		src.height = 65
-		src.componentDepth = 6
-		src.minComponentWidth = 2
-		
-		var stream = Data()
-		src.writeTo(data: &stream)
-		let written = stream.count
-		var read = 0
-		let dest = FogBitmapLayout(data: stream, cursor: &read)
-		
-		XCTAssertTrue(written == read)
-		XCTAssertTrue(src == dest)
-    }
-    
 }

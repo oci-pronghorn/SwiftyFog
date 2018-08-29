@@ -4,6 +4,12 @@
 *.swp
 *.lock
 profile
+Contents.o
+
+####
+# SPM
+/.build
+/Packages
 
 ####
 # Xcode

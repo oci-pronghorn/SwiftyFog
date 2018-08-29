@@ -3,19 +3,22 @@
 SwiftyFog is a specification compliant robust and performant MQTT client implementation. It is entirely written in Swift with the following design considerations.
 * Idiomatic Swift
 * Unhappy-path driven design; every failure point captured and propagated to the business layer
-* Mobile and MVC friendly interfaces
+* Mobile and MVC friendly APIs
 * Optional behaviors in specification exposed
 * Resource conscious
 * Non-trivial example demonstrating usage and patterns
 * No global state
+* Incoming packet wild card distribution
+* Support for multiple MQTT connections
 
 There are couple remaining TODOs.
+* Many More Unit Tests
 * Better packet retry configuration
 * File persisted packets for clean session false and relaunch of application
-* Not fighting the framework in the iOS Stream wrapper
+* Not "fighting the framework" in the iOS Stream wrapper
 * Continue to improve Metrics information
-* Rewrite 4 year old Obj-C code in example custom controls
 * SwiftPackage Manager
+* Linux build
 
 ## Examples
 

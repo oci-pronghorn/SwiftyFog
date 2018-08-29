@@ -8,8 +8,8 @@
 
 import Foundation // Data
 
-internal extension Date {
-	static func nowInSeconds() -> Int64 {
+public extension Date {
+	public static func nowInSeconds() -> Int64 {
 		return Int64(Date().timeIntervalSince1970.rounded())
 	}
 }
