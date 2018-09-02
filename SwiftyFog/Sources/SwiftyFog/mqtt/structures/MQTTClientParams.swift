@@ -8,6 +8,8 @@
 
 #if os(iOS)
 import UIKit
+#else
+import Foundation // Bundle
 #endif
 
 public struct MQTTClientParams {

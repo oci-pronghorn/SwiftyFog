@@ -8,8 +8,8 @@ Contents.o
 
 ####
 # SPM
-/.build
-/Packages
+.build
+Packages
 
 ####
 # Xcode

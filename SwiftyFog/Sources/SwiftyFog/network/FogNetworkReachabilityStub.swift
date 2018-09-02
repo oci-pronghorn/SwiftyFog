@@ -10,6 +10,8 @@ import Foundation // DispatchQueue
 
 // TODO: this is used for testing and watch. We need soemthing better for watch.
 
+#if os(watchOS)
+
 public final class FogNetworkReachability {
 
     public typealias NetworkReachable = (FogNetworkReachabilityStatus) -> ()
@@ -26,3 +28,5 @@ public final class FogNetworkReachability {
     public func stop() {
     }
 }
+
+#endif

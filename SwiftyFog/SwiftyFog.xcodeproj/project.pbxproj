@@ -10,201 +10,201 @@
 		553146FB21153C3900089385 /* SwiftyFog_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554347471F82D0F600C3C2CB /* SwiftyFog_iOS.framework */; };
 		554347EB1F82D1B600C3C2CB /* SwiftyFog_mac.h in Headers */ = {isa = PBXBuildFile; fileRef = 554347E91F82D1B600C3C2CB /* SwiftyFog_mac.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5576B30721374BD8000ECDBE /* SwiftyFog_iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 5576B30521374BD8000ECDBE /* SwiftyFog_iOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5576B35A21374BF5000ECDBE /* Optional+RAII.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B30B21374BF5000ECDBE /* Optional+RAII.swift */; };
-		5576B35B21374BF5000ECDBE /* Optional+RAII.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B30B21374BF5000ECDBE /* Optional+RAII.swift */; };
-		5576B35C21374BF5000ECDBE /* Optional+RAII.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B30B21374BF5000ECDBE /* Optional+RAII.swift */; };
-		5576B35D21374BF5000ECDBE /* FogExternalizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B30C21374BF5000ECDBE /* FogExternalizable.swift */; };
-		5576B35E21374BF5000ECDBE /* FogExternalizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B30C21374BF5000ECDBE /* FogExternalizable.swift */; };
-		5576B35F21374BF5000ECDBE /* FogExternalizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B30C21374BF5000ECDBE /* FogExternalizable.swift */; };
-		5576B36021374BF5000ECDBE /* FogRational.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B30D21374BF5000ECDBE /* FogRational.swift */; };
-		5576B36121374BF5000ECDBE /* FogRational.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B30D21374BF5000ECDBE /* FogRational.swift */; };
-		5576B36221374BF5000ECDBE /* FogRational.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B30D21374BF5000ECDBE /* FogRational.swift */; };
-		5576B36321374BF5000ECDBE /* ReadWriteMutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B30E21374BF5000ECDBE /* ReadWriteMutex.swift */; };
-		5576B36421374BF5000ECDBE /* ReadWriteMutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B30E21374BF5000ECDBE /* ReadWriteMutex.swift */; };
-		5576B36521374BF5000ECDBE /* ReadWriteMutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B30E21374BF5000ECDBE /* ReadWriteMutex.swift */; };
-		5576B36621374BF5000ECDBE /* FogFeedbackValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B30F21374BF5000ECDBE /* FogFeedbackValue.swift */; };
-		5576B36721374BF5000ECDBE /* FogFeedbackValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B30F21374BF5000ECDBE /* FogFeedbackValue.swift */; };
-		5576B36821374BF5000ECDBE /* FogFeedbackValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B30F21374BF5000ECDBE /* FogFeedbackValue.swift */; };
-		5576B36921374BF5000ECDBE /* fogSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31021374BF5000ECDBE /* fogSize.swift */; };
-		5576B36A21374BF5000ECDBE /* fogSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31021374BF5000ECDBE /* fogSize.swift */; };
-		5576B36B21374BF5000ECDBE /* fogSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31021374BF5000ECDBE /* fogSize.swift */; };
-		5576B36C21374BF5000ECDBE /* Data+Fog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31121374BF5000ECDBE /* Data+Fog.swift */; };
-		5576B36D21374BF5000ECDBE /* Data+Fog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31121374BF5000ECDBE /* Data+Fog.swift */; };
-		5576B36E21374BF5000ECDBE /* Data+Fog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31121374BF5000ECDBE /* Data+Fog.swift */; };
-		5576B36F21374BF5000ECDBE /* FogStreamReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31321374BF5000ECDBE /* FogStreamReadable.swift */; };
-		5576B37021374BF5000ECDBE /* FogStreamReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31321374BF5000ECDBE /* FogStreamReadable.swift */; };
-		5576B37121374BF5000ECDBE /* FogStreamReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31321374BF5000ECDBE /* FogStreamReadable.swift */; };
-		5576B37221374BF5000ECDBE /* RunLoopPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31421374BF5000ECDBE /* RunLoopPool.swift */; };
-		5576B37321374BF5000ECDBE /* RunLoopPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31421374BF5000ECDBE /* RunLoopPool.swift */; };
-		5576B37421374BF5000ECDBE /* RunLoopPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31421374BF5000ECDBE /* RunLoopPool.swift */; };
-		5576B37521374BF5000ECDBE /* FogSocketStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31521374BF5000ECDBE /* FogSocketStream.swift */; };
-		5576B37621374BF5000ECDBE /* FogSocketStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31521374BF5000ECDBE /* FogSocketStream.swift */; };
-		5576B37721374BF5000ECDBE /* FogSocketStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31521374BF5000ECDBE /* FogSocketStream.swift */; };
-		5576B37821374BF5000ECDBE /* FogStreamWritable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31621374BF5000ECDBE /* FogStreamWritable.swift */; };
-		5576B37921374BF5000ECDBE /* FogStreamWritable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31621374BF5000ECDBE /* FogStreamWritable.swift */; };
-		5576B37A21374BF5000ECDBE /* FogStreamWritable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31621374BF5000ECDBE /* FogStreamWritable.swift */; };
-		5576B37B21374BF5000ECDBE /* FogBonjourDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31821374BF5000ECDBE /* FogBonjourDiscovery.swift */; };
-		5576B37C21374BF5000ECDBE /* FogBonjourDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31821374BF5000ECDBE /* FogBonjourDiscovery.swift */; };
-		5576B38021374BF5000ECDBE /* FogNetworkReachabilityStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31921374BF5000ECDBE /* FogNetworkReachabilityStub.swift */; };
-		5576B38121374BF5000ECDBE /* FogNetworkReachabilityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31A21374BF5000ECDBE /* FogNetworkReachabilityStatus.swift */; };
-		5576B38221374BF5000ECDBE /* FogNetworkReachabilityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31A21374BF5000ECDBE /* FogNetworkReachabilityStatus.swift */; };
-		5576B38321374BF5000ECDBE /* FogNetworkReachabilityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31A21374BF5000ECDBE /* FogNetworkReachabilityStatus.swift */; };
-		5576B38421374BF5000ECDBE /* FogNetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31B21374BF5000ECDBE /* FogNetworkReachability.swift */; };
-		5576B38521374BF5000ECDBE /* FogNetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31B21374BF5000ECDBE /* FogNetworkReachability.swift */; };
-		5576B38721374BF5000ECDBE /* MQTTTopicScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31E21374BF5000ECDBE /* MQTTTopicScope.swift */; };
-		5576B38821374BF5000ECDBE /* MQTTTopicScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31E21374BF5000ECDBE /* MQTTTopicScope.swift */; };
-		5576B38921374BF5000ECDBE /* MQTTTopicScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31E21374BF5000ECDBE /* MQTTTopicScope.swift */; };
-		5576B38A21374BF5000ECDBE /* MQTTConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31F21374BF5000ECDBE /* MQTTConnectionManager.swift */; };
-		5576B38B21374BF5000ECDBE /* MQTTConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31F21374BF5000ECDBE /* MQTTConnectionManager.swift */; };
-		5576B38C21374BF5000ECDBE /* MQTTConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B31F21374BF5000ECDBE /* MQTTConnectionManager.swift */; };
-		5576B38D21374BF5000ECDBE /* MQTTConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32021374BF5000ECDBE /* MQTTConnection.swift */; };
-		5576B38E21374BF5000ECDBE /* MQTTConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32021374BF5000ECDBE /* MQTTConnection.swift */; };
-		5576B38F21374BF5000ECDBE /* MQTTConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32021374BF5000ECDBE /* MQTTConnection.swift */; };
-		5576B39021374BF5000ECDBE /* MQTTPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32121374BF5000ECDBE /* MQTTPublisher.swift */; };
-		5576B39121374BF5000ECDBE /* MQTTPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32121374BF5000ECDBE /* MQTTPublisher.swift */; };
-		5576B39221374BF5000ECDBE /* MQTTPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32121374BF5000ECDBE /* MQTTPublisher.swift */; };
-		5576B39321374BF5000ECDBE /* MQTTSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32221374BF5000ECDBE /* MQTTSubscriber.swift */; };
-		5576B39421374BF5000ECDBE /* MQTTSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32221374BF5000ECDBE /* MQTTSubscriber.swift */; };
-		5576B39521374BF5000ECDBE /* MQTTSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32221374BF5000ECDBE /* MQTTSubscriber.swift */; };
-		5576B39621374BF5000ECDBE /* MQTTPacketDurability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32321374BF5000ECDBE /* MQTTPacketDurability.swift */; };
-		5576B39721374BF5000ECDBE /* MQTTPacketDurability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32321374BF5000ECDBE /* MQTTPacketDurability.swift */; };
-		5576B39821374BF5000ECDBE /* MQTTPacketDurability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32321374BF5000ECDBE /* MQTTPacketDurability.swift */; };
-		5576B39921374BF5000ECDBE /* MQTTPersistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32421374BF5000ECDBE /* MQTTPersistance.swift */; };
-		5576B39A21374BF5000ECDBE /* MQTTPersistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32421374BF5000ECDBE /* MQTTPersistance.swift */; };
-		5576B39B21374BF5000ECDBE /* MQTTPersistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32421374BF5000ECDBE /* MQTTPersistance.swift */; };
-		5576B39C21374BF5000ECDBE /* MQTTRetryConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32521374BF5000ECDBE /* MQTTRetryConnection.swift */; };
-		5576B39D21374BF5000ECDBE /* MQTTRetryConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32521374BF5000ECDBE /* MQTTRetryConnection.swift */; };
-		5576B39E21374BF5000ECDBE /* MQTTRetryConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32521374BF5000ECDBE /* MQTTRetryConnection.swift */; };
-		5576B39F21374BF5000ECDBE /* MQTTDistributer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32621374BF5000ECDBE /* MQTTDistributer.swift */; };
-		5576B3A021374BF5000ECDBE /* MQTTDistributer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32621374BF5000ECDBE /* MQTTDistributer.swift */; };
-		5576B3A121374BF5000ECDBE /* MQTTDistributer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32621374BF5000ECDBE /* MQTTDistributer.swift */; };
-		5576B3A221374BF5000ECDBE /* MQTTTopicPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32721374BF5000ECDBE /* MQTTTopicPattern.swift */; };
-		5576B3A321374BF5000ECDBE /* MQTTTopicPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32721374BF5000ECDBE /* MQTTTopicPattern.swift */; };
-		5576B3A421374BF5000ECDBE /* MQTTTopicPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32721374BF5000ECDBE /* MQTTTopicPattern.swift */; };
-		5576B3A521374BF5000ECDBE /* MQTTRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32821374BF5000ECDBE /* MQTTRouter.swift */; };
-		5576B3A621374BF5000ECDBE /* MQTTRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32821374BF5000ECDBE /* MQTTRouter.swift */; };
-		5576B3A721374BF5000ECDBE /* MQTTRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32821374BF5000ECDBE /* MQTTRouter.swift */; };
-		5576B3A821374BF5000ECDBE /* MQTTMessageIdSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32921374BF5000ECDBE /* MQTTMessageIdSource.swift */; };
-		5576B3A921374BF5000ECDBE /* MQTTMessageIdSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32921374BF5000ECDBE /* MQTTMessageIdSource.swift */; };
-		5576B3AA21374BF5000ECDBE /* MQTTMessageIdSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32921374BF5000ECDBE /* MQTTMessageIdSource.swift */; };
-		5576B3AB21374BF5000ECDBE /* MQTTClientParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32B21374BF5000ECDBE /* MQTTClientParams.swift */; };
-		5576B3AC21374BF5000ECDBE /* MQTTClientParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32B21374BF5000ECDBE /* MQTTClientParams.swift */; };
-		5576B3AD21374BF5000ECDBE /* MQTTClientParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32B21374BF5000ECDBE /* MQTTClientParams.swift */; };
-		5576B3AE21374BF5000ECDBE /* MQTTConnectionDisconnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32C21374BF5000ECDBE /* MQTTConnectionDisconnect.swift */; };
-		5576B3AF21374BF5000ECDBE /* MQTTConnectionDisconnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32C21374BF5000ECDBE /* MQTTConnectionDisconnect.swift */; };
-		5576B3B021374BF5000ECDBE /* MQTTConnectionDisconnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32C21374BF5000ECDBE /* MQTTConnectionDisconnect.swift */; };
-		5576B3B121374BF5000ECDBE /* MQTTRoutingParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32D21374BF5000ECDBE /* MQTTRoutingParams.swift */; };
-		5576B3B221374BF5000ECDBE /* MQTTRoutingParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32D21374BF5000ECDBE /* MQTTRoutingParams.swift */; };
-		5576B3B321374BF5000ECDBE /* MQTTRoutingParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32D21374BF5000ECDBE /* MQTTRoutingParams.swift */; };
-		5576B3B421374BF5000ECDBE /* MQTTAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32E21374BF5000ECDBE /* MQTTAuthentication.swift */; };
-		5576B3B521374BF5000ECDBE /* MQTTAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32E21374BF5000ECDBE /* MQTTAuthentication.swift */; };
-		5576B3B621374BF5000ECDBE /* MQTTAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32E21374BF5000ECDBE /* MQTTAuthentication.swift */; };
-		5576B3B721374BF5000ECDBE /* MQTTReconnectParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32F21374BF5000ECDBE /* MQTTReconnectParams.swift */; };
-		5576B3B821374BF5000ECDBE /* MQTTReconnectParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32F21374BF5000ECDBE /* MQTTReconnectParams.swift */; };
-		5576B3B921374BF5000ECDBE /* MQTTReconnectParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B32F21374BF5000ECDBE /* MQTTReconnectParams.swift */; };
-		5576B3BA21374BF5000ECDBE /* MQTTPingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33021374BF5000ECDBE /* MQTTPingStatus.swift */; };
-		5576B3BB21374BF5000ECDBE /* MQTTPingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33021374BF5000ECDBE /* MQTTPingStatus.swift */; };
-		5576B3BC21374BF5000ECDBE /* MQTTPingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33021374BF5000ECDBE /* MQTTPingStatus.swift */; };
-		5576B3BD21374BF5000ECDBE /* MQTTHostParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33121374BF5000ECDBE /* MQTTHostParams.swift */; };
-		5576B3BE21374BF5000ECDBE /* MQTTHostParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33121374BF5000ECDBE /* MQTTHostParams.swift */; };
-		5576B3BF21374BF5000ECDBE /* MQTTHostParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33121374BF5000ECDBE /* MQTTHostParams.swift */; };
-		5576B3C021374BF5000ECDBE /* MQTTConnectedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33221374BF5000ECDBE /* MQTTConnectedState.swift */; };
-		5576B3C121374BF5000ECDBE /* MQTTConnectedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33221374BF5000ECDBE /* MQTTConnectedState.swift */; };
-		5576B3C221374BF5000ECDBE /* MQTTConnectedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33221374BF5000ECDBE /* MQTTConnectedState.swift */; };
-		5576B3C321374BF5000ECDBE /* MQTTSubAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33621374BF5000ECDBE /* MQTTSubAckPacket.swift */; };
-		5576B3C421374BF5000ECDBE /* MQTTSubAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33621374BF5000ECDBE /* MQTTSubAckPacket.swift */; };
-		5576B3C521374BF5000ECDBE /* MQTTSubAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33621374BF5000ECDBE /* MQTTSubAckPacket.swift */; };
-		5576B3C621374BF5000ECDBE /* MQTTConnAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33721374BF5000ECDBE /* MQTTConnAckPacket.swift */; };
-		5576B3C721374BF5000ECDBE /* MQTTConnAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33721374BF5000ECDBE /* MQTTConnAckPacket.swift */; };
-		5576B3C821374BF5000ECDBE /* MQTTConnAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33721374BF5000ECDBE /* MQTTConnAckPacket.swift */; };
-		5576B3C921374BF5000ECDBE /* MQTTPingAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33821374BF5000ECDBE /* MQTTPingAckPacket.swift */; };
-		5576B3CA21374BF5000ECDBE /* MQTTPingAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33821374BF5000ECDBE /* MQTTPingAckPacket.swift */; };
-		5576B3CB21374BF5000ECDBE /* MQTTPingAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33821374BF5000ECDBE /* MQTTPingAckPacket.swift */; };
-		5576B3CC21374BF5000ECDBE /* MQTTUnsubAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33921374BF5000ECDBE /* MQTTUnsubAckPacket.swift */; };
-		5576B3CD21374BF5000ECDBE /* MQTTUnsubAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33921374BF5000ECDBE /* MQTTUnsubAckPacket.swift */; };
-		5576B3CE21374BF5000ECDBE /* MQTTUnsubAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33921374BF5000ECDBE /* MQTTUnsubAckPacket.swift */; };
-		5576B3CF21374BF5000ECDBE /* MQTTQoS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33B21374BF5000ECDBE /* MQTTQoS.swift */; };
-		5576B3D021374BF5000ECDBE /* MQTTQoS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33B21374BF5000ECDBE /* MQTTQoS.swift */; };
-		5576B3D121374BF5000ECDBE /* MQTTQoS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33B21374BF5000ECDBE /* MQTTQoS.swift */; };
-		5576B3D221374BF5000ECDBE /* MQTTPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33C21374BF5000ECDBE /* MQTTPayload.swift */; };
-		5576B3D321374BF5000ECDBE /* MQTTPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33C21374BF5000ECDBE /* MQTTPayload.swift */; };
-		5576B3D421374BF5000ECDBE /* MQTTPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33C21374BF5000ECDBE /* MQTTPayload.swift */; };
-		5576B3D521374BF5000ECDBE /* MQTTConnAckResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33D21374BF5000ECDBE /* MQTTConnAckResponse.swift */; };
-		5576B3D621374BF5000ECDBE /* MQTTConnAckResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33D21374BF5000ECDBE /* MQTTConnAckResponse.swift */; };
-		5576B3D721374BF5000ECDBE /* MQTTConnAckResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33D21374BF5000ECDBE /* MQTTConnAckResponse.swift */; };
-		5576B3D821374BF5000ECDBE /* MQTTPacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33E21374BF5000ECDBE /* MQTTPacketType.swift */; };
-		5576B3D921374BF5000ECDBE /* MQTTPacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33E21374BF5000ECDBE /* MQTTPacketType.swift */; };
-		5576B3DA21374BF5000ECDBE /* MQTTPacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33E21374BF5000ECDBE /* MQTTPacketType.swift */; };
-		5576B3DB21374BF5000ECDBE /* MQTTMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33F21374BF5000ECDBE /* MQTTMessage.swift */; };
-		5576B3DC21374BF5000ECDBE /* MQTTMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33F21374BF5000ECDBE /* MQTTMessage.swift */; };
-		5576B3DD21374BF5000ECDBE /* MQTTMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B33F21374BF5000ECDBE /* MQTTMessage.swift */; };
-		5576B3DE21374BF5000ECDBE /* MQTTPacketFixedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34021374BF5000ECDBE /* MQTTPacketFixedHeader.swift */; };
-		5576B3DF21374BF5000ECDBE /* MQTTPacketFixedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34021374BF5000ECDBE /* MQTTPacketFixedHeader.swift */; };
-		5576B3E021374BF5000ECDBE /* MQTTPacketFixedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34021374BF5000ECDBE /* MQTTPacketFixedHeader.swift */; };
-		5576B3E121374BF5000ECDBE /* MQTTPublishPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34221374BF5000ECDBE /* MQTTPublishPacket.swift */; };
-		5576B3E221374BF5000ECDBE /* MQTTPublishPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34221374BF5000ECDBE /* MQTTPublishPacket.swift */; };
-		5576B3E321374BF5000ECDBE /* MQTTPublishPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34221374BF5000ECDBE /* MQTTPublishPacket.swift */; };
-		5576B3E421374BF5000ECDBE /* MQTTPublishCompPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34321374BF5000ECDBE /* MQTTPublishCompPacket.swift */; };
-		5576B3E521374BF5000ECDBE /* MQTTPublishCompPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34321374BF5000ECDBE /* MQTTPublishCompPacket.swift */; };
-		5576B3E621374BF5000ECDBE /* MQTTPublishCompPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34321374BF5000ECDBE /* MQTTPublishCompPacket.swift */; };
-		5576B3E721374BF5000ECDBE /* MQTTPublishRecPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34421374BF5000ECDBE /* MQTTPublishRecPacket.swift */; };
-		5576B3E821374BF5000ECDBE /* MQTTPublishRecPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34421374BF5000ECDBE /* MQTTPublishRecPacket.swift */; };
-		5576B3E921374BF5000ECDBE /* MQTTPublishRecPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34421374BF5000ECDBE /* MQTTPublishRecPacket.swift */; };
-		5576B3EA21374BF5000ECDBE /* MQTTPublishRelPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34521374BF5000ECDBE /* MQTTPublishRelPacket.swift */; };
-		5576B3EB21374BF5000ECDBE /* MQTTPublishRelPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34521374BF5000ECDBE /* MQTTPublishRelPacket.swift */; };
-		5576B3EC21374BF5000ECDBE /* MQTTPublishRelPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34521374BF5000ECDBE /* MQTTPublishRelPacket.swift */; };
-		5576B3ED21374BF5000ECDBE /* MQTTPublishAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34621374BF5000ECDBE /* MQTTPublishAckPacket.swift */; };
-		5576B3EE21374BF5000ECDBE /* MQTTPublishAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34621374BF5000ECDBE /* MQTTPublishAckPacket.swift */; };
-		5576B3EF21374BF5000ECDBE /* MQTTPublishAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34621374BF5000ECDBE /* MQTTPublishAckPacket.swift */; };
-		5576B3F021374BF5000ECDBE /* MQTTPackedLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34721374BF5000ECDBE /* MQTTPackedLength.swift */; };
-		5576B3F121374BF5000ECDBE /* MQTTPackedLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34721374BF5000ECDBE /* MQTTPackedLength.swift */; };
-		5576B3F221374BF5000ECDBE /* MQTTPackedLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34721374BF5000ECDBE /* MQTTPackedLength.swift */; };
-		5576B3F321374BF5000ECDBE /* Data+MQTT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34821374BF5000ECDBE /* Data+MQTT.swift */; };
-		5576B3F421374BF5000ECDBE /* Data+MQTT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34821374BF5000ECDBE /* Data+MQTT.swift */; };
-		5576B3F521374BF5000ECDBE /* Data+MQTT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34821374BF5000ECDBE /* Data+MQTT.swift */; };
-		5576B3F621374BF5000ECDBE /* MQTTPacketFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34921374BF5000ECDBE /* MQTTPacketFactory.swift */; };
-		5576B3F721374BF5000ECDBE /* MQTTPacketFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34921374BF5000ECDBE /* MQTTPacketFactory.swift */; };
-		5576B3F821374BF5000ECDBE /* MQTTPacketFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34921374BF5000ECDBE /* MQTTPacketFactory.swift */; };
-		5576B3F921374BF5000ECDBE /* MQTTConnectPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34B21374BF5000ECDBE /* MQTTConnectPacket.swift */; };
-		5576B3FA21374BF5000ECDBE /* MQTTConnectPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34B21374BF5000ECDBE /* MQTTConnectPacket.swift */; };
-		5576B3FB21374BF5000ECDBE /* MQTTConnectPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34B21374BF5000ECDBE /* MQTTConnectPacket.swift */; };
-		5576B3FC21374BF5000ECDBE /* MQTTSubPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34C21374BF5000ECDBE /* MQTTSubPacket.swift */; };
-		5576B3FD21374BF5000ECDBE /* MQTTSubPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34C21374BF5000ECDBE /* MQTTSubPacket.swift */; };
-		5576B3FE21374BF5000ECDBE /* MQTTSubPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34C21374BF5000ECDBE /* MQTTSubPacket.swift */; };
-		5576B3FF21374BF5000ECDBE /* MQTTPingPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34D21374BF5000ECDBE /* MQTTPingPacket.swift */; };
-		5576B40021374BF5000ECDBE /* MQTTPingPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34D21374BF5000ECDBE /* MQTTPingPacket.swift */; };
-		5576B40121374BF5000ECDBE /* MQTTPingPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34D21374BF5000ECDBE /* MQTTPingPacket.swift */; };
-		5576B40221374BF5000ECDBE /* MQTTUnsubPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34E21374BF5000ECDBE /* MQTTUnsubPacket.swift */; };
-		5576B40321374BF5000ECDBE /* MQTTUnsubPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34E21374BF5000ECDBE /* MQTTUnsubPacket.swift */; };
-		5576B40421374BF5000ECDBE /* MQTTUnsubPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34E21374BF5000ECDBE /* MQTTUnsubPacket.swift */; };
-		5576B40521374BF5000ECDBE /* MQTTDisconnectPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34F21374BF5000ECDBE /* MQTTDisconnectPacket.swift */; };
-		5576B40621374BF5000ECDBE /* MQTTDisconnectPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34F21374BF5000ECDBE /* MQTTDisconnectPacket.swift */; };
-		5576B40721374BF5000ECDBE /* MQTTDisconnectPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B34F21374BF5000ECDBE /* MQTTDisconnectPacket.swift */; };
-		5576B40821374BF5000ECDBE /* MQTTPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35021374BF5000ECDBE /* MQTTPacket.swift */; };
-		5576B40921374BF5000ECDBE /* MQTTPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35021374BF5000ECDBE /* MQTTPacket.swift */; };
-		5576B40A21374BF5000ECDBE /* MQTTPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35021374BF5000ECDBE /* MQTTPacket.swift */; };
-		5576B40B21374BF5000ECDBE /* MQTTBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35221374BF5000ECDBE /* MQTTBridge.swift */; };
-		5576B40C21374BF5000ECDBE /* MQTTBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35221374BF5000ECDBE /* MQTTBridge.swift */; };
-		5576B40D21374BF5000ECDBE /* MQTTBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35221374BF5000ECDBE /* MQTTBridge.swift */; };
-		5576B40E21374BF5000ECDBE /* MQTTBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35321374BF5000ECDBE /* MQTTBroadcaster.swift */; };
-		5576B40F21374BF5000ECDBE /* MQTTBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35321374BF5000ECDBE /* MQTTBroadcaster.swift */; };
-		5576B41021374BF5000ECDBE /* MQTTBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35321374BF5000ECDBE /* MQTTBroadcaster.swift */; };
-		5576B41121374BF5000ECDBE /* MQTTMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35421374BF5000ECDBE /* MQTTMetrics.swift */; };
-		5576B41221374BF5000ECDBE /* MQTTMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35421374BF5000ECDBE /* MQTTMetrics.swift */; };
-		5576B41321374BF5000ECDBE /* MQTTMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35421374BF5000ECDBE /* MQTTMetrics.swift */; };
-		5576B41421374BF5000ECDBE /* MQTTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35521374BF5000ECDBE /* MQTTClient.swift */; };
-		5576B41521374BF5000ECDBE /* MQTTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35521374BF5000ECDBE /* MQTTClient.swift */; };
-		5576B41621374BF5000ECDBE /* MQTTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35521374BF5000ECDBE /* MQTTClient.swift */; };
-		5576B41721374BF5000ECDBE /* MQTTControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35621374BF5000ECDBE /* MQTTControl.swift */; };
-		5576B41821374BF5000ECDBE /* MQTTControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35621374BF5000ECDBE /* MQTTControl.swift */; };
-		5576B41921374BF5000ECDBE /* MQTTControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35621374BF5000ECDBE /* MQTTControl.swift */; };
-		5576B41A21374BF5000ECDBE /* MQTTMultiClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35821374BF5000ECDBE /* MQTTMultiClientAppController.swift */; };
-		5576B41B21374BF5000ECDBE /* MQTTMultiClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35821374BF5000ECDBE /* MQTTMultiClientAppController.swift */; };
-		5576B41D21374BF5000ECDBE /* MQTTClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35921374BF5000ECDBE /* MQTTClientAppController.swift */; };
-		5576B41E21374BF5000ECDBE /* MQTTClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35921374BF5000ECDBE /* MQTTClientAppController.swift */; };
-		5576B41F21374BF5000ECDBE /* MQTTClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B35921374BF5000ECDBE /* MQTTClientAppController.swift */; };
 		5576B43121375033000ECDBE /* MQTTTopicPatternTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B42C21375033000ECDBE /* MQTTTopicPatternTests.swift */; };
 		5576B43321375033000ECDBE /* SwiftyFogExternalizableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B42E21375033000ECDBE /* SwiftyFogExternalizableTests.swift */; };
+		5576B4882138DC91000ECDBE /* Optional+RAII.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43A2138DC91000ECDBE /* Optional+RAII.swift */; };
+		5576B4892138DC91000ECDBE /* Optional+RAII.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43A2138DC91000ECDBE /* Optional+RAII.swift */; };
+		5576B48A2138DC91000ECDBE /* Optional+RAII.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43A2138DC91000ECDBE /* Optional+RAII.swift */; };
+		5576B48B2138DC91000ECDBE /* FogExternalizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43B2138DC91000ECDBE /* FogExternalizable.swift */; };
+		5576B48C2138DC91000ECDBE /* FogExternalizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43B2138DC91000ECDBE /* FogExternalizable.swift */; };
+		5576B48D2138DC91000ECDBE /* FogExternalizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43B2138DC91000ECDBE /* FogExternalizable.swift */; };
+		5576B48E2138DC91000ECDBE /* FogRational.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43C2138DC91000ECDBE /* FogRational.swift */; };
+		5576B48F2138DC91000ECDBE /* FogRational.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43C2138DC91000ECDBE /* FogRational.swift */; };
+		5576B4902138DC91000ECDBE /* FogRational.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43C2138DC91000ECDBE /* FogRational.swift */; };
+		5576B4912138DC91000ECDBE /* ReadWriteMutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43D2138DC91000ECDBE /* ReadWriteMutex.swift */; };
+		5576B4922138DC91000ECDBE /* ReadWriteMutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43D2138DC91000ECDBE /* ReadWriteMutex.swift */; };
+		5576B4932138DC91000ECDBE /* ReadWriteMutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43D2138DC91000ECDBE /* ReadWriteMutex.swift */; };
+		5576B4942138DC91000ECDBE /* FogFeedbackValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43E2138DC91000ECDBE /* FogFeedbackValue.swift */; };
+		5576B4952138DC91000ECDBE /* FogFeedbackValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43E2138DC91000ECDBE /* FogFeedbackValue.swift */; };
+		5576B4962138DC91000ECDBE /* FogFeedbackValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43E2138DC91000ECDBE /* FogFeedbackValue.swift */; };
+		5576B4972138DC91000ECDBE /* fogSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43F2138DC91000ECDBE /* fogSize.swift */; };
+		5576B4982138DC91000ECDBE /* fogSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43F2138DC91000ECDBE /* fogSize.swift */; };
+		5576B4992138DC91000ECDBE /* fogSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B43F2138DC91000ECDBE /* fogSize.swift */; };
+		5576B49A2138DC91000ECDBE /* Data+Fog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4402138DC91000ECDBE /* Data+Fog.swift */; };
+		5576B49B2138DC91000ECDBE /* Data+Fog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4402138DC91000ECDBE /* Data+Fog.swift */; };
+		5576B49C2138DC91000ECDBE /* Data+Fog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4402138DC91000ECDBE /* Data+Fog.swift */; };
+		5576B49D2138DC91000ECDBE /* FogStreamReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4422138DC91000ECDBE /* FogStreamReadable.swift */; };
+		5576B49E2138DC91000ECDBE /* FogStreamReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4422138DC91000ECDBE /* FogStreamReadable.swift */; };
+		5576B49F2138DC91000ECDBE /* FogStreamReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4422138DC91000ECDBE /* FogStreamReadable.swift */; };
+		5576B4A02138DC91000ECDBE /* RunLoopPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4432138DC91000ECDBE /* RunLoopPool.swift */; };
+		5576B4A12138DC91000ECDBE /* RunLoopPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4432138DC91000ECDBE /* RunLoopPool.swift */; };
+		5576B4A22138DC91000ECDBE /* RunLoopPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4432138DC91000ECDBE /* RunLoopPool.swift */; };
+		5576B4A32138DC91000ECDBE /* FogSocketStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4442138DC91000ECDBE /* FogSocketStream.swift */; };
+		5576B4A42138DC91000ECDBE /* FogSocketStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4442138DC91000ECDBE /* FogSocketStream.swift */; };
+		5576B4A52138DC91000ECDBE /* FogSocketStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4442138DC91000ECDBE /* FogSocketStream.swift */; };
+		5576B4A62138DC91000ECDBE /* FogStreamWritable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4452138DC91000ECDBE /* FogStreamWritable.swift */; };
+		5576B4A72138DC91000ECDBE /* FogStreamWritable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4452138DC91000ECDBE /* FogStreamWritable.swift */; };
+		5576B4A82138DC91000ECDBE /* FogStreamWritable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4452138DC91000ECDBE /* FogStreamWritable.swift */; };
+		5576B4A92138DC91000ECDBE /* FogBonjourDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4472138DC91000ECDBE /* FogBonjourDiscovery.swift */; };
+		5576B4AA2138DC91000ECDBE /* FogBonjourDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4472138DC91000ECDBE /* FogBonjourDiscovery.swift */; };
+		5576B4AE2138DC91000ECDBE /* FogNetworkReachabilityStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4482138DC91000ECDBE /* FogNetworkReachabilityStub.swift */; };
+		5576B4AF2138DC91000ECDBE /* FogNetworkReachabilityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4492138DC91000ECDBE /* FogNetworkReachabilityStatus.swift */; };
+		5576B4B02138DC91000ECDBE /* FogNetworkReachabilityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4492138DC91000ECDBE /* FogNetworkReachabilityStatus.swift */; };
+		5576B4B12138DC91000ECDBE /* FogNetworkReachabilityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4492138DC91000ECDBE /* FogNetworkReachabilityStatus.swift */; };
+		5576B4B22138DC91000ECDBE /* FogNetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B44A2138DC91000ECDBE /* FogNetworkReachability.swift */; };
+		5576B4B32138DC91000ECDBE /* FogNetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B44A2138DC91000ECDBE /* FogNetworkReachability.swift */; };
+		5576B4B52138DC91000ECDBE /* MQTTTopicScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B44D2138DC91000ECDBE /* MQTTTopicScope.swift */; };
+		5576B4B62138DC91000ECDBE /* MQTTTopicScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B44D2138DC91000ECDBE /* MQTTTopicScope.swift */; };
+		5576B4B72138DC91000ECDBE /* MQTTTopicScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B44D2138DC91000ECDBE /* MQTTTopicScope.swift */; };
+		5576B4B82138DC91000ECDBE /* MQTTConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B44E2138DC91000ECDBE /* MQTTConnectionManager.swift */; };
+		5576B4B92138DC91000ECDBE /* MQTTConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B44E2138DC91000ECDBE /* MQTTConnectionManager.swift */; };
+		5576B4BA2138DC91000ECDBE /* MQTTConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B44E2138DC91000ECDBE /* MQTTConnectionManager.swift */; };
+		5576B4BB2138DC91000ECDBE /* MQTTConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B44F2138DC91000ECDBE /* MQTTConnection.swift */; };
+		5576B4BC2138DC91000ECDBE /* MQTTConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B44F2138DC91000ECDBE /* MQTTConnection.swift */; };
+		5576B4BD2138DC91000ECDBE /* MQTTConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B44F2138DC91000ECDBE /* MQTTConnection.swift */; };
+		5576B4BE2138DC91000ECDBE /* MQTTPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4502138DC91000ECDBE /* MQTTPublisher.swift */; };
+		5576B4BF2138DC91000ECDBE /* MQTTPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4502138DC91000ECDBE /* MQTTPublisher.swift */; };
+		5576B4C02138DC91000ECDBE /* MQTTPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4502138DC91000ECDBE /* MQTTPublisher.swift */; };
+		5576B4C12138DC91000ECDBE /* MQTTSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4512138DC91000ECDBE /* MQTTSubscriber.swift */; };
+		5576B4C22138DC91000ECDBE /* MQTTSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4512138DC91000ECDBE /* MQTTSubscriber.swift */; };
+		5576B4C32138DC91000ECDBE /* MQTTSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4512138DC91000ECDBE /* MQTTSubscriber.swift */; };
+		5576B4C42138DC91000ECDBE /* MQTTPacketDurability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4522138DC91000ECDBE /* MQTTPacketDurability.swift */; };
+		5576B4C52138DC91000ECDBE /* MQTTPacketDurability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4522138DC91000ECDBE /* MQTTPacketDurability.swift */; };
+		5576B4C62138DC91000ECDBE /* MQTTPacketDurability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4522138DC91000ECDBE /* MQTTPacketDurability.swift */; };
+		5576B4C72138DC91000ECDBE /* MQTTPersistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4532138DC91000ECDBE /* MQTTPersistance.swift */; };
+		5576B4C82138DC91000ECDBE /* MQTTPersistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4532138DC91000ECDBE /* MQTTPersistance.swift */; };
+		5576B4C92138DC91000ECDBE /* MQTTPersistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4532138DC91000ECDBE /* MQTTPersistance.swift */; };
+		5576B4CA2138DC91000ECDBE /* MQTTRetryConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4542138DC91000ECDBE /* MQTTRetryConnection.swift */; };
+		5576B4CB2138DC91000ECDBE /* MQTTRetryConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4542138DC91000ECDBE /* MQTTRetryConnection.swift */; };
+		5576B4CC2138DC91000ECDBE /* MQTTRetryConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4542138DC91000ECDBE /* MQTTRetryConnection.swift */; };
+		5576B4CD2138DC91000ECDBE /* MQTTDistributer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4552138DC91000ECDBE /* MQTTDistributer.swift */; };
+		5576B4CE2138DC91000ECDBE /* MQTTDistributer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4552138DC91000ECDBE /* MQTTDistributer.swift */; };
+		5576B4CF2138DC91000ECDBE /* MQTTDistributer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4552138DC91000ECDBE /* MQTTDistributer.swift */; };
+		5576B4D02138DC91000ECDBE /* MQTTTopicPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4562138DC91000ECDBE /* MQTTTopicPattern.swift */; };
+		5576B4D12138DC91000ECDBE /* MQTTTopicPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4562138DC91000ECDBE /* MQTTTopicPattern.swift */; };
+		5576B4D22138DC91000ECDBE /* MQTTTopicPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4562138DC91000ECDBE /* MQTTTopicPattern.swift */; };
+		5576B4D32138DC91000ECDBE /* MQTTRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4572138DC91000ECDBE /* MQTTRouter.swift */; };
+		5576B4D42138DC91000ECDBE /* MQTTRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4572138DC91000ECDBE /* MQTTRouter.swift */; };
+		5576B4D52138DC91000ECDBE /* MQTTRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4572138DC91000ECDBE /* MQTTRouter.swift */; };
+		5576B4D62138DC91000ECDBE /* MQTTMessageIdSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4582138DC91000ECDBE /* MQTTMessageIdSource.swift */; };
+		5576B4D72138DC91000ECDBE /* MQTTMessageIdSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4582138DC91000ECDBE /* MQTTMessageIdSource.swift */; };
+		5576B4D82138DC91000ECDBE /* MQTTMessageIdSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4582138DC91000ECDBE /* MQTTMessageIdSource.swift */; };
+		5576B4D92138DC91000ECDBE /* MQTTClientParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45A2138DC91000ECDBE /* MQTTClientParams.swift */; };
+		5576B4DA2138DC91000ECDBE /* MQTTClientParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45A2138DC91000ECDBE /* MQTTClientParams.swift */; };
+		5576B4DB2138DC91000ECDBE /* MQTTClientParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45A2138DC91000ECDBE /* MQTTClientParams.swift */; };
+		5576B4DC2138DC91000ECDBE /* MQTTConnectionDisconnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45B2138DC91000ECDBE /* MQTTConnectionDisconnect.swift */; };
+		5576B4DD2138DC91000ECDBE /* MQTTConnectionDisconnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45B2138DC91000ECDBE /* MQTTConnectionDisconnect.swift */; };
+		5576B4DE2138DC91000ECDBE /* MQTTConnectionDisconnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45B2138DC91000ECDBE /* MQTTConnectionDisconnect.swift */; };
+		5576B4DF2138DC91000ECDBE /* MQTTRoutingParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45C2138DC91000ECDBE /* MQTTRoutingParams.swift */; };
+		5576B4E02138DC91000ECDBE /* MQTTRoutingParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45C2138DC91000ECDBE /* MQTTRoutingParams.swift */; };
+		5576B4E12138DC91000ECDBE /* MQTTRoutingParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45C2138DC91000ECDBE /* MQTTRoutingParams.swift */; };
+		5576B4E22138DC91000ECDBE /* MQTTAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45D2138DC91000ECDBE /* MQTTAuthentication.swift */; };
+		5576B4E32138DC91000ECDBE /* MQTTAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45D2138DC91000ECDBE /* MQTTAuthentication.swift */; };
+		5576B4E42138DC91000ECDBE /* MQTTAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45D2138DC91000ECDBE /* MQTTAuthentication.swift */; };
+		5576B4E52138DC91000ECDBE /* MQTTReconnectParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45E2138DC91000ECDBE /* MQTTReconnectParams.swift */; };
+		5576B4E62138DC91000ECDBE /* MQTTReconnectParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45E2138DC91000ECDBE /* MQTTReconnectParams.swift */; };
+		5576B4E72138DC91000ECDBE /* MQTTReconnectParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45E2138DC91000ECDBE /* MQTTReconnectParams.swift */; };
+		5576B4E82138DC91000ECDBE /* MQTTPingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45F2138DC91000ECDBE /* MQTTPingStatus.swift */; };
+		5576B4E92138DC91000ECDBE /* MQTTPingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45F2138DC91000ECDBE /* MQTTPingStatus.swift */; };
+		5576B4EA2138DC91000ECDBE /* MQTTPingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B45F2138DC91000ECDBE /* MQTTPingStatus.swift */; };
+		5576B4EB2138DC91000ECDBE /* MQTTHostParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4602138DC91000ECDBE /* MQTTHostParams.swift */; };
+		5576B4EC2138DC91000ECDBE /* MQTTHostParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4602138DC91000ECDBE /* MQTTHostParams.swift */; };
+		5576B4ED2138DC91000ECDBE /* MQTTHostParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4602138DC91000ECDBE /* MQTTHostParams.swift */; };
+		5576B4EE2138DC91000ECDBE /* MQTTConnectedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4612138DC91000ECDBE /* MQTTConnectedState.swift */; };
+		5576B4EF2138DC91000ECDBE /* MQTTConnectedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4612138DC91000ECDBE /* MQTTConnectedState.swift */; };
+		5576B4F02138DC91000ECDBE /* MQTTConnectedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4612138DC91000ECDBE /* MQTTConnectedState.swift */; };
+		5576B4F12138DC91000ECDBE /* MQTTSubAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4642138DC91000ECDBE /* MQTTSubAckPacket.swift */; };
+		5576B4F22138DC91000ECDBE /* MQTTSubAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4642138DC91000ECDBE /* MQTTSubAckPacket.swift */; };
+		5576B4F32138DC91000ECDBE /* MQTTSubAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4642138DC91000ECDBE /* MQTTSubAckPacket.swift */; };
+		5576B4F42138DC91000ECDBE /* MQTTConnAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4652138DC91000ECDBE /* MQTTConnAckPacket.swift */; };
+		5576B4F52138DC91000ECDBE /* MQTTConnAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4652138DC91000ECDBE /* MQTTConnAckPacket.swift */; };
+		5576B4F62138DC91000ECDBE /* MQTTConnAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4652138DC91000ECDBE /* MQTTConnAckPacket.swift */; };
+		5576B4F72138DC91000ECDBE /* MQTTPingAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4662138DC91000ECDBE /* MQTTPingAckPacket.swift */; };
+		5576B4F82138DC91000ECDBE /* MQTTPingAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4662138DC91000ECDBE /* MQTTPingAckPacket.swift */; };
+		5576B4F92138DC91000ECDBE /* MQTTPingAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4662138DC91000ECDBE /* MQTTPingAckPacket.swift */; };
+		5576B4FA2138DC91000ECDBE /* MQTTUnsubAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4672138DC91000ECDBE /* MQTTUnsubAckPacket.swift */; };
+		5576B4FB2138DC91000ECDBE /* MQTTUnsubAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4672138DC91000ECDBE /* MQTTUnsubAckPacket.swift */; };
+		5576B4FC2138DC91000ECDBE /* MQTTUnsubAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4672138DC91000ECDBE /* MQTTUnsubAckPacket.swift */; };
+		5576B4FD2138DC91000ECDBE /* MQTTQoS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4692138DC91000ECDBE /* MQTTQoS.swift */; };
+		5576B4FE2138DC91000ECDBE /* MQTTQoS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4692138DC91000ECDBE /* MQTTQoS.swift */; };
+		5576B4FF2138DC91000ECDBE /* MQTTQoS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4692138DC91000ECDBE /* MQTTQoS.swift */; };
+		5576B5002138DC91000ECDBE /* MQTTPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B46A2138DC91000ECDBE /* MQTTPayload.swift */; };
+		5576B5012138DC91000ECDBE /* MQTTPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B46A2138DC91000ECDBE /* MQTTPayload.swift */; };
+		5576B5022138DC91000ECDBE /* MQTTPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B46A2138DC91000ECDBE /* MQTTPayload.swift */; };
+		5576B5032138DC91000ECDBE /* MQTTConnAckResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B46B2138DC91000ECDBE /* MQTTConnAckResponse.swift */; };
+		5576B5042138DC91000ECDBE /* MQTTConnAckResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B46B2138DC91000ECDBE /* MQTTConnAckResponse.swift */; };
+		5576B5052138DC91000ECDBE /* MQTTConnAckResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B46B2138DC91000ECDBE /* MQTTConnAckResponse.swift */; };
+		5576B5062138DC91000ECDBE /* MQTTPacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B46C2138DC91000ECDBE /* MQTTPacketType.swift */; };
+		5576B5072138DC91000ECDBE /* MQTTPacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B46C2138DC91000ECDBE /* MQTTPacketType.swift */; };
+		5576B5082138DC91000ECDBE /* MQTTPacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B46C2138DC91000ECDBE /* MQTTPacketType.swift */; };
+		5576B5092138DC91000ECDBE /* MQTTMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B46D2138DC91000ECDBE /* MQTTMessage.swift */; };
+		5576B50A2138DC91000ECDBE /* MQTTMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B46D2138DC91000ECDBE /* MQTTMessage.swift */; };
+		5576B50B2138DC91000ECDBE /* MQTTMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B46D2138DC91000ECDBE /* MQTTMessage.swift */; };
+		5576B50C2138DC91000ECDBE /* MQTTPacketFixedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B46E2138DC91000ECDBE /* MQTTPacketFixedHeader.swift */; };
+		5576B50D2138DC91000ECDBE /* MQTTPacketFixedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B46E2138DC91000ECDBE /* MQTTPacketFixedHeader.swift */; };
+		5576B50E2138DC91000ECDBE /* MQTTPacketFixedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B46E2138DC91000ECDBE /* MQTTPacketFixedHeader.swift */; };
+		5576B50F2138DC91000ECDBE /* MQTTPublishPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4702138DC91000ECDBE /* MQTTPublishPacket.swift */; };
+		5576B5102138DC91000ECDBE /* MQTTPublishPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4702138DC91000ECDBE /* MQTTPublishPacket.swift */; };
+		5576B5112138DC91000ECDBE /* MQTTPublishPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4702138DC91000ECDBE /* MQTTPublishPacket.swift */; };
+		5576B5122138DC91000ECDBE /* MQTTPublishCompPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4712138DC91000ECDBE /* MQTTPublishCompPacket.swift */; };
+		5576B5132138DC91000ECDBE /* MQTTPublishCompPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4712138DC91000ECDBE /* MQTTPublishCompPacket.swift */; };
+		5576B5142138DC91000ECDBE /* MQTTPublishCompPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4712138DC91000ECDBE /* MQTTPublishCompPacket.swift */; };
+		5576B5152138DC91000ECDBE /* MQTTPublishRecPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4722138DC91000ECDBE /* MQTTPublishRecPacket.swift */; };
+		5576B5162138DC91000ECDBE /* MQTTPublishRecPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4722138DC91000ECDBE /* MQTTPublishRecPacket.swift */; };
+		5576B5172138DC91000ECDBE /* MQTTPublishRecPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4722138DC91000ECDBE /* MQTTPublishRecPacket.swift */; };
+		5576B5182138DC91000ECDBE /* MQTTPublishRelPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4732138DC91000ECDBE /* MQTTPublishRelPacket.swift */; };
+		5576B5192138DC91000ECDBE /* MQTTPublishRelPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4732138DC91000ECDBE /* MQTTPublishRelPacket.swift */; };
+		5576B51A2138DC91000ECDBE /* MQTTPublishRelPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4732138DC91000ECDBE /* MQTTPublishRelPacket.swift */; };
+		5576B51B2138DC91000ECDBE /* MQTTPublishAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4742138DC91000ECDBE /* MQTTPublishAckPacket.swift */; };
+		5576B51C2138DC91000ECDBE /* MQTTPublishAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4742138DC91000ECDBE /* MQTTPublishAckPacket.swift */; };
+		5576B51D2138DC91000ECDBE /* MQTTPublishAckPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4742138DC91000ECDBE /* MQTTPublishAckPacket.swift */; };
+		5576B51E2138DC91000ECDBE /* MQTTPackedLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4752138DC91000ECDBE /* MQTTPackedLength.swift */; };
+		5576B51F2138DC91000ECDBE /* MQTTPackedLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4752138DC91000ECDBE /* MQTTPackedLength.swift */; };
+		5576B5202138DC91000ECDBE /* MQTTPackedLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4752138DC91000ECDBE /* MQTTPackedLength.swift */; };
+		5576B5212138DC91000ECDBE /* Data+MQTT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4762138DC91000ECDBE /* Data+MQTT.swift */; };
+		5576B5222138DC91000ECDBE /* Data+MQTT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4762138DC91000ECDBE /* Data+MQTT.swift */; };
+		5576B5232138DC91000ECDBE /* Data+MQTT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4762138DC91000ECDBE /* Data+MQTT.swift */; };
+		5576B5242138DC91000ECDBE /* MQTTPacketFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4772138DC91000ECDBE /* MQTTPacketFactory.swift */; };
+		5576B5252138DC91000ECDBE /* MQTTPacketFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4772138DC91000ECDBE /* MQTTPacketFactory.swift */; };
+		5576B5262138DC91000ECDBE /* MQTTPacketFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4772138DC91000ECDBE /* MQTTPacketFactory.swift */; };
+		5576B5272138DC91000ECDBE /* MQTTConnectPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4792138DC91000ECDBE /* MQTTConnectPacket.swift */; };
+		5576B5282138DC91000ECDBE /* MQTTConnectPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4792138DC91000ECDBE /* MQTTConnectPacket.swift */; };
+		5576B5292138DC91000ECDBE /* MQTTConnectPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4792138DC91000ECDBE /* MQTTConnectPacket.swift */; };
+		5576B52A2138DC91000ECDBE /* MQTTSubPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B47A2138DC91000ECDBE /* MQTTSubPacket.swift */; };
+		5576B52B2138DC91000ECDBE /* MQTTSubPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B47A2138DC91000ECDBE /* MQTTSubPacket.swift */; };
+		5576B52C2138DC91000ECDBE /* MQTTSubPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B47A2138DC91000ECDBE /* MQTTSubPacket.swift */; };
+		5576B52D2138DC91000ECDBE /* MQTTPingPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B47B2138DC91000ECDBE /* MQTTPingPacket.swift */; };
+		5576B52E2138DC91000ECDBE /* MQTTPingPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B47B2138DC91000ECDBE /* MQTTPingPacket.swift */; };
+		5576B52F2138DC91000ECDBE /* MQTTPingPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B47B2138DC91000ECDBE /* MQTTPingPacket.swift */; };
+		5576B5302138DC91000ECDBE /* MQTTUnsubPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B47C2138DC91000ECDBE /* MQTTUnsubPacket.swift */; };
+		5576B5312138DC91000ECDBE /* MQTTUnsubPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B47C2138DC91000ECDBE /* MQTTUnsubPacket.swift */; };
+		5576B5322138DC91000ECDBE /* MQTTUnsubPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B47C2138DC91000ECDBE /* MQTTUnsubPacket.swift */; };
+		5576B5332138DC91000ECDBE /* MQTTDisconnectPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B47D2138DC91000ECDBE /* MQTTDisconnectPacket.swift */; };
+		5576B5342138DC91000ECDBE /* MQTTDisconnectPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B47D2138DC91000ECDBE /* MQTTDisconnectPacket.swift */; };
+		5576B5352138DC91000ECDBE /* MQTTDisconnectPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B47D2138DC91000ECDBE /* MQTTDisconnectPacket.swift */; };
+		5576B5362138DC91000ECDBE /* MQTTPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B47E2138DC91000ECDBE /* MQTTPacket.swift */; };
+		5576B5372138DC91000ECDBE /* MQTTPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B47E2138DC91000ECDBE /* MQTTPacket.swift */; };
+		5576B5382138DC91000ECDBE /* MQTTPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B47E2138DC91000ECDBE /* MQTTPacket.swift */; };
+		5576B5392138DC91000ECDBE /* MQTTBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4802138DC91000ECDBE /* MQTTBridge.swift */; };
+		5576B53A2138DC91000ECDBE /* MQTTBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4802138DC91000ECDBE /* MQTTBridge.swift */; };
+		5576B53B2138DC91000ECDBE /* MQTTBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4802138DC91000ECDBE /* MQTTBridge.swift */; };
+		5576B53C2138DC91000ECDBE /* MQTTBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4812138DC91000ECDBE /* MQTTBroadcaster.swift */; };
+		5576B53D2138DC91000ECDBE /* MQTTBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4812138DC91000ECDBE /* MQTTBroadcaster.swift */; };
+		5576B53E2138DC91000ECDBE /* MQTTBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4812138DC91000ECDBE /* MQTTBroadcaster.swift */; };
+		5576B53F2138DC91000ECDBE /* MQTTMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4822138DC91000ECDBE /* MQTTMetrics.swift */; };
+		5576B5402138DC91000ECDBE /* MQTTMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4822138DC91000ECDBE /* MQTTMetrics.swift */; };
+		5576B5412138DC91000ECDBE /* MQTTMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4822138DC91000ECDBE /* MQTTMetrics.swift */; };
+		5576B5422138DC91000ECDBE /* MQTTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4832138DC91000ECDBE /* MQTTClient.swift */; };
+		5576B5432138DC91000ECDBE /* MQTTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4832138DC91000ECDBE /* MQTTClient.swift */; };
+		5576B5442138DC91000ECDBE /* MQTTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4832138DC91000ECDBE /* MQTTClient.swift */; };
+		5576B5452138DC91000ECDBE /* MQTTControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4842138DC91000ECDBE /* MQTTControl.swift */; };
+		5576B5462138DC91000ECDBE /* MQTTControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4842138DC91000ECDBE /* MQTTControl.swift */; };
+		5576B5472138DC91000ECDBE /* MQTTControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4842138DC91000ECDBE /* MQTTControl.swift */; };
+		5576B5482138DC91000ECDBE /* MQTTMultiClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4862138DC91000ECDBE /* MQTTMultiClientAppController.swift */; };
+		5576B5492138DC91000ECDBE /* MQTTMultiClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4862138DC91000ECDBE /* MQTTMultiClientAppController.swift */; };
+		5576B54B2138DC91000ECDBE /* MQTTClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4872138DC91000ECDBE /* MQTTClientAppController.swift */; };
+		5576B54C2138DC91000ECDBE /* MQTTClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4872138DC91000ECDBE /* MQTTClientAppController.swift */; };
+		5576B54D2138DC91000ECDBE /* MQTTClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4872138DC91000ECDBE /* MQTTClientAppController.swift */; };
 		5578602B20F3AA5E00FC182D /* SwiftFog_watch.h in Headers */ = {isa = PBXBuildFile; fileRef = 5578602920F3AA5E00FC182D /* SwiftFog_watch.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -227,78 +227,80 @@
 		554347EA1F82D1B600C3C2CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5576B30521374BD8000ECDBE /* SwiftyFog_iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftyFog_iOS.h; sourceTree = "<group>"; };
 		5576B30621374BD8000ECDBE /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5576B30B21374BF5000ECDBE /* Optional+RAII.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Optional+RAII.swift"; sourceTree = "<group>"; };
-		5576B30C21374BF5000ECDBE /* FogExternalizable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogExternalizable.swift; sourceTree = "<group>"; };
-		5576B30D21374BF5000ECDBE /* FogRational.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogRational.swift; sourceTree = "<group>"; };
-		5576B30E21374BF5000ECDBE /* ReadWriteMutex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadWriteMutex.swift; sourceTree = "<group>"; };
-		5576B30F21374BF5000ECDBE /* FogFeedbackValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogFeedbackValue.swift; sourceTree = "<group>"; };
-		5576B31021374BF5000ECDBE /* fogSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = fogSize.swift; sourceTree = "<group>"; };
-		5576B31121374BF5000ECDBE /* Data+Fog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Fog.swift"; sourceTree = "<group>"; };
-		5576B31321374BF5000ECDBE /* FogStreamReadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogStreamReadable.swift; sourceTree = "<group>"; };
-		5576B31421374BF5000ECDBE /* RunLoopPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunLoopPool.swift; sourceTree = "<group>"; };
-		5576B31521374BF5000ECDBE /* FogSocketStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogSocketStream.swift; sourceTree = "<group>"; };
-		5576B31621374BF5000ECDBE /* FogStreamWritable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogStreamWritable.swift; sourceTree = "<group>"; };
-		5576B31821374BF5000ECDBE /* FogBonjourDiscovery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogBonjourDiscovery.swift; sourceTree = "<group>"; };
-		5576B31921374BF5000ECDBE /* FogNetworkReachabilityStub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogNetworkReachabilityStub.swift; sourceTree = "<group>"; };
-		5576B31A21374BF5000ECDBE /* FogNetworkReachabilityStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogNetworkReachabilityStatus.swift; sourceTree = "<group>"; };
-		5576B31B21374BF5000ECDBE /* FogNetworkReachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogNetworkReachability.swift; sourceTree = "<group>"; };
-		5576B31E21374BF5000ECDBE /* MQTTTopicScope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTTopicScope.swift; sourceTree = "<group>"; };
-		5576B31F21374BF5000ECDBE /* MQTTConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTConnectionManager.swift; sourceTree = "<group>"; };
-		5576B32021374BF5000ECDBE /* MQTTConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTConnection.swift; sourceTree = "<group>"; };
-		5576B32121374BF5000ECDBE /* MQTTPublisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPublisher.swift; sourceTree = "<group>"; };
-		5576B32221374BF5000ECDBE /* MQTTSubscriber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTSubscriber.swift; sourceTree = "<group>"; };
-		5576B32321374BF5000ECDBE /* MQTTPacketDurability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPacketDurability.swift; sourceTree = "<group>"; };
-		5576B32421374BF5000ECDBE /* MQTTPersistance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPersistance.swift; sourceTree = "<group>"; };
-		5576B32521374BF5000ECDBE /* MQTTRetryConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTRetryConnection.swift; sourceTree = "<group>"; };
-		5576B32621374BF5000ECDBE /* MQTTDistributer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTDistributer.swift; sourceTree = "<group>"; };
-		5576B32721374BF5000ECDBE /* MQTTTopicPattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTTopicPattern.swift; sourceTree = "<group>"; };
-		5576B32821374BF5000ECDBE /* MQTTRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTRouter.swift; sourceTree = "<group>"; };
-		5576B32921374BF5000ECDBE /* MQTTMessageIdSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTMessageIdSource.swift; sourceTree = "<group>"; };
-		5576B32B21374BF5000ECDBE /* MQTTClientParams.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTClientParams.swift; sourceTree = "<group>"; };
-		5576B32C21374BF5000ECDBE /* MQTTConnectionDisconnect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTConnectionDisconnect.swift; sourceTree = "<group>"; };
-		5576B32D21374BF5000ECDBE /* MQTTRoutingParams.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTRoutingParams.swift; sourceTree = "<group>"; };
-		5576B32E21374BF5000ECDBE /* MQTTAuthentication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTAuthentication.swift; sourceTree = "<group>"; };
-		5576B32F21374BF5000ECDBE /* MQTTReconnectParams.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTReconnectParams.swift; sourceTree = "<group>"; };
-		5576B33021374BF5000ECDBE /* MQTTPingStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPingStatus.swift; sourceTree = "<group>"; };
-		5576B33121374BF5000ECDBE /* MQTTHostParams.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTHostParams.swift; sourceTree = "<group>"; };
-		5576B33221374BF5000ECDBE /* MQTTConnectedState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTConnectedState.swift; sourceTree = "<group>"; };
-		5576B33621374BF5000ECDBE /* MQTTSubAckPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTSubAckPacket.swift; sourceTree = "<group>"; };
-		5576B33721374BF5000ECDBE /* MQTTConnAckPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTConnAckPacket.swift; sourceTree = "<group>"; };
-		5576B33821374BF5000ECDBE /* MQTTPingAckPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPingAckPacket.swift; sourceTree = "<group>"; };
-		5576B33921374BF5000ECDBE /* MQTTUnsubAckPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTUnsubAckPacket.swift; sourceTree = "<group>"; };
-		5576B33B21374BF5000ECDBE /* MQTTQoS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTQoS.swift; sourceTree = "<group>"; };
-		5576B33C21374BF5000ECDBE /* MQTTPayload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPayload.swift; sourceTree = "<group>"; };
-		5576B33D21374BF5000ECDBE /* MQTTConnAckResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTConnAckResponse.swift; sourceTree = "<group>"; };
-		5576B33E21374BF5000ECDBE /* MQTTPacketType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPacketType.swift; sourceTree = "<group>"; };
-		5576B33F21374BF5000ECDBE /* MQTTMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTMessage.swift; sourceTree = "<group>"; };
-		5576B34021374BF5000ECDBE /* MQTTPacketFixedHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPacketFixedHeader.swift; sourceTree = "<group>"; };
-		5576B34221374BF5000ECDBE /* MQTTPublishPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPublishPacket.swift; sourceTree = "<group>"; };
-		5576B34321374BF5000ECDBE /* MQTTPublishCompPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPublishCompPacket.swift; sourceTree = "<group>"; };
-		5576B34421374BF5000ECDBE /* MQTTPublishRecPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPublishRecPacket.swift; sourceTree = "<group>"; };
-		5576B34521374BF5000ECDBE /* MQTTPublishRelPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPublishRelPacket.swift; sourceTree = "<group>"; };
-		5576B34621374BF5000ECDBE /* MQTTPublishAckPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPublishAckPacket.swift; sourceTree = "<group>"; };
-		5576B34721374BF5000ECDBE /* MQTTPackedLength.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPackedLength.swift; sourceTree = "<group>"; };
-		5576B34821374BF5000ECDBE /* Data+MQTT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+MQTT.swift"; sourceTree = "<group>"; };
-		5576B34921374BF5000ECDBE /* MQTTPacketFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPacketFactory.swift; sourceTree = "<group>"; };
-		5576B34B21374BF5000ECDBE /* MQTTConnectPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTConnectPacket.swift; sourceTree = "<group>"; };
-		5576B34C21374BF5000ECDBE /* MQTTSubPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTSubPacket.swift; sourceTree = "<group>"; };
-		5576B34D21374BF5000ECDBE /* MQTTPingPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPingPacket.swift; sourceTree = "<group>"; };
-		5576B34E21374BF5000ECDBE /* MQTTUnsubPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTUnsubPacket.swift; sourceTree = "<group>"; };
-		5576B34F21374BF5000ECDBE /* MQTTDisconnectPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTDisconnectPacket.swift; sourceTree = "<group>"; };
-		5576B35021374BF5000ECDBE /* MQTTPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPacket.swift; sourceTree = "<group>"; };
-		5576B35221374BF5000ECDBE /* MQTTBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTBridge.swift; sourceTree = "<group>"; };
-		5576B35321374BF5000ECDBE /* MQTTBroadcaster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTBroadcaster.swift; sourceTree = "<group>"; };
-		5576B35421374BF5000ECDBE /* MQTTMetrics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTMetrics.swift; sourceTree = "<group>"; };
-		5576B35521374BF5000ECDBE /* MQTTClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTClient.swift; sourceTree = "<group>"; };
-		5576B35621374BF5000ECDBE /* MQTTControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTControl.swift; sourceTree = "<group>"; };
-		5576B35821374BF5000ECDBE /* MQTTMultiClientAppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTMultiClientAppController.swift; sourceTree = "<group>"; };
-		5576B35921374BF5000ECDBE /* MQTTClientAppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTClientAppController.swift; sourceTree = "<group>"; };
 		5576B42021374F50000ECDBE /* SwiftyFog_iOSTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftyFog_iOSTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		5576B42A21375033000ECDBE /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinuxMain.swift; sourceTree = "<group>"; };
 		5576B42C21375033000ECDBE /* MQTTTopicPatternTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTTopicPatternTests.swift; sourceTree = "<group>"; };
 		5576B42D21375033000ECDBE /* XCTestManifests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
 		5576B42E21375033000ECDBE /* SwiftyFogExternalizableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyFogExternalizableTests.swift; sourceTree = "<group>"; };
 		5576B42F21375033000ECDBE /* SwiftyFogTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyFogTests.swift; sourceTree = "<group>"; };
+		5576B4352138D82D000ECDBE /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		5576B4362138D82D000ECDBE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		5576B43A2138DC91000ECDBE /* Optional+RAII.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Optional+RAII.swift"; sourceTree = "<group>"; };
+		5576B43B2138DC91000ECDBE /* FogExternalizable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogExternalizable.swift; sourceTree = "<group>"; };
+		5576B43C2138DC91000ECDBE /* FogRational.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogRational.swift; sourceTree = "<group>"; };
+		5576B43D2138DC91000ECDBE /* ReadWriteMutex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadWriteMutex.swift; sourceTree = "<group>"; };
+		5576B43E2138DC91000ECDBE /* FogFeedbackValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogFeedbackValue.swift; sourceTree = "<group>"; };
+		5576B43F2138DC91000ECDBE /* fogSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = fogSize.swift; sourceTree = "<group>"; };
+		5576B4402138DC91000ECDBE /* Data+Fog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Fog.swift"; sourceTree = "<group>"; };
+		5576B4422138DC91000ECDBE /* FogStreamReadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogStreamReadable.swift; sourceTree = "<group>"; };
+		5576B4432138DC91000ECDBE /* RunLoopPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunLoopPool.swift; sourceTree = "<group>"; };
+		5576B4442138DC91000ECDBE /* FogSocketStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogSocketStream.swift; sourceTree = "<group>"; };
+		5576B4452138DC91000ECDBE /* FogStreamWritable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogStreamWritable.swift; sourceTree = "<group>"; };
+		5576B4472138DC91000ECDBE /* FogBonjourDiscovery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogBonjourDiscovery.swift; sourceTree = "<group>"; };
+		5576B4482138DC91000ECDBE /* FogNetworkReachabilityStub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogNetworkReachabilityStub.swift; sourceTree = "<group>"; };
+		5576B4492138DC91000ECDBE /* FogNetworkReachabilityStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogNetworkReachabilityStatus.swift; sourceTree = "<group>"; };
+		5576B44A2138DC91000ECDBE /* FogNetworkReachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FogNetworkReachability.swift; sourceTree = "<group>"; };
+		5576B44D2138DC91000ECDBE /* MQTTTopicScope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTTopicScope.swift; sourceTree = "<group>"; };
+		5576B44E2138DC91000ECDBE /* MQTTConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTConnectionManager.swift; sourceTree = "<group>"; };
+		5576B44F2138DC91000ECDBE /* MQTTConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTConnection.swift; sourceTree = "<group>"; };
+		5576B4502138DC91000ECDBE /* MQTTPublisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPublisher.swift; sourceTree = "<group>"; };
+		5576B4512138DC91000ECDBE /* MQTTSubscriber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTSubscriber.swift; sourceTree = "<group>"; };
+		5576B4522138DC91000ECDBE /* MQTTPacketDurability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPacketDurability.swift; sourceTree = "<group>"; };
+		5576B4532138DC91000ECDBE /* MQTTPersistance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPersistance.swift; sourceTree = "<group>"; };
+		5576B4542138DC91000ECDBE /* MQTTRetryConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTRetryConnection.swift; sourceTree = "<group>"; };
+		5576B4552138DC91000ECDBE /* MQTTDistributer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTDistributer.swift; sourceTree = "<group>"; };
+		5576B4562138DC91000ECDBE /* MQTTTopicPattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTTopicPattern.swift; sourceTree = "<group>"; };
+		5576B4572138DC91000ECDBE /* MQTTRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTRouter.swift; sourceTree = "<group>"; };
+		5576B4582138DC91000ECDBE /* MQTTMessageIdSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTMessageIdSource.swift; sourceTree = "<group>"; };
+		5576B45A2138DC91000ECDBE /* MQTTClientParams.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTClientParams.swift; sourceTree = "<group>"; };
+		5576B45B2138DC91000ECDBE /* MQTTConnectionDisconnect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTConnectionDisconnect.swift; sourceTree = "<group>"; };
+		5576B45C2138DC91000ECDBE /* MQTTRoutingParams.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTRoutingParams.swift; sourceTree = "<group>"; };
+		5576B45D2138DC91000ECDBE /* MQTTAuthentication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTAuthentication.swift; sourceTree = "<group>"; };
+		5576B45E2138DC91000ECDBE /* MQTTReconnectParams.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTReconnectParams.swift; sourceTree = "<group>"; };
+		5576B45F2138DC91000ECDBE /* MQTTPingStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPingStatus.swift; sourceTree = "<group>"; };
+		5576B4602138DC91000ECDBE /* MQTTHostParams.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTHostParams.swift; sourceTree = "<group>"; };
+		5576B4612138DC91000ECDBE /* MQTTConnectedState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTConnectedState.swift; sourceTree = "<group>"; };
+		5576B4642138DC91000ECDBE /* MQTTSubAckPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTSubAckPacket.swift; sourceTree = "<group>"; };
+		5576B4652138DC91000ECDBE /* MQTTConnAckPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTConnAckPacket.swift; sourceTree = "<group>"; };
+		5576B4662138DC91000ECDBE /* MQTTPingAckPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPingAckPacket.swift; sourceTree = "<group>"; };
+		5576B4672138DC91000ECDBE /* MQTTUnsubAckPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTUnsubAckPacket.swift; sourceTree = "<group>"; };
+		5576B4692138DC91000ECDBE /* MQTTQoS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTQoS.swift; sourceTree = "<group>"; };
+		5576B46A2138DC91000ECDBE /* MQTTPayload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPayload.swift; sourceTree = "<group>"; };
+		5576B46B2138DC91000ECDBE /* MQTTConnAckResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTConnAckResponse.swift; sourceTree = "<group>"; };
+		5576B46C2138DC91000ECDBE /* MQTTPacketType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPacketType.swift; sourceTree = "<group>"; };
+		5576B46D2138DC91000ECDBE /* MQTTMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTMessage.swift; sourceTree = "<group>"; };
+		5576B46E2138DC91000ECDBE /* MQTTPacketFixedHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPacketFixedHeader.swift; sourceTree = "<group>"; };
+		5576B4702138DC91000ECDBE /* MQTTPublishPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPublishPacket.swift; sourceTree = "<group>"; };
+		5576B4712138DC91000ECDBE /* MQTTPublishCompPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPublishCompPacket.swift; sourceTree = "<group>"; };
+		5576B4722138DC91000ECDBE /* MQTTPublishRecPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPublishRecPacket.swift; sourceTree = "<group>"; };
+		5576B4732138DC91000ECDBE /* MQTTPublishRelPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPublishRelPacket.swift; sourceTree = "<group>"; };
+		5576B4742138DC91000ECDBE /* MQTTPublishAckPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPublishAckPacket.swift; sourceTree = "<group>"; };
+		5576B4752138DC91000ECDBE /* MQTTPackedLength.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPackedLength.swift; sourceTree = "<group>"; };
+		5576B4762138DC91000ECDBE /* Data+MQTT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+MQTT.swift"; sourceTree = "<group>"; };
+		5576B4772138DC91000ECDBE /* MQTTPacketFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPacketFactory.swift; sourceTree = "<group>"; };
+		5576B4792138DC91000ECDBE /* MQTTConnectPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTConnectPacket.swift; sourceTree = "<group>"; };
+		5576B47A2138DC91000ECDBE /* MQTTSubPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTSubPacket.swift; sourceTree = "<group>"; };
+		5576B47B2138DC91000ECDBE /* MQTTPingPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPingPacket.swift; sourceTree = "<group>"; };
+		5576B47C2138DC91000ECDBE /* MQTTUnsubPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTUnsubPacket.swift; sourceTree = "<group>"; };
+		5576B47D2138DC91000ECDBE /* MQTTDisconnectPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTDisconnectPacket.swift; sourceTree = "<group>"; };
+		5576B47E2138DC91000ECDBE /* MQTTPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTPacket.swift; sourceTree = "<group>"; };
+		5576B4802138DC91000ECDBE /* MQTTBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTBridge.swift; sourceTree = "<group>"; };
+		5576B4812138DC91000ECDBE /* MQTTBroadcaster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTBroadcaster.swift; sourceTree = "<group>"; };
+		5576B4822138DC91000ECDBE /* MQTTMetrics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTMetrics.swift; sourceTree = "<group>"; };
+		5576B4832138DC91000ECDBE /* MQTTClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTClient.swift; sourceTree = "<group>"; };
+		5576B4842138DC91000ECDBE /* MQTTControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTControl.swift; sourceTree = "<group>"; };
+		5576B4862138DC91000ECDBE /* MQTTMultiClientAppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTMultiClientAppController.swift; sourceTree = "<group>"; };
+		5576B4872138DC91000ECDBE /* MQTTClientAppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTClientAppController.swift; sourceTree = "<group>"; };
 		5578602720F3AA5E00FC182D /* SwiftFog_watch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftFog_watch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5578602920F3AA5E00FC182D /* SwiftFog_watch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftFog_watch.h; sourceTree = "<group>"; };
 		5578602A20F3AA5E00FC182D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -349,7 +351,9 @@
 		5543473D1F82D0F600C3C2CB = {
 			isa = PBXGroup;
 			children = (
-				5576B30921374BF5000ECDBE /* Sources */,
+				5576B4352138D82D000ECDBE /* Package.swift */,
+				5576B4362138D82D000ECDBE /* README.md */,
+				5576B4372138DC91000ECDBE /* Sources */,
 				5576B42921375033000ECDBE /* Tests */,
 				5576B30421374BD8000ECDBE /* SwiftyFog_iOS */,
 				554347E81F82D1B600C3C2CB /* SwiftyFog_mac */,
@@ -388,183 +392,6 @@
 			path = SwiftyFog_iOS;
 			sourceTree = "<group>";
 		};
-		5576B30921374BF5000ECDBE /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				5576B30A21374BF5000ECDBE /* types */,
-				5576B31221374BF5000ECDBE /* stream */,
-				5576B31721374BF5000ECDBE /* network */,
-				5576B31C21374BF5000ECDBE /* mqtt */,
-				5576B35721374BF5000ECDBE /* controllers */,
-			);
-			path = Sources;
-			sourceTree = "<group>";
-		};
-		5576B30A21374BF5000ECDBE /* types */ = {
-			isa = PBXGroup;
-			children = (
-				5576B30B21374BF5000ECDBE /* Optional+RAII.swift */,
-				5576B30C21374BF5000ECDBE /* FogExternalizable.swift */,
-				5576B30D21374BF5000ECDBE /* FogRational.swift */,
-				5576B30E21374BF5000ECDBE /* ReadWriteMutex.swift */,
-				5576B30F21374BF5000ECDBE /* FogFeedbackValue.swift */,
-				5576B31021374BF5000ECDBE /* fogSize.swift */,
-				5576B31121374BF5000ECDBE /* Data+Fog.swift */,
-			);
-			path = types;
-			sourceTree = "<group>";
-		};
-		5576B31221374BF5000ECDBE /* stream */ = {
-			isa = PBXGroup;
-			children = (
-				5576B31321374BF5000ECDBE /* FogStreamReadable.swift */,
-				5576B31421374BF5000ECDBE /* RunLoopPool.swift */,
-				5576B31521374BF5000ECDBE /* FogSocketStream.swift */,
-				5576B31621374BF5000ECDBE /* FogStreamWritable.swift */,
-			);
-			path = stream;
-			sourceTree = "<group>";
-		};
-		5576B31721374BF5000ECDBE /* network */ = {
-			isa = PBXGroup;
-			children = (
-				5576B31821374BF5000ECDBE /* FogBonjourDiscovery.swift */,
-				5576B31921374BF5000ECDBE /* FogNetworkReachabilityStub.swift */,
-				5576B31A21374BF5000ECDBE /* FogNetworkReachabilityStatus.swift */,
-				5576B31B21374BF5000ECDBE /* FogNetworkReachability.swift */,
-			);
-			path = network;
-			sourceTree = "<group>";
-		};
-		5576B31C21374BF5000ECDBE /* mqtt */ = {
-			isa = PBXGroup;
-			children = (
-				5576B31D21374BF5000ECDBE /* impl */,
-				5576B32A21374BF5000ECDBE /* structures */,
-				5576B33421374BF5000ECDBE /* packets */,
-				5576B35121374BF5000ECDBE /* client */,
-			);
-			path = mqtt;
-			sourceTree = "<group>";
-		};
-		5576B31D21374BF5000ECDBE /* impl */ = {
-			isa = PBXGroup;
-			children = (
-				5576B31E21374BF5000ECDBE /* MQTTTopicScope.swift */,
-				5576B31F21374BF5000ECDBE /* MQTTConnectionManager.swift */,
-				5576B32021374BF5000ECDBE /* MQTTConnection.swift */,
-				5576B32121374BF5000ECDBE /* MQTTPublisher.swift */,
-				5576B32221374BF5000ECDBE /* MQTTSubscriber.swift */,
-				5576B32321374BF5000ECDBE /* MQTTPacketDurability.swift */,
-				5576B32421374BF5000ECDBE /* MQTTPersistance.swift */,
-				5576B32521374BF5000ECDBE /* MQTTRetryConnection.swift */,
-				5576B32621374BF5000ECDBE /* MQTTDistributer.swift */,
-				5576B32721374BF5000ECDBE /* MQTTTopicPattern.swift */,
-				5576B32821374BF5000ECDBE /* MQTTRouter.swift */,
-				5576B32921374BF5000ECDBE /* MQTTMessageIdSource.swift */,
-			);
-			path = impl;
-			sourceTree = "<group>";
-		};
-		5576B32A21374BF5000ECDBE /* structures */ = {
-			isa = PBXGroup;
-			children = (
-				5576B32B21374BF5000ECDBE /* MQTTClientParams.swift */,
-				5576B32C21374BF5000ECDBE /* MQTTConnectionDisconnect.swift */,
-				5576B32D21374BF5000ECDBE /* MQTTRoutingParams.swift */,
-				5576B32E21374BF5000ECDBE /* MQTTAuthentication.swift */,
-				5576B32F21374BF5000ECDBE /* MQTTReconnectParams.swift */,
-				5576B33021374BF5000ECDBE /* MQTTPingStatus.swift */,
-				5576B33121374BF5000ECDBE /* MQTTHostParams.swift */,
-				5576B33221374BF5000ECDBE /* MQTTConnectedState.swift */,
-			);
-			path = structures;
-			sourceTree = "<group>";
-		};
-		5576B33421374BF5000ECDBE /* packets */ = {
-			isa = PBXGroup;
-			children = (
-				5576B33521374BF5000ECDBE /* response */,
-				5576B33A21374BF5000ECDBE /* structures */,
-				5576B34121374BF5000ECDBE /* biderectional */,
-				5576B34721374BF5000ECDBE /* MQTTPackedLength.swift */,
-				5576B34821374BF5000ECDBE /* Data+MQTT.swift */,
-				5576B34921374BF5000ECDBE /* MQTTPacketFactory.swift */,
-				5576B34A21374BF5000ECDBE /* request */,
-				5576B35021374BF5000ECDBE /* MQTTPacket.swift */,
-			);
-			path = packets;
-			sourceTree = "<group>";
-		};
-		5576B33521374BF5000ECDBE /* response */ = {
-			isa = PBXGroup;
-			children = (
-				5576B33621374BF5000ECDBE /* MQTTSubAckPacket.swift */,
-				5576B33721374BF5000ECDBE /* MQTTConnAckPacket.swift */,
-				5576B33821374BF5000ECDBE /* MQTTPingAckPacket.swift */,
-				5576B33921374BF5000ECDBE /* MQTTUnsubAckPacket.swift */,
-			);
-			path = response;
-			sourceTree = "<group>";
-		};
-		5576B33A21374BF5000ECDBE /* structures */ = {
-			isa = PBXGroup;
-			children = (
-				5576B33B21374BF5000ECDBE /* MQTTQoS.swift */,
-				5576B33C21374BF5000ECDBE /* MQTTPayload.swift */,
-				5576B33D21374BF5000ECDBE /* MQTTConnAckResponse.swift */,
-				5576B33E21374BF5000ECDBE /* MQTTPacketType.swift */,
-				5576B33F21374BF5000ECDBE /* MQTTMessage.swift */,
-				5576B34021374BF5000ECDBE /* MQTTPacketFixedHeader.swift */,
-			);
-			path = structures;
-			sourceTree = "<group>";
-		};
-		5576B34121374BF5000ECDBE /* biderectional */ = {
-			isa = PBXGroup;
-			children = (
-				5576B34221374BF5000ECDBE /* MQTTPublishPacket.swift */,
-				5576B34321374BF5000ECDBE /* MQTTPublishCompPacket.swift */,
-				5576B34421374BF5000ECDBE /* MQTTPublishRecPacket.swift */,
-				5576B34521374BF5000ECDBE /* MQTTPublishRelPacket.swift */,
-				5576B34621374BF5000ECDBE /* MQTTPublishAckPacket.swift */,
-			);
-			path = biderectional;
-			sourceTree = "<group>";
-		};
-		5576B34A21374BF5000ECDBE /* request */ = {
-			isa = PBXGroup;
-			children = (
-				5576B34B21374BF5000ECDBE /* MQTTConnectPacket.swift */,
-				5576B34C21374BF5000ECDBE /* MQTTSubPacket.swift */,
-				5576B34D21374BF5000ECDBE /* MQTTPingPacket.swift */,
-				5576B34E21374BF5000ECDBE /* MQTTUnsubPacket.swift */,
-				5576B34F21374BF5000ECDBE /* MQTTDisconnectPacket.swift */,
-			);
-			path = request;
-			sourceTree = "<group>";
-		};
-		5576B35121374BF5000ECDBE /* client */ = {
-			isa = PBXGroup;
-			children = (
-				5576B35221374BF5000ECDBE /* MQTTBridge.swift */,
-				5576B35321374BF5000ECDBE /* MQTTBroadcaster.swift */,
-				5576B35421374BF5000ECDBE /* MQTTMetrics.swift */,
-				5576B35521374BF5000ECDBE /* MQTTClient.swift */,
-				5576B35621374BF5000ECDBE /* MQTTControl.swift */,
-			);
-			path = client;
-			sourceTree = "<group>";
-		};
-		5576B35721374BF5000ECDBE /* controllers */ = {
-			isa = PBXGroup;
-			children = (
-				5576B35821374BF5000ECDBE /* MQTTMultiClientAppController.swift */,
-				5576B35921374BF5000ECDBE /* MQTTClientAppController.swift */,
-			);
-			path = controllers;
-			sourceTree = "<group>";
-		};
 		5576B42921375033000ECDBE /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -583,6 +410,191 @@
 				5576B42F21375033000ECDBE /* SwiftyFogTests.swift */,
 			);
 			path = SwiftyFogTests;
+			sourceTree = "<group>";
+		};
+		5576B4372138DC91000ECDBE /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				5576B4382138DC91000ECDBE /* SwiftyFog */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		5576B4382138DC91000ECDBE /* SwiftyFog */ = {
+			isa = PBXGroup;
+			children = (
+				5576B4392138DC91000ECDBE /* types */,
+				5576B4412138DC91000ECDBE /* stream */,
+				5576B4462138DC91000ECDBE /* network */,
+				5576B44B2138DC91000ECDBE /* mqtt */,
+				5576B4852138DC91000ECDBE /* controllers */,
+			);
+			path = SwiftyFog;
+			sourceTree = "<group>";
+		};
+		5576B4392138DC91000ECDBE /* types */ = {
+			isa = PBXGroup;
+			children = (
+				5576B43A2138DC91000ECDBE /* Optional+RAII.swift */,
+				5576B43B2138DC91000ECDBE /* FogExternalizable.swift */,
+				5576B43C2138DC91000ECDBE /* FogRational.swift */,
+				5576B43D2138DC91000ECDBE /* ReadWriteMutex.swift */,
+				5576B43E2138DC91000ECDBE /* FogFeedbackValue.swift */,
+				5576B43F2138DC91000ECDBE /* fogSize.swift */,
+				5576B4402138DC91000ECDBE /* Data+Fog.swift */,
+			);
+			path = types;
+			sourceTree = "<group>";
+		};
+		5576B4412138DC91000ECDBE /* stream */ = {
+			isa = PBXGroup;
+			children = (
+				5576B4422138DC91000ECDBE /* FogStreamReadable.swift */,
+				5576B4432138DC91000ECDBE /* RunLoopPool.swift */,
+				5576B4442138DC91000ECDBE /* FogSocketStream.swift */,
+				5576B4452138DC91000ECDBE /* FogStreamWritable.swift */,
+			);
+			path = stream;
+			sourceTree = "<group>";
+		};
+		5576B4462138DC91000ECDBE /* network */ = {
+			isa = PBXGroup;
+			children = (
+				5576B4472138DC91000ECDBE /* FogBonjourDiscovery.swift */,
+				5576B4482138DC91000ECDBE /* FogNetworkReachabilityStub.swift */,
+				5576B4492138DC91000ECDBE /* FogNetworkReachabilityStatus.swift */,
+				5576B44A2138DC91000ECDBE /* FogNetworkReachability.swift */,
+			);
+			path = network;
+			sourceTree = "<group>";
+		};
+		5576B44B2138DC91000ECDBE /* mqtt */ = {
+			isa = PBXGroup;
+			children = (
+				5576B44C2138DC91000ECDBE /* impl */,
+				5576B4592138DC91000ECDBE /* structures */,
+				5576B4622138DC91000ECDBE /* packets */,
+				5576B47F2138DC91000ECDBE /* client */,
+			);
+			path = mqtt;
+			sourceTree = "<group>";
+		};
+		5576B44C2138DC91000ECDBE /* impl */ = {
+			isa = PBXGroup;
+			children = (
+				5576B44D2138DC91000ECDBE /* MQTTTopicScope.swift */,
+				5576B44E2138DC91000ECDBE /* MQTTConnectionManager.swift */,
+				5576B44F2138DC91000ECDBE /* MQTTConnection.swift */,
+				5576B4502138DC91000ECDBE /* MQTTPublisher.swift */,
+				5576B4512138DC91000ECDBE /* MQTTSubscriber.swift */,
+				5576B4522138DC91000ECDBE /* MQTTPacketDurability.swift */,
+				5576B4532138DC91000ECDBE /* MQTTPersistance.swift */,
+				5576B4542138DC91000ECDBE /* MQTTRetryConnection.swift */,
+				5576B4552138DC91000ECDBE /* MQTTDistributer.swift */,
+				5576B4562138DC91000ECDBE /* MQTTTopicPattern.swift */,
+				5576B4572138DC91000ECDBE /* MQTTRouter.swift */,
+				5576B4582138DC91000ECDBE /* MQTTMessageIdSource.swift */,
+			);
+			path = impl;
+			sourceTree = "<group>";
+		};
+		5576B4592138DC91000ECDBE /* structures */ = {
+			isa = PBXGroup;
+			children = (
+				5576B45A2138DC91000ECDBE /* MQTTClientParams.swift */,
+				5576B45B2138DC91000ECDBE /* MQTTConnectionDisconnect.swift */,
+				5576B45C2138DC91000ECDBE /* MQTTRoutingParams.swift */,
+				5576B45D2138DC91000ECDBE /* MQTTAuthentication.swift */,
+				5576B45E2138DC91000ECDBE /* MQTTReconnectParams.swift */,
+				5576B45F2138DC91000ECDBE /* MQTTPingStatus.swift */,
+				5576B4602138DC91000ECDBE /* MQTTHostParams.swift */,
+				5576B4612138DC91000ECDBE /* MQTTConnectedState.swift */,
+			);
+			path = structures;
+			sourceTree = "<group>";
+		};
+		5576B4622138DC91000ECDBE /* packets */ = {
+			isa = PBXGroup;
+			children = (
+				5576B4632138DC91000ECDBE /* response */,
+				5576B4682138DC91000ECDBE /* structures */,
+				5576B46F2138DC91000ECDBE /* biderectional */,
+				5576B4752138DC91000ECDBE /* MQTTPackedLength.swift */,
+				5576B4762138DC91000ECDBE /* Data+MQTT.swift */,
+				5576B4772138DC91000ECDBE /* MQTTPacketFactory.swift */,
+				5576B4782138DC91000ECDBE /* request */,
+				5576B47E2138DC91000ECDBE /* MQTTPacket.swift */,
+			);
+			path = packets;
+			sourceTree = "<group>";
+		};
+		5576B4632138DC91000ECDBE /* response */ = {
+			isa = PBXGroup;
+			children = (
+				5576B4642138DC91000ECDBE /* MQTTSubAckPacket.swift */,
+				5576B4652138DC91000ECDBE /* MQTTConnAckPacket.swift */,
+				5576B4662138DC91000ECDBE /* MQTTPingAckPacket.swift */,
+				5576B4672138DC91000ECDBE /* MQTTUnsubAckPacket.swift */,
+			);
+			path = response;
+			sourceTree = "<group>";
+		};
+		5576B4682138DC91000ECDBE /* structures */ = {
+			isa = PBXGroup;
+			children = (
+				5576B4692138DC91000ECDBE /* MQTTQoS.swift */,
+				5576B46A2138DC91000ECDBE /* MQTTPayload.swift */,
+				5576B46B2138DC91000ECDBE /* MQTTConnAckResponse.swift */,
+				5576B46C2138DC91000ECDBE /* MQTTPacketType.swift */,
+				5576B46D2138DC91000ECDBE /* MQTTMessage.swift */,
+				5576B46E2138DC91000ECDBE /* MQTTPacketFixedHeader.swift */,
+			);
+			path = structures;
+			sourceTree = "<group>";
+		};
+		5576B46F2138DC91000ECDBE /* biderectional */ = {
+			isa = PBXGroup;
+			children = (
+				5576B4702138DC91000ECDBE /* MQTTPublishPacket.swift */,
+				5576B4712138DC91000ECDBE /* MQTTPublishCompPacket.swift */,
+				5576B4722138DC91000ECDBE /* MQTTPublishRecPacket.swift */,
+				5576B4732138DC91000ECDBE /* MQTTPublishRelPacket.swift */,
+				5576B4742138DC91000ECDBE /* MQTTPublishAckPacket.swift */,
+			);
+			path = biderectional;
+			sourceTree = "<group>";
+		};
+		5576B4782138DC91000ECDBE /* request */ = {
+			isa = PBXGroup;
+			children = (
+				5576B4792138DC91000ECDBE /* MQTTConnectPacket.swift */,
+				5576B47A2138DC91000ECDBE /* MQTTSubPacket.swift */,
+				5576B47B2138DC91000ECDBE /* MQTTPingPacket.swift */,
+				5576B47C2138DC91000ECDBE /* MQTTUnsubPacket.swift */,
+				5576B47D2138DC91000ECDBE /* MQTTDisconnectPacket.swift */,
+			);
+			path = request;
+			sourceTree = "<group>";
+		};
+		5576B47F2138DC91000ECDBE /* client */ = {
+			isa = PBXGroup;
+			children = (
+				5576B4802138DC91000ECDBE /* MQTTBridge.swift */,
+				5576B4812138DC91000ECDBE /* MQTTBroadcaster.swift */,
+				5576B4822138DC91000ECDBE /* MQTTMetrics.swift */,
+				5576B4832138DC91000ECDBE /* MQTTClient.swift */,
+				5576B4842138DC91000ECDBE /* MQTTControl.swift */,
+			);
+			path = client;
+			sourceTree = "<group>";
+		};
+		5576B4852138DC91000ECDBE /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				5576B4862138DC91000ECDBE /* MQTTMultiClientAppController.swift */,
+				5576B4872138DC91000ECDBE /* MQTTClientAppController.swift */,
+			);
+			path = controllers;
 			sourceTree = "<group>";
 		};
 		5578602820F3AA5E00FC182D /* SwiftFog_watch */ = {
@@ -792,71 +804,71 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5576B3EA21374BF5000ECDBE /* MQTTPublishRelPacket.swift in Sources */,
-				5576B36021374BF5000ECDBE /* FogRational.swift in Sources */,
-				5576B3BA21374BF5000ECDBE /* MQTTPingStatus.swift in Sources */,
-				5576B38D21374BF5000ECDBE /* MQTTConnection.swift in Sources */,
-				5576B3E721374BF5000ECDBE /* MQTTPublishRecPacket.swift in Sources */,
-				5576B41421374BF5000ECDBE /* MQTTClient.swift in Sources */,
-				5576B36921374BF5000ECDBE /* fogSize.swift in Sources */,
-				5576B38421374BF5000ECDBE /* FogNetworkReachability.swift in Sources */,
-				5576B39321374BF5000ECDBE /* MQTTSubscriber.swift in Sources */,
-				5576B38A21374BF5000ECDBE /* MQTTConnectionManager.swift in Sources */,
-				5576B3FC21374BF5000ECDBE /* MQTTSubPacket.swift in Sources */,
-				5576B39F21374BF5000ECDBE /* MQTTDistributer.swift in Sources */,
-				5576B36F21374BF5000ECDBE /* FogStreamReadable.swift in Sources */,
-				5576B41D21374BF5000ECDBE /* MQTTClientAppController.swift in Sources */,
-				5576B3D521374BF5000ECDBE /* MQTTConnAckResponse.swift in Sources */,
-				5576B40B21374BF5000ECDBE /* MQTTBridge.swift in Sources */,
-				5576B3C021374BF5000ECDBE /* MQTTConnectedState.swift in Sources */,
-				5576B36321374BF5000ECDBE /* ReadWriteMutex.swift in Sources */,
-				5576B3AB21374BF5000ECDBE /* MQTTClientParams.swift in Sources */,
-				5576B41721374BF5000ECDBE /* MQTTControl.swift in Sources */,
-				5576B39021374BF5000ECDBE /* MQTTPublisher.swift in Sources */,
-				5576B3BD21374BF5000ECDBE /* MQTTHostParams.swift in Sources */,
-				5576B39621374BF5000ECDBE /* MQTTPacketDurability.swift in Sources */,
-				5576B40221374BF5000ECDBE /* MQTTUnsubPacket.swift in Sources */,
-				5576B3C321374BF5000ECDBE /* MQTTSubAckPacket.swift in Sources */,
-				5576B3A521374BF5000ECDBE /* MQTTRouter.swift in Sources */,
-				5576B41A21374BF5000ECDBE /* MQTTMultiClientAppController.swift in Sources */,
-				5576B37221374BF5000ECDBE /* RunLoopPool.swift in Sources */,
-				5576B36C21374BF5000ECDBE /* Data+Fog.swift in Sources */,
-				5576B3D821374BF5000ECDBE /* MQTTPacketType.swift in Sources */,
-				5576B3B121374BF5000ECDBE /* MQTTRoutingParams.swift in Sources */,
-				5576B3DB21374BF5000ECDBE /* MQTTMessage.swift in Sources */,
-				5576B3FF21374BF5000ECDBE /* MQTTPingPacket.swift in Sources */,
-				5576B3CC21374BF5000ECDBE /* MQTTUnsubAckPacket.swift in Sources */,
-				5576B39C21374BF5000ECDBE /* MQTTRetryConnection.swift in Sources */,
-				5576B37821374BF5000ECDBE /* FogStreamWritable.swift in Sources */,
-				5576B3F321374BF5000ECDBE /* Data+MQTT.swift in Sources */,
-				5576B35D21374BF5000ECDBE /* FogExternalizable.swift in Sources */,
-				5576B3AE21374BF5000ECDBE /* MQTTConnectionDisconnect.swift in Sources */,
-				5576B3ED21374BF5000ECDBE /* MQTTPublishAckPacket.swift in Sources */,
-				5576B3F621374BF5000ECDBE /* MQTTPacketFactory.swift in Sources */,
-				5576B3A221374BF5000ECDBE /* MQTTTopicPattern.swift in Sources */,
-				5576B3A821374BF5000ECDBE /* MQTTMessageIdSource.swift in Sources */,
-				5576B37521374BF5000ECDBE /* FogSocketStream.swift in Sources */,
-				5576B38121374BF5000ECDBE /* FogNetworkReachabilityStatus.swift in Sources */,
-				5576B36621374BF5000ECDBE /* FogFeedbackValue.swift in Sources */,
-				5576B3D221374BF5000ECDBE /* MQTTPayload.swift in Sources */,
-				5576B35A21374BF5000ECDBE /* Optional+RAII.swift in Sources */,
-				5576B3C621374BF5000ECDBE /* MQTTConnAckPacket.swift in Sources */,
-				5576B3CF21374BF5000ECDBE /* MQTTQoS.swift in Sources */,
-				5576B3F021374BF5000ECDBE /* MQTTPackedLength.swift in Sources */,
-				5576B38721374BF5000ECDBE /* MQTTTopicScope.swift in Sources */,
-				5576B41121374BF5000ECDBE /* MQTTMetrics.swift in Sources */,
-				5576B37B21374BF5000ECDBE /* FogBonjourDiscovery.swift in Sources */,
-				5576B3E421374BF5000ECDBE /* MQTTPublishCompPacket.swift in Sources */,
-				5576B3DE21374BF5000ECDBE /* MQTTPacketFixedHeader.swift in Sources */,
-				5576B3F921374BF5000ECDBE /* MQTTConnectPacket.swift in Sources */,
-				5576B3E121374BF5000ECDBE /* MQTTPublishPacket.swift in Sources */,
-				5576B39921374BF5000ECDBE /* MQTTPersistance.swift in Sources */,
-				5576B40821374BF5000ECDBE /* MQTTPacket.swift in Sources */,
-				5576B3C921374BF5000ECDBE /* MQTTPingAckPacket.swift in Sources */,
-				5576B40521374BF5000ECDBE /* MQTTDisconnectPacket.swift in Sources */,
-				5576B3B421374BF5000ECDBE /* MQTTAuthentication.swift in Sources */,
-				5576B40E21374BF5000ECDBE /* MQTTBroadcaster.swift in Sources */,
-				5576B3B721374BF5000ECDBE /* MQTTReconnectParams.swift in Sources */,
+				5576B51B2138DC91000ECDBE /* MQTTPublishAckPacket.swift in Sources */,
+				5576B4972138DC91000ECDBE /* fogSize.swift in Sources */,
+				5576B4CD2138DC91000ECDBE /* MQTTDistributer.swift in Sources */,
+				5576B4C72138DC91000ECDBE /* MQTTPersistance.swift in Sources */,
+				5576B4CA2138DC91000ECDBE /* MQTTRetryConnection.swift in Sources */,
+				5576B4F72138DC91000ECDBE /* MQTTPingAckPacket.swift in Sources */,
+				5576B4BE2138DC91000ECDBE /* MQTTPublisher.swift in Sources */,
+				5576B5422138DC91000ECDBE /* MQTTClient.swift in Sources */,
+				5576B50C2138DC91000ECDBE /* MQTTPacketFixedHeader.swift in Sources */,
+				5576B5062138DC91000ECDBE /* MQTTPacketType.swift in Sources */,
+				5576B4E52138DC91000ECDBE /* MQTTReconnectParams.swift in Sources */,
+				5576B5032138DC91000ECDBE /* MQTTConnAckResponse.swift in Sources */,
+				5576B4F42138DC91000ECDBE /* MQTTConnAckPacket.swift in Sources */,
+				5576B5272138DC91000ECDBE /* MQTTConnectPacket.swift in Sources */,
+				5576B5482138DC91000ECDBE /* MQTTMultiClientAppController.swift in Sources */,
+				5576B4FA2138DC91000ECDBE /* MQTTUnsubAckPacket.swift in Sources */,
+				5576B4C12138DC91000ECDBE /* MQTTSubscriber.swift in Sources */,
+				5576B4C42138DC91000ECDBE /* MQTTPacketDurability.swift in Sources */,
+				5576B52A2138DC91000ECDBE /* MQTTSubPacket.swift in Sources */,
+				5576B4D62138DC91000ECDBE /* MQTTMessageIdSource.swift in Sources */,
+				5576B5452138DC91000ECDBE /* MQTTControl.swift in Sources */,
+				5576B4A02138DC91000ECDBE /* RunLoopPool.swift in Sources */,
+				5576B4FD2138DC91000ECDBE /* MQTTQoS.swift in Sources */,
+				5576B4DC2138DC91000ECDBE /* MQTTConnectionDisconnect.swift in Sources */,
+				5576B48B2138DC91000ECDBE /* FogExternalizable.swift in Sources */,
+				5576B53F2138DC91000ECDBE /* MQTTMetrics.swift in Sources */,
+				5576B5152138DC91000ECDBE /* MQTTPublishRecPacket.swift in Sources */,
+				5576B5092138DC91000ECDBE /* MQTTMessage.swift in Sources */,
+				5576B4D92138DC91000ECDBE /* MQTTClientParams.swift in Sources */,
+				5576B4E82138DC91000ECDBE /* MQTTPingStatus.swift in Sources */,
+				5576B4D02138DC91000ECDBE /* MQTTTopicPattern.swift in Sources */,
+				5576B4942138DC91000ECDBE /* FogFeedbackValue.swift in Sources */,
+				5576B5182138DC91000ECDBE /* MQTTPublishRelPacket.swift in Sources */,
+				5576B4A62138DC91000ECDBE /* FogStreamWritable.swift in Sources */,
+				5576B4EB2138DC91000ECDBE /* MQTTHostParams.swift in Sources */,
+				5576B4E22138DC91000ECDBE /* MQTTAuthentication.swift in Sources */,
+				5576B5242138DC91000ECDBE /* MQTTPacketFactory.swift in Sources */,
+				5576B5362138DC91000ECDBE /* MQTTPacket.swift in Sources */,
+				5576B49D2138DC91000ECDBE /* FogStreamReadable.swift in Sources */,
+				5576B50F2138DC91000ECDBE /* MQTTPublishPacket.swift in Sources */,
+				5576B4A32138DC91000ECDBE /* FogSocketStream.swift in Sources */,
+				5576B4AF2138DC91000ECDBE /* FogNetworkReachabilityStatus.swift in Sources */,
+				5576B4B52138DC91000ECDBE /* MQTTTopicScope.swift in Sources */,
+				5576B5332138DC91000ECDBE /* MQTTDisconnectPacket.swift in Sources */,
+				5576B51E2138DC91000ECDBE /* MQTTPackedLength.swift in Sources */,
+				5576B5002138DC91000ECDBE /* MQTTPayload.swift in Sources */,
+				5576B52D2138DC91000ECDBE /* MQTTPingPacket.swift in Sources */,
+				5576B4F12138DC91000ECDBE /* MQTTSubAckPacket.swift in Sources */,
+				5576B4BB2138DC91000ECDBE /* MQTTConnection.swift in Sources */,
+				5576B4912138DC91000ECDBE /* ReadWriteMutex.swift in Sources */,
+				5576B5212138DC91000ECDBE /* Data+MQTT.swift in Sources */,
+				5576B5122138DC91000ECDBE /* MQTTPublishCompPacket.swift in Sources */,
+				5576B4DF2138DC91000ECDBE /* MQTTRoutingParams.swift in Sources */,
+				5576B48E2138DC91000ECDBE /* FogRational.swift in Sources */,
+				5576B4EE2138DC91000ECDBE /* MQTTConnectedState.swift in Sources */,
+				5576B5392138DC91000ECDBE /* MQTTBridge.swift in Sources */,
+				5576B53C2138DC91000ECDBE /* MQTTBroadcaster.swift in Sources */,
+				5576B5302138DC91000ECDBE /* MQTTUnsubPacket.swift in Sources */,
+				5576B49A2138DC91000ECDBE /* Data+Fog.swift in Sources */,
+				5576B4882138DC91000ECDBE /* Optional+RAII.swift in Sources */,
+				5576B4A92138DC91000ECDBE /* FogBonjourDiscovery.swift in Sources */,
+				5576B4B22138DC91000ECDBE /* FogNetworkReachability.swift in Sources */,
+				5576B4B82138DC91000ECDBE /* MQTTConnectionManager.swift in Sources */,
+				5576B54B2138DC91000ECDBE /* MQTTClientAppController.swift in Sources */,
+				5576B4D32138DC91000ECDBE /* MQTTRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -864,71 +876,71 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5576B3EB21374BF5000ECDBE /* MQTTPublishRelPacket.swift in Sources */,
-				5576B36121374BF5000ECDBE /* FogRational.swift in Sources */,
-				5576B3BB21374BF5000ECDBE /* MQTTPingStatus.swift in Sources */,
-				5576B38E21374BF5000ECDBE /* MQTTConnection.swift in Sources */,
-				5576B3E821374BF5000ECDBE /* MQTTPublishRecPacket.swift in Sources */,
-				5576B41521374BF5000ECDBE /* MQTTClient.swift in Sources */,
-				5576B36A21374BF5000ECDBE /* fogSize.swift in Sources */,
-				5576B38521374BF5000ECDBE /* FogNetworkReachability.swift in Sources */,
-				5576B39421374BF5000ECDBE /* MQTTSubscriber.swift in Sources */,
-				5576B38B21374BF5000ECDBE /* MQTTConnectionManager.swift in Sources */,
-				5576B3FD21374BF5000ECDBE /* MQTTSubPacket.swift in Sources */,
-				5576B3A021374BF5000ECDBE /* MQTTDistributer.swift in Sources */,
-				5576B37021374BF5000ECDBE /* FogStreamReadable.swift in Sources */,
-				5576B41E21374BF5000ECDBE /* MQTTClientAppController.swift in Sources */,
-				5576B3D621374BF5000ECDBE /* MQTTConnAckResponse.swift in Sources */,
-				5576B40C21374BF5000ECDBE /* MQTTBridge.swift in Sources */,
-				5576B3C121374BF5000ECDBE /* MQTTConnectedState.swift in Sources */,
-				5576B36421374BF5000ECDBE /* ReadWriteMutex.swift in Sources */,
-				5576B3AC21374BF5000ECDBE /* MQTTClientParams.swift in Sources */,
-				5576B41821374BF5000ECDBE /* MQTTControl.swift in Sources */,
-				5576B39121374BF5000ECDBE /* MQTTPublisher.swift in Sources */,
-				5576B3BE21374BF5000ECDBE /* MQTTHostParams.swift in Sources */,
-				5576B39721374BF5000ECDBE /* MQTTPacketDurability.swift in Sources */,
-				5576B40321374BF5000ECDBE /* MQTTUnsubPacket.swift in Sources */,
-				5576B3C421374BF5000ECDBE /* MQTTSubAckPacket.swift in Sources */,
-				5576B3A621374BF5000ECDBE /* MQTTRouter.swift in Sources */,
-				5576B41B21374BF5000ECDBE /* MQTTMultiClientAppController.swift in Sources */,
-				5576B37321374BF5000ECDBE /* RunLoopPool.swift in Sources */,
-				5576B36D21374BF5000ECDBE /* Data+Fog.swift in Sources */,
-				5576B3D921374BF5000ECDBE /* MQTTPacketType.swift in Sources */,
-				5576B3B221374BF5000ECDBE /* MQTTRoutingParams.swift in Sources */,
-				5576B3DC21374BF5000ECDBE /* MQTTMessage.swift in Sources */,
-				5576B40021374BF5000ECDBE /* MQTTPingPacket.swift in Sources */,
-				5576B3CD21374BF5000ECDBE /* MQTTUnsubAckPacket.swift in Sources */,
-				5576B39D21374BF5000ECDBE /* MQTTRetryConnection.swift in Sources */,
-				5576B37921374BF5000ECDBE /* FogStreamWritable.swift in Sources */,
-				5576B3F421374BF5000ECDBE /* Data+MQTT.swift in Sources */,
-				5576B35E21374BF5000ECDBE /* FogExternalizable.swift in Sources */,
-				5576B3AF21374BF5000ECDBE /* MQTTConnectionDisconnect.swift in Sources */,
-				5576B3EE21374BF5000ECDBE /* MQTTPublishAckPacket.swift in Sources */,
-				5576B3F721374BF5000ECDBE /* MQTTPacketFactory.swift in Sources */,
-				5576B3A321374BF5000ECDBE /* MQTTTopicPattern.swift in Sources */,
-				5576B3A921374BF5000ECDBE /* MQTTMessageIdSource.swift in Sources */,
-				5576B37621374BF5000ECDBE /* FogSocketStream.swift in Sources */,
-				5576B38221374BF5000ECDBE /* FogNetworkReachabilityStatus.swift in Sources */,
-				5576B36721374BF5000ECDBE /* FogFeedbackValue.swift in Sources */,
-				5576B3D321374BF5000ECDBE /* MQTTPayload.swift in Sources */,
-				5576B35B21374BF5000ECDBE /* Optional+RAII.swift in Sources */,
-				5576B3C721374BF5000ECDBE /* MQTTConnAckPacket.swift in Sources */,
-				5576B3D021374BF5000ECDBE /* MQTTQoS.swift in Sources */,
-				5576B3F121374BF5000ECDBE /* MQTTPackedLength.swift in Sources */,
-				5576B38821374BF5000ECDBE /* MQTTTopicScope.swift in Sources */,
-				5576B41221374BF5000ECDBE /* MQTTMetrics.swift in Sources */,
-				5576B37C21374BF5000ECDBE /* FogBonjourDiscovery.swift in Sources */,
-				5576B3E521374BF5000ECDBE /* MQTTPublishCompPacket.swift in Sources */,
-				5576B3DF21374BF5000ECDBE /* MQTTPacketFixedHeader.swift in Sources */,
-				5576B3FA21374BF5000ECDBE /* MQTTConnectPacket.swift in Sources */,
-				5576B3E221374BF5000ECDBE /* MQTTPublishPacket.swift in Sources */,
-				5576B39A21374BF5000ECDBE /* MQTTPersistance.swift in Sources */,
-				5576B40921374BF5000ECDBE /* MQTTPacket.swift in Sources */,
-				5576B3CA21374BF5000ECDBE /* MQTTPingAckPacket.swift in Sources */,
-				5576B40621374BF5000ECDBE /* MQTTDisconnectPacket.swift in Sources */,
-				5576B3B521374BF5000ECDBE /* MQTTAuthentication.swift in Sources */,
-				5576B40F21374BF5000ECDBE /* MQTTBroadcaster.swift in Sources */,
-				5576B3B821374BF5000ECDBE /* MQTTReconnectParams.swift in Sources */,
+				5576B51C2138DC91000ECDBE /* MQTTPublishAckPacket.swift in Sources */,
+				5576B4982138DC91000ECDBE /* fogSize.swift in Sources */,
+				5576B4CE2138DC91000ECDBE /* MQTTDistributer.swift in Sources */,
+				5576B4C82138DC91000ECDBE /* MQTTPersistance.swift in Sources */,
+				5576B4CB2138DC91000ECDBE /* MQTTRetryConnection.swift in Sources */,
+				5576B4F82138DC91000ECDBE /* MQTTPingAckPacket.swift in Sources */,
+				5576B4BF2138DC91000ECDBE /* MQTTPublisher.swift in Sources */,
+				5576B5432138DC91000ECDBE /* MQTTClient.swift in Sources */,
+				5576B50D2138DC91000ECDBE /* MQTTPacketFixedHeader.swift in Sources */,
+				5576B5072138DC91000ECDBE /* MQTTPacketType.swift in Sources */,
+				5576B4E62138DC91000ECDBE /* MQTTReconnectParams.swift in Sources */,
+				5576B5042138DC91000ECDBE /* MQTTConnAckResponse.swift in Sources */,
+				5576B4F52138DC91000ECDBE /* MQTTConnAckPacket.swift in Sources */,
+				5576B5282138DC91000ECDBE /* MQTTConnectPacket.swift in Sources */,
+				5576B5492138DC91000ECDBE /* MQTTMultiClientAppController.swift in Sources */,
+				5576B4FB2138DC91000ECDBE /* MQTTUnsubAckPacket.swift in Sources */,
+				5576B4C22138DC91000ECDBE /* MQTTSubscriber.swift in Sources */,
+				5576B4C52138DC91000ECDBE /* MQTTPacketDurability.swift in Sources */,
+				5576B52B2138DC91000ECDBE /* MQTTSubPacket.swift in Sources */,
+				5576B4D72138DC91000ECDBE /* MQTTMessageIdSource.swift in Sources */,
+				5576B5462138DC91000ECDBE /* MQTTControl.swift in Sources */,
+				5576B4A12138DC91000ECDBE /* RunLoopPool.swift in Sources */,
+				5576B4FE2138DC91000ECDBE /* MQTTQoS.swift in Sources */,
+				5576B4DD2138DC91000ECDBE /* MQTTConnectionDisconnect.swift in Sources */,
+				5576B48C2138DC91000ECDBE /* FogExternalizable.swift in Sources */,
+				5576B5402138DC91000ECDBE /* MQTTMetrics.swift in Sources */,
+				5576B5162138DC91000ECDBE /* MQTTPublishRecPacket.swift in Sources */,
+				5576B50A2138DC91000ECDBE /* MQTTMessage.swift in Sources */,
+				5576B4DA2138DC91000ECDBE /* MQTTClientParams.swift in Sources */,
+				5576B4E92138DC91000ECDBE /* MQTTPingStatus.swift in Sources */,
+				5576B4D12138DC91000ECDBE /* MQTTTopicPattern.swift in Sources */,
+				5576B4952138DC91000ECDBE /* FogFeedbackValue.swift in Sources */,
+				5576B5192138DC91000ECDBE /* MQTTPublishRelPacket.swift in Sources */,
+				5576B4A72138DC91000ECDBE /* FogStreamWritable.swift in Sources */,
+				5576B4EC2138DC91000ECDBE /* MQTTHostParams.swift in Sources */,
+				5576B4E32138DC91000ECDBE /* MQTTAuthentication.swift in Sources */,
+				5576B5252138DC91000ECDBE /* MQTTPacketFactory.swift in Sources */,
+				5576B5372138DC91000ECDBE /* MQTTPacket.swift in Sources */,
+				5576B49E2138DC91000ECDBE /* FogStreamReadable.swift in Sources */,
+				5576B5102138DC91000ECDBE /* MQTTPublishPacket.swift in Sources */,
+				5576B4A42138DC91000ECDBE /* FogSocketStream.swift in Sources */,
+				5576B4B02138DC91000ECDBE /* FogNetworkReachabilityStatus.swift in Sources */,
+				5576B4B62138DC91000ECDBE /* MQTTTopicScope.swift in Sources */,
+				5576B5342138DC91000ECDBE /* MQTTDisconnectPacket.swift in Sources */,
+				5576B51F2138DC91000ECDBE /* MQTTPackedLength.swift in Sources */,
+				5576B5012138DC91000ECDBE /* MQTTPayload.swift in Sources */,
+				5576B52E2138DC91000ECDBE /* MQTTPingPacket.swift in Sources */,
+				5576B4F22138DC91000ECDBE /* MQTTSubAckPacket.swift in Sources */,
+				5576B4BC2138DC91000ECDBE /* MQTTConnection.swift in Sources */,
+				5576B4922138DC91000ECDBE /* ReadWriteMutex.swift in Sources */,
+				5576B5222138DC91000ECDBE /* Data+MQTT.swift in Sources */,
+				5576B5132138DC91000ECDBE /* MQTTPublishCompPacket.swift in Sources */,
+				5576B4E02138DC91000ECDBE /* MQTTRoutingParams.swift in Sources */,
+				5576B48F2138DC91000ECDBE /* FogRational.swift in Sources */,
+				5576B4EF2138DC91000ECDBE /* MQTTConnectedState.swift in Sources */,
+				5576B53A2138DC91000ECDBE /* MQTTBridge.swift in Sources */,
+				5576B53D2138DC91000ECDBE /* MQTTBroadcaster.swift in Sources */,
+				5576B5312138DC91000ECDBE /* MQTTUnsubPacket.swift in Sources */,
+				5576B49B2138DC91000ECDBE /* Data+Fog.swift in Sources */,
+				5576B4892138DC91000ECDBE /* Optional+RAII.swift in Sources */,
+				5576B4AA2138DC91000ECDBE /* FogBonjourDiscovery.swift in Sources */,
+				5576B4B32138DC91000ECDBE /* FogNetworkReachability.swift in Sources */,
+				5576B4B92138DC91000ECDBE /* MQTTConnectionManager.swift in Sources */,
+				5576B54C2138DC91000ECDBE /* MQTTClientAppController.swift in Sources */,
+				5576B4D42138DC91000ECDBE /* MQTTRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -936,69 +948,69 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5576B3EC21374BF5000ECDBE /* MQTTPublishRelPacket.swift in Sources */,
-				5576B36221374BF5000ECDBE /* FogRational.swift in Sources */,
-				5576B3BC21374BF5000ECDBE /* MQTTPingStatus.swift in Sources */,
-				5576B38F21374BF5000ECDBE /* MQTTConnection.swift in Sources */,
-				5576B38021374BF5000ECDBE /* FogNetworkReachabilityStub.swift in Sources */,
-				5576B3E921374BF5000ECDBE /* MQTTPublishRecPacket.swift in Sources */,
-				5576B41621374BF5000ECDBE /* MQTTClient.swift in Sources */,
-				5576B36B21374BF5000ECDBE /* fogSize.swift in Sources */,
-				5576B39521374BF5000ECDBE /* MQTTSubscriber.swift in Sources */,
-				5576B38C21374BF5000ECDBE /* MQTTConnectionManager.swift in Sources */,
-				5576B3FE21374BF5000ECDBE /* MQTTSubPacket.swift in Sources */,
-				5576B3A121374BF5000ECDBE /* MQTTDistributer.swift in Sources */,
-				5576B37121374BF5000ECDBE /* FogStreamReadable.swift in Sources */,
-				5576B41F21374BF5000ECDBE /* MQTTClientAppController.swift in Sources */,
-				5576B3D721374BF5000ECDBE /* MQTTConnAckResponse.swift in Sources */,
-				5576B40D21374BF5000ECDBE /* MQTTBridge.swift in Sources */,
-				5576B3C221374BF5000ECDBE /* MQTTConnectedState.swift in Sources */,
-				5576B36521374BF5000ECDBE /* ReadWriteMutex.swift in Sources */,
-				5576B3AD21374BF5000ECDBE /* MQTTClientParams.swift in Sources */,
-				5576B41921374BF5000ECDBE /* MQTTControl.swift in Sources */,
-				5576B39221374BF5000ECDBE /* MQTTPublisher.swift in Sources */,
-				5576B3BF21374BF5000ECDBE /* MQTTHostParams.swift in Sources */,
-				5576B39821374BF5000ECDBE /* MQTTPacketDurability.swift in Sources */,
-				5576B40421374BF5000ECDBE /* MQTTUnsubPacket.swift in Sources */,
-				5576B3C521374BF5000ECDBE /* MQTTSubAckPacket.swift in Sources */,
-				5576B3A721374BF5000ECDBE /* MQTTRouter.swift in Sources */,
-				5576B37421374BF5000ECDBE /* RunLoopPool.swift in Sources */,
-				5576B36E21374BF5000ECDBE /* Data+Fog.swift in Sources */,
-				5576B3DA21374BF5000ECDBE /* MQTTPacketType.swift in Sources */,
-				5576B3B321374BF5000ECDBE /* MQTTRoutingParams.swift in Sources */,
-				5576B3DD21374BF5000ECDBE /* MQTTMessage.swift in Sources */,
-				5576B40121374BF5000ECDBE /* MQTTPingPacket.swift in Sources */,
-				5576B3CE21374BF5000ECDBE /* MQTTUnsubAckPacket.swift in Sources */,
-				5576B39E21374BF5000ECDBE /* MQTTRetryConnection.swift in Sources */,
-				5576B37A21374BF5000ECDBE /* FogStreamWritable.swift in Sources */,
-				5576B3F521374BF5000ECDBE /* Data+MQTT.swift in Sources */,
-				5576B35F21374BF5000ECDBE /* FogExternalizable.swift in Sources */,
-				5576B3B021374BF5000ECDBE /* MQTTConnectionDisconnect.swift in Sources */,
-				5576B3EF21374BF5000ECDBE /* MQTTPublishAckPacket.swift in Sources */,
-				5576B3F821374BF5000ECDBE /* MQTTPacketFactory.swift in Sources */,
-				5576B3A421374BF5000ECDBE /* MQTTTopicPattern.swift in Sources */,
-				5576B3AA21374BF5000ECDBE /* MQTTMessageIdSource.swift in Sources */,
-				5576B37721374BF5000ECDBE /* FogSocketStream.swift in Sources */,
-				5576B38321374BF5000ECDBE /* FogNetworkReachabilityStatus.swift in Sources */,
-				5576B36821374BF5000ECDBE /* FogFeedbackValue.swift in Sources */,
-				5576B3D421374BF5000ECDBE /* MQTTPayload.swift in Sources */,
-				5576B35C21374BF5000ECDBE /* Optional+RAII.swift in Sources */,
-				5576B3C821374BF5000ECDBE /* MQTTConnAckPacket.swift in Sources */,
-				5576B3D121374BF5000ECDBE /* MQTTQoS.swift in Sources */,
-				5576B3F221374BF5000ECDBE /* MQTTPackedLength.swift in Sources */,
-				5576B38921374BF5000ECDBE /* MQTTTopicScope.swift in Sources */,
-				5576B41321374BF5000ECDBE /* MQTTMetrics.swift in Sources */,
-				5576B3E621374BF5000ECDBE /* MQTTPublishCompPacket.swift in Sources */,
-				5576B3E021374BF5000ECDBE /* MQTTPacketFixedHeader.swift in Sources */,
-				5576B3FB21374BF5000ECDBE /* MQTTConnectPacket.swift in Sources */,
-				5576B3E321374BF5000ECDBE /* MQTTPublishPacket.swift in Sources */,
-				5576B39B21374BF5000ECDBE /* MQTTPersistance.swift in Sources */,
-				5576B40A21374BF5000ECDBE /* MQTTPacket.swift in Sources */,
-				5576B3CB21374BF5000ECDBE /* MQTTPingAckPacket.swift in Sources */,
-				5576B40721374BF5000ECDBE /* MQTTDisconnectPacket.swift in Sources */,
-				5576B3B621374BF5000ECDBE /* MQTTAuthentication.swift in Sources */,
-				5576B41021374BF5000ECDBE /* MQTTBroadcaster.swift in Sources */,
-				5576B3B921374BF5000ECDBE /* MQTTReconnectParams.swift in Sources */,
+				5576B52C2138DC91000ECDBE /* MQTTSubPacket.swift in Sources */,
+				5576B4D82138DC91000ECDBE /* MQTTMessageIdSource.swift in Sources */,
+				5576B4BD2138DC91000ECDBE /* MQTTConnection.swift in Sources */,
+				5576B5442138DC91000ECDBE /* MQTTClient.swift in Sources */,
+				5576B5352138DC91000ECDBE /* MQTTDisconnectPacket.swift in Sources */,
+				5576B4D22138DC91000ECDBE /* MQTTTopicPattern.swift in Sources */,
+				5576B4962138DC91000ECDBE /* FogFeedbackValue.swift in Sources */,
+				5576B4EA2138DC91000ECDBE /* MQTTPingStatus.swift in Sources */,
+				5576B4E42138DC91000ECDBE /* MQTTAuthentication.swift in Sources */,
+				5576B48A2138DC91000ECDBE /* Optional+RAII.swift in Sources */,
+				5576B4902138DC91000ECDBE /* FogRational.swift in Sources */,
+				5576B4992138DC91000ECDBE /* fogSize.swift in Sources */,
+				5576B5232138DC91000ECDBE /* Data+MQTT.swift in Sources */,
+				5576B54D2138DC91000ECDBE /* MQTTClientAppController.swift in Sources */,
+				5576B4F32138DC91000ECDBE /* MQTTSubAckPacket.swift in Sources */,
+				5576B4A22138DC91000ECDBE /* RunLoopPool.swift in Sources */,
+				5576B4C92138DC91000ECDBE /* MQTTPersistance.swift in Sources */,
+				5576B4B72138DC91000ECDBE /* MQTTTopicScope.swift in Sources */,
+				5576B4DB2138DC91000ECDBE /* MQTTClientParams.swift in Sources */,
+				5576B5412138DC91000ECDBE /* MQTTMetrics.swift in Sources */,
+				5576B5172138DC91000ECDBE /* MQTTPublishRecPacket.swift in Sources */,
+				5576B5142138DC91000ECDBE /* MQTTPublishCompPacket.swift in Sources */,
+				5576B49C2138DC91000ECDBE /* Data+Fog.swift in Sources */,
+				5576B4932138DC91000ECDBE /* ReadWriteMutex.swift in Sources */,
+				5576B4FF2138DC91000ECDBE /* MQTTQoS.swift in Sources */,
+				5576B5472138DC91000ECDBE /* MQTTControl.swift in Sources */,
+				5576B4F62138DC91000ECDBE /* MQTTConnAckPacket.swift in Sources */,
+				5576B5022138DC91000ECDBE /* MQTTPayload.swift in Sources */,
+				5576B4AE2138DC91000ECDBE /* FogNetworkReachabilityStub.swift in Sources */,
+				5576B5262138DC91000ECDBE /* MQTTPacketFactory.swift in Sources */,
+				5576B4F92138DC91000ECDBE /* MQTTPingAckPacket.swift in Sources */,
+				5576B51D2138DC91000ECDBE /* MQTTPublishAckPacket.swift in Sources */,
+				5576B4CC2138DC91000ECDBE /* MQTTRetryConnection.swift in Sources */,
+				5576B4ED2138DC91000ECDBE /* MQTTHostParams.swift in Sources */,
+				5576B4B12138DC91000ECDBE /* FogNetworkReachabilityStatus.swift in Sources */,
+				5576B4A82138DC91000ECDBE /* FogStreamWritable.swift in Sources */,
+				5576B5082138DC91000ECDBE /* MQTTPacketType.swift in Sources */,
+				5576B5382138DC91000ECDBE /* MQTTPacket.swift in Sources */,
+				5576B5112138DC91000ECDBE /* MQTTPublishPacket.swift in Sources */,
+				5576B4F02138DC91000ECDBE /* MQTTConnectedState.swift in Sources */,
+				5576B4C62138DC91000ECDBE /* MQTTPacketDurability.swift in Sources */,
+				5576B4D52138DC91000ECDBE /* MQTTRouter.swift in Sources */,
+				5576B5202138DC91000ECDBE /* MQTTPackedLength.swift in Sources */,
+				5576B4E72138DC91000ECDBE /* MQTTReconnectParams.swift in Sources */,
+				5576B51A2138DC91000ECDBE /* MQTTPublishRelPacket.swift in Sources */,
+				5576B5322138DC91000ECDBE /* MQTTUnsubPacket.swift in Sources */,
+				5576B4C02138DC91000ECDBE /* MQTTPublisher.swift in Sources */,
+				5576B4E12138DC91000ECDBE /* MQTTRoutingParams.swift in Sources */,
+				5576B4BA2138DC91000ECDBE /* MQTTConnectionManager.swift in Sources */,
+				5576B48D2138DC91000ECDBE /* FogExternalizable.swift in Sources */,
+				5576B4A52138DC91000ECDBE /* FogSocketStream.swift in Sources */,
+				5576B4C32138DC91000ECDBE /* MQTTSubscriber.swift in Sources */,
+				5576B52F2138DC91000ECDBE /* MQTTPingPacket.swift in Sources */,
+				5576B50E2138DC91000ECDBE /* MQTTPacketFixedHeader.swift in Sources */,
+				5576B49F2138DC91000ECDBE /* FogStreamReadable.swift in Sources */,
+				5576B53B2138DC91000ECDBE /* MQTTBridge.swift in Sources */,
+				5576B4FC2138DC91000ECDBE /* MQTTUnsubAckPacket.swift in Sources */,
+				5576B5052138DC91000ECDBE /* MQTTConnAckResponse.swift in Sources */,
+				5576B50B2138DC91000ECDBE /* MQTTMessage.swift in Sources */,
+				5576B53E2138DC91000ECDBE /* MQTTBroadcaster.swift in Sources */,
+				5576B4CF2138DC91000ECDBE /* MQTTDistributer.swift in Sources */,
+				5576B5292138DC91000ECDBE /* MQTTConnectPacket.swift in Sources */,
+				5576B4DE2138DC91000ECDBE /* MQTTConnectionDisconnect.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
