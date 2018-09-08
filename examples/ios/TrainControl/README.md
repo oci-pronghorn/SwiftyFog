@@ -6,10 +6,10 @@ Currently...
 Attempts to connect to "joveexpress2.local" on startup.
 Autoconnects to first discovered broker if not connected
 On mac to broadcast broker...
-hn=`hostname`;cn=$(echo "$hn" | cut -f 1 -d '.');dns-sd -R ${cn} _mqtt._tcp local 1883&
+hn=`hostname`;cn=$(echo "$hn" | cut -f 1 -d '.');dns-sd -R ${cn} _mqtt._tcp local 1883
 On the Pi
-`hostname`;cn=$(echo "$hn" | cut -f 1 -d '.');avahi-publish -s ${cn} _mqtt._tcp local 1883
-avahi-publish -s [options] name service-type port
+sudo apt-get install avahi-daemon avahi-discover avahi-utils libnss-mdns mdns-scan
+hn=`hostname`;cn=$(echo "$hn" | cut -f 1 -d '.');avahi-publish -s ${cn}.local _mqtt._tcp 1883
 	
 ## Train Discovery
 Given a broker, read from settings, both the iOS app and the Watch will auto attach to the first living train if it does not have one.
