@@ -6,6 +6,7 @@
 //
 
 import Foundation // Runloop
+import CoreFoundation // CFRunLoopStop
 
 /*
 We are trying to solve several issues

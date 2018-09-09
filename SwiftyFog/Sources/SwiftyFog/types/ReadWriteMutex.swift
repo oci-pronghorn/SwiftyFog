@@ -6,7 +6,11 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
-import Darwin.C
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin
+#endif
 
 /*
  *	Swift does not have threading constructs, yet.

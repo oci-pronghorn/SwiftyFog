@@ -6,6 +6,8 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
+#if os(iOS) || os(macOS)
+
 import SystemConfiguration
 import Foundation
 
@@ -199,3 +201,5 @@ extension SCNetworkReachabilityFlags: CustomStringConvertible {
         return "\(W)\(R) \(c)\(t)\(i)\(C)\(D)\(l)\(d)"
     }
 }
+
+#endif

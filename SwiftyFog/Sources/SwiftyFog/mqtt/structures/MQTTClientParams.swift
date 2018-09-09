@@ -59,13 +59,16 @@ public struct MQTTClientParams {
 		let platform = "OSX"
 	#elseif os(watchOS)
       	let deviceID = UUID().uuidString
-		let platform = "watchOS"
+		let platform = "wOS"
+	#elseif os(Linux)
+      	let deviceID = UUID().uuidString
+		let platform = "Lnx"
     #endif
 		let appId = Bundle.main.bundleIdentifier!
 		let fullId = appId + "-" + deviceID
 		let hash = Int64(fullId.hash)
 		let uhash = UInt64(bitPattern: hash)
-		let asciied = String(format: "%@%20lu", platform, uhash)
+		let asciied = platform + String(format: "%20lu", uhash)
 		return asciied
 	}
 }

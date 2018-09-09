@@ -6,11 +6,11 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
+#if os(watchOS) || os(Linux)
+
 import Foundation // DispatchQueue
 
 // TODO: this is used for testing and watch. We need soemthing better for watch.
-
-#if os(watchOS)
 
 public final class FogNetworkReachability {
 

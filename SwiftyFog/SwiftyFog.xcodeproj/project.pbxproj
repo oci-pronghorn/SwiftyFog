@@ -304,6 +304,7 @@
 		5578602720F3AA5E00FC182D /* SwiftFog_watch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftFog_watch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5578602920F3AA5E00FC182D /* SwiftFog_watch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftFog_watch.h; sourceTree = "<group>"; };
 		5578602A20F3AA5E00FC182D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55E9B09F2144B13000F01F23 /* subscription.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = subscription.py; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -352,6 +353,7 @@
 			isa = PBXGroup;
 			children = (
 				5576B4352138D82D000ECDBE /* Package.swift */,
+				55E9B09F2144B13000F01F23 /* subscription.py */,
 				5576B4362138D82D000ECDBE /* README.md */,
 				5576B4372138DC91000ECDBE /* Sources */,
 				5576B42921375033000ECDBE /* Tests */,

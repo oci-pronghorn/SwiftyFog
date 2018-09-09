@@ -6,6 +6,16 @@
 //
 
 import Foundation // Streams
+import CoreFoundation // Streams
+
+#if swift(>=4.2)
+#else
+extension RunLoop {
+	struct Mode {
+		static let `default` = RunLoopMode.defaultRunLoopMode
+	}
+}
+#endif
 
 public protocol FogSocketStreamDelegate: class {
     func fog(streamReady: FogSocketStream)
@@ -21,12 +31,12 @@ public typealias FogSocketStreamWrite = ((StreamWriter)->())->()
 		after a failed write that is actually reported as success.
 
 		There appears to be no way to change this behavior in the stream
-		objects. You business logic will have to assume this responsibility
+		objects. Your business logic will have to assume this responsibility
 		with pings and acks.
 
-	See RunLoopPool for further issues with iOS Streams
+	See RunLoopPool for further issues with Foundation Streams
 */
-public final class FogSocketStream: NSObject, StreamDelegate {
+public final class FogSocketStream: NSObject {
 	private let mutex = ReadWriteMutex()
     private var inputStream: InputStream?
     private var outputStream: OutputStream?
@@ -41,14 +51,21 @@ public final class FogSocketStream: NSObject, StreamDelegate {
 	public init?(hostName: String, port: Int, qos: DispatchQoS) {
         var inputStreamHandle: InputStream?
         var outputStreamHandle: OutputStream?
+		
     #if os(iOS) || os(OSX)
         Stream.getStreamsToHost(withName: hostName, port: port, inputStream: &inputStreamHandle, outputStream: &outputStreamHandle)
-	#else
+	#elseif os(watchOS)
 		var readStream: Unmanaged<CFReadStream>?
 		var writeStream: Unmanaged<CFWriteStream>?
 		CFStreamCreatePairWithSocketToHost(nil, hostName as CFString, UInt32(port), &readStream, &writeStream)
 		inputStreamHandle = readStream?.takeRetainedValue()
 		outputStreamHandle = writeStream?.takeRetainedValue()
+	#else // Linux
+		fatalError("How do we use the Stream API on this platform")
+		// I cannot find a single example how to do this!!!!
+		//let url = URL(string: hostName + ":" + port.description)!
+		//inputStreamHandle = InputStream(url: URL(string: hostName + ":" + port.description)!)
+		//outputStreamHandle = OutputStream(url: URL(string: hostName + ":" + port.description)!, append: true)
 	#endif
         guard let hasInput = inputStreamHandle, let hasOutput = outputStreamHandle else { return nil }
 		
@@ -114,12 +131,12 @@ public final class FogSocketStream: NSObject, StreamDelegate {
 		self.delegate = delegate
 		let hasInput = inputStream!
 		let hasOutput = outputStream!
-		
-		if let raw = isSSL?.rawValue {
-			let _ = hasInput.setProperty(raw, forKey: Stream.PropertyKey.socketSecurityLevelKey)
-			let _ = hasOutput.setProperty(raw, forKey: Stream.PropertyKey.socketSecurityLevelKey)
-		}
-		
+		#if !os(Linux) // linux is requiing an AnyObject? not an Any?
+			if let raw = isSSL?.rawValue {
+				let _ = hasInput.setProperty(raw, forKey: Stream.PropertyKey.socketSecurityLevelKey)
+				let _ = hasOutput.setProperty(raw, forKey: Stream.PropertyKey.socketSecurityLevelKey)
+			}
+		#endif
 		FogSocketStream.runloop.runLoop(label: label + ".in", qos: qos) {
 			hasInput.schedule(in: $0, forMode: RunLoop.Mode.default)
 			hasInput.open()
@@ -143,8 +160,9 @@ public final class FogSocketStream: NSObject, StreamDelegate {
 			}
 		}
 	}
-	
-    @objc
+}
+
+extension FogSocketStream: StreamDelegate {
 	public func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
         switch eventCode {
 			case Stream.Event.openCompleted:

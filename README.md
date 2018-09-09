@@ -1,45 +1,18 @@
 # SwiftyFog
 
-SwiftyFog is a specification compliant robust and performant MQTT client implementation. It is entirely written in Swift with the following design considerations.
-* Idiomatic Swift
-* Unhappy-path driven design; every failure point captured and propagated to the business layer
-* Mobile and MVC friendly APIs
-* Optional behaviors in specification exposed
-* Resource conscious
-* Non-trivial example demonstrating usage and patterns
-* No global state
-* Incoming packet wild card distribution
-* Support for multiple MQTT connections
-
-There are couple remaining TODOs.
-* Many More Unit Tests
-* Better packet retry configuration
-* File persisted packets for clean session false and relaunch of application
-* Not "fighting the framework" in the iOS Stream wrapper
-* Continue to improve Metrics information
-* SwiftPackage Manager
-* Linux build
-
 ## Examples
-
 The iOS/WatchKit example is written to work with the FogLight Java application, also in the examples directory.
 The Mac example demonstrates similar concepts for the desktop. 
 The AR example demonstrates integration of ARKit and FogLight/SwiftyFog.
 
 ## Instructions
 To build the Java train application
-
 mvn install
 scp target/TheJoveExpress.jar pi@thejoveexpress.local:/home/pi/FogLight
 
-## Requirements
-
 ## Author
-
 dsjove, dsjove@gmail.com
-
 tobischw, schweigert@objectcomputing.com (MacOS integration/AR demo)
 
 ## License
-
 SwiftyFog is available under the MIT license. See the LICENSE file for more info.

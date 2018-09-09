@@ -6,6 +6,8 @@
 //  Copyright © 2017 Object Computing Inc. All rights reserved.
 //
 
+#if os(iOS) || os(macOS)
+
 import Foundation // NetService Dispatch Queue, Data
 
 /*
@@ -189,3 +191,5 @@ extension MQTTMultiClientAppController: BonjourDiscoveryDelegate {
 	public func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, serviceDidUpdateTXT: NetService, TXT: Data) {
 	}
 }
+
+#endif

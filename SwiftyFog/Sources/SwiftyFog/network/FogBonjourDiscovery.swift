@@ -6,6 +6,8 @@
 //  Copyright © 2018 Object Computing Inc. All rights reserved.
 //
 
+#if os(iOS) || os(macOS)
+
 import Foundation // NetServiceBrowser
 // Not available on watch
 
@@ -142,3 +144,5 @@ extension FogBonjourDiscovery: NetServiceDelegate {
     public func netService(_ sender: NetService, didAcceptConnectionWith inputStream: InputStream, outputStream: OutputStream) {
     }
 }
+
+#endif

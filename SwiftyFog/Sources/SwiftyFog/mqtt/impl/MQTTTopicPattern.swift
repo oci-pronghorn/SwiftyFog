@@ -6,6 +6,15 @@
 //  Copyright © 2018 Object Computing Inc. All rights reserved.
 //
 
+#if swift(>=4.2)
+#else
+extension String {
+	public func firstIndex(of element: Character) -> String.Index? {
+		return self.range(of: String(element))?.lowerBound
+	}
+}
+#endif
+
 enum MQTTTopicPattern {
 	case invalid(String)
 	case fixed(String)
