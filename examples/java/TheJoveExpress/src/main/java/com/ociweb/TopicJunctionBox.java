@@ -1,12 +1,16 @@
 package com.ociweb;
 
-import com.ociweb.gl.api.*;
-import com.ociweb.gl.impl.stage.CallableMethod;
-import com.ociweb.iot.hardware.HardwareImpl;
-import com.ociweb.iot.maker.ListenerFilterIoT;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.ociweb.gl.api.Behavior;
+import com.ociweb.gl.api.ListenerFilter;
+import com.ociweb.gl.api.MQTTBridge;
+import com.ociweb.gl.api.MQTTQoS;
+import com.ociweb.gl.api.PubSubMethodListener;
+import com.ociweb.gl.api.Writable;
+import com.ociweb.gl.impl.stage.CallableMethod;
+import com.ociweb.iot.maker.FogRuntime;
 
 /**
 // Accumulates MQTT pubs and subs so maker does not have to reason duplicates across behaviors
@@ -20,7 +24,7 @@ import java.util.Map;
 public class TopicJunctionBox implements AutoCloseable {
     private final CharSequence externalScope;
     private final MQTTBridge mqttBridge;
-    private final MsgRuntime<HardwareImpl, ListenerFilterIoT> runtime;
+    private final FogRuntime runtime;
 
     private static class MQTTTransmission {
         MQTTQoS qos;
@@ -33,7 +37,7 @@ public class TopicJunctionBox implements AutoCloseable {
 
     // To disable MQTT, pass in null for mqttBridge
     // externalScope can be null as well
-    TopicJunctionBox(String externalScope, MsgRuntime<HardwareImpl, ListenerFilterIoT> runtime, MQTTBridge mqttBridge) {
+    TopicJunctionBox(String externalScope, FogRuntime runtime, MQTTBridge mqttBridge) {
         this.externalScope = externalScope != null && !externalScope.isEmpty() ? externalScope + "/" : "";
         this.mqttBridge = mqttBridge;
         this.runtime = runtime;
