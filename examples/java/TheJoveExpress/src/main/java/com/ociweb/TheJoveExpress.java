@@ -10,6 +10,7 @@ import com.ociweb.iot.maker.FogApp;
 import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.Hardware;
 import com.ociweb.pronghorn.iot.i2c.I2CJFFIStage;
+import com.ociweb.pronghorn.network.ClientSocketReaderStage;
 import com.ociweb.pronghorn.stage.scheduling.GraphManager;
 
 /**
@@ -26,6 +27,11 @@ public class TheJoveExpress implements FogApp
         
         hardware.setDefaultRate(16_000_000);
 
+        //on the PI many of the MQTT connections take large periods of time to 
+        //communicate with Mosquito. These are not errors so we will turn off
+        //the automatic disconnect of slow responding connections 
+        ClientSocketReaderStage.abandonSlowConnections = false;
+        
         GraphManager.showThreadIdOnTelemetry = true;
         I2CJFFIStage.debugCommands = false;
 
