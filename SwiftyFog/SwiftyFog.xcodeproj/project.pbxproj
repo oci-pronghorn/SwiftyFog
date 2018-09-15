@@ -206,6 +206,7 @@
 		5576B54C2138DC91000ECDBE /* MQTTClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4872138DC91000ECDBE /* MQTTClientAppController.swift */; };
 		5576B54D2138DC91000ECDBE /* MQTTClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4872138DC91000ECDBE /* MQTTClientAppController.swift */; };
 		5578602B20F3AA5E00FC182D /* SwiftFog_watch.h in Headers */ = {isa = PBXBuildFile; fileRef = 5578602920F3AA5E00FC182D /* SwiftFog_watch.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55D54FB02147344B00708210 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 55D54FAF2147344B00708210 /* LICENSE */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -304,7 +305,9 @@
 		5578602720F3AA5E00FC182D /* SwiftFog_watch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftFog_watch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5578602920F3AA5E00FC182D /* SwiftFog_watch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftFog_watch.h; sourceTree = "<group>"; };
 		5578602A20F3AA5E00FC182D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55D54FAF2147344B00708210 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		55E9B09F2144B13000F01F23 /* subscription.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = subscription.py; sourceTree = "<group>"; };
+		55E9B2942145711800F01F23 /* FoggyPlaygroundMqtt.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = FoggyPlaygroundMqtt.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -353,9 +356,10 @@
 			isa = PBXGroup;
 			children = (
 				5576B4352138D82D000ECDBE /* Package.swift */,
-				55E9B09F2144B13000F01F23 /* subscription.py */,
+				55D54FAF2147344B00708210 /* LICENSE */,
 				5576B4362138D82D000ECDBE /* README.md */,
 				5576B4372138DC91000ECDBE /* Sources */,
+				55E9B2922145711800F01F23 /* Examples */,
 				5576B42921375033000ECDBE /* Tests */,
 				5576B30421374BD8000ECDBE /* SwiftyFog_iOS */,
 				554347E81F82D1B600C3C2CB /* SwiftyFog_mac */,
@@ -608,6 +612,23 @@
 			path = SwiftFog_watch;
 			sourceTree = "<group>";
 		};
+		55E9B2922145711800F01F23 /* Examples */ = {
+			isa = PBXGroup;
+			children = (
+				55E9B09F2144B13000F01F23 /* subscription.py */,
+				55E9B2932145711800F01F23 /* playground */,
+			);
+			path = Examples;
+			sourceTree = "<group>";
+		};
+		55E9B2932145711800F01F23 /* playground */ = {
+			isa = PBXGroup;
+			children = (
+				55E9B2942145711800F01F23 /* FoggyPlaygroundMqtt.playground */,
+			);
+			path = playground;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -773,6 +794,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55D54FB02147344B00708210 /* LICENSE in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
