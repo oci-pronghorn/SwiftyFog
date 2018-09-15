@@ -59,7 +59,7 @@ public class TrainDiscovery {
 	}
 	
 	private func feedbackLifecycle(msg: MQTTMessage) {
-		let topic = String(msg.topic)
+		let topic = String(msg.topic).suffix(from: mqtt.fullPath.endIndex)
 		let trainName = String(topic.prefix(upTo: topic.firstIndex(of: "/")!))
 		var cursor = 0
 		let alive: Bool = msg.payload.fogExtract(&cursor)

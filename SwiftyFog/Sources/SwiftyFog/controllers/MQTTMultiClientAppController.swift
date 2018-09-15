@@ -54,6 +54,10 @@ public class MQTTClientSubscription: MQTTBridge, MQTTControl {
 		return client.stop()
 	}
 	
+	public var fullPath: String {
+		return self.client.fullPath
+	}
+	
 	public func createBridge(subPath: String) -> MQTTBridge {
 		return client.createBridge(subPath: subPath)
 	}

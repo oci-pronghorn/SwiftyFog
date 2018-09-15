@@ -77,6 +77,10 @@ extension MQTTClient: MQTTControl {
 }
 
 extension MQTTClient: MQTTBridge {
+	public var fullPath: String {
+		return ""
+	}
+	
 	public func createBridge(subPath: String) -> MQTTBridge {
 		return router.createBridge(subPath: subPath)
 	}

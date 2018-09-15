@@ -9,6 +9,7 @@
 public protocol MQTTRouterDelegate: class {
 	func mqtt(unhandledMessage: MQTTMessage)
 	func mqtt(send: MQTTPacket, completion: @escaping (Bool)->())
+	var fullPath: String { get }
 } 
 
 public final class MQTTRouter {
@@ -79,6 +80,10 @@ public final class MQTTRouter {
 }
 
 extension MQTTRouter: MQTTBridge {
+	public var fullPath: String {
+		return delegate?.fullPath ?? ""
+	}
+	
 	public func createBridge(subPath: String) -> MQTTBridge {
 		return MQTTTopicScope(base: self, fullPath: subPath)
 	}

@@ -7,7 +7,7 @@
 
 final class MQTTTopicScope: MQTTBridge {
 	private var base: MQTTBridge
-	private let fullPath: String
+	public let fullPath: String
 	
 	func createBridge(subPath: String) -> MQTTBridge {
 		return MQTTTopicScope(base: self.base, fullPath: self.fullPath + subPath)
