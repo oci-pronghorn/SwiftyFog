@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		self.controller.delegate = self
 		
 		// TODO: have train broadcast broker and remove the following line
-		assignBroker("joveexpress2.local")
+		assignBroker(MQTTBroker(hostName: "joveexpress2.local"))
 		controller.goForeground()
 		return true
 	}
@@ -41,10 +41,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	@objc func settingChanged(notification: NSNotification) {
 	}
 	
-	func assignBroker(_ newBrokerHost: String) {
-		let brokerChanged = self.trainControl.mqttControl?.hostName != newBrokerHost
+	func assignBroker(_ broker: MQTTBroker) {
+		let brokerChanged = self.trainControl.mqttControl?.hostName != broker.hostName
 		if brokerChanged {
-			let client = self.controller.requestClient(hostedOn: newBrokerHost)
+			let client = self.controller.requestClient(broker: broker)
 			client.start()
 			self.trainControl.mqttControl = client
 			self.trainControl.discoverBridge = client.createBridge(subPath: "train")
@@ -76,9 +76,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate: MQTTMultiClientAppControllerDelegate {
-	func discovered(mqttBrokers: [(String, Int)]) {
+	func discovered(mqttBrokers: [MQTTBroker]) {
 		if !self.trainControl.mqttControl.connected {
-			assignBroker(mqttBrokers[0].0)
+			assignBroker(mqttBrokers[0])
 		}
 	}
 	

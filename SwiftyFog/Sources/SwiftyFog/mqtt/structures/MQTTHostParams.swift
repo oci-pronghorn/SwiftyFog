@@ -8,23 +8,6 @@
 
 import Foundation // StreamSocketSecurityLevel
 
-public enum MQTTPort {
-	case standard
-	case ssl
-	case other(UInt16)
-	
-	public var number: UInt16 {
-		switch self {
-			case .standard:
-				return 1883
-			case .ssl:
-				return 8883
-			case .other(let number):
-				return number
-		}
-	}
-}
-
 public struct MQTTHostParams {
     public let host: String
     public let port: UInt16

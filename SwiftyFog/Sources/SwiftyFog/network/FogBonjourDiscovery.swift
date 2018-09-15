@@ -19,7 +19,7 @@ public enum BonjourDiscoveryOperation: String {
 
 public protocol BonjourDiscoveryDelegate: class {
     func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didFailedAt: BonjourDiscoveryOperation, withErrorDict: [String: NSNumber]?)
-	func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didFindService: NetService, atHosts host: [(String, Int)])
+	func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didFindService: NetService, atHosts host: [(String, UInt16)])
 	func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didRemovedService: NetService)
 	
 	func browserDidStart(_ bonjourDiscovery: FogBonjourDiscovery)
@@ -88,14 +88,14 @@ extension FogBonjourDiscovery: NetServiceBrowserDelegate {
 
 extension FogBonjourDiscovery: NetServiceDelegate {
 	public func netServiceDidResolveAddress(_ sender: NetService) {
-        var ips = [(String, Int)]()
+        var ips = [(String, UInt16)]()
         if let addresses = sender.addresses, addresses.count > 0 {
 			for address in addresses {
 				address.withUnsafeBytes { (ptr: UnsafePointer<sockaddr_in>) in
 					let inetAddress: sockaddr_in = ptr.pointee
 					if inetAddress.sin_family == __uint8_t(AF_INET) {
 						if let ip = String(cString: inet_ntoa(inetAddress.sin_addr), encoding: .ascii) {
-							ips.append((ip, Int(inetAddress.sin_port.bigEndian)))
+							ips.append((ip, inetAddress.sin_port.bigEndian))
 						}
 					}
 					else if inetAddress.sin_family == __uint8_t(AF_INET6) {
@@ -106,7 +106,7 @@ extension FogBonjourDiscovery: NetServiceDelegate {
 							ipStringBuffer.withUnsafeMutableBytes { (ipStringBuffer: UnsafeMutablePointer<Int8>) in
 								if let ipString = inet_ntop(Int32(inetAddress6.sin6_family), &addr, ipStringBuffer, __uint32_t(INET6_ADDRSTRLEN)) {
 									if let ip = String(cString: ipString, encoding: .ascii) {
-										ips.append((ip, Int(inetAddress6.sin6_port.bigEndian)))
+										ips.append((ip, inetAddress6.sin6_port.bigEndian))
 									}
 								}
 							}

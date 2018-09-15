@@ -206,6 +206,12 @@
 		5576B54C2138DC91000ECDBE /* MQTTClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4872138DC91000ECDBE /* MQTTClientAppController.swift */; };
 		5576B54D2138DC91000ECDBE /* MQTTClientAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576B4872138DC91000ECDBE /* MQTTClientAppController.swift */; };
 		5578602B20F3AA5E00FC182D /* SwiftFog_watch.h in Headers */ = {isa = PBXBuildFile; fileRef = 5578602920F3AA5E00FC182D /* SwiftFog_watch.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55905996214DB50200290F3B /* MQTTBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55905995214DB50200290F3B /* MQTTBroker.swift */; };
+		55905997214DB50200290F3B /* MQTTBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55905995214DB50200290F3B /* MQTTBroker.swift */; };
+		55905998214DB50200290F3B /* MQTTBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55905995214DB50200290F3B /* MQTTBroker.swift */; };
+		5590599A214DB9A100290F3B /* MQTTPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55905999214DB9A100290F3B /* MQTTPort.swift */; };
+		5590599B214DB9A100290F3B /* MQTTPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55905999214DB9A100290F3B /* MQTTPort.swift */; };
+		5590599C214DB9A100290F3B /* MQTTPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55905999214DB9A100290F3B /* MQTTPort.swift */; };
 		55D54FB02147344B00708210 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 55D54FAF2147344B00708210 /* LICENSE */; };
 /* End PBXBuildFile section */
 
@@ -305,6 +311,8 @@
 		5578602720F3AA5E00FC182D /* SwiftFog_watch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftFog_watch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5578602920F3AA5E00FC182D /* SwiftFog_watch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftFog_watch.h; sourceTree = "<group>"; };
 		5578602A20F3AA5E00FC182D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55905995214DB50200290F3B /* MQTTBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTBroker.swift; sourceTree = "<group>"; };
+		55905999214DB9A100290F3B /* MQTTPort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTPort.swift; sourceTree = "<group>"; };
 		55D54FAF2147344B00708210 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		55E9B09F2144B13000F01F23 /* subscription.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = subscription.py; sourceTree = "<group>"; };
 		55E9B2942145711800F01F23 /* FoggyPlaygroundMqtt.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = FoggyPlaygroundMqtt.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -515,6 +523,8 @@
 				5576B45F2138DC91000ECDBE /* MQTTPingStatus.swift */,
 				5576B4602138DC91000ECDBE /* MQTTHostParams.swift */,
 				5576B4612138DC91000ECDBE /* MQTTConnectedState.swift */,
+				55905995214DB50200290F3B /* MQTTBroker.swift */,
+				55905999214DB9A100290F3B /* MQTTPort.swift */,
 			);
 			path = structures;
 			sourceTree = "<group>";
@@ -868,6 +878,7 @@
 				5576B5362138DC91000ECDBE /* MQTTPacket.swift in Sources */,
 				5576B49D2138DC91000ECDBE /* FogStreamReadable.swift in Sources */,
 				5576B50F2138DC91000ECDBE /* MQTTPublishPacket.swift in Sources */,
+				5590599A214DB9A100290F3B /* MQTTPort.swift in Sources */,
 				5576B4A32138DC91000ECDBE /* FogSocketStream.swift in Sources */,
 				5576B4AF2138DC91000ECDBE /* FogNetworkReachabilityStatus.swift in Sources */,
 				5576B4B52138DC91000ECDBE /* MQTTTopicScope.swift in Sources */,
@@ -878,6 +889,7 @@
 				5576B4F12138DC91000ECDBE /* MQTTSubAckPacket.swift in Sources */,
 				5576B4BB2138DC91000ECDBE /* MQTTConnection.swift in Sources */,
 				5576B4912138DC91000ECDBE /* ReadWriteMutex.swift in Sources */,
+				55905996214DB50200290F3B /* MQTTBroker.swift in Sources */,
 				5576B5212138DC91000ECDBE /* Data+MQTT.swift in Sources */,
 				5576B5122138DC91000ECDBE /* MQTTPublishCompPacket.swift in Sources */,
 				5576B4DF2138DC91000ECDBE /* MQTTRoutingParams.swift in Sources */,
@@ -940,6 +952,7 @@
 				5576B5372138DC91000ECDBE /* MQTTPacket.swift in Sources */,
 				5576B49E2138DC91000ECDBE /* FogStreamReadable.swift in Sources */,
 				5576B5102138DC91000ECDBE /* MQTTPublishPacket.swift in Sources */,
+				5590599B214DB9A100290F3B /* MQTTPort.swift in Sources */,
 				5576B4A42138DC91000ECDBE /* FogSocketStream.swift in Sources */,
 				5576B4B02138DC91000ECDBE /* FogNetworkReachabilityStatus.swift in Sources */,
 				5576B4B62138DC91000ECDBE /* MQTTTopicScope.swift in Sources */,
@@ -950,6 +963,7 @@
 				5576B4F22138DC91000ECDBE /* MQTTSubAckPacket.swift in Sources */,
 				5576B4BC2138DC91000ECDBE /* MQTTConnection.swift in Sources */,
 				5576B4922138DC91000ECDBE /* ReadWriteMutex.swift in Sources */,
+				55905997214DB50200290F3B /* MQTTBroker.swift in Sources */,
 				5576B5222138DC91000ECDBE /* Data+MQTT.swift in Sources */,
 				5576B5132138DC91000ECDBE /* MQTTPublishCompPacket.swift in Sources */,
 				5576B4E02138DC91000ECDBE /* MQTTRoutingParams.swift in Sources */,
@@ -976,6 +990,7 @@
 				5576B4D82138DC91000ECDBE /* MQTTMessageIdSource.swift in Sources */,
 				5576B4BD2138DC91000ECDBE /* MQTTConnection.swift in Sources */,
 				5576B5442138DC91000ECDBE /* MQTTClient.swift in Sources */,
+				5590599C214DB9A100290F3B /* MQTTPort.swift in Sources */,
 				5576B5352138DC91000ECDBE /* MQTTDisconnectPacket.swift in Sources */,
 				5576B4D22138DC91000ECDBE /* MQTTTopicPattern.swift in Sources */,
 				5576B4962138DC91000ECDBE /* FogFeedbackValue.swift in Sources */,
@@ -994,6 +1009,7 @@
 				5576B5412138DC91000ECDBE /* MQTTMetrics.swift in Sources */,
 				5576B5172138DC91000ECDBE /* MQTTPublishRecPacket.swift in Sources */,
 				5576B5142138DC91000ECDBE /* MQTTPublishCompPacket.swift in Sources */,
+				55905998214DB50200290F3B /* MQTTBroker.swift in Sources */,
 				5576B49C2138DC91000ECDBE /* Data+Fog.swift in Sources */,
 				5576B4932138DC91000ECDBE /* ReadWriteMutex.swift in Sources */,
 				5576B4FF2138DC91000ECDBE /* MQTTQoS.swift in Sources */,
