@@ -47,8 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			let client = self.controller.requestClient(hostedOn: newBrokerHost)
 			client.start()
 			self.trainControl.mqttControl = client
-			// TODO: have train broadcast with that prefix topic
-			self.trainControl.discoverBridge = client //.createBridge(subPath: "train")
+			self.trainControl.discoverBridge = client.createBridge(subPath: "train")
 		}
 	}
 	
