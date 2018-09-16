@@ -18,7 +18,7 @@ import Foundation // NetService Dispatch Queue, Data
 public protocol MQTTMultiClientAppControllerDelegate: class {
 	func on(mqttClient: (MQTTBridge & MQTTControl), log: String)
 	func on(mqttClient: (MQTTBridge & MQTTControl), connected: MQTTConnectedState)
-	func discovered(mqttBrokers: [MQTTBroker]) // host and port
+	func discovered(mqttBrokers: [MQTTDiscoveredBroker]) // host and port
 }
 
 public class MQTTClientSubscription: MQTTBridge, MQTTControl {
@@ -92,7 +92,7 @@ public class MQTTMultiClientAppController {
 		bonjour.delegate = self
 	}
 	
-	public func requestClient(broker: MQTTBroker) -> (MQTTBridge & MQTTControl) {
+	public func requestClient(broker: MQTTDiscoveredBroker) -> (MQTTBridge & MQTTControl) {
 		let hostedOn = broker.hostName
 		if let client = clients[hostedOn] {
 			clients[hostedOn]?.1 += 1
@@ -180,7 +180,7 @@ extension MQTTMultiClientAppController: BonjourDiscoveryDelegate {
 	}
 	
 	public func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didFindService service: NetService, atHosts host: [(String, UInt16)]) {
-		delegate?.discovered(mqttBrokers: [MQTTBroker(hostName: service.hostName!, addreses: host.map{(address: $0.0, port: MQTTPort(number: $0.1))})])
+		delegate?.discovered(mqttBrokers: [MQTTDiscoveredBroker(hostName: service.hostName!, addreses: host.map{(address: $0.0, port: MQTTPort(number: $0.1))})])
 	}
 	
 	public func bonjourDiscovery(_ bonjourDiscovery: FogBonjourDiscovery, didRemovedService service: NetService) {

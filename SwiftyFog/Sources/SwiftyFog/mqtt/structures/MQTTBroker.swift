@@ -1,5 +1,5 @@
 //
-//  MQTTBroker.swift
+//  MQTTDiscoveredBroker.swift
 //  SwiftyFog
 //
 //  Created by David Giovannini on 9/15/18.
@@ -15,7 +15,7 @@ fileprivate extension String {
 	}
 }
 
-public struct MQTTBroker {
+public struct MQTTDiscoveredBroker {
 	public let hostName: String
 	public let addreses : [(address: String, port: MQTTPort)]
 	public var name: String { return hostName.firstPart() }
