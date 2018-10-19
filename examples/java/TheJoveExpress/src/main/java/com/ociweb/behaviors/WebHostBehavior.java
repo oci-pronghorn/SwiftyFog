@@ -26,7 +26,7 @@ public class WebHostBehavior implements PubSubMethodListener {
     // -- we can add yet another variable to config for Web DNS name to broadcast on feedback
 
     // We need to pick a strategy. For now I am broadcasting this ip to the client.
-    private static final String webHost = "https://10.0.1.60:8089";
+    private static String webHost;
 
     // TODO There will be two sites hosted. We need to determine Behavior design for two sites.
     // - One for the train control
@@ -41,8 +41,11 @@ public class WebHostBehavior implements PubSubMethodListener {
             		        .setMaxResponseSize(1<<20); //big enough to hold the largest resource in joveSite
             
             config.useInsecureServer();
-            config.setConcurrentChannelsPerEncryptUnit(4);
-            config.setConcurrentChannelsPerDecryptUnit(4);
+            config.setConcurrentChannelsPerDecryptUnit(2);//save some memory
+            config.setConcurrentChannelsPerEncryptUnit(2);
+          
+            webHost = "http://"+config.bindHost()+":"+config.bindPort();
+            
         }
     }
 

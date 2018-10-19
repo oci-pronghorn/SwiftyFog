@@ -1,6 +1,18 @@
 package com.ociweb;
 
-import com.ociweb.behaviors.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import com.ociweb.behaviors.AmbientLightBehavior;
+import com.ociweb.behaviors.EngineBehavior;
+import com.ociweb.behaviors.FaultTrackingBehavior;
+import com.ociweb.behaviors.ImageCapture;
+import com.ociweb.behaviors.LifeCycleBehavior;
+import com.ociweb.behaviors.LightingBehavior;
+import com.ociweb.behaviors.PWMActuatorDriverBehavior;
+import com.ociweb.behaviors.SharedActuatorDriverBehavior;
+import com.ociweb.behaviors.TextDisplayBehavior;
+import com.ociweb.behaviors.WebHostBehavior;
 import com.ociweb.behaviors.inprogress.AccelerometerBehavior;
 import com.ociweb.behaviors.inprogress.LocationBehavior;
 import com.ociweb.behaviors.inprogress.TrainingBehavior;
@@ -11,6 +23,7 @@ import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.Hardware;
 import com.ociweb.pronghorn.iot.i2c.I2CJFFIStage;
 import com.ociweb.pronghorn.network.ClientSocketReaderStage;
+import com.ociweb.pronghorn.network.mqtt.MQTTClientToServerEncodeStage;
 import com.ociweb.pronghorn.stage.scheduling.GraphManager;
 
 /**
@@ -23,10 +36,13 @@ public class TheJoveExpress implements FogApp
 
     @Override
     public void declareConnections(Hardware hardware) {
+    	
+    	//MQTTClientToServerEncodeStage.showAllSubscriptions = true;
+    	
         config = new TrainConfiguration(hardware);
-        
+ 
         hardware.setDefaultRate(16_000_000);
-
+        
         //on the PI many of the MQTT connections take large periods of time to 
         //communicate with Mosquito. These are not errors so we will turn off
         //the automatic disconnect of slow responding connections 
@@ -70,11 +86,36 @@ public class TheJoveExpress implements FogApp
         
         //if (config.soundEnabled) hardware.useSerial(Baud.B_____9600);
         //if (config.soundEnabled) ; //c.connect(serial mp3 player);
+        
+
+        if (config.imageCaptureURL!=null) {
+        	        	
+        	URL url;
+			try {
+				url = new URL(config.imageCaptureURL);
+				
+				config.imageCapturePath = url.getPath();				
+				config.imageCaptureSession = hardware.useInsecureNetClient()
+						//.setMaxRequestSize(1<<21)
+						//.setMaxResponseSize(200)
+						//.setRequestQueueLength(2)
+						.newHTTPSession(url.getHost(), url.getPort())
+						.finish();
+				
+				hardware.setImageSize(640, 480);
+				hardware.setImageTriggerRate(40);
+				
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+				config.imageCaptureURL = null;
+			}
+        }
+        
     }
 
     public void declareBehavior(FogRuntime runtime) {
         String topicPrefix = config.trainName;
-        if (config.topicPrefix != null) {
+        if (config.topicPrefix != null && config.topicPrefix.length()>0) {
             topicPrefix = config.topicPrefix + "/" + topicPrefix;
         }
 
@@ -176,10 +217,20 @@ public class TheJoveExpress implements FogApp
             topics.subscribe(training, "location/training/start", MQTTQoS.atLeastOnce, training::onTrainingStart);
 
             final LocationBehavior location = new LocationBehavior(runtime,
-                    topics.publish(locationFeedback, false, MQTTQoS.atMostOnce),
-                    topics.publish(accuracyFeedback, false, MQTTQoS.atMostOnce));
+									                    topics.publish(locationFeedback, false, MQTTQoS.atMostOnce),
+									                    topics.publish(accuracyFeedback, false, MQTTQoS.atMostOnce));
             runtime.registerListener(location);
         }
+        
+       
+        if(config.imageCaptureURL!=null) {
+
+			runtime.addImageListener("ImageCapture", new ImageCapture(runtime, 640, 480, 
+					                   config.imageCaptureSession, 
+					                   config.imageCapturePath));        	
+        	
+        }
+        
 
         if (config.appServerEnabled) {
             final String webFeedback = "web/feedback";

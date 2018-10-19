@@ -73,7 +73,7 @@ public class PWMActuatorDriverBehavior implements PubSubMethodListener, Shutdown
         else {
             double updatePower = payload.power; // values only 0.0 and 1.0
             final int twigRange = 1024;
-            System.out.println("light" + (int)((twigRange-1)*updatePower));
+            //System.out.println("light" + (int)((twigRange-1)*updatePower));
             return this.pwmService.setValue(ledPort, (int)((twigRange-1)*updatePower));
         }
     }

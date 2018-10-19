@@ -1,6 +1,7 @@
 package com.ociweb;
 
 import com.ociweb.gl.api.ArgumentProvider;
+import com.ociweb.gl.api.ClientHostPortInstance;
 import com.ociweb.gl.api.MQTTBridge;
 import com.ociweb.gl.api.TelemetryConfig;
 import com.ociweb.iot.maker.Port;
@@ -48,10 +49,10 @@ public class TrainConfiguration  {
     final Port ledPort = Port.D3;
 
     // Display (currently Text Display - not Images)
-    final FeatureEnabled billboardEnabled = FeatureEnabled.full;
+    final FeatureEnabled billboardEnabled = FeatureEnabled.nothing; //TODO: need argument passed in to enable/disable
 
     // Fault Tracking
-    final FeatureEnabled faultTrackingEnabled = FeatureEnabled.noHardware; // Hardware not supported yet
+    final FeatureEnabled faultTrackingEnabled = FeatureEnabled.nothing; //TODO: needs command line switch, // Hardware not supported yet
 
     // Web Server
     boolean appServerEnabled;
@@ -66,12 +67,13 @@ public class TrainConfiguration  {
     // Sound
     final boolean soundEnabled = false;
 
-    // Camera
-    //final boolean cameraEnabled = false;
-    //final String cameraOutputFormat = "/home/pi/pi-cam-test/image-%d.raw"; //where %d is the current timestamp
-
     // Location Detection
     final boolean locationEnabled = false;
+
+    //where the train should post images from the camera
+    String imageCaptureURL = null;
+	public ClientHostPortInstance imageCaptureSession;
+	public String imageCapturePath;
 
 // Constructor
 
@@ -85,6 +87,15 @@ public class TrainConfiguration  {
         this.sharedAcutatorEnabled = args.getArgumentValue("--sharedact", "-sa", true);
         this.appServerEnabled = args.getArgumentValue("--webserver", "-w", true);
         this.mqttPort = args.getArgumentValue("--brokerp", "-bp", MQTTBridge.defaultPort);
-        this.topicPrefix = args.getArgumentValue("--topicPrefix", "-tp", "train");
+        
+        if (null==args.getArgumentValue("--disableTopicPrefix", "-dtp", (String)null)) {
+        	//Very bad feature broke a lot of traffic so we needed a way to roll back.
+        	this.topicPrefix = args.getArgumentValue("--topicPrefix", "-tp", "train");
+        } else {
+        	this.topicPrefix = null;
+        }
+        
+        this.imageCaptureURL  =  args.getArgumentValue("--imageCaptureURL", "-icURL", (String)null); //URL to post images into
+        
     }
 }
