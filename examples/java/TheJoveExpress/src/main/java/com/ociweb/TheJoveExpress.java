@@ -4,7 +4,6 @@ import com.ociweb.behaviors.*;
 import com.ociweb.behaviors.inprogress.AccelerometerBehavior;
 import com.ociweb.behaviors.inprogress.LocationBehavior;
 import com.ociweb.behaviors.inprogress.TrainingBehavior;
-import com.ociweb.gl.api.ClientHostPortInstance;
 import com.ociweb.gl.api.MQTTBridge;
 import com.ociweb.gl.api.MQTTQoS;
 import com.ociweb.iot.maker.FogApp;
@@ -14,9 +13,6 @@ import com.ociweb.pronghorn.iot.i2c.I2CJFFIStage;
 import com.ociweb.pronghorn.network.ClientSocketReaderStage;
 import com.ociweb.pronghorn.stage.scheduling.GraphManager;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 /**
  * The main application registers all the hardware and business logic classes.
  */
@@ -24,11 +20,6 @@ public class TheJoveExpress implements FogApp
 {
     private TrainConfiguration config;
     private MQTTBridge mqttBridge;
-
-    private String imageCaptureURL;
-    private ClientHostPortInstance imageCaptureSession;
-    private String imageCapturePath;
-
 
     @Override
     public void declareConnections(Hardware hardware) {
@@ -78,35 +69,10 @@ public class TheJoveExpress implements FogApp
                     config.lightsEnabled == FeatureEnabled.full ? config.ledPort : null);
         }
 
-        //hardware.defineRoute().path("${path}").routeId();
+        ImageCaptureBehavior.configure(hardware, config.imageCaptureURL);
         
         //if (config.soundEnabled) hardware.useSerial(Baud.B_____9600);
         //if (config.soundEnabled) ; //c.connect(serial mp3 player);
-        
-        this.imageCaptureURL = config.imageCaptureURL;
-        if (this.imageCaptureURL!=null) {
-        	        	
-        	URL url;
-			try {
-				url = new URL(config.imageCaptureURL);
-
-                this.imageCapturePath = url.getPath();
-                this.imageCaptureSession = hardware.useInsecureNetClient()
-						//.setMaxRequestSize(1<<21)
-						//.setMaxResponseSize(200)
-						//.setRequestQueueLength(2)
-						.newHTTPSession(url.getHost(), url.getPort())
-						.finish();
-				
-				hardware.setImageSize(640, 480);
-				hardware.setImageTriggerRate(40);
-				
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-                this.imageCaptureURL = null;
-			}
-        }
-        
     }
 
     public void declareBehavior(FogRuntime runtime) {
@@ -205,7 +171,7 @@ public class TheJoveExpress implements FogApp
             topics.subscribe(billboard, lightsPowerFeedback, billboard::onLightsPower);
         }
 
-        if(config.locationEnabled) {
+        if (config.locationEnabled) {
             final String locationFeedback = "location/feedback";
             final String accuracyFeedback = "location/accuracy/feedback";
 
@@ -218,12 +184,8 @@ public class TheJoveExpress implements FogApp
             runtime.registerListener(location);
         }
 
-        if(config.imageCaptureURL!=null) {
-
-			runtime.addImageListener("ImageCaptureBehavior", new ImageCaptureBehavior(runtime, 640, 480,
-					                   this.imageCaptureSession,
-					                   this.imageCapturePath));
-        	
+        if (ImageCaptureBehavior.isOperational()) {
+			runtime.addImageListener("ImageCaptureBehavior", new ImageCaptureBehavior(runtime, 640, 480));
         }
 
         if (config.appServerEnabled) {

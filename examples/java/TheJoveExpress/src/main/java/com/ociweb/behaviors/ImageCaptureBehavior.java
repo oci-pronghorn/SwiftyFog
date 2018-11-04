@@ -3,6 +3,7 @@ package com.ociweb.behaviors;
 import com.ociweb.gl.api.ClientHostPortInstance;
 import com.ociweb.gl.api.HTTPRequestService;
 import com.ociweb.iot.maker.FogRuntime;
+import com.ociweb.iot.maker.Hardware;
 import com.ociweb.iot.maker.ImageListener;
 import com.ociweb.json.encode.JSONRenderer;
 import com.ociweb.pronghorn.pipe.util.ISOTimeFormatterLowGC;
@@ -11,32 +12,58 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Base64;
 
 public class ImageCaptureBehavior implements ImageListener {
 	
 	private BufferedImage bufferedImage;
 	private HTTPRequestService clientService;
-	private ClientHostPortInstance session;
+	private static ClientHostPortInstance session;
 	private long now = -1;
 	private int countDownRows;
 
+
 	//HTTPHeaderDateTimeFormatterLowGC low = new HTTPHeaderDateTimeFormatterLowGC();
-	ISOTimeFormatterLowGC low = new ISOTimeFormatterLowGC();
-	byte[] imageData;
+	private ISOTimeFormatterLowGC low = new ISOTimeFormatterLowGC();
+	private byte[] imageData;
 	
-	JSONRenderer<ImageCaptureBehavior> renderer = new JSONRenderer<ImageCaptureBehavior>()
+	private JSONRenderer<ImageCaptureBehavior> renderer = new JSONRenderer<ImageCaptureBehavior>()
 			.startObject() 
 				.string("timestamp", (o,t) -> low.write(now, t) )
 				.string("image", (o,t) -> t.append(Base64.getEncoder().encodeToString(imageData)))			
 			.endObject();
-	
-	public ImageCaptureBehavior(FogRuntime runtime, int width, int height, ClientHostPortInstance session, String path) {
 
+	public static void configure(Hardware hardware, String imageCapturePath) {
+		if (!hardware.isTestHardware() && imageCapturePath!=null) {
+			URL url;
+			try {
+				url = new URL(imageCapturePath);
+				session = hardware.useInsecureNetClient()
+						//.setMaxRequestSize(1<<21)
+						//.setMaxResponseSize(200)
+						//.setRequestQueueLength(2)
+						.newHTTPSession(url.getHost(), url.getPort())
+						.finish();
+
+				hardware.setImageSize(640, 480);
+				hardware.setImageTriggerRate(40);
+
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+				//throw new RuntimeException(e);
+			}
+		}
+	}
+
+	public static Boolean isOperational() {
+		return session != null;
+	}
+
+	public ImageCaptureBehavior(FogRuntime runtime, int width, int height) {
 		this.bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		this.session = session;
 		this.clientService = runtime.newCommandChannel().newHTTPClientService(2, 1<<21 ); //json encoded image
-		
 	}
 
 	@Override

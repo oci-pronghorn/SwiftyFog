@@ -51,6 +51,7 @@ public class TrainConfiguration  {
     final FeatureEnabled billboardEnabled = FeatureEnabled.nothing; //TODO: need argument passed in to enable/disable
 
     // Fault Tracking
+    // Why is the noHardware behavior problematic?
     final FeatureEnabled faultTrackingEnabled = FeatureEnabled.nothing; //TODO: needs command line switch, // Hardware not supported yet
 
     // Web Server
@@ -60,8 +61,7 @@ public class TrainConfiguration  {
     final String resourceDefaultPath = "/index.html"; //used when caller does not provide path
 
     // Camera
-    //where the train should post images from the camera
-    final String imageCaptureURL;
+    final String imageCaptureURL; //URL to post images into
 
 // Not Implemented
 
@@ -86,6 +86,6 @@ public class TrainConfiguration  {
         this.appServerEnabled = args.getArgumentValue("--webserver", "-w", true);
         this.mqttPort = args.getArgumentValue("--brokerp", "-bp", MQTTBridge.defaultPort);
         this.topicPrefix = args.getArgumentValue("--topicPrefix", "-tp", (String)null);
-        this.imageCaptureURL  =  args.getArgumentValue("--imageCaptureURL", "-icURL", (String)null); //URL to post images into
+        this.imageCaptureURL  =  args.getArgumentValue("--imageCaptureURL", "-icURL", (String)null);
     }
 }
