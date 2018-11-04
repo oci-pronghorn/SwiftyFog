@@ -1,7 +1,6 @@
 package com.ociweb;
 
 import com.ociweb.gl.api.ArgumentProvider;
-import com.ociweb.gl.api.ClientHostPortInstance;
 import com.ociweb.gl.api.MQTTBridge;
 import com.ociweb.gl.api.TelemetryConfig;
 import com.ociweb.iot.maker.Port;
@@ -14,7 +13,7 @@ public class TrainConfiguration  {
     // Names
     final String trainDisplayName;
     final String trainName;
-    final String topicPrefix;
+    final String topicPrefix; // used for muti-use MQTT brokers and MQTT train auto-discovery
 
     // MQTT
     final boolean mqttEnabled = true;
@@ -42,7 +41,7 @@ public class TrainConfiguration  {
     final Port lightSensorPort = Port.A0;
 
     // Lighting/Motor Hardware
-    boolean sharedAcutatorEnabled;
+    final boolean sharedAcutatorEnabled;
     // Non-shared actuator
     final Port pwmEnginePowerPort = Port.D5;
     final Port pwmEngineDirectionPort = Port.D6;
@@ -55,10 +54,14 @@ public class TrainConfiguration  {
     final FeatureEnabled faultTrackingEnabled = FeatureEnabled.nothing; //TODO: needs command line switch, // Hardware not supported yet
 
     // Web Server
-    boolean appServerEnabled;
+    final boolean appServerEnabled;
     final int appServerPort = 8089;
     final String resourceRoot = "/joveSite";
     final String resourceDefaultPath = "/index.html"; //used when caller does not provide path
+
+    // Camera
+    //where the train should post images from the camera
+    final String imageCaptureURL;
 
 // Not Implemented
 
@@ -69,11 +72,6 @@ public class TrainConfiguration  {
 
     // Location Detection
     final boolean locationEnabled = false;
-
-    //where the train should post images from the camera
-    String imageCaptureURL = null;
-	public ClientHostPortInstance imageCaptureSession;
-	public String imageCapturePath;
 
 // Constructor
 
@@ -87,15 +85,7 @@ public class TrainConfiguration  {
         this.sharedAcutatorEnabled = args.getArgumentValue("--sharedact", "-sa", true);
         this.appServerEnabled = args.getArgumentValue("--webserver", "-w", true);
         this.mqttPort = args.getArgumentValue("--brokerp", "-bp", MQTTBridge.defaultPort);
-        
-        if (null==args.getArgumentValue("--disableTopicPrefix", "-dtp", (String)null)) {
-        	//Very bad feature broke a lot of traffic so we needed a way to roll back.
-        	this.topicPrefix = args.getArgumentValue("--topicPrefix", "-tp", "train");
-        } else {
-        	this.topicPrefix = null;
-        }
-        
+        this.topicPrefix = args.getArgumentValue("--topicPrefix", "-tp", (String)null);
         this.imageCaptureURL  =  args.getArgumentValue("--imageCaptureURL", "-icURL", (String)null); //URL to post images into
-        
     }
 }

@@ -4,6 +4,7 @@ import com.ociweb.behaviors.*;
 import com.ociweb.behaviors.inprogress.AccelerometerBehavior;
 import com.ociweb.behaviors.inprogress.LocationBehavior;
 import com.ociweb.behaviors.inprogress.TrainingBehavior;
+import com.ociweb.gl.api.ClientHostPortInstance;
 import com.ociweb.gl.api.MQTTBridge;
 import com.ociweb.gl.api.MQTTQoS;
 import com.ociweb.iot.maker.FogApp;
@@ -23,6 +24,11 @@ public class TheJoveExpress implements FogApp
 {
     private TrainConfiguration config;
     private MQTTBridge mqttBridge;
+
+    private String imageCaptureURL;
+    private ClientHostPortInstance imageCaptureSession;
+    private String imageCapturePath;
+
 
     @Override
     public void declareConnections(Hardware hardware) {
@@ -77,15 +83,15 @@ public class TheJoveExpress implements FogApp
         //if (config.soundEnabled) hardware.useSerial(Baud.B_____9600);
         //if (config.soundEnabled) ; //c.connect(serial mp3 player);
         
-
-        if (config.imageCaptureURL!=null) {
+        this.imageCaptureURL = config.imageCaptureURL;
+        if (this.imageCaptureURL!=null) {
         	        	
         	URL url;
 			try {
 				url = new URL(config.imageCaptureURL);
-				
-				config.imageCapturePath = url.getPath();				
-				config.imageCaptureSession = hardware.useInsecureNetClient()
+
+                this.imageCapturePath = url.getPath();
+                this.imageCaptureSession = hardware.useInsecureNetClient()
 						//.setMaxRequestSize(1<<21)
 						//.setMaxResponseSize(200)
 						//.setRequestQueueLength(2)
@@ -97,7 +103,7 @@ public class TheJoveExpress implements FogApp
 				
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
-				config.imageCaptureURL = null;
+                this.imageCaptureURL = null;
 			}
         }
         
@@ -215,8 +221,8 @@ public class TheJoveExpress implements FogApp
         if(config.imageCaptureURL!=null) {
 
 			runtime.addImageListener("ImageCaptureBehavior", new ImageCaptureBehavior(runtime, 640, 480,
-					                   config.imageCaptureSession, 
-					                   config.imageCapturePath));        	
+					                   this.imageCaptureSession,
+					                   this.imageCapturePath));
         	
         }
 
