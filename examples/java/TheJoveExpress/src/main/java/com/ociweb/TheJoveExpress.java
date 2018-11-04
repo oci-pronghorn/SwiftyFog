@@ -1,18 +1,6 @@
 package com.ociweb;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import com.ociweb.behaviors.AmbientLightBehavior;
-import com.ociweb.behaviors.EngineBehavior;
-import com.ociweb.behaviors.FaultTrackingBehavior;
-import com.ociweb.behaviors.ImageCapture;
-import com.ociweb.behaviors.LifeCycleBehavior;
-import com.ociweb.behaviors.LightingBehavior;
-import com.ociweb.behaviors.PWMActuatorDriverBehavior;
-import com.ociweb.behaviors.SharedActuatorDriverBehavior;
-import com.ociweb.behaviors.TextDisplayBehavior;
-import com.ociweb.behaviors.WebHostBehavior;
+import com.ociweb.behaviors.*;
 import com.ociweb.behaviors.inprogress.AccelerometerBehavior;
 import com.ociweb.behaviors.inprogress.LocationBehavior;
 import com.ociweb.behaviors.inprogress.TrainingBehavior;
@@ -23,8 +11,10 @@ import com.ociweb.iot.maker.FogRuntime;
 import com.ociweb.iot.maker.Hardware;
 import com.ociweb.pronghorn.iot.i2c.I2CJFFIStage;
 import com.ociweb.pronghorn.network.ClientSocketReaderStage;
-import com.ociweb.pronghorn.network.mqtt.MQTTClientToServerEncodeStage;
 import com.ociweb.pronghorn.stage.scheduling.GraphManager;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * The main application registers all the hardware and business logic classes.
@@ -221,16 +211,14 @@ public class TheJoveExpress implements FogApp
 									                    topics.publish(accuracyFeedback, false, MQTTQoS.atMostOnce));
             runtime.registerListener(location);
         }
-        
-       
+
         if(config.imageCaptureURL!=null) {
 
-			runtime.addImageListener("ImageCapture", new ImageCapture(runtime, 640, 480, 
+			runtime.addImageListener("ImageCaptureBehavior", new ImageCaptureBehavior(runtime, 640, 480,
 					                   config.imageCaptureSession, 
 					                   config.imageCapturePath));        	
         	
         }
-        
 
         if (config.appServerEnabled) {
             final String webFeedback = "web/feedback";

@@ -11,7 +11,7 @@ import com.ociweb.pronghorn.pipe.ChannelReader;
 
 import static com.ociweb.iot.grove.oled.OLEDTwig.OLED_96x96_2;
 
-public class BillboardBehavior implements PubSubMethodListener, StartupListener {
+public class ImageBillboardBehavior implements PubSubMethodListener, StartupListener {
 
     private final PubSubFixedTopicService allFeedbackService;
     private final PubSubFixedTopicService imageService;
@@ -19,7 +19,7 @@ public class BillboardBehavior implements PubSubMethodListener, StartupListener 
     private final OLED96x96Transducer display;
     private final FogBitmap bmp;
 
-    public BillboardBehavior(FogRuntime runtime, String publishTopic) {
+    public ImageBillboardBehavior(FogRuntime runtime, String publishTopic) {
         FogCommandChannel bufferChannel = runtime.newCommandChannel();
         FogCommandChannel displayChannel = runtime.newCommandChannel();
         display = OLED_96x96_2.newTransducer(displayChannel);

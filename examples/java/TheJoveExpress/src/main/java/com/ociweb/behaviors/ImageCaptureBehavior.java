@@ -1,12 +1,5 @@
 package com.ociweb.behaviors;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Base64;
-
-import javax.imageio.ImageIO;
-
 import com.ociweb.gl.api.ClientHostPortInstance;
 import com.ociweb.gl.api.HTTPRequestService;
 import com.ociweb.iot.maker.FogRuntime;
@@ -14,7 +7,13 @@ import com.ociweb.iot.maker.ImageListener;
 import com.ociweb.json.encode.JSONRenderer;
 import com.ociweb.pronghorn.pipe.util.ISOTimeFormatterLowGC;
 
-public class ImageCapture implements ImageListener {
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
+
+public class ImageCaptureBehavior implements ImageListener {
 	
 	private BufferedImage bufferedImage;
 	private HTTPRequestService clientService;
@@ -26,13 +25,13 @@ public class ImageCapture implements ImageListener {
 	ISOTimeFormatterLowGC low = new ISOTimeFormatterLowGC();
 	byte[] imageData;
 	
-	JSONRenderer<ImageCapture> renderer = new JSONRenderer<ImageCapture>()
+	JSONRenderer<ImageCaptureBehavior> renderer = new JSONRenderer<ImageCaptureBehavior>()
 			.startObject() 
 				.string("timestamp", (o,t) -> low.write(now, t) )
 				.string("image", (o,t) -> t.append(Base64.getEncoder().encodeToString(imageData)))			
 			.endObject();
 	
-	public ImageCapture(FogRuntime runtime, int width, int height, ClientHostPortInstance session, String path) {
+	public ImageCaptureBehavior(FogRuntime runtime, int width, int height, ClientHostPortInstance session, String path) {
 
 		this.bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		this.session = session;
